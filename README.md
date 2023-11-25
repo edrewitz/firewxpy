@@ -14,3 +14,4 @@ Python Module Dependencies:
 6. Siphon
 7. Pandas
 8. NumPy
+9. cartopy
