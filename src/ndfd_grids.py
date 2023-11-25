@@ -248,7 +248,7 @@ def GRIB_file_checker(GRIB_File_List):
         grb_4_logic = True
         grb_5_logic = False
 
-    if count >= 4: 
+    if count >= 5: 
         grb_1 = GRIB_File_List[1]
         grb_2 = GRIB_File_List[2]
         grb_3 = GRIB_File_List[3]
