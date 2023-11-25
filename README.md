@@ -12,3 +12,5 @@ Python Module Dependencies:
 4. ftplib
 5. MetPy
 6. Siphon
+7. Pandas
+8. NumPy
