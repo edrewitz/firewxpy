@@ -7,6 +7,7 @@
 # 2. XARRAY
 # 3. OS
 # 4. FTPLIB
+# 5. DATETIME
 #
 #  (C) ERIC J. DREWITZ
 #       METEOROLOGIST
@@ -17,6 +18,7 @@ import pygrib
 import xarray as xr
 import os
 from ftplib import FTP
+from datetime import datetime, timedelta
 
 
 def directory_name_error():
@@ -260,7 +262,7 @@ def GRIB_file_checker(GRIB_File_List):
         grb_4_logic = True
         grb_5_logic = True
 
-    return grb_1, grb_2, grb_3, grb_4, grb_5, grb_1_logic, grb_2_logic, grb_3_logic, grb_4_logic, grb_5_logic
+    return grb_1, grb_2, grb_3, grb_4, grb_5, grb_1_logic, grb_2_logic, grb_3_logic, grb_4_logic, grb_5_logic, count
 
 
 def get_GRIB_file_values(GRIB_File):
@@ -283,7 +285,20 @@ def get_GRIB_file_valid_date(GRIB_File):
     return GRIB_File.validDate
 
 
-    
+def NDFD_Forecast_Time_Interval(GRIB_File, hours): 
+   
+    '''
+    THIS FUNCTION WILL RETURN THE TIME THE FORECAST PERIOD ENDS BASED ON HOW LONG THE FORECAST PERIOD IS VALID FOR
+    THE VALID DATE FOR A GRIB FILE CORRESPONDS TO THE START OF THE FORECAST PERIOD. 
+    (I.E. THE NDFD MAXIMUM RELATIVE HUMIDITY GRIDS ARE A TIME LENGTH OF 12HRS, THEREFORE THE ENDING TIME OF THE FORECAST PERIOD IS 12HRS AFTER THE VALID DATE OF THE GRIB FILE. 
+
+    PYTHON MODULE DEPENDENCIES:
+    1. DATETIME
+
+    COPYRIGHT (C) ERIC J. DREWITZ 2023
+    '''
+
+    return GRIB_File.validDate + timedelta(hours=hours)
         
 
     
