@@ -69,8 +69,8 @@ def no_data_graphic(local_time, utc_time):
     COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
     '''
     fig = plt.figure(figsize=(10, 10))
-    fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-    fig.text(0.15, 0.5, 'NO DATA FOR: ' + date.strftime('%m/%d/%Y %HZ'), fontsize=60, fontweight='bold')
+    fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+    fig.text(0.15, 0.5, 'NO DATA FOR: ' + utc_time.strftime('%m/%d/%Y %HZ'), fontsize=60, fontweight='bold')
 
     return fig
 
