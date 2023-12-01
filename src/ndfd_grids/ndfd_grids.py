@@ -1,4 +1,4 @@
-# THIS SCRIPT DOWNLOADS FORECAST DATA FROM THE NOAA/NWS FTP SERVER
+# THIS SCRIPT HAS FUNCTIONS THAT DOWNLOAD FORECAST DATA FROM THE NOAA/NWS FTP SERVER, ORGANIZE THE GRIB FILES AND RETURN BOOLEAN VALUES DEPENDING ON IF THE GRIB FILE EXISTS OR NOT
 #
 # THIS IS THE NWS FTP DATA ACCESS FILE FOR FIREPY
 #
@@ -130,7 +130,7 @@ def get_NWS_NDFD_grid_data(directory_name, parameter):
 
     https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
 
-    COPYRIGHT (C) ERIC J. DREWITZ 2023
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
     '''
 
     ###################################################
@@ -189,7 +189,7 @@ def sort_GRIB_files(GRIB_File_List):
 
     THIS FUNCTION IS TO BE USED IN THE PROGRAMMER'S CODE AFTER THE get_NWS_NDFD_grid_data(directory_name, parameter) FUNCTION IS USED
 
-    COPYRIGHT (C) ERIC J. DREWITZ 2023
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
     '''
     count = 0
     for grb in GRIB_File_List:
@@ -250,7 +250,7 @@ def GRIB_file_checker(GRIB_File_List):
 
     THIS FUNCTION ALSO RETURNS THE COUNT OF THE NUMBER OF GRIB FILES IN THE DATASET.
 
-    COPYRIGHT (C) ERIC J. DREWITZ 2023
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
     '''
     count = 0
     for grb in GRIB_File_List:
@@ -299,7 +299,7 @@ def get_GRIB_file_values(GRIB_File):
     '''
     THIS FUNCTION RETURNS THE VALUES OF THE DATA INSIDE OF A GRIB FILE. 
 
-    COPYRIGHT (C) ERIC J. DREWITZ 2023
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
     '''
     return GRIB_File.values
 
@@ -309,7 +309,7 @@ def get_GRIB_file_valid_date(GRIB_File):
     '''
     THIS FUNCTION RETURNS THE VALID DATE FOR A GRIB FILE
 
-    COPYRIGHT (C) ERIC J. DREWITZ 2023
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
     '''
     return GRIB_File.validDate
 
@@ -324,7 +324,7 @@ def NDFD_Forecast_Time_Interval(GRIB_File, hours):
     PYTHON MODULE DEPENDENCIES:
     1. DATETIME
 
-    COPYRIGHT (C) ERIC J. DREWITZ 2023
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
     '''
 
     return GRIB_File.validDate + timedelta(hours=hours)
