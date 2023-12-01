@@ -68,9 +68,11 @@ def no_data_graphic(local_time, utc_time):
 
     COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
     '''
-    fig = plt.figure(figsize=(10, 10))
-    fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-    fig.text(0.15, 0.5, 'NO DATA FOR: ' + utc_time.strftime('%m/%d/%Y %HZ'), fontsize=60, fontweight='bold')
+    fig = plt.figure(figsize=(10,10))
+    ax = plt.subplot(1, 1, 1)
+    plt.axis('off')
+    fig.text(0.25, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontsize=20, fontweight='bold')
+    ax.text(0.40, 0.6, 'NO DATA FOR: ' + utc_time.strftime('%m/%d/%Y %HZ'), fontsize=60, fontweight='bold')
 
     return fig
 
@@ -1213,9 +1215,6 @@ def plot_NWS_excellent_RH_recovery_forecast(first_GRIB_file, second_GRIB_file, t
 
 
 
-
-
-
 def plot_NWS_red_flag_min_rh_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, local_time, utc_time, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel): 
 
     '''
@@ -2245,6 +2244,438 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 
             cbar3 = fig.colorbar(cs3, shrink=0.80)
             cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+
+    return fig
+
+
+
+def plot_NWS_frost_freeze_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, local_time, utc_time, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel): 
+
+    '''
+    THIS FUNCTION PLOTS AREAS WHERE THE FORECAST MINIMUM TEMPERATURE IS EXPECTED TO REACH 32F OR BELOW. THIS IS HELPFUL AS FREEZING CONDITIONS CONVERT LIVE FUELS INTO DEAD FUELS. 
+
+    IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MINIMUM TEMPERATURE GRIDS
+
+    THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+    1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+    2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+
+    PYTHON MODULE DEPENDENCIES:
+    1. CARTOPY
+    2. METPY
+    3. NUMPY
+    4. MATPLOTLIB
+
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    '''
+
+    files = count_of_GRIB_files
+    mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+    datacrs = ccrs.PlateCarree()
+    
+   
+    if files == 1:
+        grb_1_vals = first_GRIB_file.values
+        grb_1_start = first_GRIB_file.validDate
+        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+        lats, lons = first_GRIB_file.latlons()
+
+        fig = plt.figure(figsize=(10,10))
+        fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+        fig.suptitle("National Weather Service Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F) ", fontweight='bold')
+        
+        ax = plt.subplot(1, 1, 1, projection=mapcrs)
+        ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax.add_feature(cfeature.STATES, linewidth=0.5)
+        ax.add_feature(USCOUNTIES, linewidth=0.75)
+        ax.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+        cbar = fig.colorbar(cs, shrink=0.80)
+        cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+
+    if files == 2:
+       
+        grb_1_vals = first_GRIB_file.values
+        grb_1_start = first_GRIB_file.validDate
+        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+        grb_2_vals = second_GRIB_file.values
+        grb_2_start = second_GRIB_file.validDate
+        grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+            
+        lats_1, lons_1 = first_GRIB_file.latlons()
+        lats_2, lons_2 = second_GRIB_file.latlons()
+        
+        if utc_time.hour >= 14 or utc_time.hour < 11:
+
+            fig = plt.figure(figsize=(9,5))
+            fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+ 
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=0.80)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=0.80)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+     
+        if utc_time.hour >= 11 and utc_time.hour < 14:
+
+            fig = plt.figure(figsize=(10,10))
+            fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+            
+            ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+            cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=0.80)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+
+    if files == 3:
+
+        grb_1_vals = first_GRIB_file.values
+        grb_1_start = first_GRIB_file.validDate
+        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+        grb_2_vals = second_GRIB_file.values
+        grb_2_start = second_GRIB_file.validDate
+        grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+        grb_3_vals = third_GRIB_file.values
+        grb_3_start = third_GRIB_file.validDate
+        grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+            
+        lats_1, lons_1 = first_GRIB_file.latlons()
+        lats_2, lons_2 = second_GRIB_file.latlons()
+        lats_3, lons_3 = third_GRIB_file.latlons()
+        
+        if utc_time.hour >= 14 or utc_time.hour < 11:
+
+            fig = plt.figure(figsize=(15,6))
+            fig.text(0.26, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=0.80)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=0.80)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=0.80)
+            cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+
+        if utc_time.hour >= 11 and utc_time.hour < 14:
+
+            fig = plt.figure(figsize=(9,5))
+            fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=0.80)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=0.80)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+
+    if files == 4:
+        grb_1_vals = first_GRIB_file.values
+        grb_1_start = first_GRIB_file.validDate
+        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+        grb_2_vals = second_GRIB_file.values
+        grb_2_start = second_GRIB_file.validDate
+        grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+        grb_3_vals = third_GRIB_file.values
+        grb_3_start = third_GRIB_file.validDate
+        grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+        grb_4_vals = fourth_GRIB_file.values
+        grb_4_start = fourth_GRIB_file.validDate
+        grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+        
+        lats_1, lons_1 = first_GRIB_file.latlons()
+        lats_2, lons_2 = second_GRIB_file.latlons()
+        lats_3, lons_3 = third_GRIB_file.latlons()
+        lats_4, lons_4 = fourth_GRIB_file.latlons()
+
+        if utc_time.hour >= 14 or utc_time.hour < 11:
+
+            fig = plt.figure(figsize=(12,10))
+            fig.text(0.33, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=0.80)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=0.80)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=0.80)
+            cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=0.5)
+            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.set_title('Start: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=0.80)
+            cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+
+        if utc_time.hour >= 11 and utc_time.hour < 14:
+
+            fig = plt.figure(figsize=(15,6))
+            fig.text(0.26, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=0.80)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=0.80)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Start: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=0.80)
+            cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+
+    if files >= 5:
+        grb_1_vals = first_GRIB_file.values
+        grb_1_start = first_GRIB_file.validDate
+        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+        grb_2_vals = second_GRIB_file.values
+        grb_2_start = second_GRIB_file.validDate
+        grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+        grb_3_vals = third_GRIB_file.values
+        grb_3_start = third_GRIB_file.validDate
+        grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+        grb_4_vals = fourth_GRIB_file.values
+        grb_4_start = fourth_GRIB_file.validDate
+        grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+        grb_5_vals = fifth_GRIB_file.values
+        grb_5_start = fifth_GRIB_file.validDate
+        grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+          
+        lats_1, lons_1 = first_GRIB_file.latlons()
+        lats_2, lons_2 = second_GRIB_file.latlons()
+        lats_3, lons_3 = third_GRIB_file.latlons()
+        lats_4, lons_4 = fourth_GRIB_file.latlons()
+        lats_5, lons_5 = fifth_GRIB_file.latlons()
+
+        if utc_time.hour >= 14 or utc_time.hour < 11:
+
+            fig = plt.figure(figsize=(25,5))
+            fig.text(0.40, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=0.80)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=0.80)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=0.80)
+            cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=0.5)
+            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.set_title('Start: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=0.80)
+            cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.STATES, linewidth=0.5)
+            ax4.add_feature(USCOUNTIES, linewidth=0.75)
+            ax4.set_title('Start: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar4 = fig.colorbar(cs4, shrink=0.80)
+            cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+
+        if utc_time.hour >= 11 and utc_time.hour < 14:
+
+            fig = plt.figure(figsize=(12,10))
+            fig.text(0.33, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=0.80)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=0.80)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Start: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=0.80)
+            cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=0.5)
+            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.set_title('Start: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=0.80)
+            cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
 
     return fig
 
