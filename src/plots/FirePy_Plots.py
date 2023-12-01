@@ -1702,7 +1702,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
             
         cbar = fig.colorbar(cs, shrink=0.80)
-        cbar.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+        cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
 
     if files == 2:
        
@@ -1741,7 +1741,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
-            cbar0.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1757,7 +1757,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
-            cbar1.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
      
         if utc_time.hour >= 19 and utc_time.hour < 24:
 
@@ -1784,7 +1784,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
-            cbar0.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
 
     if files == 3:
 
@@ -1827,7 +1827,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
-            cbar0.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1843,7 +1843,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
-            cbar1.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1859,7 +1859,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar2 = fig.colorbar(cs2, shrink=0.80)
-            cbar2.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
 
         if utc_time.hour >= 19 and utc_time.hour < 24:
 
@@ -1886,7 +1886,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
-            cbar0.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1902,7 +1902,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
-            cbar1.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
 
     if files == 4:
         grb_1_vals = first_GRIB_file.values
@@ -1948,7 +1948,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
-            cbar0.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1964,7 +1964,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
-            cbar1.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1980,7 +1980,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar2 = fig.colorbar(cs2, shrink=0.80)
-            cbar2.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1996,7 +1996,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar3 = fig.colorbar(cs3, shrink=0.80)
-            cbar3.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
 
         if utc_time.hour >= 19 and utc_time.hour < 24:
 
@@ -2023,7 +2023,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
-            cbar0.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2039,7 +2039,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
-            cbar1.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
 
             ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2055,7 +2055,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar2 = fig.colorbar(cs2, shrink=0.80)
-            cbar2.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
 
     if files >= 5:
         grb_1_vals = first_GRIB_file.values
@@ -2105,7 +2105,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
-            cbar0.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2121,7 +2121,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
-            cbar1.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2137,7 +2137,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar2 = fig.colorbar(cs2, shrink=0.80)
-            cbar2.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2153,7 +2153,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar3 = fig.colorbar(cs3, shrink=0.80)
-            cbar3.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2169,7 +2169,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar4 = fig.colorbar(cs4, shrink=0.80)
-            cbar4.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar4.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
 
         if utc_time.hour >= 19 and utc_time.hour < 24:
 
@@ -2196,7 +2196,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
-            cbar0.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2212,7 +2212,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
-            cbar1.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2228,7 +2228,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar2 = fig.colorbar(cs2, shrink=0.80)
-            cbar2.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
             ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2244,7 +2244,7 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
                 cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar3 = fig.colorbar(cs3, shrink=0.80)
-            cbar3.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
+            cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
 
     return fig
 
