@@ -62,6 +62,19 @@ def plot_creation_time():
     return Local_Time_Now, UTC_Now
 
 
+def no_data_graphic(local_time, utc_time):
+    '''
+    THIS FUNCTION RETURNS A DEFAULT GRAPHIC WHEN NO DATA IS PRESENT
+
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    '''
+    fig = plt.figure(figsize=(10, 10))
+    fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+    fig.text(0.15, 0.5, 'NO DATA FOR: ' + date.strftime('%m/%d/%Y %HZ'), fontsize=60, fontweight='bold')
+
+    return fig
+
+
 def plot_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, local_time, utc_time, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step): 
 
     '''
@@ -96,7 +109,7 @@ def plot_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth
         lats, lons = first_GRIB_file.latlons()
 
         fig = plt.figure(figsize=(10,10))
-        fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+        fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
         fig.suptitle("National Weather Service Forecast", fontweight='bold')
         
         ax = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -159,7 +172,7 @@ def plot_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth
         lats_2, lons_2 = second_GRIB_file.latlons()
         lats_3, lons_3 = third_GRIB_file.latlons()
 
-        fig = plt.figure(figsize=(15,5))
+        fig = plt.figure(figsize=(15,6))
         fig.text(0.26, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
         fig.suptitle("National Weather Service Forecast", fontweight='bold')
         
@@ -369,7 +382,7 @@ def plot_NWS_poor_RH_recovery_forecast(first_GRIB_file, second_GRIB_file, third_
         lats, lons = first_GRIB_file.latlons()
 
         fig = plt.figure(figsize=(10,10))
-        fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+        fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
         fig.suptitle("National Weather Service Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
         
         ax = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -426,7 +439,7 @@ def plot_NWS_poor_RH_recovery_forecast(first_GRIB_file, second_GRIB_file, third_
         if utc_time.hour > 6 and utc_time.hour <= 18:
 
             fig = plt.figure(figsize=(10,10))
-            fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
             
             ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -800,7 +813,7 @@ def plot_NWS_excellent_RH_recovery_forecast(first_GRIB_file, second_GRIB_file, t
         lats, lons = first_GRIB_file.latlons()
 
         fig = plt.figure(figsize=(10,10))
-        fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+        fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
         fig.suptitle("National Weather Service Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
         
         ax = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -857,7 +870,7 @@ def plot_NWS_excellent_RH_recovery_forecast(first_GRIB_file, second_GRIB_file, t
         if utc_time.hour > 6 and utc_time.hour <= 18:
 
             fig = plt.figure(figsize=(10,10))
-            fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
             
             ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -1235,7 +1248,7 @@ def plot_NWS_red_flag_min_rh_forecast(first_GRIB_file, second_GRIB_file, third_G
         lats, lons = first_GRIB_file.latlons()
 
         fig = plt.figure(figsize=(10,10))
-        fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+        fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
         fig.suptitle("National Weather Service Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
         
         ax = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -1292,7 +1305,7 @@ def plot_NWS_red_flag_min_rh_forecast(first_GRIB_file, second_GRIB_file, third_G
         if utc_time.hour > 18 or utc_time.hour <= 6:
 
             fig = plt.figure(figsize=(10,10))
-            fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
             
             ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -1324,7 +1337,7 @@ def plot_NWS_red_flag_min_rh_forecast(first_GRIB_file, second_GRIB_file, third_G
         
         if utc_time.hour > 6 and utc_time.hour <= 18:
 
-            fig = plt.figure(figsize=(15,5))
+            fig = plt.figure(figsize=(15,6))
             fig.text(0.26, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
 
@@ -1460,7 +1473,7 @@ def plot_NWS_red_flag_min_rh_forecast(first_GRIB_file, second_GRIB_file, third_G
 
         if utc_time.hour > 18 or utc_time.hour <= 6:
 
-            fig = plt.figure(figsize=(15,5))
+            fig = plt.figure(figsize=(15,6))
             fig.text(0.26, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
 
@@ -1667,12 +1680,12 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
         lats, lons = first_GRIB_file.latlons()
 
         fig = plt.figure(figsize=(10,10))
-        fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+        fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
 
-        if utc_time.month >= 4 and utc_month <= 10:
+        if utc_time.month >= 4 and utc_time.month <= 10:
             fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
 
-        if utc_time.month >= 11 or utc_month <= 3:
+        if utc_time.month >= 11 or utc_time.month <= 3:
             fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
         
         ax = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -1682,10 +1695,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
         ax.add_feature(USCOUNTIES, linewidth=0.75)
         ax.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
-        if utc_time.month >= 4 and utc_month <= 10:
+        if utc_time.month >= 4 and utc_time.month <= 10:
             cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-        if utc_time.month >= 11 or utc_month <= 3:
+        if utc_time.month >= 11 or utc_time.month <= 3:
             cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
             
         cbar = fig.colorbar(cs, shrink=0.80)
@@ -1708,10 +1721,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             fig = plt.figure(figsize=(9,5))
             fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
  
             ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
@@ -1721,10 +1734,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax0.add_feature(USCOUNTIES, linewidth=0.75)
             ax0.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
@@ -1737,10 +1750,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax1.add_feature(USCOUNTIES, linewidth=0.75)
             ax1.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
@@ -1751,10 +1764,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             fig = plt.figure(figsize=(10,10))
             fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
             
             ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -1764,10 +1777,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax0.add_feature(USCOUNTIES, linewidth=0.75)
             ax0.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
@@ -1791,13 +1804,13 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
         
         if utc_time.hour >= 0 and utc_time.hour < 19:
 
-            fig = plt.figure(figsize=(15,5))
+            fig = plt.figure(figsize=(15,6))
             fig.text(0.26, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
 
             ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
@@ -1807,10 +1820,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax0.add_feature(USCOUNTIES, linewidth=0.75)
             ax0.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
@@ -1823,10 +1836,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax1.add_feature(USCOUNTIES, linewidth=0.75)
             ax1.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
@@ -1839,10 +1852,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax2.add_feature(USCOUNTIES, linewidth=0.75)
             ax2.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar2 = fig.colorbar(cs2, shrink=0.80)
@@ -1853,10 +1866,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             fig = plt.figure(figsize=(9,5))
             fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
 
             ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
@@ -1866,10 +1879,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax0.add_feature(USCOUNTIES, linewidth=0.75)
             ax0.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
@@ -1882,10 +1895,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax1.add_feature(USCOUNTIES, linewidth=0.75)
             ax1.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
@@ -1915,10 +1928,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             fig = plt.figure(figsize=(12,10))
             fig.text(0.33, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
 
             ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
@@ -1928,10 +1941,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax0.add_feature(USCOUNTIES, linewidth=0.75)
             ax0.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
@@ -1944,10 +1957,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax1.add_feature(USCOUNTIES, linewidth=0.75)
             ax1.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
@@ -1960,10 +1973,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax2.add_feature(USCOUNTIES, linewidth=0.75)
             ax2.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar2 = fig.colorbar(cs2, shrink=0.80)
@@ -1976,10 +1989,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax3.add_feature(USCOUNTIES, linewidth=0.75)
             ax3.set_title('Start: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar3 = fig.colorbar(cs3, shrink=0.80)
@@ -1987,13 +2000,13 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
 
         if utc_time.hour >= 19 and utc_time.hour < 24:
 
-            fig = plt.figure(figsize=(15,5))
+            fig = plt.figure(figsize=(15,6))
             fig.text(0.26, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
 
             ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
@@ -2003,10 +2016,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax0.add_feature(USCOUNTIES, linewidth=0.75)
             ax0.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
@@ -2019,10 +2032,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax1.add_feature(USCOUNTIES, linewidth=0.75)
             ax1.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
@@ -2035,10 +2048,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax2.add_feature(USCOUNTIES, linewidth=0.75)
             ax2.set_title('Start: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar2 = fig.colorbar(cs2, shrink=0.80)
@@ -2072,10 +2085,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             fig = plt.figure(figsize=(25,5))
             fig.text(0.40, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
 
             ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
@@ -2085,10 +2098,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax0.add_feature(USCOUNTIES, linewidth=0.75)
             ax0.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
@@ -2101,10 +2114,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax1.add_feature(USCOUNTIES, linewidth=0.75)
             ax1.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
@@ -2117,10 +2130,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax2.add_feature(USCOUNTIES, linewidth=0.75)
             ax2.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar2 = fig.colorbar(cs2, shrink=0.80)
@@ -2133,10 +2146,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax3.add_feature(USCOUNTIES, linewidth=0.75)
             ax3.set_title('Start: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar3 = fig.colorbar(cs3, shrink=0.80)
@@ -2149,10 +2162,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax4.add_feature(USCOUNTIES, linewidth=0.75)
             ax4.set_title('Start: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar4 = fig.colorbar(cs4, shrink=0.80)
@@ -2163,10 +2176,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             fig = plt.figure(figsize=(12,10))
             fig.text(0.33, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 fig.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
 
             ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
@@ -2176,10 +2189,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax0.add_feature(USCOUNTIES, linewidth=0.75)
             ax0.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar0 = fig.colorbar(cs0, shrink=0.80)
@@ -2192,10 +2205,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax1.add_feature(USCOUNTIES, linewidth=0.75)
             ax1.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar1 = fig.colorbar(cs1, shrink=0.80)
@@ -2208,10 +2221,10 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax2.add_feature(USCOUNTIES, linewidth=0.75)
             ax2.set_title('Start: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar2 = fig.colorbar(cs2, shrink=0.80)
@@ -2224,13 +2237,15 @@ def plot_NWS_extreme_heat_forecast(first_GRIB_file, second_GRIB_file, third_GRIB
             ax3.add_feature(USCOUNTIES, linewidth=0.75)
             ax3.set_title('Start: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-            if utc_time.month >= 4 and utc_month <= 10:
+            if utc_time.month >= 4 and utc_time.month <= 10:
                 cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
 
-            if utc_time.month >= 11 or utc_month <= 3:
+            if utc_time.month >= 11 or utc_time.month <= 3:
                 cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
                 
             cbar3 = fig.colorbar(cs3, shrink=0.80)
             cbar3.set_label(label="Maximum Temperature (N{DEGREE SIGN}F)", fontweight='bold')
 
     return fig
+
+
