@@ -342,15 +342,6 @@ def NDFD_Forecast_Time_Interval(GRIB_File, hours):
     return GRIB_File.validDate + timedelta(hours=hours)
         
 
-
-
-
-
-
-
-
-
-
 def syntax_error():
     error_msg = f"""
 
