@@ -17,9 +17,7 @@ Here is what the user will still be responsible for:
 
 **Data Access Module**
 
-The ```python
-data_access module 
-```
+The `data_access` module hosts functions that retrieve data from the National Weather Service FTP Server and the UCAR THREDDS Server. 
 
 
 
@@ -31,7 +29,7 @@ data_access module
 
 **Parser Module**
 
-
+The `parser` module hosts functions that parse through the various datasets within the downloaded files and returns organized data arrays to make plotting graphics easier. 
 
 
 
@@ -41,3 +39,5 @@ data_access module
 
 
 **FireWxPy_Plots Module**
+
+The `FireWxPy_Plots` module hosts a variety of different functions for the user to plot various types of real-time analysis and forecast weather data. 
