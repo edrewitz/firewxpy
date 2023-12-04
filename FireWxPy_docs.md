@@ -1,3 +1,3 @@
-**# FireWxPy Documentation**
+# FireWxPy Documentation
 
 Welcome
