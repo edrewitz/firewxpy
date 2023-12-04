@@ -15,6 +15,7 @@ Python Module Dependencies:
 7. NumPy
 8. cartopy
 
+**FireWxPy Documentation**: https://github.com/edrewitz/FireWxPy/blob/main/FireWxPy_docs.md
 
 
 # Citations
