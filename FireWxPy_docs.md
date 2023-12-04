@@ -13,5 +13,31 @@ Here is what the user will still be responsible for:
 1. Importing the needed Python modules
 2. Choosing the bounds for the plot in latitude/longitude coordinates. 
 3. There is a function where the user can customize the title, colorscale, colorbar, figure size and weather parameter of a plot. 
-4. There are also plenty of preset plots that the user will be able to call functions from the `FireWxPy_Plots` module.  
+4. There are also plenty of preset plots that the user will be able to call functions from the `FireWxPy_Plots` module.
 
+**Data Access Module**
+
+The ```python
+data_access module 
+```
+
+
+
+
+
+
+
+
+
+**Parser Module**
+
+
+
+
+
+
+
+
+
+
+**FireWxPy_Plots Module**
