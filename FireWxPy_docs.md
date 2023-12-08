@@ -24,6 +24,7 @@ There are two things the user needs to know when using `FireWxPy` to download gr
 2) Weather Element (i.e. Forecast Parameter)
 
 **File Path List**
+
 Here is the complete list of all the file paths for each region of the NWS NDFD gridded data:
 
 CONUS aka "Lower-48"
