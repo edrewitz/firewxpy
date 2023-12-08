@@ -27,11 +27,76 @@ There are two things the user needs to know when using `FireWxPy` to download gr
 Here is the complete list of all the file paths for each region of the NWS NDFD gridded data:
 
 CONUS aka "Lower-48"
-r```/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/```
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
 
+Alaska
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
 
+Central Great Lakes
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
 
-    
+Central Mississippi Valley
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
+
+Central Plains 
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
+
+Central Rockies
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
+
+Eastern Great Lakes
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
+
+Guam
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
+
+Hawaii
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
+
+Mid-Atlantic
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
+
+Northeast
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
+
+Northern Hemisphere
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
+
+North Pacific Ocean
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
+
+Northern Plains
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
+
+Northern Rockies
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
+
+Oceanic
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
+
+Pacific Northwest 
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
+
+Pacific Southwest
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
+
+Puerto Rico
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
+
+Southeast
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
+
+Southern Mississippi Valley 
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
+
+Southern Plains
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
+
+Southern Rockies
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
+
+Upper Mississippi Valley 
+/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/ 
     
 **Weather Element List**
 
