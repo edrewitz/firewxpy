@@ -26,7 +26,7 @@ There are two things the user needs to know when using `FireWxPy` to download gr
 Here is the complete list of all the file paths for each region of the NWS NDFD gridded data:
 
 CONUS aka "Lower-48"
-/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
+f"""/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/"""
 
 Alaska
 /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
