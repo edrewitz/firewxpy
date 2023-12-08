@@ -31,7 +31,9 @@ https://github.com/edrewitz/FireWxPy/blob/main/FireWxPy_docs.md
 
 # Author
 Eric J. Drewitz
+
 USDA/USFS Meteorologist
+
 Southern California Geographic Area Coordination Center
 
 # Citations
