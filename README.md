@@ -1,9 +1,20 @@
 # FireWxPy
-This repository consists of functions to make plots of weather data specific to fire weather. 
-This open source project will help meteorologists download, sort and plot analysis and forecast data. 
-This package will focus on fire weather, however some modules will be universally useful across the entire field of meteorology. 
+This repository consists of functions to make plots of weather data with an emphasis on fire weather. 
+
+This open source project will help meteorologists download, sort and plot both analysis and forecast data. 
+
+This package focuses on fire weather, however some modules will be universally useful across the entire field of meteorology. 
+
+This package makes it easier for users to access and parse through the 2.5km × 2.5km Real Time Mesoscale Analysis data from the UCAR THREDDS server.
+
+This package makes it easier for users to access and parse through the National Weather Service NDFD gridded forecast data.
+
+This package makes it easier for users to automate their weather graphics since the plotting functions of FireWxPy handle different run times so users will be able to automate their scripts in either the Windows Task Scheduler or a Cron Job.
 
 Copyright (C) Eric J. Drewitz 2023
+
+# Inspiration
+This package is largely inspired by the MetPy package which was developed and is currently being maintained by Unidata (please see citation below in the citations section).
 
 Python Module Dependencies: 
 1. PyGrib
