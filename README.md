@@ -31,7 +31,7 @@ https://github.com/edrewitz/FireWxPy/blob/main/FireWxPy_docs.md
 
 # Citations
 
-**MetPY**: May, R. M., Goebbert, K. H., Thielen, J. E., Leeman, J. R., Camron, M. D., Bruick, Z.,
+**MetPy**: May, R. M., Goebbert, K. H., Thielen, J. E., Leeman, J. R., Camron, M. D., Bruick, Z.,
     Bruning, E. C., Manser, R. P., Arms, S. C., and Marsh, P. T., 2022: MetPy: A
     Meteorological Python Library for Data Analysis and Visualization. Bull. Amer. Meteor.
     Soc., 103, E2273-E2284, https://doi.org/10.1175/BAMS-D-21-0125.1.
