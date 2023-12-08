@@ -26,11 +26,11 @@ Here is what the user will still be responsible for:
 
 The `data_access` module hosts functions that retrieve data from the National Weather Service FTP Server and the UCAR THREDDS Server. 
 
-# National Weather Service NDFD Data
+**National Weather Service NDFD Data**
 There are two things the user needs to know when using `FireWxPy` to download gridded data from the NWS FTP Server: 1) File Path 
 2) Weather Element (i.e. Forecast Parameter)
 
-# File Path List
+**File Path List**
 
 Here is the complete list of all the file paths for each region of the NWS NDFD gridded data:
 
