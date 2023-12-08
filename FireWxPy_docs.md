@@ -15,11 +15,13 @@ Here is what the user will still be responsible for:
 3. There is a function where the user can customize the title, colorscale, colorbar, figure size and weather parameter of a plot. 
 4. There are also plenty of preset plots that the user will be able to call functions from the `FireWxPy_Plots` module.
 
+# FireWxPy Modules
+
 **Data Access Module**
 
 The `data_access` module hosts functions that retrieve data from the National Weather Service FTP Server and the UCAR THREDDS Server. 
 
-
+1. `get_NWS_NDFD_grid_data(directory_name, parameter)`
 
 
 
