@@ -16,7 +16,7 @@ Copyright (C) Eric J. Drewitz 2023
 # Inspiration
 This package is largely inspired by the MetPy package which was developed and is currently being maintained by Unidata (please see citation below in the citations section).
 
-Python Module Dependencies: 
+# Python Module Dependencies
 1. PyGrib
 2. Xarray
 3. os
@@ -26,8 +26,8 @@ Python Module Dependencies:
 7. NumPy
 8. cartopy
 
-**FireWxPy Documentation**: https://github.com/edrewitz/FireWxPy/blob/main/FireWxPy_docs.md
-
+# FireWxPy Documentation 
+https://github.com/edrewitz/FireWxPy/blob/main/FireWxPy_docs.md
 
 # Citations
 
