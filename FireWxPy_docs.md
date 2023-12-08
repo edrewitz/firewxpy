@@ -15,7 +15,7 @@ Here is what the user will still be responsible for:
 
 # **Table of Contents**
 
-# Data Access Module
+ **Data Access Module**
 
 [Retrieving the NWS Days 1-3 NDFD Gridded Data](#1-retrieving-the-nws-days-1-3-ndfd-gridded-data)
 
