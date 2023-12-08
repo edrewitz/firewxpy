@@ -128,10 +128,10 @@ def parameter_list():
     print(param_list)
     
 
-def get_NWS_NDFD_grid_data(directory_name, parameter):
+def get_NWS_NDFD_short_term_grid_data(directory_name, parameter):
     
     r'''
-    THIS FUNCTION DOWNLOADS FORECAST DATA FROM THE NOAA/NWS FTP SERVER. 
+    THIS FUNCTION DOWNLOADS THE DAYS 1-3 FORECAST DATA FROM THE NOAA/NWS FTP SERVER. 
 
     THE USER NEEDS TO ENTER THE NAME OF THE DIRECTORY IN WHICH THE USER NEEDS DATA FROM AS WELL AS THE PARAMETER
 
@@ -152,7 +152,68 @@ def get_NWS_NDFD_grid_data(directory_name, parameter):
 
     ### SEARCHES FOR THE CORRECT DIRECTORY ###
     try:
-        dirName = directory_name
+        dirName = directory_name + 'VP.001-003/'
+        param = parameter
+        files = ftp.cwd(dirName)
+
+        ### SEARCHES FOR THE CORRECT PARAMETER ###
+        try:
+            ################################
+            # DOWNLOADS THE NWS NDFD GRIDS #
+            ################################
+            
+            with open(param, 'wb') as fp:
+                ftp.retrbinary('RETR ' + param, fp.write)    
+            
+            ftp.close()
+            
+            #########################
+            # DATA ARRAYS PARAMETER #
+            #########################
+            
+            ds = xr.load_dataset(param, engine='cfgrib')
+            grbs = pygrib.open(param)
+            grbs.seek(0)
+            return grbs
+
+        ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
+
+        except Exception as a:
+            param_error = parameter_name_error()
+            return param_error
+
+    ### ERROR MESSAGE WHEN THERE IS AN INVALID DIRECTORY NAME ###
+        
+    except Exception as e:
+        dir_error = directory_name_error()
+        return dir_error
+
+
+def get_NWS_NDFD_extended_grid_data(directory_name, parameter):
+    
+    r'''
+    THIS FUNCTION DOWNLOADS THE DAYS 4-7 FORECAST DATA FROM THE NOAA/NWS FTP SERVER. 
+
+    THE USER NEEDS TO ENTER THE NAME OF THE DIRECTORY IN WHICH THE USER NEEDS DATA FROM AS WELL AS THE PARAMETER
+
+    FOR THE FULL LIST OF THE VARIOUS PARAMETERS PLEASE REFER TO: 
+
+    https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
+
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    '''
+
+    ###################################################
+    # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
+    ###################################################
+
+    ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
+    ftp = FTP('tgftp.nws.noaa.gov')
+    ftp.login()
+
+    ### SEARCHES FOR THE CORRECT DIRECTORY ###
+    try:
+        dirName = directory_name + 'VP.004-007/'
         param = parameter
         files = ftp.cwd(dirName)
 
