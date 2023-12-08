@@ -2,7 +2,7 @@
 #
 # DEPENDENCIES INCLUDE:
 # 1. PYGRIB
-# 2. DATETIME
+# 2. DATETIME 
 #
 #  (C) METEOROLOGIST ERIC J. DREWITZ
 #               USDA/USFS
@@ -362,3 +362,154 @@ def parse_SPC_GRIB_data(first_GRIB_file, second_GRIB_file, third_GRIB_file, four
         grb_3_vals = None
 
     return grb_1_start, grb_1_end, grb_1_vals, grb_2_start, grb_2_end, grb_2_vals, grb_3_start, grb_3_end, grb_3_vals
+
+def sort_GRIB_files(GRIB_File_List, parameter):
+    
+    r'''
+    THIS FUNCTION SORTS AND RETURNS THE INDIVIDUAL GRIB FILES IN THE DOWNLOADED DATASET. 
+
+    THIS FUNCTION ALSO RETURNS THE COUNT OF THE NUMBER OF GRIB FILES IN THE DATASET.
+
+    THIS FUNCTION IS TO BE USED IN THE PROGRAMMER'S CODE AFTER THE get_NWS_NDFD_grid_data(directory_name, parameter) FUNCTION IS USED
+
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    '''
+    count = 0
+    for grb in GRIB_File_List:
+        count = count + 1
+    if count == 1:
+        grb_1 = GRIB_File_List[1]
+        grb_2 = None
+        grb_3 = None
+        grb_4 = None
+        grb_5 = None
+    
+    if count == 2:
+        grb_1 = GRIB_File_List[1]
+        grb_2 = GRIB_File_List[2]
+        grb_3 = None
+        grb_4 = None
+        grb_5 = None
+        
+    if count == 3: 
+        grb_1 = GRIB_File_List[1]
+        grb_2 = GRIB_File_List[2]
+        grb_3 = GRIB_File_List[3]
+        grb_4 = None
+        grb_5 = None
+    
+    if count == 4: 
+        grb_1 = GRIB_File_List[1]
+        grb_2 = GRIB_File_List[2]
+        grb_3 = GRIB_File_List[3]
+        grb_4 = GRIB_File_List[4]
+        grb_5 = None
+
+    if count >= 5: 
+        grb_1 = GRIB_File_List[1]
+        grb_2 = GRIB_File_List[2]
+        grb_3 = GRIB_File_List[3]
+        grb_4 = GRIB_File_List[4]
+        grb_5 = GRIB_File_List[5]
+
+    print("There are " + str(count) + " GRIB files in the " + parameter + " download.")
+    return grb_1, grb_2, grb_3, grb_4, grb_5, count
+
+
+def GRIB_file_checker(GRIB_File_List):
+    
+    r'''
+    THIS FUNCTION IS USEFUL WHEN HAVING AUTOMATED DISPLAYS OF THE VARIOUS GRIB FILE DATA
+
+    THIS FUNCTION CHECKS TO SEE HOW MANY GRIB FILES ARE RETURNED IN THE LIST WHICH IS HELPFUL FOR GRAPHICS
+
+    THIS FUNCTION IS TO BE USED IN THE PROGRAMMER'S CODE AFTER THE get_NWS_NDFD_grid_data(directory_name, parameter) FUNCTION IS USED
+
+    THIS FUNCTION WILL RETURN A BOOLEAN VALUE FOR IF OR IF NOT THE FILE EXISTS
+
+    USUALLY THERE ARE NOT MORE THAN 5 GRIB FILES IN A DOWNLOAD AT A TIME
+
+    IF THE GRIB FILE EXISTS, A BOOLEAN VALUE OF TRUE IS RETURNED AND IF THE GRIB FILE DOESN'T EXIST A BOOLEAN VALUE OF FALSE IS RETURNED. 
+
+    THE LOGICAL CHECKS HELPS WHEN THE USER IS MAKING AUTOMATED GRAPHICS TO MAKE SURE THE NUMBER OF SUBPLOTS IS EQUAL TO THE NUMBER OF GRIB FILES
+
+    THIS FUNCTION ALSO RETURNS THE COUNT OF THE NUMBER OF GRIB FILES IN THE DATASET.
+
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    '''
+    count = 0
+    for grb in GRIB_File_List:
+        count = count + 1
+    if count == 1:
+        grb_1_logic = True
+        grb_2_logic = False
+        grb_3_logic = False
+        grb_4_logic = False
+        grb_5_logic = False
+    
+    if count == 2:
+        grb_1_logic = True
+        grb_2_logic = True
+        grb_3_logic = False
+        grb_4_logic = False
+        grb_5_logic = False
+        
+    if count == 3: 
+        grb_1_logic = True
+        grb_2_logic = True
+        grb_3_logic = True
+        grb_4_logic = False
+        grb_5_logic = False
+    
+    if count == 4: 
+        grb_1_logic = True
+        grb_2_logic = True
+        grb_3_logic = True
+        grb_4_logic = True
+        grb_5_logic = False
+
+    if count >= 5: 
+        grb_1_logic = True
+        grb_2_logic = True
+        grb_3_logic = True
+        grb_4_logic = True
+        grb_5_logic = True
+
+    return grb_1_logic, grb_2_logic, grb_3_logic, grb_4_logic, grb_5_logic, count
+
+
+
+def get_GRIB_file_values(GRIB_File):
+ 
+    r'''
+    THIS FUNCTION RETURNS THE VALUES OF THE DATA INSIDE OF A GRIB FILE. 
+
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    '''
+    return GRIB_File.values
+
+
+def get_GRIB_file_valid_date(GRIB_File):
+
+    r'''
+    THIS FUNCTION RETURNS THE VALID DATE FOR A GRIB FILE
+
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    '''
+    return GRIB_File.validDate
+
+
+def NDFD_Forecast_Time_Interval(GRIB_File, hours): 
+   
+    r'''
+    THIS FUNCTION WILL RETURN THE TIME THE FORECAST PERIOD ENDS BASED ON HOW LONG THE FORECAST PERIOD IS VALID FOR
+    THE VALID DATE FOR A GRIB FILE CORRESPONDS TO THE START OF THE FORECAST PERIOD. 
+    (I.E. THE NDFD MAXIMUM RELATIVE HUMIDITY GRIDS ARE A TIME LENGTH OF 12HRS, THEREFORE THE ENDING TIME OF THE FORECAST PERIOD IS 12HRS AFTER THE VALID DATE OF THE GRIB FILE. 
+
+    PYTHON MODULE DEPENDENCIES:
+    1. DATETIME
+
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    '''
+
+    return GRIB_File.validDate + timedelta(hours=hours)
