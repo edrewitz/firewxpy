@@ -126,6 +126,18 @@ def parameter_list():
 
     """
     print(param_list)
+
+def invalid_element():
+    error_msg = f"""
+
+    WARNING: USER ENTERED INVALID SYNTAX FOR THE FORECAST PARAMETER.
+
+    VISIT THIS LINK FOR THE FULL LIST OF ALL FORECAST PARAMETERS IN THE PROPER SYNTAX
+
+    https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/Best.html
+
+    """
+    print(error_msg)
     
 
 def get_NWS_NDFD_short_term_grid_data(directory_name, parameter):
@@ -249,159 +261,100 @@ def get_NWS_NDFD_extended_grid_data(directory_name, parameter):
         dir_error = directory_name_error()
         return dir_error
 
-
-
-def sort_GRIB_files(GRIB_File_List, parameter):
-    
-    r'''
-    THIS FUNCTION SORTS AND RETURNS THE INDIVIDUAL GRIB FILES IN THE DOWNLOADED DATASET. 
-
-    THIS FUNCTION ALSO RETURNS THE COUNT OF THE NUMBER OF GRIB FILES IN THE DATASET.
-
-    THIS FUNCTION IS TO BE USED IN THE PROGRAMMER'S CODE AFTER THE get_NWS_NDFD_grid_data(directory_name, parameter) FUNCTION IS USED
-
-    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
-    '''
-    count = 0
-    for grb in GRIB_File_List:
-        count = count + 1
-    if count == 1:
-        grb_1 = GRIB_File_List[1]
-        grb_2 = None
-        grb_3 = None
-        grb_4 = None
-        grb_5 = None
-    
-    if count == 2:
-        grb_1 = GRIB_File_List[1]
-        grb_2 = GRIB_File_List[2]
-        grb_3 = None
-        grb_4 = None
-        grb_5 = None
-        
-    if count == 3: 
-        grb_1 = GRIB_File_List[1]
-        grb_2 = GRIB_File_List[2]
-        grb_3 = GRIB_File_List[3]
-        grb_4 = None
-        grb_5 = None
-    
-    if count == 4: 
-        grb_1 = GRIB_File_List[1]
-        grb_2 = GRIB_File_List[2]
-        grb_3 = GRIB_File_List[3]
-        grb_4 = GRIB_File_List[4]
-        grb_5 = None
-
-    if count >= 5: 
-        grb_1 = GRIB_File_List[1]
-        grb_2 = GRIB_File_List[2]
-        grb_3 = GRIB_File_List[3]
-        grb_4 = GRIB_File_List[4]
-        grb_5 = GRIB_File_List[5]
-
-    print("There are " + str(count) + " GRIB files in the " + parameter + " download.")
-    return grb_1, grb_2, grb_3, grb_4, grb_5, count
-
-
-def GRIB_file_checker(GRIB_File_List):
-    
-    r'''
-    THIS FUNCTION IS USEFUL WHEN HAVING AUTOMATED DISPLAYS OF THE VARIOUS GRIB FILE DATA
-
-    THIS FUNCTION CHECKS TO SEE HOW MANY GRIB FILES ARE RETURNED IN THE LIST WHICH IS HELPFUL FOR GRAPHICS
-
-    THIS FUNCTION IS TO BE USED IN THE PROGRAMMER'S CODE AFTER THE get_NWS_NDFD_grid_data(directory_name, parameter) FUNCTION IS USED
-
-    THIS FUNCTION WILL RETURN A BOOLEAN VALUE FOR IF OR IF NOT THE FILE EXISTS
-
-    USUALLY THERE ARE NOT MORE THAN 5 GRIB FILES IN A DOWNLOAD AT A TIME
-
-    IF THE GRIB FILE EXISTS, A BOOLEAN VALUE OF TRUE IS RETURNED AND IF THE GRIB FILE DOESN'T EXIST A BOOLEAN VALUE OF FALSE IS RETURNED. 
-
-    THE LOGICAL CHECKS HELPS WHEN THE USER IS MAKING AUTOMATED GRAPHICS TO MAKE SURE THE NUMBER OF SUBPLOTS IS EQUAL TO THE NUMBER OF GRIB FILES
-
-    THIS FUNCTION ALSO RETURNS THE COUNT OF THE NUMBER OF GRIB FILES IN THE DATASET.
-
-    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
-    '''
-    count = 0
-    for grb in GRIB_File_List:
-        count = count + 1
-    if count == 1:
-        grb_1_logic = True
-        grb_2_logic = False
-        grb_3_logic = False
-        grb_4_logic = False
-        grb_5_logic = False
-    
-    if count == 2:
-        grb_1_logic = True
-        grb_2_logic = True
-        grb_3_logic = False
-        grb_4_logic = False
-        grb_5_logic = False
-        
-    if count == 3: 
-        grb_1_logic = True
-        grb_2_logic = True
-        grb_3_logic = True
-        grb_4_logic = False
-        grb_5_logic = False
-    
-    if count == 4: 
-        grb_1_logic = True
-        grb_2_logic = True
-        grb_3_logic = True
-        grb_4_logic = True
-        grb_5_logic = False
-
-    if count >= 5: 
-        grb_1_logic = True
-        grb_2_logic = True
-        grb_3_logic = True
-        grb_4_logic = True
-        grb_5_logic = True
-
-    return grb_1_logic, grb_2_logic, grb_3_logic, grb_4_logic, grb_5_logic, count
-
-
-
-def get_GRIB_file_values(GRIB_File):
- 
-    r'''
-    THIS FUNCTION RETURNS THE VALUES OF THE DATA INSIDE OF A GRIB FILE. 
-
-    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
-    '''
-    return GRIB_File.values
-
-
-def get_GRIB_file_valid_date(GRIB_File):
+def get_NWS_NDFD_full_grid_data(parameter):
 
     r'''
-    THIS FUNCTION RETURNS THE VALID DATE FOR A GRIB FILE
+    THIS FUNCTION DOWNLOADS THE ENTIRE 7 DAYS OF GRIDS FOR A FORECAST PARAMETER OF THE USER'S CHOICE. 
 
-    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    UNLIKE THE FUNCTIONS FOR DOWNLOADING THE NWS SHORT-TERM AND/OR EXTENDED GRIDS, THIS FUNCTION USES THE UCAR THREDDS SERVER INSTEAD OF THE NWS FTP SERVER
+
+    IF YOU WANT ALL 7 DAYS OF GRIDS, THIS FUNCTION IS THE RECOMMENDED METHOD SINCE USING THE NWS SHORT-TERM AND/OR EXTENDED GRIDS FUNCTIONS IN CONJUNCTION WILL OVERWRITE THE DATASET
+
+    THE USER ONLY NEEDS TO PASS IN THE PARAMETER OF CHOICE AND THIS FUNCTION RETURNS THE LATEST AVAILIABLE NWS FORECAST DATASET
+
+    (C) METEOROLOGIST ERIC J. DREWITZ 2023
+
     '''
-    return GRIB_File.validDate
+    forecast_init = datetime.utcnow()
+    hour = forecast_init.hour
+    year = forecast_init.year
+    month = forecast_init.month
+    day = forecast_init.day
+    hr00 = 0
+    hr12 = 12
+    
+    forecast_package_00z = datetime(year, month, day, hr00)
+    forecast_package_12z = datetime(year, month, day, hr12)
+    if hour >= 0 and hour < 12:
+        try:
+            nws_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/NDFD_NWS_CONUS_conduit_2p5km_'+forecast_init.strftime('%Y%m%d')+'_0000.grib2/catalog.xml')
+            nws_data = nws_cat.datasets['NDFD_NWS_CONUS_conduit_2p5km_'+forecast_init.strftime('%Y%m%d')+'_0000.grib2'].remote_access(use_xarray=True)
+            print("Data retrieval for " + forecast_init.strftime('%m/%d/%Y 00z')+" is successful.")
+            
+            try:
+                nws_data = nws_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                nws_parameter = nws_data[parameter].squeeze()
+                return nws_parameter
 
-
-def NDFD_Forecast_Time_Interval(GRIB_File, hours): 
-   
-    r'''
-    THIS FUNCTION WILL RETURN THE TIME THE FORECAST PERIOD ENDS BASED ON HOW LONG THE FORECAST PERIOD IS VALID FOR
-    THE VALID DATE FOR A GRIB FILE CORRESPONDS TO THE START OF THE FORECAST PERIOD. 
-    (I.E. THE NDFD MAXIMUM RELATIVE HUMIDITY GRIDS ARE A TIME LENGTH OF 12HRS, THEREFORE THE ENDING TIME OF THE FORECAST PERIOD IS 12HRS AFTER THE VALID DATE OF THE GRIB FILE. 
-
-    PYTHON MODULE DEPENDENCIES:
-    1. DATETIME
-
-    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
-    '''
-
-    return GRIB_File.validDate + timedelta(hours=hours)
-        
+            except Exception as a:
+                error = invalid_element()
+                return error
+            
+        except Exception as a:
+            print("Data retrieval for " + forecast_init.strftime('%m/%d/%Y 00z')+" is unsuccessful.\nWill try to download the data from the previous 12z forecast package.")
+            previous_forecast_package = forecast_package_00z - timedelta(hours=12)
+            
+            try:
+                nws_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/NDFD_NWS_CONUS_conduit_2p5km_'+previous_forecast_package.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                nws_data = nws_cat.datasets['NDFD_NWS_CONUS_conduit_2p5km_'+previous_forecast_package.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                print("Data retrieval for " + previous_forecast_package.strftime('%m/%d/%Y_%H00')+" is successful.")
+                try:
+                    nws_data = nws_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                    nws_parameter = nws_data[parameter].squeeze()
+                    return nws_parameter
+    
+                except Exception as b:
+                    error = invalid_element()
+                    return error
+                    
+            except Exception as c:
+                print("Data retrieval for " + previous_forecast_package.strftime('%m/%d/%Y_%H00')+" is unsuccessful.\nThe next forecast package is too old. Please try again later.")
+            
+    if hour >= 12 and hour < 24:
+        try:
+            nws_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/NDFD_NWS_CONUS_conduit_2p5km_'+forecast_init.strftime('%Y%m%d')+'_1200.grib2/catalog.xml')
+            nws_data = nws_cat.datasets['NDFD_NWS_CONUS_conduit_2p5km_'+forecast_init.strftime('%Y%m%d')+'_1200.grib2'].remote_access(use_xarray=True)
+            print("Data retrieval for " + forecast_init.strftime('%m/%d/%Y 12z')+" is successful.")
+            
+            try:
+                nws_data = nws_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                nws_parameter = nws_data[parameter].squeeze()
+                return nws_parameter
+                
+            except Exception as d:
+                error = invalid_element()
+                return error
+                
+        except Exception as e:
+            print("Data retrieval for " + forecast_init.strftime('%m/%d/%Y 00z')+" is unsuccessful.\nWill try to download the data from the previous 12z forecast package.")
+            previous_forecast_package = forecast_package_12z - timedelta(hours=12)
+            
+            try:
+                nws_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/NDFD_NWS_CONUS_conduit_2p5km_'+previous_forecast_package.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                nws_data = nws_cat.datasets['NDFD_NWS_CONUS_conduit_2p5km_'+previous_forecast_package.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                print("Data retrieval for " + previous_forecast_package.strftime('%m/%d/%Y_%H00')+" is successful.")
+                
+                try:
+                    nws_data = nws_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                    nws_parameter = nws_data[parameter].squeeze()
+                    return nws_parameter
+    
+                except Exception as f:
+                    error = invalid_element()
+                    return error
+                    
+            except Exception as g:
+                print("Data retrieval for " + previous_forecast_package.strftime('%m/%d/%Y_%H00')+" is unsuccessful.\nThe next forecast package is too old. Please try again later.")
 
 def syntax_error():
     error_msg = f"""
@@ -918,4 +871,3 @@ def get_rtma_relative_humidity_24_hour_difference_data(current_time):
                         print("WARNING: Latest dataset is more than 4 hours old.\nQuitting - Please try again later.")
 
                         return None
-
