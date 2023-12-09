@@ -164,7 +164,7 @@ Here is a link to the document that has the proper syntax for each Weather Eleme
 # 1. Retrieving the NWS Days 1-3 NDFD Gridded Data
   Function: `get_NWS_NDFD_short_term_grid_data(directory_name, parameter)`
 
-The `get_NWS_NDFD_short_term_grid_data(directory_name, parameter)` is used to retrieve the NWS Forecast data for days 1-3, otherwise known as the short-term forecast period. In order for the function to work properly, the user is required to pass in **two** string values. 
+This function is used to retrieve the NWS Forecast data for days 1-3, otherwise known as the short-term forecast period. In order for the function to work properly, the user is required to pass in **two** string values. 
 
 1) The first string value `directory_name` is the path in the URL on the NWS FTP server website. Please see above for all the paths in the proper syntax. The user must end the url with a forward slash '/' in order for the function to work properly.
 2) The second string value is the weather element (also known as the forecast `parameter`) the user wishes to download. Here is an example: If the user wants to download the maximum temperature grids, the user must pass a string value of `ds.maxt.bin` as that is the filename for the maximum temperature grids.
@@ -175,7 +175,7 @@ Here is an example of where all the different file names are. The filenames are 
 # 2. Retrieving the NWS Days 4-7 NDFD Gridded Data
    Function: `get_NWS_NDFD_extended_grid_data(directory_name, parameter)`
 
-The `get_NWS_NDFD_extended_grid_data(directory_name, parameter)` is used to retrieve the NWS Forecast data for days 4-7, otherwise known as the extended forecast period. In order for the function to work properly, the user is required to pass in **two** string values. 
+This function is used to retrieve the NWS Forecast data for days 4-7, otherwise known as the extended forecast period. In order for the function to work properly, the user is required to pass in **two** string values. 
 
 1) The first string value `directory_name` is the path in the URL on the NWS FTP server website. Please see above for all the paths in the proper syntax. The user must end the url with a forward slash '/' in order for the function to work properly.
 2) The second string value is the weather element (also known as the forecast `parameter`) the user wishes to download. Here is an example: If the user wants to download the maximum temperature grids, the user must pass a string value of `ds.maxt.bin` as that is the filename for the maximum temperature grids.
