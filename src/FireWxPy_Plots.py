@@ -23,6 +23,7 @@ import metpy.plots as mpplots
 from metpy.plots import USCOUNTIES
 import numpy as np
 import parsers
+import data_access as da
 
 def plot_creation_time():
     r'''
@@ -77,11 +78,10 @@ def no_data_graphic(local_time, utc_time):
     return fig
 
 
-
-def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, local_time, utc_time, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step, plot_title, fig_x_length, fig_y_length, color_bar_shrink, parameter): 
+def plot_generic_NWS_short_term_forecast(directory_name, parameter, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step, plot_title, sub_plot_1_title, sub_plot_2_title, sub_plot_3_title, sub_plot_4_title, sub_plot_5_title, fig_x_length, fig_y_length, color_bar_shrink): 
 
     r'''
-    THIS FUNCTION MAKES A GENERIC CUSTOMIZED PLOT OF THE LATEST NOAA/NWS NDFD GRID FORECAST DATA
+    THIS FUNCTION MAKES A GENERIC CUSTOMIZED PLOT OF THE LATEST SHORT-TERM NOAA/NWS NDFD GRID FORECAST DATA
 
     THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
     1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
@@ -99,15 +99,27 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
     2. METPY
     3. NUMPY
     4. MATPLOTLIB
+    5. PARSERS
+    6. DATA_ACCESS
+
+    **IF THE USER WANTS TO MAKE 2 SEPERATE PLOTS WITH 1 AS THE SHORT-TERM AND THE OTHER AS THE EXTENDED, THE PROGRAMS FOR EACH NEED TO BE RUN IN DIFFERENT FOLDERS SO THE BINARY FILE DOESN'T OVERWRITE ITSELF**
 
     COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
     '''
+    
+    short_term_data = da.get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
+    
+    first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, parameter)
 
+    local_time, utc_time = plot_creation_time()
+
+    
     files = count_of_GRIB_files
     mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
     datacrs = ccrs.PlateCarree()
 
-    grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals = parsers.GRIB_parameter_check_temperature(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, parameter)
+    if parameter == 'ds.maxt.bin' or parameter == 'ds.mint.bin':
+        grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals = parsers.GRIB_parameter_check_temperature(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, parameter)
    
     if files == 1:
         grb_1_start = first_GRIB_file.validDate
@@ -124,7 +136,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.STATES, linewidth=0.5)
         ax.add_feature(USCOUNTIES, linewidth=0.75)
-        ax.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar = fig.colorbar(cs, shrink=color_bar_shrink)
@@ -147,7 +159,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax0.add_feature(cfeature.STATES, linewidth=0.5)
         ax0.add_feature(USCOUNTIES, linewidth=0.75)
-        ax0.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
@@ -157,7 +169,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax1.add_feature(cfeature.STATES, linewidth=0.5)
         ax1.add_feature(USCOUNTIES, linewidth=0.75)
-        ax1.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
@@ -183,7 +195,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax0.add_feature(cfeature.STATES, linewidth=0.5)
         ax0.add_feature(USCOUNTIES, linewidth=0.75)
-        ax0.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
@@ -193,7 +205,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax1.add_feature(cfeature.STATES, linewidth=0.5)
         ax1.add_feature(USCOUNTIES, linewidth=0.75)
-        ax1.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
@@ -203,7 +215,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax2.add_feature(cfeature.STATES, linewidth=0.5)
         ax2.add_feature(USCOUNTIES, linewidth=0.75)
-        ax2.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
@@ -232,7 +244,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax0.add_feature(cfeature.STATES, linewidth=0.5)
         ax0.add_feature(USCOUNTIES, linewidth=0.75)
-        ax0.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
@@ -242,7 +254,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax1.add_feature(cfeature.STATES, linewidth=0.5)
         ax1.add_feature(USCOUNTIES, linewidth=0.75)
-        ax1.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
@@ -252,7 +264,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax2.add_feature(cfeature.STATES, linewidth=0.5)
         ax2.add_feature(USCOUNTIES, linewidth=0.75)
-        ax2.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
@@ -262,7 +274,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax3.add_feature(cfeature.STATES, linewidth=0.5)
         ax3.add_feature(USCOUNTIES, linewidth=0.75)
-        ax3.set_title('Start: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax3.set_title(sub_plot_4_title + '\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar3 = fig.colorbar(cs3, shrink=color_bar_shrink) 
@@ -295,7 +307,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax0.add_feature(cfeature.STATES, linewidth=0.5)
         ax0.add_feature(USCOUNTIES, linewidth=0.75)
-        ax0.set_title('Start: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
@@ -305,7 +317,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax1.add_feature(cfeature.STATES, linewidth=0.5)
         ax1.add_feature(USCOUNTIES, linewidth=0.75)
-        ax1.set_title('Start: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
@@ -315,7 +327,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax2.add_feature(cfeature.STATES, linewidth=0.5)
         ax2.add_feature(USCOUNTIES, linewidth=0.75)
-        ax2.set_title('Start: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
@@ -325,7 +337,7 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax3.add_feature(cfeature.STATES, linewidth=0.5)
         ax3.add_feature(USCOUNTIES, linewidth=0.75)
-        ax3.set_title('Start: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax3.set_title(sub_plot_4_title + '\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar3 = fig.colorbar(cs3, shrink=color_bar_shrink)
@@ -335,7 +347,285 @@ def plot_generic_NWS_forecast(first_GRIB_file, second_GRIB_file, third_GRIB_file
         ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax4.add_feature(cfeature.STATES, linewidth=0.5)
         ax4.add_feature(USCOUNTIES, linewidth=0.75)
-        ax4.set_title('Start: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        ax4.set_title(sub_plot_5_title + '\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar4 = fig.colorbar(cs4, shrink=color_bar_shrink) 
+
+    return fig
+
+def plot_generic_NWS_extended_forecast(directory_name, parameter, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step, plot_title, sub_plot_1_title, sub_plot_2_title, sub_plot_3_title, sub_plot_4_title, sub_plot_5_title, fig_x_length, fig_y_length, color_bar_shrink): 
+
+    r'''
+    THIS FUNCTION MAKES A GENERIC CUSTOMIZED PLOT OF THE LATEST EXTENDED NOAA/NWS NDFD GRID FORECAST DATA
+
+    THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+    1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+    2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    3. WEATHER PARAMETER 
+    4. COLOR TABLE FOR PLOT 
+    5. COLOR TABLE START, STOP AND STEP
+    6. GRID TIME INTERVALS IN HOURS (DIFFERENT GRIDS ARE DIFFERENT LENGTHS IN TIME)
+    7. PLOT TITLE - TITLE MUST BE ENTERED AS A STRING VARIABLE
+    8. COLORBAR SHRINK - FLOAT VARIABLE THAT DETERMINES THE SIZE OF THE COLORBAR. THE DEFAULT IS 1.0. TO SHRINK THE SIZE OF THE COLORBAR SET SHRINK TO A FLOAT VALUE BETWEEN 0 AND 1. TO INCREASE THE SIZE OF THE COLORBAR SET THE SHRINK VALUE TO ABOVE 1. 
+    9. FIGURE SIZE IS CUSTOMIZED BY THE INTEGER VARIABLES (fig_x_length, fig_y_length) IF YOUR PLOT COMES OUT LOOKING FUNKY (I.E. WORDS OVERLAPPING, COLORBARS NOT SIZED PROPERLY EVEN AFTER YOU EDIT THE SIZE OF THE COLORBAR SHRINK ETC.), EDIT THE SIZE OF THE FIGURE SIZE
+    10. THE TITLES FOR EACH SUBPLOT
+
+    PYTHON MODULE DEPENDENCIES:
+    1. CARTOPY
+    2. METPY
+    3. NUMPY
+    4. MATPLOTLIB
+    5. PARSERS
+    6. DATA_ACCESS
+
+    **IF THE USER WANTS TO MAKE 2 SEPERATE PLOTS WITH 1 AS THE SHORT-TERM AND THE OTHER AS THE EXTENDED, THE PROGRAMS FOR EACH NEED TO BE RUN IN DIFFERENT FOLDERS SO THE BINARY FILE DOESN'T OVERWRITE ITSELF**
+    
+    COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    '''
+    
+    
+    extended_data = da.get_NWS_NDFD_extended_grid_data(directory_name, parameter)
+    
+    first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, parameter)
+
+    local_time, utc_time = plot_creation_time()
+
+    
+    files = count_of_GRIB_files
+    mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+    datacrs = ccrs.PlateCarree()
+
+    if parameter == 'ds.maxt.bin' or parameter == 'ds.mint.bin':
+        grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals = parsers.GRIB_parameter_check_temperature(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, parameter)
+   
+    if files == 1:
+        grb_1_start = first_GRIB_file.validDate
+        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+        lats, lons = first_GRIB_file.latlons()
+
+
+        fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+        fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+        fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+        
+        ax = plt.subplot(1, 1, 1, projection=mapcrs)
+        ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax.add_feature(cfeature.STATES, linewidth=0.5)
+        ax.add_feature(USCOUNTIES, linewidth=0.75)
+        ax.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar = fig.colorbar(cs, shrink=color_bar_shrink)
+
+    if files == 2:
+        grb_1_start = first_GRIB_file.validDate
+        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+        grb_2_start = second_GRIB_file.validDate
+        grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+        
+        lats_1, lons_1 = first_GRIB_file.latlons()
+        lats_2, lons_2 = second_GRIB_file.latlons()
+
+        fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+        fig.text(0.13, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+        fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+        
+        ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+        ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax0.add_feature(cfeature.STATES, linewidth=0.5)
+        ax0.add_feature(USCOUNTIES, linewidth=0.75)
+        ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
+
+        ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+        ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax1.add_feature(cfeature.STATES, linewidth=0.5)
+        ax1.add_feature(USCOUNTIES, linewidth=0.75)
+        ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
+
+    if files == 3:
+        grb_1_start = first_GRIB_file.validDate
+        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+        grb_2_start = second_GRIB_file.validDate
+        grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+        grb_3_start = third_GRIB_file.validDate
+        grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+        
+        lats_1, lons_1 = first_GRIB_file.latlons()
+        lats_2, lons_2 = second_GRIB_file.latlons()
+        lats_3, lons_3 = third_GRIB_file.latlons()
+
+        fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+        fig.text(0.26, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+        fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+        
+        ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+        ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax0.add_feature(cfeature.STATES, linewidth=0.5)
+        ax0.add_feature(USCOUNTIES, linewidth=0.75)
+        ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
+
+        ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+        ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax1.add_feature(cfeature.STATES, linewidth=0.5)
+        ax1.add_feature(USCOUNTIES, linewidth=0.75)
+        ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
+
+        ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+        ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax2.add_feature(cfeature.STATES, linewidth=0.5)
+        ax2.add_feature(USCOUNTIES, linewidth=0.75)
+        ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
+
+    if files == 4:
+        grb_1_start = first_GRIB_file.validDate
+        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+        grb_2_start = second_GRIB_file.validDate
+        grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+        grb_3_start = third_GRIB_file.validDate
+        grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+        grb_4_start = fourth_GRIB_file.validDate
+        grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+        
+        lats_1, lons_1 = first_GRIB_file.latlons()
+        lats_2, lons_2 = second_GRIB_file.latlons()
+        lats_3, lons_3 = third_GRIB_file.latlons()
+        lats_4, lons_4 = fourth_GRIB_file.latlons()
+
+        fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+        fig.text(0.17, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+        fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+        
+        ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+        ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax0.add_feature(cfeature.STATES, linewidth=0.5)
+        ax0.add_feature(USCOUNTIES, linewidth=0.75)
+        ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
+
+        ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+        ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax1.add_feature(cfeature.STATES, linewidth=0.5)
+        ax1.add_feature(USCOUNTIES, linewidth=0.75)
+        ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
+
+        ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+        ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax2.add_feature(cfeature.STATES, linewidth=0.5)
+        ax2.add_feature(USCOUNTIES, linewidth=0.75)
+        ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
+
+        ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+        ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax3.add_feature(cfeature.STATES, linewidth=0.5)
+        ax3.add_feature(USCOUNTIES, linewidth=0.75)
+        ax3.set_title(sub_plot_4_title + '\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar3 = fig.colorbar(cs3, shrink=color_bar_shrink) 
+
+    if files >= 5:
+        grb_1_start = first_GRIB_file.validDate
+        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+        grb_2_start = second_GRIB_file.validDate
+        grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+        grb_3_start = third_GRIB_file.validDate
+        grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+        grb_4_start = fourth_GRIB_file.validDate
+        grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+        grb_5_start = fifth_GRIB_file.validDate
+        grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+          
+        
+        lats_1, lons_1 = first_GRIB_file.latlons()
+        lats_2, lons_2 = second_GRIB_file.latlons()
+        lats_3, lons_3 = third_GRIB_file.latlons()
+        lats_4, lons_4 = fourth_GRIB_file.latlons()
+        lats_5, lons_5 = fifth_GRIB_file.latlons()
+
+        fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+        fig.text(0.40, 0.08, 'Plot Created With FirePY (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+        fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+        
+        ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+        ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax0.add_feature(cfeature.STATES, linewidth=0.5)
+        ax0.add_feature(USCOUNTIES, linewidth=0.75)
+        ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
+
+        ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+        ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax1.add_feature(cfeature.STATES, linewidth=0.5)
+        ax1.add_feature(USCOUNTIES, linewidth=0.75)
+        ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
+
+        ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+        ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax2.add_feature(cfeature.STATES, linewidth=0.5)
+        ax2.add_feature(USCOUNTIES, linewidth=0.75)
+        ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
+
+        ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+        ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax3.add_feature(cfeature.STATES, linewidth=0.5)
+        ax3.add_feature(USCOUNTIES, linewidth=0.75)
+        ax3.set_title(sub_plot_4_title + '\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+
+        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+        cbar3 = fig.colorbar(cs3, shrink=color_bar_shrink)
+
+        ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+        ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax4.add_feature(cfeature.STATES, linewidth=0.5)
+        ax4.add_feature(USCOUNTIES, linewidth=0.75)
+        ax4.set_title(sub_plot_5_title + '\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
 
         cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
         cbar4 = fig.colorbar(cs4, shrink=color_bar_shrink) 
