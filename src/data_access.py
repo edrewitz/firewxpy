@@ -23,6 +23,7 @@ import xarray as xr
 import os
 import metpy
 import metpy.calc as mpcalc
+import parsers
 
 from ftplib import FTP
 from datetime import datetime, timedelta
@@ -298,6 +299,42 @@ class FTP_Downloads:
             dir_error = info.directory_name_error()
             return dir_error
 
+    def get_first_half_of_data(directory_name, parameter):
+
+        r'''
+        THIS FUNCTION DOWNLOADS THE NATIONAL WEATHER SERVICE FORECAST DATA AND PARSES THROUGH THE DATA TO EXTRACT ALL THE VALUES. THIS IS NEEDED TO BE DONE SINCE THE NATIONAL WEATHER SERVICE KEEPS THEIR SHORT-TERM AND EXTENDED FORECAST DATA SEPERATE ON THEIR FTP SERVER. WE NEED TO EXTRACT THE VALUES FOR THE SHORT-TERM DATA IN A SEPERATE FUNCTION SINCE WHEN PREVIOUSLY TESTING THE DATA KEPT OVERWRITNG ITSELF DUE TO THE FILENAMES BEING THE SAME DESPITE THE DATA IS FOR DIFFERENT FORECAST PERIODS. 
+
+        (C) METEOROLOGIST ERIC J. DREWITZ 2023
+
+        '''
+        
+        short_term_data = FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, parameter)
+        grid_time_interval = 12  
+        
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter)
+    
+        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5
+
+    def get_full_7_day_grid_data(directory_name, parameter):
+
+        r'''
+        THIS FUNCTION USES THE PREVIOUS FUNCTION TO EXTRACT THE SHORT-TERM NATIONAL WEATHER SERVICE FORECAST DATA BEFORE DOWNLOADING AND EXTRACTING THE NATIONAL WEATHER SERVICE FORECAST DATA FOR THE EXTENDED PERIOD. THIS FUNCTION THEN RETURNS ALL 7 DAYS WORTH OF NATIONAL WEATHER SERVICE FORECAST DATA. 
+
+        (C) METEOROLOGIST ERIC J. DREWITZ 2023
+
+        '''
+        
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = FTP_Downloads.get_first_half_of_data(directory_name, parameter)
+        extended_data = FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, parameter)
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, parameter)
+        grid_time_interval = 12  
+        
+        grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, grb_9_vals, grb_9_start, grb_9_end, grb_10_vals, grb_10_start, grb_10_end, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, lats_10, lons_10 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter)
+    
+        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, grb_9_vals, grb_9_start, grb_9_end, grb_10_vals, grb_10_start, grb_10_end, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, lats_10, lons_10 
+        
+
 class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
     r'''
@@ -307,104 +344,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
     (C) METEOROLOGIST ERIC J. DREWITZ 2023
 
 
-    '''
-
-    def get_NWS_NDFD_full_grid_data(parameter):
-    
-        r'''
-        THIS FUNCTION DOWNLOADS THE ENTIRE 7 DAYS OF GRIDS FOR A FORECAST PARAMETER OF THE USER'S CHOICE. 
-    
-        UNLIKE THE FUNCTIONS FOR DOWNLOADING THE NWS SHORT-TERM AND/OR EXTENDED GRIDS, THIS FUNCTION USES THE UCAR THREDDS SERVER INSTEAD OF THE NWS FTP SERVER
-    
-        IF YOU WANT ALL 7 DAYS OF GRIDS, THIS FUNCTION IS THE RECOMMENDED METHOD SINCE USING THE NWS SHORT-TERM AND/OR EXTENDED GRIDS FUNCTIONS IN CONJUNCTION WILL OVERWRITE THE DATASET
-    
-        THE USER ONLY NEEDS TO PASS IN THE PARAMETER OF CHOICE AND THIS FUNCTION RETURNS THE LATEST AVAILIABLE NWS FORECAST DATASET
-    
-        (C) METEOROLOGIST ERIC J. DREWITZ 2023
-    
-        '''
-        forecast_init = datetime.utcnow()
-        hour = forecast_init.hour
-        year = forecast_init.year
-        month = forecast_init.month
-        day = forecast_init.day
-        hr00 = 0
-        hr12 = 12
-        
-        forecast_package_00z = datetime(year, month, day, hr00)
-        forecast_package_12z = datetime(year, month, day, hr12)
-        if hour >= 0 and hour < 12:
-            try:
-                nws_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/NDFD_NWS_CONUS_conduit_2p5km_'+forecast_init.strftime('%Y%m%d')+'_0000.grib2/catalog.xml')
-                nws_data = nws_cat.datasets['NDFD_NWS_CONUS_conduit_2p5km_'+forecast_init.strftime('%Y%m%d')+'_0000.grib2'].remote_access(use_xarray=True)
-                print("Data retrieval for " + forecast_init.strftime('%m/%d/%Y 00z')+" is successful.")
-                
-                try:
-                    nws_data = nws_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                    nws_parameter = nws_data[parameter].squeeze()
-                    return nws_parameter
-    
-                except Exception as a:
-                    error = info.invalid_element()
-                    return error
-                
-            except Exception as a:
-                print("Data retrieval for " + forecast_init.strftime('%m/%d/%Y 00z')+" is unsuccessful.\nWill try to download the data from the previous 12z forecast package.")
-                previous_forecast_package = forecast_package_00z - timedelta(hours=12)
-                
-                try:
-                    nws_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/NDFD_NWS_CONUS_conduit_2p5km_'+previous_forecast_package.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                    nws_data = nws_cat.datasets['NDFD_NWS_CONUS_conduit_2p5km_'+previous_forecast_package.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    print("Data retrieval for " + previous_forecast_package.strftime('%m/%d/%Y_%H00')+" is successful.")
-                    try:
-                        nws_data = nws_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                        nws_parameter = nws_data[parameter].squeeze()
-                        return nws_parameter
-        
-                    except Exception as b:
-                        error = info.invalid_element()
-                        return error
-                        
-                except Exception as c:
-                    print("Data retrieval for " + previous_forecast_package.strftime('%m/%d/%Y_%H00')+" is unsuccessful.\nThe next forecast package is too old. Please try again later.")
-                
-        if hour >= 12 and hour < 24:
-            try:
-                nws_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/NDFD_NWS_CONUS_conduit_2p5km_'+forecast_init.strftime('%Y%m%d')+'_1200.grib2/catalog.xml')
-                nws_data = nws_cat.datasets['NDFD_NWS_CONUS_conduit_2p5km_'+forecast_init.strftime('%Y%m%d')+'_1200.grib2'].remote_access(use_xarray=True)
-                print("Data retrieval for " + forecast_init.strftime('%m/%d/%Y 12z')+" is successful.")
-                
-                try:
-                    nws_data = nws_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                    nws_parameter = nws_data[parameter].squeeze()
-                    return nws_parameter
-                    
-                except Exception as d:
-                    error = info.invalid_element()
-                    return error
-                    
-            except Exception as e:
-                print("Data retrieval for " + forecast_init.strftime('%m/%d/%Y 00z')+" is unsuccessful.\nWill try to download the data from the previous 12z forecast package.")
-                previous_forecast_package = forecast_package_12z - timedelta(hours=12)
-                
-                try:
-                    nws_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/NDFD_NWS_CONUS_conduit_2p5km_'+previous_forecast_package.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                    nws_data = nws_cat.datasets['NDFD_NWS_CONUS_conduit_2p5km_'+previous_forecast_package.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    print("Data retrieval for " + previous_forecast_package.strftime('%m/%d/%Y_%H00')+" is successful.")
-                    
-                    try:
-                        nws_data = nws_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                        nws_parameter = nws_data[parameter].squeeze()
-                        return nws_parameter
-        
-                    except Exception as f:
-                        error = info.invalid_element()
-                        return error
-                        
-                except Exception as g:
-                    print("Data retrieval for " + previous_forecast_package.strftime('%m/%d/%Y_%H00')+" is unsuccessful.\nThe next forecast package is too old. Please try again later.")
-    
-    
+    '''    
     
     def get_current_rtma_data(current_time, parameter):
     
