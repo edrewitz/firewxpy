@@ -60,13 +60,14 @@ class Predictive_Services_Areas:
         
         try:
             shape_feature = ShapelyFeature(Reader(fname).geometries(),
-                                           ccrs.PlateCarree(), facecolor='w', edgecolor='black')
+                                           ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor='black')
         
             return shape_feature
 
         except Exception as a:
             error = info.PSA_shape_file_error()
             print(error)
+
 
     def get_PSAs_custom_file_path(file_path):
 
@@ -83,7 +84,7 @@ class Predictive_Services_Areas:
         
         try:
             shape_feature = ShapelyFeature(Reader(file_path).geometries(),
-                                           ccrs.PlateCarree(), facecolor='w', edgecolor='black')
+                                           ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor='black')
         
             return shape_feature
 
@@ -108,7 +109,7 @@ class Predictive_Services_Areas:
         
         try:
             shape_feature = ShapelyFeature(Reader(fname).geometries(),
-                                           ccrs.PlateCarree(), facecolor='w', edgecolor='blue')
+                                           ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor='blue')
         
             return shape_feature
 
@@ -133,12 +134,14 @@ class Predictive_Services_Areas:
         
         try:
             shape_feature = ShapelyFeature(Reader(file_path).geometries(),
-                                           ccrs.PlateCarree(), facecolor='w', edgecolor='blue')
+                                           ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor='blue')
         
             return shape_feature
 
         except Exception as a:
             error = info.PSA_shape_file_error()
             print(error)
+
+
 
 
