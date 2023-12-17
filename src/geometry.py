@@ -45,12 +45,14 @@ class info:
 # The Predictive Services Areas class returns the geometries for the predictive services areas to be used in plotting
 class Predictive_Services_Areas:
 
-    def get_PSAs():
+    def get_PSAs(line_color):
 
         r'''
         THIS FUNCTION RETURNS THE GEOMETRIES FOR THE PREDICTIVE SERVICES AREAS FOR PLOTTING.
 
         THIS FUNCTION IS TO BE USED IF THE USER WISHES TO STORE THEIR SHAPEFILES IN THE SAME FOLDER AS THE PYTHON SCRIPTS THEY WISH TO RUN.
+
+        THE USER CUSTOMIZES THE COLOR FOR THE PSA BORDERS
 
         (C) METEOROLOGIST ERIC J. DREWITZ 2023
 
@@ -60,7 +62,7 @@ class Predictive_Services_Areas:
         
         try:
             shape_feature = ShapelyFeature(Reader(fname).geometries(),
-                                           ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor='black')
+                                           ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor=line_color)
         
             return shape_feature
 
@@ -69,13 +71,15 @@ class Predictive_Services_Areas:
             print(error)
 
 
-    def get_PSAs_custom_file_path(file_path):
+    def get_PSAs_custom_file_path(file_path, line_color):
 
         r'''
         THIS FUNCTION RETURNS THE GEOMETRIES FOR THE PREDICTIVE SERVICES AREAS FOR PLOTTING.
 
         THIS FUNCTION IS TO BE USED IF THE USER WISHES TO STORE THEIR SHAPEFILES ELSEWHERE THAN WHERE THEIR PYTHON
         SCRIPTS RUN. 
+
+        THE USER CUSTOMIZES THE COLOR FOR THE PSA BORDERS
 
         (C) METEOROLOGIST ERIC J. DREWITZ 2023
 
@@ -84,57 +88,7 @@ class Predictive_Services_Areas:
         
         try:
             shape_feature = ShapelyFeature(Reader(file_path).geometries(),
-                                           ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor='black')
-        
-            return shape_feature
-
-        except Exception as a:
-            error = info.PSA_shape_file_error()
-            print(error)
-
-    def get_PSAs_with_counties():
-
-        r'''
-        THIS FUNCTION RETURNS THE GEOMETRIES FOR THE PREDICTIVE SERVICES AREAS FOR PLOTTING.
-
-        THIS FUNCTION IS TO BE USED IF THE USER WISHES TO STORE THEIR SHAPEFILES IN THE SAME FOLDER AS THE PYTHON SCRIPTS THEY WISH TO RUN.
-
-        FUNCTION CHANGES THE EDGE COLOR FROM BLACK TO BLUE FOR PSA BOUNDARIES IF THE USER WANTS BOTH COUNTIES AND PSAS OVERLAYED TOGETHER
-
-        (C) METEOROLOGIST ERIC J. DREWITZ 2023
-
-        '''
-
-        fname = 'National_PSA_Current.shp'
-        
-        try:
-            shape_feature = ShapelyFeature(Reader(fname).geometries(),
-                                           ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor='blue')
-        
-            return shape_feature
-
-        except Exception as a:
-            error = info.PSA_shape_file_error()
-            print(error)
-
-    def get_PSAs_custom_file_path(file_path):
-
-        r'''
-        THIS FUNCTION RETURNS THE GEOMETRIES FOR THE PREDICTIVE SERVICES AREAS FOR PLOTTING.
-
-        THIS FUNCTION IS TO BE USED IF THE USER WISHES TO STORE THEIR SHAPEFILES ELSEWHERE THAN WHERE THEIR PYTHON
-        SCRIPTS RUN. 
-
-        FUNCTION CHANGES THE EDGE COLOR FROM BLACK TO BLUE FOR PSA BOUNDARIES IF THE USER WANTS BOTH COUNTIES AND PSAS OVERLAYED TOGETHER
-
-        (C) METEOROLOGIST ERIC J. DREWITZ 2023
-
-        '''
-        
-        
-        try:
-            shape_feature = ShapelyFeature(Reader(file_path).geometries(),
-                                           ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor='blue')
+                                           ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor=line_color)
         
             return shape_feature
 
