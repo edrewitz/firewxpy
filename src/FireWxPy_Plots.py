@@ -87,7 +87,7 @@ class standard:
     
         return fig
 
-class National_Weather_Service_Forecast:
+class National_Weather_Service_Forecast_Counties_Perspective:
 
     r'''
 
@@ -96,6 +96,10 @@ class National_Weather_Service_Forecast:
     THESE FUNCTIONS PLOT THE NATIONAL WEATHER SERVICE GRIDDED FORECAST DATA IN VARIOUS DIFFERENT WAYS
 
     GENERIC FORECAST FUNCTIONS OFFER SLIGHTLY MORE CUSTOMIZATION AS BOTH THE GENERIC FUNCTIONS ARE NOT PRESETS FOR A CERTAIN WEATHER ELEMENT. 
+
+    THIS CLASS PLOTS THE DATA USING COUNTY AND STATE BOUNDARIES AS A REFERENCE POINT. 
+
+    (C) METEOROLOGIST ERIC J. DREWITZ 2023
 
 
     '''
@@ -141,14 +145,10 @@ class National_Weather_Service_Forecast:
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
     
-        if parameter == 'ds.maxt.bin' or parameter == 'ds.mint.bin':
-            grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals = parsers.GRIB_parameter_check_temperature(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, parameter)
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter)
+
        
         if files == 1:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            lats, lons = first_GRIB_file.latlons()
-    
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -165,13 +165,6 @@ class National_Weather_Service_Forecast:
             cbar = fig.colorbar(cs, shrink=color_bar_shrink)
     
         if files == 2:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -198,16 +191,6 @@ class National_Weather_Service_Forecast:
             cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
     
         if files == 3:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
             fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -244,19 +227,6 @@ class National_Weather_Service_Forecast:
             cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
     
         if files == 4:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
             fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -303,23 +273,6 @@ class National_Weather_Service_Forecast:
             cbar3 = fig.colorbar(cs3, shrink=color_bar_shrink) 
     
         if files >= 5:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
             fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -419,14 +372,9 @@ class National_Weather_Service_Forecast:
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
     
-        if parameter == 'ds.maxt.bin' or parameter == 'ds.mint.bin':
-            grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals = parsers.GRIB_parameter_check_temperature(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, parameter)
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter)
        
         if files == 1:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            lats, lons = first_GRIB_file.latlons()
-    
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -443,13 +391,6 @@ class National_Weather_Service_Forecast:
             cbar = fig.colorbar(cs, shrink=color_bar_shrink)
     
         if files == 2:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -476,16 +417,6 @@ class National_Weather_Service_Forecast:
             cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
     
         if files == 3:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
             fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -522,19 +453,6 @@ class National_Weather_Service_Forecast:
             cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
     
         if files == 4:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
             fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -581,23 +499,6 @@ class National_Weather_Service_Forecast:
             cbar3 = fig.colorbar(cs3, shrink=color_bar_shrink) 
     
         if files >= 5:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
             fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -656,7 +557,7 @@ class National_Weather_Service_Forecast:
         return fig
     
     
-    def plot_relative_humidity_poor_recovery_short_term_forecast_by_county(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    def plot_relative_humidity_poor_recovery_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
     
         r'''
         THIS FUNCTION PLOTS AREAS OF POOR OVERNIGHT RELATIVE HUMIDITY RECOVERY FROM THE NATIONAL WEATHER SERVICE FORECAST
@@ -687,13 +588,11 @@ class National_Weather_Service_Forecast:
         files = count_of_GRIB_files
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
         
        
         if files == 1:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            lats, lons = first_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -711,16 +610,6 @@ class National_Weather_Service_Forecast:
             cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
             
             if utc_time.hour >= 18 or utc_time.hour < 6:
     
@@ -733,7 +622,7 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax0.add_feature(cfeature.STATES, linewidth=0.5)
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -768,20 +657,6 @@ class National_Weather_Service_Forecast:
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
             
             if utc_time.hour >= 18 or utc_time.hour < 6:
     
@@ -794,7 +669,7 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax0.add_feature(cfeature.STATES, linewidth=0.5)
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -851,23 +726,6 @@ class National_Weather_Service_Forecast:
                 cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 4:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
     
             if utc_time.hour >= 18 or utc_time.hour < 6:
     
@@ -880,7 +738,7 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax0.add_feature(cfeature.STATES, linewidth=0.5)
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -959,27 +817,6 @@ class National_Weather_Service_Forecast:
                 cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files >= 5:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_vals = fifth_GRIB_file.values
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
     
             if utc_time.hour >= 18 or utc_time.hour < 6:
     
@@ -1094,394 +931,7 @@ class National_Weather_Service_Forecast:
     
         return fig
 
-    def plot_relative_humidity_poor_recovery_short_term_forecast_by_predictive_services_area(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
-    
-        r'''
-        THIS FUNCTION PLOTS AREAS OF POOR OVERNIGHT RELATIVE HUMIDITY RECOVERY FROM THE NATIONAL WEATHER SERVICE FORECAST
-    
-        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MAX RELATIVE HUMIDITY GRIDS
-    
-        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
-        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
-        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
-    
-        PYTHON MODULE DEPENDENCIES:
-        1. CARTOPY
-        2. METPY
-        3. NUMPY
-        4. MATPLOTLIB
-    
-        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
-        '''
-    
-        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.maxrh.bin')
-        
-        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.maxrh.bin')
-    
-        local_time, utc_time = standard.plot_creation_time()
-        grid_time_interval = 12
-    
-    
-        files = count_of_GRIB_files
-        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
-        datacrs = ccrs.PlateCarree()
 
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs()
-       
-        if files == 1:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            lats, lons = first_GRIB_file.latlons()
-    
-            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
-            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-            fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
-            
-            ax = plt.subplot(1, 1, 1, projection=mapcrs)
-            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax.add_feature(PSAs, linewidth=0.75)
-            ax.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
-    
-            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
-    
-        if files == 2:
-           
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            
-            if utc_time.hour >= 18 or utc_time.hour < 6:
-    
-                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
-                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
-     
-                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
-                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(PSAs, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
-                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(PSAs, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
-         
-            if utc_time.hour >= 6 and utc_time.hour < 18:
-    
-                fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
-                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
-                
-                ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
-                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(PSAs, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-    
-                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
-    
-        if files == 3:
-    
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            
-            if utc_time.hour >= 18 or utc_time.hour < 6:
-    
-                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
-                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
-    
-                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
-                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(PSAs, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
-                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(PSAs, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
-                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(PSAs, linewidth=0.75)
-                ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
-                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
-    
-            if utc_time.hour >= 6 and utc_time.hour < 18:
-    
-                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
-                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
-    
-                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
-                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(PSAs, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
-                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(PSAs, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
-    
-        if files == 4:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-    
-            if utc_time.hour >= 18 or utc_time.hour < 6:
-    
-                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
-                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
-    
-                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
-                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(PSAs, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
-                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(PSAs, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
-                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(PSAs, linewidth=0.75)
-                ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
-                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
-                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(PSAs, linewidth=0.75)
-                ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
-                cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
-    
-            if utc_time.hour >= 6 and utc_time.hour < 18:
-    
-                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
-                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
-    
-                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
-                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(PSAs, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
-                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(PSAs, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
-    
-                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
-                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(PSAs, linewidth=0.75)
-                ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
-                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
-    
-        if files >= 5:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_vals = fifth_GRIB_file.values
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
-    
-            if utc_time.hour >= 18 or utc_time.hour < 6:
-    
-                fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
-                fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
-    
-                ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
-                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(PSAs, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
-        
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
-                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(PSAs, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
-                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(PSAs, linewidth=0.75)
-                ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
-                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
-                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(PSAs, linewidth=0.75)
-                ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
-                cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
-                ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax4.add_feature(PSAs, linewidth=0.75)
-                ax4.set_title('Night 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
-                cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
-    
-            if utc_time.hour >= 6 and utc_time.hour < 18:
-    
-                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
-                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
-    
-                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
-                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(PSAs, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
-                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(PSAs, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
-                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(PSAs, linewidth=0.75)
-                ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
-                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
-        
-                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
-                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(PSAs, linewidth=0.75)
-                ax3.set_title('Night 4 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
-        
-                cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
-                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
-                cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
-    
-        return fig
     
     def plot_relative_humidity_poor_recovery_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
     
@@ -1514,13 +964,11 @@ class National_Weather_Service_Forecast:
         files = count_of_GRIB_files
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
         
        
         if files == 1:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            lats, lons = first_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -1538,18 +986,7 @@ class National_Weather_Service_Forecast:
             cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
             
-    
             fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Extended Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
@@ -1577,20 +1014,6 @@ class National_Weather_Service_Forecast:
             cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
             fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -1630,23 +1053,6 @@ class National_Weather_Service_Forecast:
             cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 4:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
             fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -1697,27 +1103,6 @@ class National_Weather_Service_Forecast:
             cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files >= 5:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_vals = fifth_GRIB_file.values
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
             fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -1810,13 +1195,11 @@ class National_Weather_Service_Forecast:
         files = count_of_GRIB_files
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
         
        
         if files == 1:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            lats, lons = first_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -1834,16 +1217,6 @@ class National_Weather_Service_Forecast:
             cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
             
             if utc_time.hour >= 18 or utc_time.hour < 6:
     
@@ -1856,7 +1229,7 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax0.add_feature(cfeature.STATES, linewidth=0.5)
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -1891,20 +1264,6 @@ class National_Weather_Service_Forecast:
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
             
             if utc_time.hour >= 18 or utc_time.hour < 6:
     
@@ -1917,7 +1276,7 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax0.add_feature(cfeature.STATES, linewidth=0.5)
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -1974,23 +1333,6 @@ class National_Weather_Service_Forecast:
                 cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 4:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
     
             if utc_time.hour >= 18 or utc_time.hour < 6:
     
@@ -2003,7 +1345,7 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax0.add_feature(cfeature.STATES, linewidth=0.5)
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -2082,27 +1424,6 @@ class National_Weather_Service_Forecast:
                 cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files >= 5:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_vals = fifth_GRIB_file.values
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
     
             if utc_time.hour >= 18 or utc_time.hour < 6:
     
@@ -2115,7 +1436,7 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax0.add_feature(cfeature.STATES, linewidth=0.5)
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -2247,13 +1568,11 @@ class National_Weather_Service_Forecast:
         files = count_of_GRIB_files
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
         
        
         if files == 1:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            lats, lons = first_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -2271,18 +1590,7 @@ class National_Weather_Service_Forecast:
             cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
             
-    
             fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Extended Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
@@ -2310,20 +1618,6 @@ class National_Weather_Service_Forecast:
             cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
          
         if files == 3:
-    
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
             fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -2363,23 +1657,6 @@ class National_Weather_Service_Forecast:
             cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 4:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
             fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -2430,27 +1707,6 @@ class National_Weather_Service_Forecast:
             cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files >= 5:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_vals = fifth_GRIB_file.values
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
             fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -2546,13 +1802,11 @@ class National_Weather_Service_Forecast:
         files = count_of_GRIB_files
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.minrh.bin')
         
        
         if files == 1:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            lats, lons = first_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -2570,16 +1824,6 @@ class National_Weather_Service_Forecast:
             cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
             
             if utc_time.hour > 6 and utc_time.hour <= 21:
     
@@ -2627,20 +1871,6 @@ class National_Weather_Service_Forecast:
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
             
             if utc_time.hour > 6 and utc_time.hour <= 21:
     
@@ -2710,23 +1940,6 @@ class National_Weather_Service_Forecast:
                 cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 4:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
     
             if utc_time.hour > 6 and utc_time.hour <= 21:
     
@@ -2818,27 +2031,6 @@ class National_Weather_Service_Forecast:
                 cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files >= 5:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_vals = fifth_GRIB_file.values
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
     
             if utc_time.hour > 6 and utc_time.hour <= 21:
     
@@ -2985,13 +2177,11 @@ class National_Weather_Service_Forecast:
         files = count_of_GRIB_files
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.minrh.bin')
         
        
         if files == 1:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            lats, lons = first_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -3009,18 +2199,6 @@ class National_Weather_Service_Forecast:
             cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            
-
     
             fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -3049,22 +2227,6 @@ class National_Weather_Service_Forecast:
             cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            
-
     
             fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
             fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -3104,24 +2266,6 @@ class National_Weather_Service_Forecast:
             cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 4:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-    
     
             fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
             fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -3172,27 +2316,6 @@ class National_Weather_Service_Forecast:
             cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files >= 5:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_vals = fifth_GRIB_file.values
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
             fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -3285,14 +2408,11 @@ class National_Weather_Service_Forecast:
         files = count_of_GRIB_files
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxt.bin')
         
        
         if files == 1:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            
-            lats, lons = first_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(10,10))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -3320,16 +2440,6 @@ class National_Weather_Service_Forecast:
             cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
             
             if utc_time.hour >= 0 and utc_time.hour < 19:
     
@@ -3402,20 +2512,6 @@ class National_Weather_Service_Forecast:
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
             
             if utc_time.hour >= 0 and utc_time.hour < 19:
     
@@ -3520,23 +2616,6 @@ class National_Weather_Service_Forecast:
                 cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 4:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
     
             if utc_time.hour >= 0 and utc_time.hour < 19:
     
@@ -3673,27 +2752,6 @@ class National_Weather_Service_Forecast:
                 cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files >= 5:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_vals = fifth_GRIB_file.values
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
     
             if utc_time.hour >= 0 and utc_time.hour < 19:
     
@@ -3894,14 +2952,11 @@ class National_Weather_Service_Forecast:
         files = count_of_GRIB_files
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxt.bin')
         
        
         if files == 1:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            
-            lats, lons = first_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -3929,18 +2984,7 @@ class National_Weather_Service_Forecast:
             cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
             
-    
             fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
@@ -3983,22 +3027,6 @@ class National_Weather_Service_Forecast:
             cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            
-
     
             fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
             fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -4059,26 +3087,7 @@ class National_Weather_Service_Forecast:
     
     
         if files == 4:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-    
 
-    
             fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
             fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
@@ -4153,28 +3162,6 @@ class National_Weather_Service_Forecast:
             cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files >= 5:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_vals = fifth_GRIB_file.values
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
-    
     
             fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
             fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -4296,14 +3283,11 @@ class National_Weather_Service_Forecast:
         files = count_of_GRIB_files
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
-    
-        grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals = parsers.GRIB_temperature_conversion(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files)
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.mint.bin')
         
        
         if files == 1:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            lats, lons = first_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -4321,14 +3305,6 @@ class National_Weather_Service_Forecast:
             cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
             
             if utc_time.hour >= 14 or utc_time.hour < 11:
     
@@ -4341,7 +3317,7 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax0.add_feature(cfeature.STATES, linewidth=0.5)
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -4376,17 +3352,6 @@ class National_Weather_Service_Forecast:
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
             
             if utc_time.hour >= 14 or utc_time.hour < 11:
     
@@ -4399,7 +3364,7 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax0.add_feature(cfeature.STATES, linewidth=0.5)
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -4456,19 +3421,6 @@ class National_Weather_Service_Forecast:
                 cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 4:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
     
             if utc_time.hour >= 14 or utc_time.hour < 11:
     
@@ -4481,7 +3433,7 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax0.add_feature(cfeature.STATES, linewidth=0.5)
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -4560,22 +3512,6 @@ class National_Weather_Service_Forecast:
                 cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files >= 5:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
     
             if utc_time.hour >= 14 or utc_time.hour < 11:
     
@@ -4588,7 +3524,7 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax0.add_feature(cfeature.STATES, linewidth=0.5)
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -4690,7 +3626,7 @@ class National_Weather_Service_Forecast:
     
         return fig
 
-    def plot_frost_freeze_extended_forecast_by_counties(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink):
+    def plot_frost_freeze_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink):
     
         r'''
         THIS FUNCTION PLOTS AREAS WHERE THE FORECAST MINIMUM TEMPERATURE IS EXPECTED TO REACH 32F OR BELOW IN THE NATIONAL WEATHER SERVICE EXTENDED FORECAST. THIS IS HELPFUL AS FREEZING CONDITIONS CONVERT LIVE FUELS INTO DEAD FUELS. 
@@ -4720,13 +3656,10 @@ class National_Weather_Service_Forecast:
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
     
-        grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals = parsers.GRIB_temperature_conversion(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files)
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.mint.bin')
         
        
         if files == 1:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            lats, lons = first_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
@@ -4744,20 +3677,245 @@ class National_Weather_Service_Forecast:
             cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
+    
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+         
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 4:
+    
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=0.5)
+            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=0.5)
+            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.STATES, linewidth=0.5)
+            ax4.add_feature(USCOUNTIES, linewidth=0.75)
+            ax4.set_title('Night 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        return fig
+
+    def plot_maximum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS THE NWS OVERNIGHT RELATIVE HUMIDITY FORECAST AND THE FORECAST TRENDS OF OVERNIGHT RELATIVE HUMIDITY 
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MAX RELATIVE HUMIDITY GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.maxrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.maxrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
+
+        lons = lons_1
+        lats = lats_1
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
             
-            if utc_time.hour >= 14 or utc_time.hour < 11:
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 2:
+            
+            if utc_time.hour > 18 or utc_time.hour <= 6:
     
                 fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
      
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4766,26 +3924,26 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax1.add_feature(cfeature.STATES, linewidth=0.5)
                 ax1.add_feature(USCOUNTIES, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
          
-            if utc_time.hour >= 11 and utc_time.hour < 14:
+            if utc_time.hour >= 6 and utc_time.hour < 18:
     
                 fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
                 
                 ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4794,28 +3952,17 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
-                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
             
-            if utc_time.hour >= 14 or utc_time.hour < 11:
+            if utc_time.hour > 18 or utc_time.hour <= 6:
     
                 fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4824,37 +3971,37 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax1.add_feature(cfeature.STATES, linewidth=0.5)
                 ax1.add_feature(USCOUNTIES, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax2.add_feature(cfeature.STATES, linewidth=0.5)
                 ax2.add_feature(USCOUNTIES, linewidth=0.75)
-                ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
-                cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
-            if utc_time.hour >= 11 and utc_time.hour < 14:
+            if utc_time.hour >= 6 and utc_time.hour < 18:
     
                 fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4863,41 +4010,28 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax1.add_feature(cfeature.STATES, linewidth=0.5)
                 ax1.add_feature(USCOUNTIES, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
         if files == 4:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
     
-            if utc_time.hour >= 14 or utc_time.hour < 11:
+            if utc_time.hour > 18 or utc_time.hour <= 6:
     
                 fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4906,48 +4040,48 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax1.add_feature(cfeature.STATES, linewidth=0.5)
                 ax1.add_feature(USCOUNTIES, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax2.add_feature(cfeature.STATES, linewidth=0.5)
                 ax2.add_feature(USCOUNTIES, linewidth=0.75)
-                ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
-                cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax3.add_feature(cfeature.STATES, linewidth=0.5)
                 ax3.add_feature(USCOUNTIES, linewidth=0.75)
-                ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
-                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
-                cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
+                cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
-            if utc_time.hour >= 11 and utc_time.hour < 14:
+            if utc_time.hour >= 6 and utc_time.hour < 18:
     
                 fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4956,55 +4090,39 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax1.add_feature(cfeature.STATES, linewidth=0.5)
                 ax1.add_feature(USCOUNTIES, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
                 ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax2.add_feature(cfeature.STATES, linewidth=0.5)
                 ax2.add_feature(USCOUNTIES, linewidth=0.75)
-                ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
-                cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
         if files >= 5:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
     
-            if utc_time.hour >= 14 or utc_time.hour < 11:
+            if utc_time.hour > 18 or utc_time.hour <= 6:
     
                 fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
                 fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5013,59 +4131,59 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax1.add_feature(cfeature.STATES, linewidth=0.5)
                 ax1.add_feature(USCOUNTIES, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax2.add_feature(cfeature.STATES, linewidth=0.5)
                 ax2.add_feature(USCOUNTIES, linewidth=0.75)
-                ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
-                cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax3.add_feature(cfeature.STATES, linewidth=0.5)
                 ax3.add_feature(USCOUNTIES, linewidth=0.75)
-                ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
-                cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
                 ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax4.add_feature(cfeature.STATES, linewidth=0.5)
                 ax4.add_feature(USCOUNTIES, linewidth=0.75)
-                ax4.set_title('Night 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax4.set_title('Night 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
-                cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
-            if utc_time.hour >= 11 and utc_time.hour < 14:
+            if utc_time.hour >= 6 and utc_time.hour < 18:
     
                 fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5074,51 +4192,1015 @@ class National_Weather_Service_Forecast:
                 ax0.add_feature(USCOUNTIES, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
-                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax1.add_feature(cfeature.STATES, linewidth=0.5)
                 ax1.add_feature(USCOUNTIES, linewidth=0.75)
-                ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
-                cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax2.add_feature(cfeature.STATES, linewidth=0.5)
                 ax2.add_feature(USCOUNTIES, linewidth=0.75)
-                ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
-                cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax3.add_feature(cfeature.STATES, linewidth=0.5)
                 ax3.add_feature(USCOUNTIES, linewidth=0.75)
-                ax3.set_title('Night 4 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
-                cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+                cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
         return fig
 
 
-
-    def plot_frost_freeze_extended_forecast_by_predictive_services_areas(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink):
+    def plot_maximum_relative_humidity_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
     
         r'''
-        THIS FUNCTION PLOTS AREAS WHERE THE FORECAST MINIMUM TEMPERATURE IS EXPECTED TO REACH 32F OR BELOW IN THE NATIONAL WEATHER SERVICE EXTENDED FORECAST. THIS IS HELPFUL AS FREEZING CONDITIONS CONVERT LIVE FUELS INTO DEAD FUELS. 
+        THIS FUNCTION PLOTS THE NWS OVERNIGHT RELATIVE HUMIDITY FORECAST AND THE FORECAST TRENDS OF OVERNIGHT RELATIVE HUMIDITY 
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MAX RELATIVE HUMIDITY GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.maxrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.maxrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
+
+        lons = lons_1
+        lats = lats_1
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 2:
+    
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        if files == 4:
+    
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=0.5)
+            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
+            cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=0.5)
+            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.STATES, linewidth=0.5)
+            ax4.add_feature(USCOUNTIES, linewidth=0.75)
+            ax4.set_title('Night 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        return fig
+    
+    
+    def plot_maximum_temperature_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS THE MAXIMUM TEMPERATURE FORECAST FOR THE FIRST PERIOD, THEN THE MAXIMUM TEMPERATURE FORECAST TRENDS FOR THE NEXT PERIODS. 
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MAXIMUM TEMPERATURE GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.maxt.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.maxt.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxt.bin')
+
+        lons = lons_1
+        lats = lats_1
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+    
+            fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature", fontweight='bold')
+    
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+    
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 145, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 2:
+            
+            if utc_time.hour >= 0 and utc_time.hour < 19:
+    
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+     
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+         
+            if utc_time.hour >= 19 and utc_time.hour < 24:
+    
+                fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature", fontweight='bold')
+                
+                ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 3:
+
+            if utc_time.hour >= 0 and utc_time.hour < 21:
+    
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.hour >= 21 and utc_time.hour < 24:
+    
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 4:
+
+            if utc_time.hour >= 0 and utc_time.hour < 21:
+    
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5)
+                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.hour >= 21 and utc_time.hour < 24:
+    
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+    
+                cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Maximum Temperature Trend \N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files >= 5:
+
+            if utc_time.hour >= 0 and utc_time.hour < 21:
+    
+                fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+                fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+    
+    
+                ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Maximum Temperature Trend(\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5)
+                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax4.add_feature(cfeature.STATES, linewidth=0.5)
+                ax4.add_feature(USCOUNTIES, linewidth=0.75)
+                ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+                cbar4.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.hour >= 21 and utc_time.hour < 24:
+    
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+    
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5)
+                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        return fig
+
+
+    def plot_maximum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS THE MAXIMUM TEMPERATURE FORECAST FOR THE FIRST PERIOD, THEN THE MAXIMUM TEMPERATURE FORECAST TRENDS FOR THE NEXT PERIODS. 
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MAXIMUM TEMPERATURE GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.maxt.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, 'ds.maxt.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxt.bin')
+
+        lons = lons_1
+        lats = lats_1
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+    
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Temperature", fontweight='bold')
+    
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+    
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 145, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 2:
+    
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 4:
+    
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=0.5)
+            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+    
+    
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Maximum Temperature Trend(\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=0.5)
+            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.STATES, linewidth=0.5)
+            ax4.add_feature(USCOUNTIES, linewidth=0.75)
+            ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+            
+        return fig
+
+    
+    
+    def plot_minimum_temperature_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS THE MINIMUM TEMPERATURE FORECAST FOR THE FIRST PERIOD, THEN THE MAXIMUM TEMPERATURE FORECAST TRENDS FOR THE NEXT PERIODS.
     
         IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MINIMUM TEMPERATURE GRIDS
     
@@ -5134,7 +5216,460 @@ class National_Weather_Service_Forecast:
     
         COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
         '''
-        extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.mint.bin')
+    
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.mint.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.mint.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.mint.bin')
+
+        lons = lons_1
+        lats = lats_1
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+    
+            fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature", fontweight='bold')
+    
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+    
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 2:
+            
+            if utc_time.hour >= 14 or utc_time.hour < 11:
+    
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+     
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+         
+            if utc_time.hour >= 11 and utc_time.hour < 14:
+    
+                fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature", fontweight='bold')
+                
+                ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 3:
+
+            if utc_time.hour >= 14 or utc_time.hour < 11:
+    
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.hour >= 11 and utc_time.hour < 14:
+    
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 4:
+
+            if utc_time.hour >= 14 or utc_time.hour < 11:
+    
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5)
+                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.hour >= 11 and utc_time.hour < 14:
+    
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+    
+                cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Minimum Temperature Trend \N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files >= 5:
+
+            if utc_time.hour >= 14 or utc_time.hour < 11:
+    
+                fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+                fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+    
+    
+                ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Minimum Temperature Trend(\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5)
+                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax4.add_feature(cfeature.STATES, linewidth=0.5)
+                ax4.add_feature(USCOUNTIES, linewidth=0.75)
+                ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+                cbar4.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.hour >= 11 and utc_time.hour < 14:
+    
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+    
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5)
+                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        return fig
+
+
+    def plot_minimum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS THE MINIMUM TEMPERATURE FORECAST FOR THE FIRST PERIOD, THEN THE MAXIMUM TEMPERATURE FORECAST TRENDS FOR THE NEXT PERIODS.
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MINIMUM TEMPERATURE GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.mint.bin')
         
         first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, 'ds.mint.bin')
     
@@ -5145,20 +5680,3706 @@ class National_Weather_Service_Forecast:
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
     
-        grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals = parsers.GRIB_temperature_conversion(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files)
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.mint.bin')
 
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs()
-        
-        
+        lons = lons_1
+        lats = lats_1
        
         if files == 1:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            lats, lons = first_GRIB_file.latlons()
     
             fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-            fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F) ", fontweight='bold')
+    
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Temperature", fontweight='bold')
+    
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+    
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 2:
+    
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 4:
+    
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=0.5)
+            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Minimum Temperature Trend(\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=0.5)
+            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.STATES, linewidth=0.5)
+            ax4.add_feature(USCOUNTIES, linewidth=0.75)
+            ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        return fig
+    
+    
+    def plot_minimum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS THE NWS FORECAST MINIMUM RELATIVE HUMIDITY AND THE MINIMUM RELATIVE HUMIDITY FORECAST TRENDS
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MIN RELATIVE HUMIDITY GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.minrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.minrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.minrh.bin')
+
+        lons = lons_1
+        lats = lats_1
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 2:
+            
+            if utc_time.hour > 6 and utc_time.hour <= 21:
+    
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+     
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+         
+            if utc_time.hour >= 22 or utc_time.hour < 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+                
+                ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 3:
+            
+            if utc_time.hour > 6 and utc_time.hour <= 21:
+    
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+            if utc_time.hour >= 22 or utc_time.hour < 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        if files == 4:
+
+            if utc_time.hour > 6 and utc_time.hour <= 21:
+    
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5)
+                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
+                cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+            if utc_time.hour >= 22 or utc_time.hour < 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        if files >= 5:
+    
+            if utc_time.hour > 6 and utc_time.hour <= 21:
+    
+                fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+                fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+                ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5)
+                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax4.add_feature(cfeature.STATES, linewidth=0.5)
+                ax4.add_feature(USCOUNTIES, linewidth=0.75)
+                ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+                cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+            if utc_time.hour >= 22 or utc_time.hour < 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5)
+                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        return fig
+
+
+    def plot_minimum_relative_humidity_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS THE NWS FORECAST MINIMUM RELATIVE HUMIDITY AND THE MINIMUM RELATIVE HUMIDITY FORECAST TRENDS
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MIN RELATIVE HUMIDITY GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.minrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, 'ds.minrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.minrh.bin')
+
+        lons = lons_1
+        lats = lats_1
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 2:
+    
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+         
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        if files == 4:
+
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=0.5)
+            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
+            cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        if files >= 5:
+
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=0.5)
+            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.STATES, linewidth=0.5)
+            ax4.add_feature(USCOUNTIES, linewidth=0.75)
+            ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        return fig
+    
+
+
+class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
+
+    r'''
+    THIS CLASS HOSTS A VARIETY OF PLOTTING FUNCTIONS. 
+
+    THESE FUNCTIONS PLOT THE NATIONAL WEATHER SERVICE GRIDDED FORECAST DATA IN VARIOUS DIFFERENT WAYS
+
+    GENERIC FORECAST FUNCTIONS OFFER SLIGHTLY MORE CUSTOMIZATION AS BOTH THE GENERIC FUNCTIONS ARE NOT PRESETS FOR A CERTAIN WEATHER ELEMENT. 
+
+    THIS CLASS PLOTS THE DATA USING PREDICTIVE SERVICES AREAS (PSA) BOUNDARIES AS A REFERENCE POINT. 
+
+    (C) METEOROLOGIST ERIC J. DREWITZ 2023
+
+    '''
+
+    def plot_generic_short_term_forecast(directory_name, parameter, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step, plot_title, sub_plot_1_title, sub_plot_2_title, sub_plot_3_title, sub_plot_4_title, sub_plot_5_title, fig_x_length, fig_y_length, color_bar_shrink, PSA_Border_Color, PSA_Border_Line_Thickness): 
+    
+        r'''
+        THIS FUNCTION MAKES A GENERIC CUSTOMIZED PLOT OF THE LATEST SHORT-TERM NOAA/NWS NDFD GRID FORECAST DATA
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+        3. WEATHER PARAMETER 
+        4. COLOR TABLE FOR PLOT 
+        5. COLOR TABLE START, STOP AND STEP
+        6. GRID TIME INTERVALS IN HOURS (DIFFERENT GRIDS ARE DIFFERENT LENGTHS IN TIME)
+        7. PLOT TITLE - TITLE MUST BE ENTERED AS A STRING VARIABLE
+        8. COLORBAR SHRINK - FLOAT VARIABLE THAT DETERMINES THE SIZE OF THE COLORBAR. THE DEFAULT IS 1.0. TO SHRINK THE SIZE OF THE COLORBAR SET SHRINK TO A FLOAT VALUE BETWEEN 0 AND 1. TO INCREASE THE SIZE OF THE COLORBAR SET THE SHRINK VALUE TO ABOVE 1. 
+        9. FIGURE SIZE IS CUSTOMIZED BY THE INTEGER VARIABLES (fig_x_length, fig_y_length) IF YOUR PLOT COMES OUT LOOKING FUNKY (I.E. WORDS OVERLAPPING, COLORBARS NOT SIZED PROPERLY EVEN AFTER YOU EDIT THE SIZE OF THE COLORBAR SHRINK ETC.), EDIT THE SIZE OF THE FIGURE SIZE
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+        5. PARSERS
+        6. DATA_ACCESS
+    
+        **IF THE USER WANTS TO MAKE 2 SEPERATE PLOTS WITH 1 AS THE SHORT-TERM AND THE OTHER AS THE EXTENDED, THE PROGRAMS FOR EACH NEED TO BE RUN IN DIFFERENT FOLDERS SO THE BINARY FILE DOESN'T OVERWRITE ITSELF**
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+        
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, parameter)
+    
+        local_time, utc_time = standard.plot_creation_time()
+    
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs(PSA_Border_Color)
+    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter)
+
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_bar_shrink)
+    
+        if files == 2:
+    
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+            
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
+    
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
+    
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+            
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
+    
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
+    
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
+    
+        if files == 4:
+    
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+            
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
+    
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
+    
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
+    
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax3.set_title(sub_plot_4_title + '\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_bar_shrink) 
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+            
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
+    
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
+    
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
+    
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax3.set_title(sub_plot_4_title + '\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_bar_shrink)
+    
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax4.set_title(sub_plot_5_title + '\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar4 = fig.colorbar(cs4, shrink=color_bar_shrink) 
+    
+        return fig
+    
+    def plot_generic_extended_forecast(directory_name, parameter, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step, plot_title, sub_plot_1_title, sub_plot_2_title, sub_plot_3_title, sub_plot_4_title, sub_plot_5_title, fig_x_length, fig_y_length, color_bar_shrink, PSA_Border_Color, PSA_Border_Line_Thickness): 
+    
+        r'''
+        THIS FUNCTION MAKES A GENERIC CUSTOMIZED PLOT OF THE LATEST EXTENDED NOAA/NWS NDFD GRID FORECAST DATA
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+        3. WEATHER PARAMETER 
+        4. COLOR TABLE FOR PLOT 
+        5. COLOR TABLE START, STOP AND STEP
+        6. GRID TIME INTERVALS IN HOURS (DIFFERENT GRIDS ARE DIFFERENT LENGTHS IN TIME)
+        7. PLOT TITLE - TITLE MUST BE ENTERED AS A STRING VARIABLE
+        8. COLORBAR SHRINK - FLOAT VARIABLE THAT DETERMINES THE SIZE OF THE COLORBAR. THE DEFAULT IS 1.0. TO SHRINK THE SIZE OF THE COLORBAR SET SHRINK TO A FLOAT VALUE BETWEEN 0 AND 1. TO INCREASE THE SIZE OF THE COLORBAR SET THE SHRINK VALUE TO ABOVE 1. 
+        9. FIGURE SIZE IS CUSTOMIZED BY THE INTEGER VARIABLES (fig_x_length, fig_y_length) IF YOUR PLOT COMES OUT LOOKING FUNKY (I.E. WORDS OVERLAPPING, COLORBARS NOT SIZED PROPERLY EVEN AFTER YOU EDIT THE SIZE OF THE COLORBAR SHRINK ETC.), EDIT THE SIZE OF THE FIGURE SIZE
+        10. THE TITLES FOR EACH SUBPLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+        5. PARSERS
+        6. DATA_ACCESS
+    
+        **IF THE USER WANTS TO MAKE 2 SEPERATE PLOTS WITH 1 AS THE SHORT-TERM AND THE OTHER AS THE EXTENDED, THE PROGRAMS FOR EACH NEED TO BE RUN IN DIFFERENT FOLDERS SO THE BINARY FILE DOESN'T OVERWRITE ITSELF**
+        
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+        
+        
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, parameter)
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, parameter)
+    
+        local_time, utc_time = standard.plot_creation_time()
+    
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs(PSA_Border_Color)
+    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter)
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_bar_shrink)
+    
+        if files == 2:
+    
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+            
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
+    
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
+    
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+            
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
+    
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
+    
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
+    
+        if files == 4:
+    
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+            
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
+    
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
+    
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
+    
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax3.set_title(sub_plot_4_title + '\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_bar_shrink) 
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
+            
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_bar_shrink)
+    
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_bar_shrink)
+    
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_bar_shrink)
+    
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax3.set_title(sub_plot_4_title + '\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_bar_shrink)
+    
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
+            ax4.set_title(sub_plot_5_title + '\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar4 = fig.colorbar(cs4, shrink=color_bar_shrink) 
+    
+        return fig
+    
+    
+
+    def plot_relative_humidity_poor_recovery_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS AREAS OF POOR OVERNIGHT RELATIVE HUMIDITY RECOVERY FROM THE NATIONAL WEATHER SERVICE FORECAST
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MAX RELATIVE HUMIDITY GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.maxrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.maxrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+    
+    
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=0.75)
+            ax.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 2:
+            
+            if utc_time.hour >= 18 or utc_time.hour < 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+     
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+         
+            if utc_time.hour >= 6 and utc_time.hour < 18:
+    
+                fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+                
+                ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 3:
+            
+            if utc_time.hour >= 18 or utc_time.hour < 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+            if utc_time.hour >= 6 and utc_time.hour < 18:
+    
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 4:
+    
+            if utc_time.hour >= 18 or utc_time.hour < 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(PSAs, linewidth=0.75)
+                ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
+                cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+            if utc_time.hour >= 6 and utc_time.hour < 18:
+    
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files >= 5:
+    
+            if utc_time.hour >= 18 or utc_time.hour < 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+                fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(PSAs, linewidth=0.75)
+                ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax4.add_feature(PSAs, linewidth=0.75)
+                ax4.set_title('Night 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+                cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+            if utc_time.hour >= 6 and utc_time.hour < 18:
+    
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(PSAs, linewidth=0.75)
+                ax3.set_title('Night 4 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 31, 1),cmap='YlOrBr_r', transform=datacrs)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        return fig
+
+    def plot_relative_humidity_poor_recovery_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS AREAS OF POOR OVERNIGHT RELATIVE HUMIDITY RECOVERY FROM THE NATIONAL WEATHER SERVICE FORECAST
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MAX RELATIVE HUMIDITY GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.maxrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, 'ds.maxrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+    
+    
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
+        
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=0.75)
+            ax.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 2:
+            
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Night 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=0.70)
+            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 4:
+    
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Night 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Night 7 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
+            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nPoor Overnight Relative Humidity Recovery (Max RH <= 30%)", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 3 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 4 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Night 5 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Night 6 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(PSAs, linewidth=0.75)
+            ax4.set_title('Night 7 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 31, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        return fig
+    
+    def plot_relative_humidity_excellent_recovery_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS AREAS OF EXCELLENT OVERNIGHT RELATIVE HUMIDITY RECOVERY FROM THE NATIONAL WEATHER SERVICE FORECAST
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MAX RELATIVE HUMIDITY GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+        
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.maxrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.maxrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+    
+    
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('red')
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Short-Term Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=0.75)
+            ax.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 2:
+            
+            if utc_time.hour >= 18 or utc_time.hour < 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+     
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs) 
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+         
+            if utc_time.hour >= 6 and utc_time.hour < 18:
+    
+                fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+                
+                ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 3:
+            
+            if utc_time.hour >= 18 or utc_time.hour < 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+            if utc_time.hour >= 6 and utc_time.hour < 18:
+    
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 4:
+    
+            if utc_time.hour >= 18 or utc_time.hour < 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(PSAs, linewidth=0.75)
+                ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+            if utc_time.hour >= 6 and utc_time.hour < 18:
+    
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files >= 5:
+    
+            if utc_time.hour >= 18 or utc_time.hour < 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+                fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(PSAs, linewidth=0.75)
+                ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax4.add_feature(PSAs, linewidth=0.75)
+                ax4.set_title('Night 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+                cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+            if utc_time.hour >= 6 and utc_time.hour < 18:
+    
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(PSAs, linewidth=0.75)
+                ax3.set_title('Night 4 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        return fig
+    
+    def plot_relative_humidity_excellent_recovery_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS AREAS OF EXCELLENT OVERNIGHT RELATIVE HUMIDITY RECOVERY FROM THE NATIONAL WEATHER SERVICE FORECAST
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MAX RELATIVE HUMIDITY GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+        
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.maxrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, 'ds.maxrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('red')
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
+        
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=0.75)
+            ax.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 2:
+            
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+         
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Night 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 4:
+    
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Night 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Night 7 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nExcellent Overnight Relative Humidity Recovery (Max RH >= 80%)", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 3 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 4 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Night 5 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Night 6 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(PSAs, linewidth=0.75)
+            ax4.set_title('Night 7 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        return fig
+    
+    
+    
+    def plot_red_flag_minimum_relative_humidity_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS AREAS WHERE MINIMUM RELATIVE HUMIDITY IS FORECAST TO MEET AND/OR EXCEED THE RED FLAG WARNING CRITERIA FOR MINIMUM RELATIVE HUMIDITY (MIN RH <= 15%) AND IS BASED ON THE National Weather Service Short-Term Forecast
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MINIMUM RELATIVE HUMIDITY GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.minrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.minrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+    
+    
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.minrh.bin')
+        
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Short-Term Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=0.75)
+            ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 2:
+            
+            if utc_time.hour > 6 and utc_time.hour <= 21:
+    
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+     
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+         
+            if utc_time.hour > 21 or utc_time.hour <= 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+                
+                ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+    
+                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 3:
+            
+            if utc_time.hour > 6 and utc_time.hour <= 21:
+    
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+            if utc_time.hour > 21 or utc_time.hour <= 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 4:
+    
+            if utc_time.hour > 6 and utc_time.hour <= 21:
+    
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(PSAs, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+            if utc_time.hour > 21 or utc_time.hour <= 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files >= 5:
+    
+            if utc_time.hour > 6 and utc_time.hour <= 21:
+    
+                fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+                fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(PSAs, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax4.add_feature(PSAs, linewidth=0.75)
+                ax4.set_title('Day 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+                cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+            if utc_time.hour > 21 or utc_time.hour <= 6:
+    
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+                cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(PSAs, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        return fig
+
+
+    def plot_red_flag_minimum_relative_humidity_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS AREAS WHERE MINIMUM RELATIVE HUMIDITY IS FORECAST TO MEET AND/OR EXCEED THE RED FLAG WARNING CRITERIA FOR MINIMUM RELATIVE HUMIDITY (MIN RH <= 15%) AND IS BASED ON THE National Weather Service Extended Forecast
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MINIMUM RELATIVE HUMIDITY GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.minrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, 'ds.minrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+    
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.minrh.bin')
+        
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=0.75)
+            ax.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 2:
+    
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 4:
+    
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Day 7 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nRed Flag Warning Minimum Relative Humidity(Min RH <= 15%)", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 3 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 4 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 5 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Day 6 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(PSAs, linewidth=0.75)
+            ax4.set_title('Day 7 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        return fig
+    
+    def plot_extreme_heat_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS AREAS WHERE THERE IS EXTREME HEAT IN THE FORECAST. DURING THE WARM SEASON (APRIL - OCTOBER) EXTREME HEAT IS DEFINED AS THE MAXIMUM TEMPERATURE >= 120F AND COLD SEASON (NOVEMBER - MARCH) MAXIMUM TEMPERATURE >= 100F AND IS BASED ON THE NATIONAL WEATHER SERVICE FORECAST
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MAXIMUM TEMPERATURE GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.maxt.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.maxt.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+    
+    
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxt.bin')
+        
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(10,10))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+    
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=0.75)
+            ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00'), fontweight='bold')
+    
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 2:
+            
+            if utc_time.hour >= 0 and utc_time.hour < 19:
+    
+                fig = plt.figure(figsize=(9,6))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+     
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+         
+            if utc_time.hour >= 19 and utc_time.hour < 24:
+    
+                fig = plt.figure(figsize=(10,10))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                
+                ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 3:
+            
+            if utc_time.hour >= 0 and utc_time.hour < 19:
+    
+                fig = plt.figure(figsize=(15,6))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.hour >= 19 and utc_time.hour < 24:
+    
+                fig = plt.figure(figsize=(9,6))
+                fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 4:
+    
+            if utc_time.hour >= 0 and utc_time.hour < 19:
+    
+                fig = plt.figure(figsize=(10,10))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(PSAs, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.hour >= 19 and utc_time.hour < 24:
+    
+                fig = plt.figure(figsize=(15,6))
+                fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+                ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files >= 5:
+    
+            if utc_time.hour >= 0 and utc_time.hour < 19:
+    
+                fig = plt.figure(figsize=(25,10))
+                fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(PSAs, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax4.add_feature(PSAs, linewidth=0.75)
+                ax4.set_title('Day 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+                cbar4.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.hour >= 19 and utc_time.hour < 24:
+    
+                fig = plt.figure(figsize=(10,10))
+                fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+                ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+                ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+                cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+                ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax1.add_feature(PSAs, linewidth=0.75)
+                ax1.set_title('Day 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+                cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+                ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax2.add_feature(PSAs, linewidth=0.75)
+                ax2.set_title('Day 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+                cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+                ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+                ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+                ax3.add_feature(PSAs, linewidth=0.75)
+                ax3.set_title('Day 4 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+                cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        return fig
+
+
+    def plot_extreme_heat_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS AREAS WHERE THERE IS EXTREME HEAT IN THE FORECAST. DURING THE WARM SEASON (APRIL - OCTOBER) EXTREME HEAT IS DEFINED AS THE MAXIMUM TEMPERATURE >= 120F AND COLD SEASON (NOVEMBER - MARCH) MAXIMUM TEMPERATURE >= 100F AND IS BASED ON THE NATIONAL WEATHER SERVICE FORECAST
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MAXIMUM TEMPERATURE GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.maxt.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, 'ds.maxt.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+    
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxt.bin')
+        
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+    
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=0.75)
+            ax.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00'), fontweight='bold')
+    
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 2:
+            
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+    
+        if files == 4:
+
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Day 7 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 3 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 4 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 5 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Day 6 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(PSAs, linewidth=0.75)
+            ax4.set_title('Day 7 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        return fig
+    
+    def plot_frost_freeze_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink):
+    
+        r'''
+        THIS FUNCTION PLOTS AREAS WHERE THE FORECAST MINIMUM TEMPERATURE IS EXPECTED TO REACH 32F OR BELOW IN THE NATIONAL WEATHER SERVICE SHORT-TERM FORECAST. THIS IS HELPFUL AS FREEZING CONDITIONS CONVERT LIVE FUELS INTO DEAD FUELS. 
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MINIMUM TEMPERATURE GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.mint.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.mint.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+    
+    
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.mint.bin')
+        
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Short-Term Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F) ", fontweight='bold')
             
             ax = plt.subplot(1, 1, 1, projection=mapcrs)
             ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5170,25 +9391,17 @@ class National_Weather_Service_Forecast:
             cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
             
             if utc_time.hour >= 14 or utc_time.hour < 11:
     
                 fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
      
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax0.add_feature(PSAs, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -5207,7 +9420,7 @@ class National_Weather_Service_Forecast:
     
                 fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
                 
                 ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5219,28 +9432,17 @@ class National_Weather_Service_Forecast:
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-                
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
             
             if utc_time.hour >= 14 or utc_time.hour < 11:
     
                 fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
     
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax0.add_feature(PSAs, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -5268,7 +9470,7 @@ class National_Weather_Service_Forecast:
     
                 fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
     
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5289,30 +9491,17 @@ class National_Weather_Service_Forecast:
                 cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 4:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
     
             if utc_time.hour >= 14 or utc_time.hour < 11:
     
                 fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
     
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(PSAs, linewidth=1)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.add_feature(PSAs, linewidth=0.75)
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -5320,7 +9509,7 @@ class National_Weather_Service_Forecast:
         
                 ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(PSAs, linewidth=1)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
@@ -5329,7 +9518,7 @@ class National_Weather_Service_Forecast:
         
                 ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(PSAs, linewidth=1)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
@@ -5338,7 +9527,7 @@ class National_Weather_Service_Forecast:
         
                 ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(PSAs, linewidth=1)
+                ax3.add_feature(PSAs, linewidth=0.75)
                 ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
@@ -5349,7 +9538,7 @@ class National_Weather_Service_Forecast:
     
                 fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
     
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5379,33 +9568,17 @@ class National_Weather_Service_Forecast:
                 cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files >= 5:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-              
-            lats_1, lons_1 = first_GRIB_file.latlons()
-            lats_2, lons_2 = second_GRIB_file.latlons()
-            lats_3, lons_3 = third_GRIB_file.latlons()
-            lats_4, lons_4 = fourth_GRIB_file.latlons()
-            lats_5, lons_5 = fifth_GRIB_file.latlons()
     
             if utc_time.hour >= 14 or utc_time.hour < 11:
     
                 fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
                 fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
     
                 ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax0.add_feature(PSAs, linewidth=0.75)
-                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+                ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
@@ -5451,7 +9624,7 @@ class National_Weather_Service_Forecast:
     
                 fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
     
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5490,8 +9663,211 @@ class National_Weather_Service_Forecast:
                 cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         return fig    
+
+    def plot_frost_freeze_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink):
     
-    def plot_maximum_relative_humidity_forecast_and_trends(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, local_time, utc_time, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel): 
+        r'''
+        THIS FUNCTION PLOTS AREAS WHERE THE FORECAST MINIMUM TEMPERATURE IS EXPECTED TO REACH 32F OR BELOW IN THE NATIONAL WEATHER SERVICE EXTENDED FORECAST. THIS IS HELPFUL AS FREEZING CONDITIONS CONVERT LIVE FUELS INTO DEAD FUELS. 
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MINIMUM TEMPERATURE GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.mint.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, 'ds.mint.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.mint.bin')
+        
+        
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F) ", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=0.75)
+            ax.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 2:
+    
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+         
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 4:
+    
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=1)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=1)
+            ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=1)
+            ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=1)
+            ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nFrost & Freeze (Minimum Temperature <= 32 \N{DEGREE SIGN}F)", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(PSAs, linewidth=0.75)
+            ax4.set_title('Night 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        return fig    
+
+
+    def plot_maximum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
     
         r'''
         THIS FUNCTION PLOTS THE NWS OVERNIGHT RELATIVE HUMIDITY FORECAST AND THE FORECAST TRENDS OF OVERNIGHT RELATIVE HUMIDITY 
@@ -5511,401 +9887,521 @@ class National_Weather_Service_Forecast:
         COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
         '''
     
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.maxrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.maxrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
         files = count_of_GRIB_files
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('red')
     
-        # SINCE THE LATS AND LONS FOR EACH OF THE GRIB FILES ARE THE SAME, WE ONLY NEED IT ONCE AND IT MAKES IT EASIER WITH MAKING THE RELATIVE HUMIDITY CHANGE PLOTS
-        lats, lons = first_GRIB_file.latlons()
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
+
+        lons = lons_1
+        lats = lats_1
        
         if files == 1:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
     
-            fig = plt.figure(figsize=(10,10))
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-            fig.suptitle("National Weather Service Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+            fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
             
             ax = plt.subplot(1, 1, 1, projection=mapcrs)
             ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.add_feature(PSAs, linewidth=0.75)
             ax.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=0.70)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
             cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
             
             if utc_time.hour > 18 or utc_time.hour <= 6:
     
-                fig = plt.figure(figsize=(9,6))
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
      
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
          
             if utc_time.hour >= 6 and utc_time.hour < 18:
     
-                fig = plt.figure(figsize=(10,10))
+                fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
                 
                 ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
             
             if utc_time.hour > 18 or utc_time.hour <= 6:
     
-                fig = plt.figure(figsize=(15,6))
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
             if utc_time.hour >= 6 and utc_time.hour < 18:
     
-                fig = plt.figure(figsize=(9,5))
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
         if files == 4:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
     
             if utc_time.hour > 18 or utc_time.hour <= 6:
     
-                fig = plt.figure(figsize=(10,10))
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax3.add_feature(cfeature.STATES, linewidth=0.5)
-                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.add_feature(PSAs, linewidth=0.75)
                 ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar3 = fig.colorbar(cs3, shrink=0.70) 
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
             if utc_time.hour >= 6 and utc_time.hour < 18:
     
-                fig = plt.figure(figsize=(15,6))
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
                 ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
         if files >= 5:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_vals = fifth_GRIB_file.values
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
     
             if utc_time.hour > 18 or utc_time.hour <= 6:
     
-                fig = plt.figure(figsize=(25,10))
+                fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
                 fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax3.add_feature(cfeature.STATES, linewidth=0.5)
-                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.add_feature(PSAs, linewidth=0.75)
                 ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar3 = fig.colorbar(cs3, shrink=0.70)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
                 ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax4.add_feature(cfeature.STATES, linewidth=0.5)
-                ax4.add_feature(USCOUNTIES, linewidth=0.75)
+                ax4.add_feature(PSAs, linewidth=0.75)
                 ax4.set_title('Night 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar4 = fig.colorbar(cs4, shrink=0.70)
+                cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                 cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
             if utc_time.hour >= 6 and utc_time.hour < 18:
     
-                fig = plt.figure(figsize=(10,10))
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax3.add_feature(cfeature.STATES, linewidth=0.5)
-                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.add_feature(PSAs, linewidth=0.75)
                 ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar3 = fig.colorbar(cs3, shrink=0.70)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        return fig
+
+
+    def plot_maximum_relative_humidity_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS THE NWS OVERNIGHT RELATIVE HUMIDITY FORECAST AND THE FORECAST TRENDS OF OVERNIGHT RELATIVE HUMIDITY 
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MAX RELATIVE HUMIDITY GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.maxrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.maxrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('red')
+    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
+
+        lons = lons_1
+        lats = lats_1
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=0.75)
+            ax.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 2:
+    
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        if files == 4:
+    
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
+            cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Relative Humidity & Maximum Relative Humidity Trend", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(PSAs, linewidth=0.75)
+            ax4.set_title('Night 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
         return fig
     
     
-    def plot_maximum_temperature_forecast_and_trends(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, local_time, utc_time, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel): 
+    def plot_maximum_temperature_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
     
         r'''
         THIS FUNCTION PLOTS THE MAXIMUM TEMPERATURE FORECAST FOR THE FIRST PERIOD, THEN THE MAXIMUM TEMPERATURE FORECAST TRENDS FOR THE NEXT PERIODS. 
@@ -5925,28 +10421,34 @@ class National_Weather_Service_Forecast:
         COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
         '''
     
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.maxt.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.maxt.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
         files = count_of_GRIB_files
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
-        
-        lats, lons = first_GRIB_file.latlons()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
     
-        grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals = parsers.GRIB_temperature_conversion(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files)
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxt.bin')
+
+        lons = lons_1
+        lats = lats_1
        
         if files == 1:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
     
-            fig = plt.figure(figsize=(10,10))
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
     
-            fig.suptitle("National Weather Service Forecast\nMaximum Temperature", fontweight='bold')
+            fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature", fontweight='bold')
     
             ax = plt.subplot(1, 1, 1, projection=mapcrs)
             ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.add_feature(PSAs, linewidth=0.75)
             ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
     
             if utc_time.month >= 4 and utc_time.month <= 10:
@@ -5955,28 +10457,21 @@ class National_Weather_Service_Forecast:
             if utc_time.month >= 11 or utc_time.month <= 3:
                 cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
                 
-            cbar = fig.colorbar(cs, shrink=0.70)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
             cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
             
             if utc_time.hour >= 0 and utc_time.hour < 19:
     
-                fig = plt.figure(figsize=(9,6))
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
      
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -5985,33 +10480,29 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
          
             if utc_time.hour >= 19 and utc_time.hour < 24:
     
-                fig = plt.figure(figsize=(10,10))
+                fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMaximum Temperature", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature", fontweight='bold')
                 
                 ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6020,31 +10511,21 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            
-            
+
             if utc_time.hour >= 0 and utc_time.hour < 21:
     
-                fig = plt.figure(figsize=(15,6))
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
     
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6053,45 +10534,39 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
     
             if utc_time.hour >= 21 and utc_time.hour < 24:
     
-                fig = plt.figure(figsize=(9,6))
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
     
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6100,43 +10575,31 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 4:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-    
+
             if utc_time.hour >= 0 and utc_time.hour < 21:
     
-                fig = plt.figure(figsize=(10,10))
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
     
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6145,59 +10608,49 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
     
                     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax3.add_feature(cfeature.STATES, linewidth=0.5)
-                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.add_feature(PSAs, linewidth=0.75)
                 ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
-    
-                    
-                cbar3 = fig.colorbar(cs3, shrink=0.70)
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)  
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
     
             if utc_time.hour >= 21 and utc_time.hour < 24:
     
-                fig = plt.figure(figsize=(15,6))
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
     
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6206,61 +10659,44 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
     
                 cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
     
                     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
     
                 ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Maximum Temperature Trend \N{DEGREE SIGN}F)", fontweight='bold')
     
         if files >= 5:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-    
-    
+
             if utc_time.hour >= 0 and utc_time.hour < 21:
     
-                fig = plt.figure(figsize=(25,10))
+                fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
                 fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
     
     
                 ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6269,70 +10705,60 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
     
                     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Maximum Temperature Trend(\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax3.add_feature(cfeature.STATES, linewidth=0.5)
-                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.add_feature(PSAs, linewidth=0.75)
                 ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar3 = fig.colorbar(cs3, shrink=0.70)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
                 ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax4.add_feature(cfeature.STATES, linewidth=0.5)
-                ax4.add_feature(USCOUNTIES, linewidth=0.75)
+                ax4.add_feature(PSAs, linewidth=0.75)
                 ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
     
-                cbar4 = fig.colorbar(cs4, shrink=0.70)
+                cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                 cbar4.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
     
             if utc_time.hour >= 21 and utc_time.hour < 24:
     
-                fig = plt.figure(figsize=(10,10))
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
     
-                fig.suptitle("National Weather Service Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
     
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6341,49 +10767,294 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax3.add_feature(cfeature.STATES, linewidth=0.5)
-                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.add_feature(PSAs, linewidth=0.75)
                 ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar3 = fig.colorbar(cs3, shrink=0.70)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
     
         return fig
+
+
+    def plot_maximum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS THE MAXIMUM TEMPERATURE FORECAST FOR THE FIRST PERIOD, THEN THE MAXIMUM TEMPERATURE FORECAST TRENDS FOR THE NEXT PERIODS. 
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MAXIMUM TEMPERATURE GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.maxt.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, 'ds.maxt.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxt.bin')
+
+        lons = lons_1
+        lats = lats_1
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+    
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Temperature", fontweight='bold')
+    
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=0.75)
+            ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+    
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 145, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 2:
+    
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 4:
+    
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMaximum Temperature & Maximum Temperature Trends", fontweight='bold')
     
     
-    def plot_minimum_temperature_forecast_and_trends(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, local_time, utc_time, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel): 
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Maximum Temperature Trend(\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(PSAs, linewidth=0.75)
+            ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+            
+        return fig
+
+    
+    
+    def plot_minimum_temperature_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
     
         r'''
         THIS FUNCTION PLOTS THE MINIMUM TEMPERATURE FORECAST FOR THE FIRST PERIOD, THEN THE MAXIMUM TEMPERATURE FORECAST TRENDS FOR THE NEXT PERIODS.
@@ -6403,28 +11074,34 @@ class National_Weather_Service_Forecast:
         COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
         '''
     
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.mint.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.mint.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
         files = count_of_GRIB_files
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
-        
-        lats, lons = first_GRIB_file.latlons()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
     
-        grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals = parsers.GRIB_temperature_conversion(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files)
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.mint.bin')
+
+        lons = lons_1
+        lats = lats_1
        
         if files == 1:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
     
-            fig = plt.figure(figsize=(10,10))
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
     
-            fig.suptitle("National Weather Service Forecast\nMinimum Temperature", fontweight='bold')
+            fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature", fontweight='bold')
     
             ax = plt.subplot(1, 1, 1, projection=mapcrs)
             ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.add_feature(PSAs, linewidth=0.75)
             ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
     
             if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6433,28 +11110,21 @@ class National_Weather_Service_Forecast:
             if utc_time.month >= 11 or utc_time.month <= 3:
                 cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
                 
-            cbar = fig.colorbar(cs, shrink=0.70)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
             cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
             
             if utc_time.hour >= 14 or utc_time.hour < 11:
     
-                fig = plt.figure(figsize=(9,6))
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
      
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6463,33 +11133,29 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
          
             if utc_time.hour >= 11 and utc_time.hour < 14:
     
-                fig = plt.figure(figsize=(10,10))
+                fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMinimum Temperature", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature", fontweight='bold')
                 
                 ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6498,31 +11164,21 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            
-            
+
             if utc_time.hour >= 14 or utc_time.hour < 11:
     
-                fig = plt.figure(figsize=(15,6))
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
     
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6531,45 +11187,39 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
     
             if utc_time.hour >= 11 and utc_time.hour < 14:
     
-                fig = plt.figure(figsize=(9,6))
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
     
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6578,43 +11228,31 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 4:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-    
+
             if utc_time.hour >= 14 or utc_time.hour < 11:
     
-                fig = plt.figure(figsize=(10,10))
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
     
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6623,59 +11261,51 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
     
                     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax3.add_feature(cfeature.STATES, linewidth=0.5)
-                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.add_feature(PSAs, linewidth=0.75)
                 ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
     
                     
-                cbar3 = fig.colorbar(cs3, shrink=0.70)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
     
             if utc_time.hour >= 11 and utc_time.hour < 14:
     
-                fig = plt.figure(figsize=(15,6))
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
     
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6684,61 +11314,44 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
     
                 cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
     
                     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
     
                 ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Minimum Temperature Trend \N{DEGREE SIGN}F)", fontweight='bold')
     
         if files >= 5:
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
-    
-    
+
             if utc_time.hour >= 14 or utc_time.hour < 11:
     
-                fig = plt.figure(figsize=(25,10))
+                fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
                 fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                 
-                fig.suptitle("National Weather Service Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
     
     
                 ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6747,70 +11360,60 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
     
                     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Minimum Temperature Trend(\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax3.add_feature(cfeature.STATES, linewidth=0.5)
-                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.add_feature(PSAs, linewidth=0.75)
                 ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar3 = fig.colorbar(cs3, shrink=0.70)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
                 ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax4.add_feature(cfeature.STATES, linewidth=0.5)
-                ax4.add_feature(USCOUNTIES, linewidth=0.75)
+                ax4.add_feature(PSAs, linewidth=0.75)
                 ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
     
-                cbar4 = fig.colorbar(cs4, shrink=0.70)
+                cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                 cbar4.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
     
             if utc_time.hour >= 11 and utc_time.hour < 14:
     
-                fig = plt.figure(figsize=(10,10))
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
     
-                fig.suptitle("National Weather Service Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
     
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
@@ -6819,49 +11422,291 @@ class National_Weather_Service_Forecast:
                 if utc_time.month >= 11 or utc_time.month <= 3:
                     cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
                     
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
     
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
         
                 ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax3.add_feature(cfeature.STATES, linewidth=0.5)
-                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.add_feature(PSAs, linewidth=0.75)
                 ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
                     
-                cbar3 = fig.colorbar(cs3, shrink=0.70)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        return fig
+
+
+    def plot_minimum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS THE MINIMUM TEMPERATURE FORECAST FOR THE FIRST PERIOD, THEN THE MAXIMUM TEMPERATURE FORECAST TRENDS FOR THE NEXT PERIODS.
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MINIMUM TEMPERATURE GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.mint.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, 'ds.mint.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.mint.bin')
+
+        lons = lons_1
+        lats = lats_1
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+    
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Temperature", fontweight='bold')
+    
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=0.75)
+            ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+    
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 2:
+    
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files == 4:
+    
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+                    
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+    
+        if files >= 5:
+    
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+                
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Temperature & Minimum Temperature Trends", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
+        
+            if utc_time.month >= 4 and utc_time.month <= 10:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='coolwarm', transform=datacrs)
+    
+            if utc_time.month >= 11 or utc_time.month <= 3:
+                cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='coolwarm', transform=datacrs)
+                    
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Minimum Temperature Trend(\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+                    
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(PSAs, linewidth=0.75)
+            ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-30, 31, 1), cmap='coolwarm', transform=datacrs)
+    
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontweight='bold')
     
         return fig
     
     
-    def plot_minimum_relative_humidity_forecast_and_trends(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, local_time, utc_time, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel): 
+    def plot_minimum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
     
         r'''
         THIS FUNCTION PLOTS THE NWS FORECAST MINIMUM RELATIVE HUMIDITY AND THE MINIMUM RELATIVE HUMIDITY FORECAST TRENDS
@@ -6881,398 +11726,521 @@ class National_Weather_Service_Forecast:
         COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
         '''
     
+        short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.minrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(short_term_data, 'ds.minrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
         files = count_of_GRIB_files
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
     
-        # SINCE THE LATS AND LONS FOR EACH OF THE GRIB FILES ARE THE SAME, WE ONLY NEED IT ONCE AND IT MAKES IT EASIER WITH MAKING THE RELATIVE HUMIDITY CHANGE PLOTS
-        lats, lons = first_GRIB_file.latlons()
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.minrh.bin')
+
+        lons = lons_1
+        lats = lats_1
        
         if files == 1:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
     
-            fig = plt.figure(figsize=(10,10))
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
             fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-            fig.suptitle("National Weather Service Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+            fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
             
             ax = plt.subplot(1, 1, 1, projection=mapcrs)
             ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.add_feature(PSAs, linewidth=0.75)
             ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=0.70)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
             cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 2:
-           
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
             
             if utc_time.hour > 6 and utc_time.hour <= 21:
     
-                fig = plt.figure(figsize=(9,6))
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
      
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
          
             if utc_time.hour >= 22 or utc_time.hour < 6:
     
-                fig = plt.figure(figsize=(10,10))
+                fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
                 
                 ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
                 cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
     
         if files == 3:
-    
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
             
             if utc_time.hour > 6 and utc_time.hour <= 21:
     
-                fig = plt.figure(figsize=(15,6))
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
             if utc_time.hour >= 22 or utc_time.hour < 6:
     
-                fig = plt.figure(figsize=(9,6))
+                fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
         if files == 4:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-    
+
             if utc_time.hour > 6 and utc_time.hour <= 21:
     
-                fig = plt.figure(figsize=(10,10))
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax3.add_feature(cfeature.STATES, linewidth=0.5)
-                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.add_feature(PSAs, linewidth=0.75)
                 ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar3 = fig.colorbar(cs3, shrink=0.70) 
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
             if utc_time.hour >= 22 or utc_time.hour < 6:
     
-                fig = plt.figure(figsize=(15,6))
+                fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
                 ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
         if files >= 5:
-            grb_1_vals = first_GRIB_file.values
-            grb_1_start = first_GRIB_file.validDate
-            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-            grb_2_vals = second_GRIB_file.values
-            grb_2_start = second_GRIB_file.validDate
-            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
-            grb_3_vals = third_GRIB_file.values
-            grb_3_start = third_GRIB_file.validDate
-            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
-            grb_4_vals = fourth_GRIB_file.values
-            grb_4_start = fourth_GRIB_file.validDate
-            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
-            grb_5_vals = fifth_GRIB_file.values
-            grb_5_start = fifth_GRIB_file.validDate
-            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
     
             if utc_time.hour > 6 and utc_time.hour <= 21:
     
-                fig = plt.figure(figsize=(25,10))
+                fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
                 fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax3.add_feature(cfeature.STATES, linewidth=0.5)
-                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.add_feature(PSAs, linewidth=0.75)
                 ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar3 = fig.colorbar(cs3, shrink=0.70)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
                 ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax4.add_feature(cfeature.STATES, linewidth=0.5)
-                ax4.add_feature(USCOUNTIES, linewidth=0.75)
+                ax4.add_feature(PSAs, linewidth=0.75)
                 ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar4 = fig.colorbar(cs4, shrink=0.70)
+                cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                 cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
             if utc_time.hour >= 22 or utc_time.hour < 6:
     
-                fig = plt.figure(figsize=(10,10))
+                fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
-                fig.suptitle("National Weather Service Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+                fig.suptitle("National Weather Service Short-Term Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
     
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax0.add_feature(cfeature.STATES, linewidth=0.5)
-                ax0.add_feature(USCOUNTIES, linewidth=0.75)
+                ax0.add_feature(PSAs, linewidth=0.75)
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
-                cbar0 = fig.colorbar(cs0, shrink=0.70)
+                cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
                 ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
                 ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax1.add_feature(cfeature.STATES, linewidth=0.5)
-                ax1.add_feature(USCOUNTIES, linewidth=0.75)
+                ax1.add_feature(PSAs, linewidth=0.75)
                 ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar1 = fig.colorbar(cs1, shrink=0.70)
+                cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
                 ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax2.add_feature(cfeature.STATES, linewidth=0.5)
-                ax2.add_feature(USCOUNTIES, linewidth=0.75)
+                ax2.add_feature(PSAs, linewidth=0.75)
                 ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar2 = fig.colorbar(cs2, shrink=0.70)
+                cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
                 ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
                 ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-                ax3.add_feature(cfeature.STATES, linewidth=0.5)
-                ax3.add_feature(USCOUNTIES, linewidth=0.75)
+                ax3.add_feature(PSAs, linewidth=0.75)
                 ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                 cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
-                cbar3 = fig.colorbar(cs3, shrink=0.70)
+                cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
     
         return fig
+
+
+    def plot_minimum_relative_humidity_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+    
+        r'''
+        THIS FUNCTION PLOTS THE NWS FORECAST MINIMUM RELATIVE HUMIDITY AND THE MINIMUM RELATIVE HUMIDITY FORECAST TRENDS
+    
+        IN ORDER FOR THIS FUNCTION TO WORK PROPERLY, USER NEEDS TO MAKE SURE THEIR PARAMETER IS SET TO THE MIN RELATIVE HUMIDITY GRIDS
+    
+        THE FOLLOWING IS CUSTOMIZABLE BY THE USER:
+        1. LATITUDE/LONGITUDE BOUNDS OF THE PLOT
+        2. CENTRAL LATITUDE/LONGITUDE AND STANDARD PARALLELS FOR PLOT
+    
+        PYTHON MODULE DEPENDENCIES:
+        1. CARTOPY
+        2. METPY
+        3. NUMPY
+        4. MATPLOTLIB
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        extended_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.minrh.bin')
+        
+        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.sort_GRIB_files(extended_data, 'ds.minrh.bin')
+    
+        local_time, utc_time = standard.plot_creation_time()
+        grid_time_interval = 12
+        
+        files = count_of_GRIB_files
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.minrh.bin')
+
+        lons = lons_1
+        lats = lats_1
+       
+        if files == 1:
+    
+            fig = plt.figure(figsize=(fig_x_length_1, fig_y_length_1))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+            
+            ax = plt.subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax.add_feature(PSAs, linewidth=0.75)
+            ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+    
+            cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink)
+            cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
+    
+        if files == 2:
+    
+            fig = plt.figure(figsize=(fig_x_length_2, fig_y_length_2))
+            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+     
+            ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+         
+        if files == 3:
+    
+            fig = plt.figure(figsize=(fig_x_length_3, fig_y_length_3))
+            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        if files == 4:
+
+            fig = plt.figure(figsize=(fig_x_length_4, fig_y_length_4))
+            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+    
+            ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
+            cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        if files >= 5:
+
+            fig = plt.figure(figsize=(fig_x_length_5, fig_y_length_5))
+            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.suptitle("National Weather Service Extended Forecast\nMinimum Relative Humidity & Minimum Relative Humidity Trend", fontweight='bold')
+    
+            ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
+            ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax0.add_feature(PSAs, linewidth=0.75)
+            ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 18Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 06Z'), fontweight='bold')
+        
+            cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(0, 105, 5), cmap='YlGnBu', transform=datacrs)
+            cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
+            cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
+        
+            ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
+            ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax1.add_feature(PSAs, linewidth=0.75)
+            ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
+            cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
+            ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax2.add_feature(PSAs, linewidth=0.75)
+            ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
+            cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax3.add_feature(PSAs, linewidth=0.75)
+            ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
+            cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+        
+            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            ax4.add_feature(PSAs, linewidth=0.75)
+            ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
+        
+            cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+            cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
+            cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
+    
+        return fig
+
+
+    
 
 class Storm_Prediction_Center_Fire_Weather_Outlook:
 
