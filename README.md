@@ -25,6 +25,7 @@ This package is largely inspired by the MetPy package which was developed and is
 6. Siphon
 7. NumPy
 8. cartopy
+9. Pandas
 
 # FireWxPy Documentation 
 https://github.com/edrewitz/FireWxPy/blob/main/FireWxPy_docs.md
