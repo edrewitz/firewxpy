@@ -97,5 +97,3 @@ class Predictive_Services_Areas:
             print(error)
 
 
-
-
