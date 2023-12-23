@@ -9404,7 +9404,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax.add_feature(PSAs, linewidth=1.25)
                 ax.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
@@ -9421,7 +9421,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.25)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9430,7 +9430,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.25)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
              
@@ -9445,7 +9445,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.25)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
@@ -9462,7 +9462,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.25)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9471,7 +9471,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.25)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9480,7 +9480,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.25)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
@@ -9495,7 +9495,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.25)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9504,7 +9504,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.25)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
@@ -9521,7 +9521,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.25)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9530,7 +9530,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.25)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9539,7 +9539,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.25)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9548,7 +9548,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax3.add_feature(PSAs, linewidth=1.25)
                     ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
@@ -9563,7 +9563,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.25)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9572,7 +9572,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.25)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
@@ -9581,7 +9581,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.25)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
@@ -9598,7 +9598,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.25)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9607,7 +9607,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.25)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9616,7 +9616,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.25)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9625,7 +9625,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax3.add_feature(PSAs, linewidth=1.25)
                     ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9634,7 +9634,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax4.add_feature(PSAs, linewidth=1.25)
                     ax4.set_title('Night 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                     cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
@@ -9649,7 +9649,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.25)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9658,7 +9658,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.25)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9667,7 +9667,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.25)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9676,7 +9676,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax3.add_feature(PSAs, linewidth=1.25)
                     ax3.set_title('Night 4 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                    cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
@@ -9728,7 +9728,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax.add_feature(PSAs, linewidth=1.25)
                 ax.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
@@ -9743,7 +9743,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.add_feature(PSAs, linewidth=1.25)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9752,7 +9752,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.25)
                 ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
              
@@ -9767,7 +9767,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.add_feature(PSAs, linewidth=1.25)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9776,7 +9776,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.25)
                 ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9785,7 +9785,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax2.add_feature(PSAs, linewidth=1.25)
                 ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
@@ -9800,7 +9800,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.add_feature(PSAs, linewidth=1)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9809,7 +9809,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1)
                 ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9818,7 +9818,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax2.add_feature(PSAs, linewidth=1)
                 ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9827,7 +9827,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax3.add_feature(PSAs, linewidth=1)
                 ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
@@ -9842,7 +9842,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.add_feature(PSAs, linewidth=1.25)
                 ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9851,7 +9851,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.25)
                 ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9860,7 +9860,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax2.add_feature(PSAs, linewidth=1.25)
                 ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9869,7 +9869,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax3.add_feature(PSAs, linewidth=1.25)
                 ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
             
@@ -9878,7 +9878,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax4.add_feature(PSAs, linewidth=1.25)
                 ax4.set_title('Night 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(-10, 33, 1), cmap='cool_r', transform=datacrs)
+                cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(-30, 33, 1), cmap='cool_r', transform=datacrs)
                 cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                 cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
@@ -10438,8 +10438,39 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
+            dirName = directory_name
+
+            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/':
+                temp_scale_warm = np.arange(50, 140, 5)
+                temp_scale_cool = np.arange(20, 105, 5)
+
+            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/':
+                temp_scale_warm = np.arange(40, 125, 5)
+                temp_scale_cool = np.arange(-20, 80, 5)
+
+            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/':
+                temp_scale_warm = np.arange(40, 125, 5)
+                temp_scale_cool = np.arange(-30, 75, 5)
+
+            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/':
+                temp_scale_warm = np.arange(45, 135, 5)
+                temp_scale_cool = np.arange(-20, 90, 5)
+
+            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/':
+                temp_scale_warm = np.arange(60, 125, 5)
+                temp_scale_cool = np.arange(0, 85, 5)
+
+            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/':
+                temp_scale_warm = np.arange(30, 115, 5)
+                temp_scale_cool = np.arange(-20, 75, 5)
+
+            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/':
+                temp_scale_warm = np.arange(30, 140, 5)
+                temp_scale_cool = np.arange(-30, 105, 5)
+                
+            
         
-            short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.maxt.bin')
+            short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(dirName, 'ds.maxt.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(short_term_data, 'ds.maxt.bin')
         
@@ -10451,6 +10482,8 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
             datacrs = ccrs.PlateCarree()
     
             PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+
+            
         
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxt.bin')
     
@@ -10470,10 +10503,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 145, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                     
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -10493,10 +10526,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -10524,10 +10557,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -10547,10 +10580,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -10588,10 +10621,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -10621,10 +10654,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -10672,10 +10705,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -10718,10 +10751,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -10780,10 +10813,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
