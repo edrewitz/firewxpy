@@ -86,11 +86,11 @@ class standard:
         '''
         local_time, utc_time = standard.plot_creation_time()
         
-        fig = plt.figure(figsize=(10,10))
+        fig = plt.figure(figsize=(20,10))
         ax = plt.subplot(1, 1, 1)
         plt.axis('off')
-        fig.text(0.25, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontsize=20, fontweight='bold')
-        ax.text(0.40, 0.6, 'NO DATA FOR: ' + utc_time.strftime('%m/%d/%Y %HZ'), fontsize=60, fontweight='bold')
+        fig.text(0.04, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontsize=20, fontweight='bold')
+        ax.text(0.1, 0.6, 'NO DATA FOR: ' + utc_time.strftime('%m/%d/%Y %HZ'), fontsize=60, fontweight='bold')
     
         return fig
 
