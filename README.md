@@ -1,4 +1,7 @@
 # FireWxPy
+
+Thank you for checking out FireWxPy! A user friendly Python package to create visualizations of data specific to fire weather and fire weather forecasting. 
+
 This repository consists of functions to make plots of weather data with an emphasis on fire weather. 
 
 This open source project will help meteorologists download, sort and plot both analysis and forecast data. 
