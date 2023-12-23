@@ -3,7 +3,7 @@
 # DEPENDENCIES INCLUDE:
 # 1. PYGRIB
 # 2. DATETIME 
-# 3. NUMPY
+#
 #  (C) METEOROLOGIST ERIC J. DREWITZ
 #               USDA/USFS
 
@@ -309,6 +309,41 @@ class NDFD:
                 grb_5_vals = fifth_GRIB_file.values
     
                 return grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals
+
+
+    def get_temperature_color_scale(directory_name):
+
+        dirName = directory_name
+        
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/':
+            temp_scale_warm = np.arange(50, 140, 5)
+            temp_scale_cool = np.arange(20, 105, 5)
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/':
+            temp_scale_warm = np.arange(40, 125, 5)
+            temp_scale_cool = np.arange(-20, 80, 5)
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/':
+            temp_scale_warm = np.arange(40, 125, 5)
+            temp_scale_cool = np.arange(-30, 75, 5)
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/':
+            temp_scale_warm = np.arange(45, 135, 5)
+            temp_scale_cool = np.arange(-20, 90, 5)
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/':
+            temp_scale_warm = np.arange(60, 125, 5)
+            temp_scale_cool = np.arange(0, 85, 5)
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/':
+            temp_scale_warm = np.arange(30, 115, 5)
+            temp_scale_cool = np.arange(-20, 75, 5)
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/':
+            temp_scale_warm = np.arange(30, 140, 5)
+            temp_scale_cool = np.arange(-30, 105, 5)
+
+        return temp_scale_warm, temp_scale_cool
     
     
     def parse_SPC_GRIB_data(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files):
