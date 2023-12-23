@@ -10440,36 +10440,8 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
             '''
             dirName = directory_name
 
-            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/':
-                temp_scale_warm = np.arange(50, 140, 5)
-                temp_scale_cool = np.arange(20, 105, 5)
-
-            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/':
-                temp_scale_warm = np.arange(40, 125, 5)
-                temp_scale_cool = np.arange(-20, 80, 5)
-
-            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/':
-                temp_scale_warm = np.arange(40, 125, 5)
-                temp_scale_cool = np.arange(-30, 75, 5)
-
-            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/':
-                temp_scale_warm = np.arange(45, 135, 5)
-                temp_scale_cool = np.arange(-20, 90, 5)
-
-            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/':
-                temp_scale_warm = np.arange(60, 125, 5)
-                temp_scale_cool = np.arange(0, 85, 5)
-
-            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/':
-                temp_scale_warm = np.arange(30, 115, 5)
-                temp_scale_cool = np.arange(-20, 75, 5)
-
-            if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/':
-                temp_scale_warm = np.arange(30, 140, 5)
-                temp_scale_cool = np.arange(-30, 105, 5)
-                
+            temp_scale_warm, temp_scale_cool = parsers.NDFD.get_temperature_color_scale(dirName)
             
-        
             short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(dirName, 'ds.maxt.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(short_term_data, 'ds.maxt.bin')
