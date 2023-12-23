@@ -311,17 +311,24 @@ class NDFD:
                 return grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals
 
 
-    def get_temperature_color_scale(directory_name):
+    def get_maximum_temperature_color_scale(directory_name):
+
+        r'''
+        THIS FUNCTION CREATES THE COLORSCALE FOR THE MAXIMUM TEMPERATURE FORECAST FOR EACH REGION OF THE CONUS FOR BOTH THE WARM AND COLD/COOL SEASON. EACH COLORSCALE IS REFLECTIVE OF EACH REGION SINCE A BROAD COLORSCALE WOULDN'T WORK SINCE FOR EXAMPLE A COLORSCALE FOR SOUTHERN CALIFORNIA WON'T BE VERY REPRESENTATIVE FOR PLOTTING TEMPERATURES IN THE NORTHEAST. THESE FUNCTIONS ALLOW THE CHANGING OF THE COLORSCALE BETWEEN REGIONS AND SEASONS SO USERS WON'T NEED TO WORRY ABOUT IT. 
+
+        (C) METEOROLOGIST ERIC J. DREWITZ 2023
+
+        '''
 
         dirName = directory_name
         
         if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/':
-            temp_scale_warm = np.arange(50, 140, 5)
-            temp_scale_cool = np.arange(20, 105, 5)
+            temp_scale_warm = np.arange(50, 135, 5)
+            temp_scale_cool = np.arange(10, 105, 5)
 
         if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/':
             temp_scale_warm = np.arange(40, 125, 5)
-            temp_scale_cool = np.arange(-20, 80, 5)
+            temp_scale_cool = np.arange(-10, 85, 5)
 
         if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/':
             temp_scale_warm = np.arange(40, 125, 5)
@@ -329,7 +336,7 @@ class NDFD:
 
         if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/':
             temp_scale_warm = np.arange(45, 135, 5)
-            temp_scale_cool = np.arange(-20, 90, 5)
+            temp_scale_cool = np.arange(-20, 95, 5)
 
         if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/':
             temp_scale_warm = np.arange(60, 125, 5)
@@ -340,10 +347,108 @@ class NDFD:
             temp_scale_cool = np.arange(-20, 75, 5)
 
         if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/':
-            temp_scale_warm = np.arange(30, 140, 5)
+            temp_scale_warm = np.arange(30, 135, 5)
             temp_scale_cool = np.arange(-30, 105, 5)
 
         return temp_scale_warm, temp_scale_cool
+
+
+    def get_minimum_temperature_color_scale(directory_name):
+
+        r'''
+        THIS FUNCTION CREATES THE COLORSCALE FOR THE MINIMUM TEMPERATURE FORECAST FOR EACH REGION OF THE CONUS FOR BOTH THE WARM AND COLD/COOL SEASON. EACH COLORSCALE IS REFLECTIVE OF EACH REGION SINCE A BROAD COLORSCALE WOULDN'T WORK SINCE FOR EXAMPLE A COLORSCALE FOR SOUTHERN CALIFORNIA WON'T BE VERY REPRESENTATIVE FOR PLOTTING TEMPERATURES IN THE NORTHEAST. THESE FUNCTIONS ALLOW THE CHANGING OF THE COLORSCALE BETWEEN REGIONS AND SEASONS SO USERS WON'T NEED TO WORRY ABOUT IT. 
+
+        (C) METEOROLOGIST ERIC J. DREWITZ 2023
+
+        '''
+
+        dirName = directory_name
+        
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/':
+            temp_scale_warm = np.arange(30, 105, 5)
+            temp_scale_cool = np.arange(-10, 75, 5)
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/':
+            temp_scale_warm = np.arange(20, 95, 5)
+            temp_scale_cool = np.arange(-20, 65, 5)
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/':
+            temp_scale_warm = np.arange(20, 85, 5)
+            temp_scale_cool = np.arange(-30, 65, 5)
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/':
+            temp_scale_warm = np.arange(30, 95, 5)
+            temp_scale_cool = np.arange(-20, 65, 5)
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/':
+            temp_scale_warm = np.arange(50, 95, 5)
+            temp_scale_cool = np.arange(-10, 75, 5)
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/':
+            temp_scale_warm = np.arange(30, 85, 5)
+            temp_scale_cool = np.arange(-30, 65, 5)
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/':
+            temp_scale_warm = np.arange(20, 105, 5)
+            temp_scale_cool = np.arange(-30, 75, 5)
+
+        return temp_scale_warm, temp_scale_cool
+
+
+    def get_extreme_heat_color_scale(directory_name):
+
+        r'''
+        THIS FUNCTION CREATES THE COLORSCALE FOR THE EXTREME HEAT FORECAST FOR EACH REGION OF THE CONUS FOR BOTH THE WARM AND COLD/COOL SEASON. EACH COLORSCALE IS REFLECTIVE OF EACH REGION SINCE A BROAD COLORSCALE WOULDN'T WORK SINCE FOR EXAMPLE A COLORSCALE FOR SOUTHERN CALIFORNIA WON'T BE VERY REPRESENTATIVE FOR PLOTTING TEMPERATURES IN THE NORTHEAST. THESE FUNCTIONS ALLOW THE CHANGING OF THE COLORSCALE BETWEEN REGIONS AND SEASONS SO USERS WON'T NEED TO WORRY ABOUT IT. 
+
+        (C) METEOROLOGIST ERIC J. DREWITZ 2023
+
+        '''
+
+        dirName = directory_name
+        
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/':
+            temp_scale_warm = np.arange(120, 140, 1)
+            temp_scale_cool = np.arange(100, 125, 1)
+            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)"
+            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)"
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/':
+            temp_scale_warm = np.arange(100, 125, 1)
+            temp_scale_cool = np.arange(85, 115, 1)
+            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)"
+            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 85 \N{DEGREE SIGN}F)"
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/':
+            temp_scale_warm = np.arange(95, 125, 1)
+            temp_scale_cool = np.arange(85, 115, 1)
+            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 95 \N{DEGREE SIGN}F)"
+            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 85 \N{DEGREE SIGN}F)"
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/':
+            temp_scale_warm = np.arange(95, 125, 1)
+            temp_scale_cool = np.arange(85, 115, 1)
+            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 95 \N{DEGREE SIGN}F)"
+            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 85 \N{DEGREE SIGN}F)"           
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/':
+            temp_scale_warm = np.arange(100, 130, 1)
+            temp_scale_cool = np.arange(85, 115, 1)
+            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)"
+            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 85 \N{DEGREE SIGN}F)"
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/':
+            temp_scale_warm = np.arange(90, 115, 1)
+            temp_scale_cool = np.arange(75, 105, 1)
+            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 90 \N{DEGREE SIGN}F)"
+            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 75 \N{DEGREE SIGN}F)"
+
+        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/':
+            temp_scale_warm = np.arange(95, 140, 1)
+            temp_scale_cool = np.arange(85, 125, 1)
+            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 95 \N{DEGREE SIGN}F)"
+            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 85 \N{DEGREE SIGN}F)"
+
+        return temp_scale_warm, temp_scale_cool, title_warm, title_cool
     
     
     def parse_SPC_GRIB_data(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files):
