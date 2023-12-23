@@ -78,12 +78,14 @@ class standard:
         return Local_Time_Now, UTC_Now
     
     
-    def no_data_graphic(local_time, utc_time):
+    def no_data_graphic():
         r'''
         THIS FUNCTION RETURNS A DEFAULT GRAPHIC WHEN NO DATA IS PRESENT
     
         COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
         '''
+        local_time, utc_time = standard.plot_creation_time()
+        
         fig = plt.figure(figsize=(10,10))
         ax = plt.subplot(1, 1, 1)
         plt.axis('off')
@@ -2409,8 +2411,11 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
+            dirName = directory_name
+
+            temp_scale_warm, temp_scale_cool, title_warm, title_cool = parsers.NDFD.get_extreme_heat_color_scale(dirName)
     
-            short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.maxt.bin')
+            short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(dirName, 'ds.maxt.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(short_term_data, 'ds.maxt.bin')
         
@@ -2430,10 +2435,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_warm, fontweight='bold')
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_cool, fontweight='bold')
                 
                 ax = plt.subplot(1, 1, 1, projection=mapcrs)
                 ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2443,10 +2448,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                     
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2459,10 +2464,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
          
                     ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2472,10 +2477,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2488,10 +2493,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2502,10 +2507,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
                     
                     ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2515,10 +2520,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2531,10 +2536,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
         
                     ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2544,10 +2549,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2560,10 +2565,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2576,10 +2581,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax2.set_title('Day 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2590,10 +2595,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
         
                     ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2603,10 +2608,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2619,10 +2624,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2635,10 +2640,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
         
                     ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2648,10 +2653,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2664,10 +2669,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2680,10 +2685,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax2.set_title('Day 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2696,10 +2701,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax3.set_title('Day 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2710,10 +2715,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
         
                     ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2723,10 +2728,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2739,10 +2744,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2755,10 +2760,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax2.set_title('Day 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2771,10 +2776,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
         
                     ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2784,10 +2789,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2800,10 +2805,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2816,10 +2821,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax2.set_title('Day 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2832,10 +2837,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax3.set_title('Day 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2848,10 +2853,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax4.set_title('Day 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                     cbar4.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2862,10 +2867,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
         
                     ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2875,10 +2880,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2891,10 +2896,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2907,10 +2912,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax2.set_title('Day 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -2923,16 +2928,15 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax3.set_title('Day 4 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
             return fig
-    
     
         def plot_extreme_heat_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
         
@@ -2953,8 +2957,11 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
+            dirName = directory_name
+
+            temp_scale_warm, temp_scale_cool, title_warm, title_cool = parsers.NDFD.get_extreme_heat_color_scale(dirName)
     
-            extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.maxt.bin')
+            extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(dirName, 'ds.maxt.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(extended_data, 'ds.maxt.bin')
         
@@ -2974,10 +2981,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_warm, fontweight='bold')
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_cool, fontweight='bold')
                 
                 ax = plt.subplot(1, 1, 1, projection=mapcrs)
                 ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2987,10 +2994,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                     
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3001,10 +3008,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_warm, fontweight='bold')
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_cool, fontweight='bold')
          
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -3014,10 +3021,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax0.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3030,10 +3037,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax1.set_title('Day 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3044,10 +3051,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_warm, fontweight='bold')
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_cool, fontweight='bold')
         
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -3057,10 +3064,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax0.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3073,10 +3080,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax1.set_title('Day 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3089,10 +3096,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax2.set_title('Day 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3104,10 +3111,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_warm, fontweight='bold')
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_cool, fontweight='bold')
         
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -3117,10 +3124,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax0.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3133,10 +3140,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax1.set_title('Day 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3149,10 +3156,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax2.set_title('Day 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3165,10 +3172,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax3.set_title('Day 7 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3179,10 +3186,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_warm, fontweight='bold')
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_cool, fontweight='bold')
         
                 ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -3192,10 +3199,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax0.set_title('Day 3 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3208,10 +3215,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax1.set_title('Day 4 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3224,10 +3231,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax2.set_title('Day 5 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3240,10 +3247,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax3.set_title('Day 6 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -3256,15 +3263,16 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax4.set_title('Day 7 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                 cbar4.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
-            return fig
+            return fig    
+
         
         def plot_frost_freeze_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink):
         
@@ -4497,8 +4505,11 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
+            dirName = directory_name
+
+            temp_scale_warm, temp_scale_cool = parsers.NDFD.get_maximum_temperature_color_scale(dirName)
         
-            short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.maxt.bin')
+            short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(dirName, 'ds.maxt.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(short_term_data, 'ds.maxt.bin')
         
@@ -4529,10 +4540,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 145, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                     
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -4554,10 +4565,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -4589,10 +4600,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -4614,10 +4625,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -4661,10 +4672,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -4698,10 +4709,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -4759,10 +4770,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -4811,10 +4822,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -4883,10 +4894,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -4949,8 +4960,12 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
+
+            dirName = directory_name
+
+            temp_scale_warm, temp_scale_cool = parsers.NDFD.get_maximum_temperature_color_scale(dirName)
         
-            extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.maxt.bin')
+            extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(dirName, 'ds.maxt.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(extended_data, 'ds.maxt.bin')
         
@@ -4981,10 +4996,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 145, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                     
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5004,10 +5019,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5039,10 +5054,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5086,10 +5101,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5148,10 +5163,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5228,8 +5243,12 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
+
+            dirName = directory_name
+
+            temp_scale_warm, temp_scale_cool = parsers.NDFD.get_minimum_temperature_color_scale(dirName)
         
-            short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.mint.bin')
+            short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(dirName, 'ds.mint.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(short_term_data, 'ds.mint.bin')
         
@@ -5260,10 +5279,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                     
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5285,10 +5304,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5320,10 +5339,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5345,10 +5364,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5392,10 +5411,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5429,10 +5448,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5490,10 +5509,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5542,10 +5561,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5614,10 +5633,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5680,8 +5699,12 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
+
+            dirName = directory_name
+
+            temp_scale_warm, temp_scale_cool = parsers.NDFD.get_minimum_temperature_color_scale(dirName)
         
-            extended_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.mint.bin')
+            extended_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(dirName, 'ds.mint.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(extended_data, 'ds.mint.bin')
         
@@ -5712,10 +5735,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                     
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5735,10 +5758,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5770,10 +5793,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5817,10 +5840,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -5878,10 +5901,10 @@ class National_Weather_Service_Forecast_Counties_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8575,8 +8598,12 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
+
+            dirName = directory_name
+
+            temp_scale_warm, temp_scale_cool, title_warm, title_cool = parsers.NDFD.get_extreme_heat_color_scale(dirName)
     
-            short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.maxt.bin')
+            short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(dirName, 'ds.maxt.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(short_term_data, 'ds.maxt.bin')
         
@@ -8599,10 +8626,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_warm, fontweight='bold')
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_cool, fontweight='bold')
                 
                 ax = plt.subplot(1, 1, 1, projection=mapcrs)
                 ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8610,10 +8637,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                     
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8626,10 +8653,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
          
                     ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8637,10 +8664,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8651,10 +8678,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8665,10 +8692,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
                     
                     ax0 = plt.subplot(1, 1, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8676,10 +8703,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8692,10 +8719,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
         
                     ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8703,10 +8730,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8717,10 +8744,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8731,10 +8758,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax2.set_title('Day 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8745,10 +8772,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
         
                     ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8756,10 +8783,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8770,10 +8797,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8786,10 +8813,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
         
                     ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8797,10 +8824,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8811,10 +8838,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8825,10 +8852,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax2.set_title('Day 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8839,10 +8866,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax3.set_title('Day 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8853,10 +8880,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
         
                     ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8864,10 +8891,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8878,10 +8905,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8892,10 +8919,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax2.set_title('Day 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8908,10 +8935,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
         
                     ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8919,10 +8946,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8933,10 +8960,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8947,10 +8974,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax2.set_title('Day 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8961,10 +8988,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax3.set_title('Day 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8975,10 +9002,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax4.set_title('Day 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                     cbar4.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8989,10 +9016,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_warm, fontweight='bold')
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        fig.suptitle("National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                        fig.suptitle(title_cool, fontweight='bold')
         
                     ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                     ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9000,10 +9027,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9014,10 +9041,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax1.set_title('Day 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9028,10 +9055,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax2.set_title('Day 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9042,10 +9069,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax3.set_title('Day 4 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                        cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                        cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9072,8 +9099,12 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
+
+            dirName = directory_name
+
+            temp_scale_warm, temp_scale_cool, title_warm, title_cool = parsers.NDFD.get_extreme_heat_color_scale(dirName)
     
-            extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.maxt.bin')
+            extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(dirName, 'ds.maxt.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(extended_data, 'ds.maxt.bin')
         
@@ -9095,10 +9126,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_warm, fontweight='bold')
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_cool, fontweight='bold')
                 
                 ax = plt.subplot(1, 1, 1, projection=mapcrs)
                 ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9106,10 +9137,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                     
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9120,10 +9151,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_warm, fontweight='bold')
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_cool, fontweight='bold')
          
                 ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9131,10 +9162,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9145,10 +9176,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax1.set_title('Day 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9159,10 +9190,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_warm, fontweight='bold')
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_cool, fontweight='bold')
         
                 ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9170,10 +9201,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9184,10 +9215,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax1.set_title('Day 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9198,10 +9229,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax2.set_title('Day 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9213,10 +9244,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_warm, fontweight='bold')
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_cool, fontweight='bold')
         
                 ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9224,10 +9255,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.set_title('Day 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9238,10 +9269,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax1.set_title('Day 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9252,10 +9283,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax2.set_title('Day 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9266,10 +9297,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax3.set_title('Day 7 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9280,10 +9311,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
                     
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_warm, fontweight='bold')
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    fig.suptitle("National Weather Service Extended Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)", fontweight='bold')
+                    fig.suptitle(title_cool, fontweight='bold')
         
                 ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
                 ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9291,10 +9322,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.set_title('Day 3 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9305,10 +9336,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax1.set_title('Day 4 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9319,10 +9350,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax2.set_title('Day 5 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9333,10 +9364,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax3.set_title('Day 6 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -9347,10 +9378,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax4.set_title('Day 7 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(120, 140, 5), cmap='hot', transform=datacrs)
+                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_warm, cmap='hot', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(100, 130, 5), cmap='hot', transform=datacrs)
+                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_cool, cmap='hot', transform=datacrs)
                         
                 cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                 cbar4.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -10440,7 +10471,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
             '''
             dirName = directory_name
 
-            temp_scale_warm, temp_scale_cool = parsers.NDFD.get_temperature_color_scale(dirName)
+            temp_scale_warm, temp_scale_cool = parsers.NDFD.get_maximum_temperature_color_scale(dirName)
             
             short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(dirName, 'ds.maxt.bin')
             
@@ -10845,8 +10876,11 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
+            dirName = directory_name
+
+            temp_scale_warm, temp_scale_cool = parsers.NDFD.get_maximum_temperature_color_scale(dirName)
         
-            extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.maxt.bin')
+            extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(dirName, 'ds.maxt.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(extended_data, 'ds.maxt.bin')
         
@@ -10877,10 +10911,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 145, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                     
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -10898,10 +10932,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -10929,10 +10963,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -10970,10 +11004,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11024,10 +11058,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 12Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 00Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(50, 140, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(20, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11096,8 +11130,11 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
+            dirName = directory_name
+
+            temp_scale_warm, temp_scale_cool = parsers.NDFD.get_minimum_temperature_color_scale(dirName)
         
-            short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.mint.bin')
+            short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(dirName, 'ds.mint.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(short_term_data, 'ds.mint.bin')
         
@@ -11128,10 +11165,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                     
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11151,10 +11188,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11182,10 +11219,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11205,10 +11242,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11246,10 +11283,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11279,10 +11316,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11332,10 +11369,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11378,10 +11415,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11440,10 +11477,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                     ax0.set_title('Day 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
                     if utc_time.month >= 4 and utc_time.month <= 10:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                     if utc_time.month >= 11 or utc_time.month <= 3:
-                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                        cs0 = ax0.contourf(lons, lats, grb_2_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11500,8 +11537,11 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
+            dirName = directory_name
+
+            temp_scale_warm, temp_scale_cool = parsers.NDFD.get_minimum_temperature_color_scale(dirName)
         
-            extended_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.mint.bin')
+            extended_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(dirName, 'ds.mint.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(extended_data, 'ds.mint.bin')
         
@@ -11532,10 +11572,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
         
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                    cs = ax.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                     
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11553,10 +11593,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11584,10 +11624,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11625,10 +11665,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -11678,10 +11718,10 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
                 ax0.set_title('Day 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 00Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 12Z'), fontweight='bold')
             
                 if utc_time.month >= 4 and utc_time.month <= 10:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(30, 105, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_warm, cmap='seismic', transform=datacrs)
         
                 if utc_time.month >= 11 or utc_time.month <= 3:
-                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=np.arange(-10, 75, 5), cmap='seismic', transform=datacrs)
+                    cs0 = ax0.contourf(lons, lats, grb_1_vals, levels=temp_scale_cool, cmap='seismic', transform=datacrs)
                         
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
