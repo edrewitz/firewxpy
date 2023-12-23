@@ -4274,7 +4274,7 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         
             extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.maxrh.bin')
             
-            first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(short_term_data, 'ds.maxrh.bin')
+            first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(extended_data, 'ds.maxrh.bin')
         
             local_time, utc_time = standard.plot_creation_time()
             grid_time_interval = 12
@@ -10266,7 +10266,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         
             extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.maxrh.bin')
             
-            first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(short_term_data, 'ds.maxrh.bin')
+            first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(extended_data, 'ds.maxrh.bin')
         
             local_time, utc_time = standard.plot_creation_time()
             grid_time_interval = 12
