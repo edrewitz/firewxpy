@@ -18,7 +18,7 @@ The needed packages are: 1) NWS_Forecast_Temperature_Graphics_Plots and 2) matpl
 
 '''
 
-import NWS_Forecast_Temperature_Graphics_Plots as NWS
+import NWS_Forecast_Temperature_Graphics as NWS
 import matplotlib.pyplot as plt
 
 '''
