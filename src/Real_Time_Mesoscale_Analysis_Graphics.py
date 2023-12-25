@@ -9,6 +9,7 @@ import parsers
 import data_access as da
 import geometry
 import calc
+import colormaps
 
 from matplotlib.patheffects import withStroke
 from metpy.plots import USCOUNTIES
