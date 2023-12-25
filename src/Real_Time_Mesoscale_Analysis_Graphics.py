@@ -143,12 +143,12 @@ class Counties_Perspective:
             stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_mask], color='red',
                               path_effects=[withStroke(linewidth=1, foreground='black')])
             
-            stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_mask], color='blue',
+            stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_mask], color='pink',
                               path_effects=[withStroke(linewidth=1, foreground='black')])
             
             stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_mask], mpplots.sky_cover)
             
-            stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_mask], color='lime',
+            stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_mask], color='blue',
                                 path_effects=[withStroke(linewidth=1, foreground='black')])
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
@@ -796,12 +796,12 @@ class Predictive_Services_Areas_Perspective:
             stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_mask], color='red',
                               path_effects=[withStroke(linewidth=1, foreground='black')])
             
-            stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_mask], color='darkorange',
+            stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_mask], color='pink',
                               path_effects=[withStroke(linewidth=1, foreground='black')])
             
             stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_mask], mpplots.sky_cover)
             
-            stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_mask], color='lime',
+            stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_mask], color='blue',
                                 path_effects=[withStroke(linewidth=1, foreground='black')])
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
