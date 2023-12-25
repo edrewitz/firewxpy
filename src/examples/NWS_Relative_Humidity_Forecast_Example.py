@@ -15,11 +15,11 @@ Copyright (C) Meteorologist Eric J. Drewitz
 
 '''
 Here, we need to import the required packages in order for the script to run. Due to the large amount of functions active in the background (i.e. data download, data parsing etc.) we only need to import these two packages and not need to worry about the rest. 
-The needed packages are: 1) FireWxPy_Plots and 2) matplotlib.pyplot (commonly used as plt in code, hence the import matplotlib.pyplot as plt). 
+The needed packages are: 1) NWS_Forecast_Relative_Humidity_Graphics and 2) matplotlib.pyplot (commonly used as plt in code, hence the import matplotlib.pyplot as plt). 
 
 '''
 
-import FireWxPy_Plots as fpplots
+import NWS_Forecast_Relative_Humidity_Graphics as NWS
 import matplotlib.pyplot as plt
 
 
@@ -145,7 +145,7 @@ If the color bar is longer than the vertical length of the image, it is recommen
 color_table_shrink = 0.7
 
 '''
-In this final section we use the FireWxPy plotting functions in FireWxPy_Plots that we imported at the beginning to create our graphics. 
+In this final section we use the FireWxPy plotting functions in NWS_Forecast_Relative_Humidity_Graphics that we imported at the beginning to create our graphics. 
 It is recommended to use try and except blocks when automating your graphics. 
 You can see the graphic we want to produce is in the try block and the graphic that is returned if there is no data is in the except block. 
 This is how we prevent the program from crashing. 
@@ -163,178 +163,178 @@ I hope these instructions helped you understand what this script does so you can
 '''
 
 try:
-    fig_NWS_Short_Term_Forecast_Poor_Recovery_RH_Counties = fpplots.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_relative_humidity_poor_recovery_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Poor_Recovery_RH_Counties = NWS.Counties_Perspective.CONUS.plot_relative_humidity_poor_recovery_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Poor_Recovery_RH_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Poor Recovery Relative Humidity")
 
 except Exception as a:
-    fig_NWS_Short_Term_Forecast_Poor_Recovery_RH_Counties = fpplots.standard.no_data_graphic()
+    fig_NWS_Short_Term_Forecast_Poor_Recovery_RH_Counties = NWS.standard.no_data_graphic()
     fig_NWS_Short_Term_Forecast_Poor_Recovery_RH_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Poor Recovery Relative Humidity")
 
 
 try:
-    fig_NWS_Extended_Forecast_Poor_Recovery_RH_Counties = fpplots.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_relative_humidity_poor_recovery_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Poor_Recovery_RH_Counties = NWS.Counties_Perspective.CONUS.plot_relative_humidity_poor_recovery_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Poor_Recovery_RH_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Poor Recovery Relative Humidity")
 
 except Exception as b:
-    fig_NWS_Extended_Forecast_Poor_Recovery_RH_Counties = fpplots.standard.no_data_graphic()
+    fig_NWS_Extended_Forecast_Poor_Recovery_RH_Counties = NWS.standard.no_data_graphic()
     fig_NWS_Extended_Forecast_Poor_Recovery_RH_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Poor Recovery Relative Humidity")
 
 
 try:
-    fig_NWS_Short_Term_Forecast_Excellent_Recovery_RH_Counties = fpplots.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_relative_humidity_excellent_recovery_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Excellent_Recovery_RH_Counties = NWS.Counties_Perspective.CONUS.plot_relative_humidity_excellent_recovery_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Excellent_Recovery_RH_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Excellent Recovery Relative Humidity")
 
 except Exception as c:
-    fig_NWS_Short_Term_Forecast_Excellent_Recovery_RH_Counties = fpplots.standard.no_data_graphic()
+    fig_NWS_Short_Term_Forecast_Excellent_Recovery_RH_Counties = NWS.standard.no_data_graphic()
     fig_NWS_Short_Term_Forecast_Excellent_Recovery_RH_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Excellent Recovery Relative Humidity")
 
 
 try:
-    fig_NWS_Extended_Forecast_Excellent_Recovery_RH_Counties = fpplots.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_relative_humidity_excellent_recovery_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Excellent_Recovery_RH_Counties = NWS.Counties_Perspective.CONUS.plot_relative_humidity_excellent_recovery_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Excellent_Recovery_RH_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Excellent Recovery Relative Humidity")
 
 except Exception as d:
-    fig_NWS_Extended_Forecast_Excellent_Recovery_RH_Counties = fpplots.standard.no_data_graphic()
+    fig_NWS_Extended_Forecast_Excellent_Recovery_RH_Counties = NWS.standard.no_data_graphic()
     fig_NWS_Extended_Forecast_Excellent_Recovery_RH_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Excellent Recovery Relative Humidity")
 
 
 try:
-    fig_NWS_Short_Term_Forecast_Red_Flag_Minimum_RH_Counties = fpplots.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_red_flag_minimum_relative_humidity_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Red_Flag_Minimum_RH_Counties = NWS.Counties_Perspective.CONUS.plot_red_flag_minimum_relative_humidity_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Red_Flag_Minimum_RH_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Red Flag Minimum Relative Humidity")
 
 except Exception as e:
-    fig_NWS_Short_Term_Forecast_Red_Flag_Minimum_RH_Counties = fpplots.standard.no_data_graphic()
+    fig_NWS_Short_Term_Forecast_Red_Flag_Minimum_RH_Counties = NWS.standard.no_data_graphic()
     fig_NWS_Short_Term_Forecast_Red_Flag_Minimum_RH_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Red Flag Minimum Relative Humidity")
 
 
 try:
-    fig_NWS_Extended_Forecast_Red_Flag_Minimum_RH_Counties = fpplots.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_red_flag_minimum_relative_humidity_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Red_Flag_Minimum_RH_Counties = NWS.Counties_Perspective.CONUS.plot_red_flag_minimum_relative_humidity_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Red_Flag_Minimum_RH_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Red Flag Minimum Relative Humidity")
 
 except Exception as f:
-    fig_NWS_Extended_Forecast_Red_Flag_Minimum_RH_Counties = fpplots.standard.no_data_graphic()
+    fig_NWS_Extended_Forecast_Red_Flag_Minimum_RH_Counties = NWS.standard.no_data_graphic()
     fig_NWS_Extended_Forecast_Red_Flag_Minimum_RH_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Red Flag Minimum Relative Humidity")
 
 
 try:
-    fig_NWS_Short_Term_Maximum_RH_Forecast_And_Forecast_Trends_Counties = fpplots.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_maximum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Maximum_RH_Forecast_And_Forecast_Trends_Counties = NWS.Counties_Perspective.CONUS.plot_maximum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Maximum_RH_Forecast_And_Forecast_Trends_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Maximum Relative Humidity and Trend")
 
 except Exception as g:
-    fig_NWS_Short_Term_Maximum_RH_Forecast_And_Forecast_Trends_Counties = fpplots.standard.no_data_graphic()
+    fig_NWS_Short_Term_Maximum_RH_Forecast_And_Forecast_Trends_Counties = NWS.standard.no_data_graphic()
     fig_NWS_Short_Term_Maximum_RH_Forecast_And_Forecast_Trends_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Maximum Relative Humidity and Trend")
 
 
 try:
-    fig_NWS_Extended_Maximum_RH_Forecast_And_Forecast_Trends_Counties = fpplots.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_maximum_relative_humidity_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Maximum_RH_Forecast_And_Forecast_Trends_Counties = NWS.Counties_Perspective.CONUS.plot_maximum_relative_humidity_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Maximum_RH_Forecast_And_Forecast_Trends_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Maximum Relative Humidity and Trend")
 
 except Exception as g:
-    fig_NWS_Extended_Maximum_RH_Forecast_And_Forecast_Trends_Counties = fpplots.standard.no_data_graphic()
+    fig_NWS_Extended_Maximum_RH_Forecast_And_Forecast_Trends_Counties = NWS.standard.no_data_graphic()
     fig_NWS_Extended_Maximum_RH_Forecast_And_Forecast_Trends_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Maximum Relative Humidity and Trend")
 
 
 try:
-    fig_NWS_Short_Term_Minimum_RH_Forecast_And_Forecast_Trends_Counties = fpplots.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_minimum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Minimum_RH_Forecast_And_Forecast_Trends_Counties = NWS.Counties_Perspective.CONUS.plot_minimum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Minimum_RH_Forecast_And_Forecast_Trends_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Minimum Relative Humidity and Trend")
 
 except Exception as h:
-    fig_NWS_Short_Term_Minimum_RH_Forecast_And_Forecast_Trends_Counties = fpplots.standard.no_data_graphic()
+    fig_NWS_Short_Term_Minimum_RH_Forecast_And_Forecast_Trends_Counties = NWS.standard.no_data_graphic()
     fig_NWS_Short_Term_Minimum_RH_Forecast_And_Forecast_Trends_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Minimum Relative Humidity and Trend")
 
 try:
-    fig_NWS_Extended_Minimum_RH_Forecast_And_Forecast_Trends_Counties = fpplots.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_minimum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Minimum_RH_Forecast_And_Forecast_Trends_Counties = NWS.Counties_Perspective.CONUS.plot_minimum_relative_humidity_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Minimum_RH_Forecast_And_Forecast_Trends_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Minimum Relative Humidity and Trend")
 
 except Exception as h:
-    fig_NWS_Extended_Minimum_RH_Forecast_And_Forecast_Trends_Counties = fpplots.standard.no_data_graphic()
+    fig_NWS_Extended_Minimum_RH_Forecast_And_Forecast_Trends_Counties = NWS.standard.no_data_graphic()
     fig_NWS_Extended_Minimum_RH_Forecast_And_Forecast_Trends_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Minimum Relative Humidity and Trend")
 
 
 try:
-    fig_NWS_Short_Term_Forecast_Poor_Recovery_RH_PSAs = fpplots.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_relative_humidity_poor_recovery_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Poor_Recovery_RH_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_relative_humidity_poor_recovery_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Poor_Recovery_RH_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Poor Recovery Relative Humidity")
 
 except Exception as i:
-    fig_NWS_Short_Term_Forecast_Poor_Recovery_RH_PSAs = fpplots.standard.no_data_graphic()
+    fig_NWS_Short_Term_Forecast_Poor_Recovery_RH_PSAs = NWS.standard.no_data_graphic()
     fig_NWS_Short_Term_Forecast_Poor_Recovery_RH_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Poor Recovery Relative Humidity")
 
 
 try:
-    fig_NWS_Extended_Forecast_Poor_Recovery_RH_PSAs = fpplots.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_relative_humidity_poor_recovery_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Poor_Recovery_RH_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_relative_humidity_poor_recovery_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Poor_Recovery_RH_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Poor Recovery Relative Humidity")
 
 except Exception as j:
-    fig_NWS_Extended_Forecast_Poor_Recovery_RH_PSAs = fpplots.standard.no_data_graphic()
+    fig_NWS_Extended_Forecast_Poor_Recovery_RH_PSAs = NWS.standard.no_data_graphic()
     fig_NWS_Extended_Forecast_Poor_Recovery_RH_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Poor Recovery Relative Humidity")
 
 
 try:
-    fig_NWS_Short_Term_Forecast_Excellent_Recovery_RH_PSAs = fpplots.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_relative_humidity_excellent_recovery_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Excellent_Recovery_RH_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_relative_humidity_excellent_recovery_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Excellent_Recovery_RH_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Excellent Recovery Relative Humidity")
 
 except Exception as k:
-    fig_NWS_Short_Term_Forecast_Excellent_Recovery_RH_PSAs = fpplots.standard.no_data_graphic()
+    fig_NWS_Short_Term_Forecast_Excellent_Recovery_RH_PSAs = NWS.standard.no_data_graphic()
     fig_NWS_Short_Term_Forecast_Excellent_Recovery_RH_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Excellent Recovery Relative Humidity")
 
 
 try:
-    fig_NWS_Extended_Forecast_Excellent_Recovery_RH_PSAs = fpplots.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_relative_humidity_excellent_recovery_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Excellent_Recovery_RH_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_relative_humidity_excellent_recovery_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Excellent_Recovery_RH_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Excellent Recovery Relative Humidity")
 
 except Exception as l:
-    fig_NWS_Extended_Forecast_Excellent_Recovery_RH_PSAs = fpplots.standard.no_data_graphic()
+    fig_NWS_Extended_Forecast_Excellent_Recovery_RH_PSAs = NWS.standard.no_data_graphic()
     fig_NWS_Extended_Forecast_Excellent_Recovery_RH_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Excellent Recovery Relative Humidity")
 
 
 try:
-    fig_NWS_Short_Term_Forecast_Red_Flag_Minimum_RH_PSAs = fpplots.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_red_flag_minimum_relative_humidity_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Red_Flag_Minimum_RH_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_red_flag_minimum_relative_humidity_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Red_Flag_Minimum_RH_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Red Flag Minimum Relative Humidity")
 
 except Exception as m:
-    fig_NWS_Short_Term_Forecast_Red_Flag_Minimum_RH_PSAs = fpplots.standard.no_data_graphic()
+    fig_NWS_Short_Term_Forecast_Red_Flag_Minimum_RH_PSAs = NWS.standard.no_data_graphic()
     fig_NWS_Short_Term_Forecast_Red_Flag_Minimum_RH_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Red Flag Minimum Relative Humidity")
 
 
 try:
-    fig_NWS_Extended_Forecast_Red_Flag_Minimum_RH_PSAs = fpplots.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_red_flag_minimum_relative_humidity_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Red_Flag_Minimum_RH_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_red_flag_minimum_relative_humidity_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Red_Flag_Minimum_RH_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Red Flag Minimum Relative Humidity")
 
 except Exception as n:
-    fig_NWS_Extended_Forecast_Red_Flag_Minimum_RH_PSAs = fpplots.standard.no_data_graphic()
+    fig_NWS_Extended_Forecast_Red_Flag_Minimum_RH_PSAs = NWS.standard.no_data_graphic()
     fig_NWS_Extended_Forecast_Red_Flag_Minimum_RH_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Red Flag Minimum Relative Humidity")
 
 
 try:
-    fig_NWS_Short_Term_Maximum_RH_Forecast_And_Forecast_Trends_PSAs = fpplots.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_maximum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Maximum_RH_Forecast_And_Forecast_Trends_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_maximum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Maximum_RH_Forecast_And_Forecast_Trends_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Maximum Relative Humidity and Trend")
 
 except Exception as o:
-    fig_NWS_Short_Term_Maximum_RH_Forecast_And_Forecast_Trends_PSAs = fpplots.standard.no_data_graphic()
+    fig_NWS_Short_Term_Maximum_RH_Forecast_And_Forecast_Trends_PSAs = NWS.standard.no_data_graphic()
     fig_NWS_Short_Term_Maximum_RH_Forecast_And_Forecast_Trends_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Maximum Relative Humidity and Trend")
 
 
 try:
-    fig_NWS_Extended_Maximum_RH_Forecast_And_Forecast_Trends_PSAs = fpplots.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_maximum_relative_humidity_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Maximum_RH_Forecast_And_Forecast_Trends_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_maximum_relative_humidity_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Maximum_RH_Forecast_And_Forecast_Trends_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Maximum Relative Humidity and Trend")
 
 except Exception as p:
-    fig_NWS_Extended_Maximum_RH_Forecast_And_Forecast_Trends_PSAs = fpplots.standard.no_data_graphic()
+    fig_NWS_Extended_Maximum_RH_Forecast_And_Forecast_Trends_PSAs = NWS.standard.no_data_graphic()
     fig_NWS_Extended_Maximum_RH_Forecast_And_Forecast_Trends_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Maximum Relative Humidity and Trend")
 
 
 try:
-    fig_NWS_Short_Term_Minimum_RH_Forecast_And_Forecast_Trends_PSAs = fpplots.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_minimum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Minimum_RH_Forecast_And_Forecast_Trends_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_minimum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Minimum_RH_Forecast_And_Forecast_Trends_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Minimum Relative Humidity and Trend")
 
 except Exception as q:
-    fig_NWS_Short_Term_Minimum_RH_Forecast_And_Forecast_Trends_PSAs = fpplots.standard.no_data_graphic()
+    fig_NWS_Short_Term_Minimum_RH_Forecast_And_Forecast_Trends_PSAs = NWS.standard.no_data_graphic()
     fig_NWS_Short_Term_Minimum_RH_Forecast_And_Forecast_Trends_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Minimum Relative Humidity and Trend")
 
 try:
-    fig_NWS_Extended_Minimum_RH_Forecast_And_Forecast_Trends_PSAs = fpplots.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_minimum_relative_humidity_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Minimum_RH_Forecast_And_Forecast_Trends_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_minimum_relative_humidity_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Minimum_RH_Forecast_And_Forecast_Trends_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Minimum Relative Humidity and Trend")
 
 except Exception as r:
-    fig_NWS_Extended_Minimum_RH_Forecast_And_Forecast_Trends_PSAs = fpplots.standard.no_data_graphic()
+    fig_NWS_Extended_Minimum_RH_Forecast_And_Forecast_Trends_PSAs = NWS.standard.no_data_graphic()
     fig_NWS_Extended_Minimum_RH_Forecast_And_Forecast_Trends_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Minimum Relative Humidity and Trend")
