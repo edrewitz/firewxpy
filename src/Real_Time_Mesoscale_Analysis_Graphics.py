@@ -213,7 +213,7 @@ class Counties_Perspective:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title("Real Time Mesoscale Analysis Relative Humidity\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Real Time Mesoscale Analysis Relative Humidity\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=10, fontweight='bold')
             
             ax.text(0.5, -0.045, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
@@ -270,7 +270,7 @@ class Counties_Perspective:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=10, fontweight='bold')
             
             ax.text(0.5, -0.045, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
@@ -344,6 +344,8 @@ class Counties_Perspective:
             datacrs = ccrs.PlateCarree()
 
             plot_proj = rtma_data.metpy.cartopy_crs
+            
+            cmap = colormaps.relative_humidity_change_colormap()
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
 
@@ -354,7 +356,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=1.5)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap='BrBG', alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap=cmap, alpha=1)
 
 
             cbar = fig.colorbar(cs, shrink=color_table_shrink)
@@ -806,7 +808,7 @@ class Predictive_Services_Areas_Perspective:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title("Real Time Mesoscale Analysis Relative Humidity\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Real Time Mesoscale Analysis Relative Humidity\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=10, fontweight='bold')
             
             ax.text(0.5, -0.045, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
@@ -863,7 +865,7 @@ class Predictive_Services_Areas_Perspective:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=10, fontweight='bold')
             
             ax.text(0.5, -0.045, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
@@ -939,6 +941,8 @@ class Predictive_Services_Areas_Perspective:
             plot_proj = rtma_data.metpy.cartopy_crs
 
             PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+            
+            cmap = colormaps.relative_humidity_change_colormap()
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
 
@@ -947,7 +951,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=1.5)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap='BrBG', alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap=cmap, alpha=1)
 
 
             cbar = fig.colorbar(cs, shrink=color_table_shrink)
