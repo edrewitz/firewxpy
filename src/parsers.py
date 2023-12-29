@@ -47,8 +47,8 @@ class NDFD:
             return grb_1_vals_f, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals
     
         if count_of_GRIB_files == 2:
-            grb_1_vals1 = first_GRIB_file.values
-            grb_2_vals1 = second_GRIB_file.values
+            grb_1_vals = first_GRIB_file.values
+            grb_2_vals = second_GRIB_file.values
             
             grb_1_vals_k = units('kelvin') * grb_1_vals
             grb_1_vals_f = grb_1_vals_k.to('degF')
