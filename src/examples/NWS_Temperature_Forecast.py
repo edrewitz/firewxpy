@@ -161,7 +161,7 @@ I hope these instructions helped you understand what this script does so you can
 '''
 
 try:
-    fig_NWS_Short_Term_Forecast_Frost_And_Freeze_Counties = NWS.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_frost_freeze_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Frost_And_Freeze_Counties = NWS.Counties_Perspective.CONUS.plot_frost_freeze_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Frost_And_Freeze_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Frost and Freeze Areas")
 
 except Exception as a:
@@ -170,7 +170,7 @@ except Exception as a:
 
 
 try:
-    fig_NWS_Extended_Forecast_Frost_And_Freeze_Counties = NWS.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_frost_freeze_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Frost_And_Freeze_Counties = NWS.Counties_Perspective.CONUS.plot_frost_freeze_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Frost_And_Freeze_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Frost and Freeze Areas")
 
 except Exception as b:
@@ -179,7 +179,7 @@ except Exception as b:
 
 
 try:
-    fig_NWS_Short_Term_Forecast_Extreme_Heat_Counties = NWS.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_extreme_heat_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Extreme_Heat_Counties = NWS.Counties_Perspective.CONUS.plot_extreme_heat_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Extreme_Heat_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Extreme Heat")
 
 except Exception as c:
@@ -188,7 +188,7 @@ except Exception as c:
 
 
 try:
-    fig_NWS_Extended_Forecast_Extreme_Heat_Counties = NWS.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_extreme_heat_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Extreme_Heat_Counties = NWS.Counties_Perspective.CONUS.plot_extreme_heat_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Extreme_Heat_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Extreme Heat")
 
 except Exception as d:
@@ -197,7 +197,7 @@ except Exception as d:
 
 
 try:
-    fig_NWS_Short_Term_Forecast_Maximum_Temperature_And_Trend_Counties = NWS.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_maximum_temperature_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Maximum_Temperature_And_Trend_Counties = NWS.Counties_Perspective.CONUS.plot_maximum_temperature_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Maximum_Temperature_And_Trend_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Maximum Temperature and Trend")
 
 except Exception as e:
@@ -206,7 +206,7 @@ except Exception as e:
 
 
 try:
-    fig_NWS_Extended_Forecast_Maximum_Temperature_And_Trend_Counties = NWS.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_maximum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Maximum_Temperature_And_Trend_Counties = NWS.Counties_Perspective.CONUS.plot_maximum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Maximum_Temperature_And_Trend_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Maximum Temperature and Trend")
 
 except Exception as f:
@@ -215,7 +215,7 @@ except Exception as f:
 
 
 try:
-    fig_NWS_Short_Term_Forecast_Minimum_Temperature_And_Trend_Counties = NWS.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_minimum_temperature_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Minimum_Temperature_And_Trend_Counties = NWS.Counties_Perspective.CONUS.plot_minimum_temperature_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Minimum_Temperature_And_Trend_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Short Term Forecast Minimum Temperature and Trend")
 
 except Exception as g:
@@ -224,7 +224,7 @@ except Exception as g:
 
 
 try:
-    fig_NWS_Extended_Forecast_Minimum_Temperature_And_Trend_Counties = NWS.National_Weather_Service_Forecast_Counties_Perspective.CONUS.plot_minimum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Minimum_Temperature_And_Trend_Counties = NWS.Counties_Perspective.CONUS.plot_minimum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Minimum_Temperature_And_Trend_Counties = plt.savefig(f"Weather Data/National Weather Service Forecast Counties Perspective/National Weather Service Extended Forecast Minimum Temperature and Trend")
 
 except Exception as g:
@@ -233,7 +233,7 @@ except Exception as g:
 
 
 try:
-    fig_NWS_Short_Term_Forecast_Frost_And_Freeze_PSAs = NWS.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_frost_freeze_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Frost_And_Freeze_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_frost_freeze_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Frost_And_Freeze_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Frost and Freeze Areas")
 
 except Exception as i:
@@ -242,7 +242,7 @@ except Exception as i:
 
 
 try:
-    fig_NWS_Extended_Forecast_Frost_And_Freeze_PSAs = NWS.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_frost_freeze_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Frost_And_Freeze_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_frost_freeze_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Frost_And_Freeze_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Frost and Freeze Areas")
 
 except Exception as j:
@@ -251,7 +251,7 @@ except Exception as j:
 
 
 try:
-    fig_NWS_Short_Term_Forecast_Extreme_Heat_PSAs = NWS.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_extreme_heat_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Extreme_Heat_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_extreme_heat_short_term_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Extreme_Heat_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Extreme Heat")
 
 except Exception as k:
@@ -260,7 +260,7 @@ except Exception as k:
 
 
 try:
-    fig_NWS_Extended_Forecast_Extreme_Heat_PSAs = NWS.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_extreme_heat_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Extreme_Heat_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_extreme_heat_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Extreme_Heat_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Extreme Heat")
 
 except Exception as l:
@@ -269,7 +269,7 @@ except Exception as l:
 
 
 try:
-    fig_NWS_Short_Term_Forecast_Maximum_Temperature_And_Trend_PSAs = NWS.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_maximum_temperature_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Maximum_Temperature_And_Trend_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_maximum_temperature_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Maximum_Temperature_And_Trend_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Maximum Temperature and Trend")
 
 except Exception as m:
@@ -278,7 +278,7 @@ except Exception as m:
 
 
 try:
-    fig_NWS_Extended_Forecast_Maximum_Temperature_And_Trend_PSAs = NWS.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_maximum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Maximum_Temperature_And_Trend_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_maximum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Maximum_Temperature_And_Trend_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Maximum Temperature and Trend")
 
 except Exception as n:
@@ -287,7 +287,7 @@ except Exception as n:
 
 
 try:
-    fig_NWS_Short_Term_Forecast_Minimum_Temperature_And_Trend_PSAs = NWS.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_minimum_temperature_short_term_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Short_Term_Forecast_Minimum_Temperature_And_Trend_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_minimum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Short_Term_Forecast_Minimum_Temperature_And_Trend_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Short Term Forecast Minimum Temperature and Trend")
 
 except Exception as o:
@@ -296,7 +296,7 @@ except Exception as o:
 
 
 try:
-    fig_NWS_Extended_Forecast_Minimum_Temperature_And_Trend_PSAs = NWS.National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective.CONUS.plot_minimum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
+    fig_NWS_Extended_Forecast_Minimum_Temperature_And_Trend_PSAs = NWS.Predictive_Services_Areas_Perspective.CONUS.plot_minimum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink)
     fig_NWS_Extended_Forecast_Minimum_Temperature_And_Trend_PSAs = plt.savefig(f"Weather Data/National Weather Service Forecast Predictive Services Areas Perspective/National Weather Service Extended Forecast Minimum Temperature and Trend")
 
 except Exception as p:
