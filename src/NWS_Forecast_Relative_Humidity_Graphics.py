@@ -351,7 +351,7 @@ class Counties_Perspective:
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
             
-                    ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                    ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                     ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                     ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                     ax4.add_feature(cfeature.STATES, linewidth=0.5)
@@ -960,7 +960,7 @@ class Counties_Perspective:
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
             
-                    ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                    ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                     ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                     ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                     ax4.add_feature(cfeature.STATES, linewidth=0.5)
@@ -1243,7 +1243,7 @@ class Counties_Perspective:
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
             
-                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                 ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax4.add_feature(cfeature.STATES, linewidth=0.5)
@@ -1569,7 +1569,7 @@ class Counties_Perspective:
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
             
-                    ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                    ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                     ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                     ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                     ax4.add_feature(cfeature.STATES, linewidth=0.5)
@@ -2182,7 +2182,7 @@ class Counties_Perspective:
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
-                    ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                    ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                     ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                     ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                     ax4.add_feature(cfeature.STATES, linewidth=0.5)
@@ -2469,7 +2469,7 @@ class Counties_Perspective:
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
-                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                 ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax4.add_feature(cfeature.STATES, linewidth=0.5)
@@ -2798,7 +2798,7 @@ class Counties_Perspective:
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
-                    ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                    ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                     ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                     ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                     ax4.add_feature(cfeature.STATES, linewidth=0.5)
@@ -3085,7 +3085,7 @@ class Counties_Perspective:
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
-                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                 ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax4.add_feature(cfeature.STATES, linewidth=0.5)
@@ -3394,7 +3394,7 @@ class Predictive_Services_Areas_Perspective:
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
             
-                    ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                    ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                     ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                     ax4.add_feature(PSAs, linewidth=1.5)
                     ax4.set_title('Night 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
@@ -3924,7 +3924,7 @@ class Predictive_Services_Areas_Perspective:
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
             
-                    ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                    ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                     ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                     ax4.add_feature(PSAs, linewidth=1.5)
                     ax4.set_title('Night 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
@@ -4170,7 +4170,7 @@ class Predictive_Services_Areas_Perspective:
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
             
-                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                 ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax4.add_feature(PSAs, linewidth=1.5)
                 ax4.set_title('Night 7 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
@@ -4456,7 +4456,7 @@ class Predictive_Services_Areas_Perspective:
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
             
-                    ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                    ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                     ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                     ax4.add_feature(PSAs, linewidth=1.5)
                     ax4.set_title('Day 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
@@ -4991,7 +4991,7 @@ class Predictive_Services_Areas_Perspective:
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
-                    ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                    ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                     ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                     ax4.add_feature(PSAs, linewidth=1.5)
                     ax4.set_title('Night 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
@@ -5241,7 +5241,7 @@ class Predictive_Services_Areas_Perspective:
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
-                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                 ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax4.add_feature(PSAs, linewidth=1.5)
                 ax4.set_title('Night 7 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
@@ -5530,7 +5530,7 @@ class Predictive_Services_Areas_Perspective:
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
-                    ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                    ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                     ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                     ax4.add_feature(PSAs, linewidth=1.5)
                     ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
@@ -5781,7 +5781,7 @@ class Predictive_Services_Areas_Perspective:
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
-                ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+                ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
                 ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax4.add_feature(PSAs, linewidth=1.5)
                 ax4.set_title('Day 7 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
