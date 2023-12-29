@@ -2731,7 +2731,7 @@ class Counties_Perspective:
 
             temp_scale_warm, temp_scale_cool = parsers.NDFD.get_minimum_temperature_color_scale(dirName)
         
-            extended_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(dirName, 'ds.mint.bin')
+            extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(dirName, 'ds.mint.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(extended_data, 'ds.mint.bin')
         
@@ -5444,7 +5444,7 @@ class Predictive_Services_Areas_Perspective:
 
             temp_scale_warm, temp_scale_cool = parsers.NDFD.get_minimum_temperature_color_scale(dirName)
         
-            extended_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(dirName, 'ds.mint.bin')
+            extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(dirName, 'ds.mint.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(extended_data, 'ds.mint.bin')
         
