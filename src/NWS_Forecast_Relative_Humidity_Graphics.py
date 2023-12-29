@@ -678,6 +678,8 @@ class Counties_Perspective:
             files = count_of_GRIB_files
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
+
+            cmap = colormaps.excellent_recovery_colormap()
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
             
@@ -695,7 +697,7 @@ class Counties_Perspective:
                 ax.add_feature(USCOUNTIES, linewidth=1.5)
                 ax.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
         
-                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -714,7 +716,7 @@ class Counties_Perspective:
                     ax0.add_feature(USCOUNTIES, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -725,7 +727,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
              
@@ -742,7 +744,7 @@ class Counties_Perspective:
                     ax0.add_feature(USCOUNTIES, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -761,7 +763,7 @@ class Counties_Perspective:
                     ax0.add_feature(USCOUNTIES, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -772,7 +774,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -783,7 +785,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -800,7 +802,7 @@ class Counties_Perspective:
                     ax0.add_feature(USCOUNTIES, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -811,7 +813,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -830,7 +832,7 @@ class Counties_Perspective:
                     ax0.add_feature(USCOUNTIES, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -841,7 +843,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -852,7 +854,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -863,7 +865,7 @@ class Counties_Perspective:
                     ax3.add_feature(USCOUNTIES, linewidth=1.5)
                     ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -880,7 +882,7 @@ class Counties_Perspective:
                     ax0.add_feature(USCOUNTIES, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -891,7 +893,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -902,7 +904,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -921,7 +923,7 @@ class Counties_Perspective:
                     ax0.add_feature(USCOUNTIES, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -932,7 +934,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -943,7 +945,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -954,7 +956,7 @@ class Counties_Perspective:
                     ax3.add_feature(USCOUNTIES, linewidth=1.5)
                     ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -965,7 +967,7 @@ class Counties_Perspective:
                     ax4.add_feature(USCOUNTIES, linewidth=1.5)
                     ax4.set_title('Night 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                     cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -982,7 +984,7 @@ class Counties_Perspective:
                     ax0.add_feature(USCOUNTIES, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -993,7 +995,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -1004,7 +1006,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -1015,7 +1017,7 @@ class Counties_Perspective:
                     ax3.add_feature(USCOUNTIES, linewidth=1.5)
                     ax3.set_title('Night 4 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -1051,6 +1053,8 @@ class Counties_Perspective:
             files = count_of_GRIB_files
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
+
+            cmap = colormaps.excellent_recovery_colormap()
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
             
@@ -1068,7 +1072,7 @@ class Counties_Perspective:
                 ax.add_feature(USCOUNTIES, linewidth=1.5)
                 ax.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
         
-                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -1085,7 +1089,7 @@ class Counties_Perspective:
                 ax0.add_feature(USCOUNTIES, linewidth=1.5)
                 ax0.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -1096,7 +1100,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=1.5)
                 ax1.set_title('Night 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
              
@@ -1113,7 +1117,7 @@ class Counties_Perspective:
                 ax0.add_feature(USCOUNTIES, linewidth=1.5)
                 ax0.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -1124,7 +1128,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=1.5)
                 ax1.set_title('Night 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -1135,7 +1139,7 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=1.5)
                 ax2.set_title('Night 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -1152,7 +1156,7 @@ class Counties_Perspective:
                 ax0.add_feature(USCOUNTIES, linewidth=1.5)
                 ax0.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -1163,7 +1167,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=1.5)
                 ax1.set_title('Night 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -1174,7 +1178,7 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=1.5)
                 ax2.set_title('Night 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -1185,7 +1189,7 @@ class Counties_Perspective:
                 ax3.add_feature(USCOUNTIES, linewidth=1.5)
                 ax3.set_title('Night 7 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -1202,7 +1206,7 @@ class Counties_Perspective:
                 ax0.add_feature(USCOUNTIES, linewidth=1.5)
                 ax0.set_title('Night 3 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -1213,7 +1217,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=1.5)
                 ax1.set_title('Night 4 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -1224,7 +1228,7 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=1.5)
                 ax2.set_title('Night 5 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -1235,7 +1239,7 @@ class Counties_Perspective:
                 ax3.add_feature(USCOUNTIES, linewidth=1.5)
                 ax3.set_title('Night 6 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -1246,7 +1250,7 @@ class Counties_Perspective:
                 ax4.add_feature(USCOUNTIES, linewidth=1.5)
                 ax4.set_title('Night 7 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                 cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -1894,6 +1898,8 @@ class Counties_Perspective:
             datacrs = ccrs.PlateCarree()
 
             cmap = colormaps.relative_humidity_colormap()
+
+            cmap_change = colormaps.relative_humidity_change_colormap()
         
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
     
@@ -1943,7 +1949,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
              
@@ -1990,7 +1996,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2001,7 +2007,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2029,7 +2035,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2059,7 +2065,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2070,7 +2076,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2081,7 +2087,7 @@ class Counties_Perspective:
                     ax3.add_feature(USCOUNTIES, linewidth=1.5)
                     ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2109,7 +2115,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2120,7 +2126,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2150,7 +2156,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2161,7 +2167,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2172,7 +2178,7 @@ class Counties_Perspective:
                     ax3.add_feature(USCOUNTIES, linewidth=1.5)
                     ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2183,7 +2189,7 @@ class Counties_Perspective:
                     ax4.add_feature(USCOUNTIES, linewidth=1.5)
                     ax4.set_title('Night 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                     cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2211,7 +2217,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2222,7 +2228,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2233,7 +2239,7 @@ class Counties_Perspective:
                     ax3.add_feature(USCOUNTIES, linewidth=1.5)
                     ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2272,6 +2278,7 @@ class Counties_Perspective:
             datacrs = ccrs.PlateCarree()
 
             cmap = colormaps.relative_humidity_colormap()
+            cmap_change = colormaps.relative_humidity_change_colormap()
         
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
     
@@ -2319,7 +2326,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=1.5)
                 ax1.set_title('Night 5 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2347,7 +2354,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=1.5)
                 ax1.set_title('Night 5 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2358,7 +2365,7 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=1.5)
                 ax2.set_title('Night 6 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2386,7 +2393,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=1.5)
                 ax1.set_title('Night 5 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2397,7 +2404,7 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=1.5)
                 ax2.set_title('Night 6 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2408,7 +2415,7 @@ class Counties_Perspective:
                 ax3.add_feature(USCOUNTIES, linewidth=1.5)
                 ax3.set_title('Night 7 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2436,7 +2443,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=1.5)
                 ax1.set_title('Night 4 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2447,7 +2454,7 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=1.5)
                 ax2.set_title('Night 5 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2458,7 +2465,7 @@ class Counties_Perspective:
                 ax3.add_feature(USCOUNTIES, linewidth=1.5)
                 ax3.set_title('Night 6 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2469,7 +2476,7 @@ class Counties_Perspective:
                 ax4.add_feature(USCOUNTIES, linewidth=1.5)
                 ax4.set_title('Night 7 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                 cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2508,6 +2515,7 @@ class Counties_Perspective:
             datacrs = ccrs.PlateCarree()
 
             cmap = colormaps.relative_humidity_colormap()
+            cmap_change = colormaps.relative_humidity_change_colormap()
         
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.minrh.bin')
     
@@ -2557,7 +2565,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
              
@@ -2604,7 +2612,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2615,7 +2623,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2643,7 +2651,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2673,7 +2681,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2684,7 +2692,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2695,7 +2703,7 @@ class Counties_Perspective:
                     ax3.add_feature(USCOUNTIES, linewidth=1.5)
                     ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2723,7 +2731,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2734,7 +2742,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2764,7 +2772,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2775,7 +2783,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2786,7 +2794,7 @@ class Counties_Perspective:
                     ax3.add_feature(USCOUNTIES, linewidth=1.5)
                     ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2797,7 +2805,7 @@ class Counties_Perspective:
                     ax4.add_feature(USCOUNTIES, linewidth=1.5)
                     ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                     cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2825,7 +2833,7 @@ class Counties_Perspective:
                     ax1.add_feature(USCOUNTIES, linewidth=1.5)
                     ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2836,7 +2844,7 @@ class Counties_Perspective:
                     ax2.add_feature(USCOUNTIES, linewidth=1.5)
                     ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2847,7 +2855,7 @@ class Counties_Perspective:
                     ax3.add_feature(USCOUNTIES, linewidth=1.5)
                     ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -2874,7 +2882,7 @@ class Counties_Perspective:
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
         
-            extended_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.minrh.bin')
+            extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.minrh.bin')
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(extended_data, 'ds.minrh.bin')
         
@@ -2886,6 +2894,7 @@ class Counties_Perspective:
             datacrs = ccrs.PlateCarree()
 
             cmap = colormaps.relative_humidity_colormap()
+            cmap_change = colormaps.relative_humidity_change_colormap()
         
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.minrh.bin')
     
@@ -2933,7 +2942,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=1.5)
                 ax1.set_title('Day 5 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
              
@@ -2961,7 +2970,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=1.5)
                 ax1.set_title('Day 5 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -2972,7 +2981,7 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=1.5)
                 ax2.set_title('Day 6 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -3000,7 +3009,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=1.5)
                 ax1.set_title('Day 5 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -3011,7 +3020,7 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=1.5)
                 ax2.set_title('Day 6 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -3022,7 +3031,7 @@ class Counties_Perspective:
                 ax3.add_feature(USCOUNTIES, linewidth=1.5)
                 ax3.set_title('Day 7 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -3050,7 +3059,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=1.5)
                 ax1.set_title('Day 4 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -3061,7 +3070,7 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=1.5)
                 ax2.set_title('Day 5 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -3072,7 +3081,7 @@ class Counties_Perspective:
                 ax3.add_feature(USCOUNTIES, linewidth=1.5)
                 ax3.set_title('Day 6 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -3083,7 +3092,7 @@ class Counties_Perspective:
                 ax4.add_feature(USCOUNTIES, linewidth=1.5)
                 ax4.set_title('Day 7 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                 cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -3674,7 +3683,8 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
     
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs('red')
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+            cmap = colormaps.excellent_recovery_colormap()
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
            
@@ -3689,7 +3699,7 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(PSAs, linewidth=1.5)
                 ax.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
         
-                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -3706,7 +3716,7 @@ class Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3715,7 +3725,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
              
@@ -3730,7 +3740,7 @@ class Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
         
-                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -3747,7 +3757,7 @@ class Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3756,7 +3766,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3765,7 +3775,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -3780,7 +3790,7 @@ class Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3789,7 +3799,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -3806,7 +3816,7 @@ class Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3815,7 +3825,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3824,7 +3834,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3833,7 +3843,7 @@ class Predictive_Services_Areas_Perspective:
                     ax3.add_feature(PSAs, linewidth=1.5)
                     ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -3848,7 +3858,7 @@ class Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3857,7 +3867,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -3866,7 +3876,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -3883,7 +3893,7 @@ class Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3892,7 +3902,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3901,7 +3911,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3910,7 +3920,7 @@ class Predictive_Services_Areas_Perspective:
                     ax3.add_feature(PSAs, linewidth=1.5)
                     ax3.set_title('Night 4 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3919,7 +3929,7 @@ class Predictive_Services_Areas_Perspective:
                     ax4.add_feature(PSAs, linewidth=1.5)
                     ax4.set_title('Night 5 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                     cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -3934,7 +3944,7 @@ class Predictive_Services_Areas_Perspective:
                     ax0.add_feature(PSAs, linewidth=1.5)
                     ax0.set_title('Night 1 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs0 = ax0.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                     cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3943,7 +3953,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3952,7 +3962,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -3961,7 +3971,7 @@ class Predictive_Services_Areas_Perspective:
                     ax3.add_feature(PSAs, linewidth=1.5)
                     ax3.set_title('Night 4 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                    cs3 = ax3.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -3998,7 +4008,8 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
     
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs('red')
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+            cmap = colormaps.excellent_recovery_colormap()
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
             
@@ -4014,7 +4025,7 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(PSAs, linewidth=1.5)
                 ax.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y 06Z') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y 18Z'), fontweight='bold')
         
-                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar = fig.colorbar(cs, shrink=color_table_shrink)
                 cbar.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -4029,7 +4040,7 @@ class Predictive_Services_Areas_Perspective:
                 ax0.add_feature(PSAs, linewidth=1.5)
                 ax0.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -4038,7 +4049,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.5)
                 ax1.set_title('Night 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
              
@@ -4053,7 +4064,7 @@ class Predictive_Services_Areas_Perspective:
                 ax0.add_feature(PSAs, linewidth=1.5)
                 ax0.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -4062,7 +4073,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.5)
                 ax1.set_title('Night 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -4071,7 +4082,7 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(PSAs, linewidth=1.5)
                 ax2.set_title('Night 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -4086,7 +4097,7 @@ class Predictive_Services_Areas_Perspective:
                 ax0.add_feature(PSAs, linewidth=1.5)
                 ax0.set_title('Night 4 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -4095,7 +4106,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.5)
                 ax1.set_title('Night 5 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -4104,7 +4115,7 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(PSAs, linewidth=1.5)
                 ax2.set_title('Night 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -4113,7 +4124,7 @@ class Predictive_Services_Areas_Perspective:
                 ax3.add_feature(PSAs, linewidth=1.5)
                 ax3.set_title('Night 7 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -4128,7 +4139,7 @@ class Predictive_Services_Areas_Perspective:
                 ax0.add_feature(PSAs, linewidth=1.5)
                 ax0.set_title('Night 3 Forecast\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar0 = fig.colorbar(cs0, shrink=color_table_shrink)
                 cbar0.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -4137,7 +4148,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.5)
                 ax1.set_title('Night 4 Forecast\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -4146,7 +4157,7 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(PSAs, linewidth=1.5)
                 ax2.set_title('Night 5 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -4155,7 +4166,7 @@ class Predictive_Services_Areas_Perspective:
                 ax3.add_feature(PSAs, linewidth=1.5)
                 ax3.set_title('Night 6 Forecast\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
             
@@ -4164,7 +4175,7 @@ class Predictive_Services_Areas_Perspective:
                 ax4.add_feature(PSAs, linewidth=1.5)
                 ax4.set_title('Night 7 Forecast\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap='Greens', transform=datacrs)
+                cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
                 cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                 cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
         
@@ -4737,6 +4748,7 @@ class Predictive_Services_Areas_Perspective:
     
             PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
             cmap = colormaps.relative_humidity_colormap()
+            cmap_change = colormaps.relative_humidity_change_colormap()
         
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
     
@@ -4780,7 +4792,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
              
@@ -4821,7 +4833,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -4830,7 +4842,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -4854,7 +4866,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -4880,7 +4892,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -4889,7 +4901,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -4898,7 +4910,7 @@ class Predictive_Services_Areas_Perspective:
                     ax3.add_feature(PSAs, linewidth=1.5)
                     ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -4922,7 +4934,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -4931,7 +4943,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -4957,7 +4969,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -4966,7 +4978,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -4975,7 +4987,7 @@ class Predictive_Services_Areas_Perspective:
                     ax3.add_feature(PSAs, linewidth=1.5)
                     ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -4984,7 +4996,7 @@ class Predictive_Services_Areas_Perspective:
                     ax4.add_feature(PSAs, linewidth=1.5)
                     ax4.set_title('Night 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                     cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5008,7 +5020,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Night 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5017,7 +5029,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Night 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5026,7 +5038,7 @@ class Predictive_Services_Areas_Perspective:
                     ax3.add_feature(PSAs, linewidth=1.5)
                     ax3.set_title('Night 4 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5066,6 +5078,7 @@ class Predictive_Services_Areas_Perspective:
     
             PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
             cmap = colormaps.relative_humidity_colormap()
+            cmap_change = colormaps.relative_humidity_change_colormap()
         
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.maxrh.bin')
     
@@ -5107,7 +5120,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.5)
                 ax1.set_title('Night 5 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5131,7 +5144,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.5)
                 ax1.set_title('Night 5 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5140,7 +5153,7 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(PSAs, linewidth=1.5)
                 ax2.set_title('Night 6 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5164,7 +5177,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.5)
                 ax1.set_title('Night 5 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5173,7 +5186,7 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(PSAs, linewidth=1.5)
                 ax2.set_title('Night 6 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5182,7 +5195,7 @@ class Predictive_Services_Areas_Perspective:
                 ax3.add_feature(PSAs, linewidth=1.5)
                 ax3.set_title('Night 7 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5206,7 +5219,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.5)
                 ax1.set_title('Night 4 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5215,7 +5228,7 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(PSAs, linewidth=1.5)
                 ax2.set_title('Night 5 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5224,7 +5237,7 @@ class Predictive_Services_Areas_Perspective:
                 ax3.add_feature(PSAs, linewidth=1.5)
                 ax3.set_title('Night 6 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5233,7 +5246,7 @@ class Predictive_Services_Areas_Perspective:
                 ax4.add_feature(PSAs, linewidth=1.5)
                 ax4.set_title('Night 7 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                 cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5274,6 +5287,7 @@ class Predictive_Services_Areas_Perspective:
             PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
 
             cmap = colormaps.relative_humidity_colormap()
+            cmap_change = colormaps.relative_humidity_change_colormap()
         
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, 'ds.minrh.bin')
     
@@ -5317,7 +5331,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
              
@@ -5358,7 +5372,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5367,7 +5381,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5391,7 +5405,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5426,7 +5440,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5435,7 +5449,7 @@ class Predictive_Services_Areas_Perspective:
                     ax3.add_feature(PSAs, linewidth=1.5)
                     ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5459,7 +5473,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5468,7 +5482,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5494,7 +5508,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5503,7 +5517,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5512,7 +5526,7 @@ class Predictive_Services_Areas_Perspective:
                     ax3.add_feature(PSAs, linewidth=1.5)
                     ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5521,7 +5535,7 @@ class Predictive_Services_Areas_Perspective:
                     ax4.add_feature(PSAs, linewidth=1.5)
                     ax4.set_title('Day 5 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                     cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5545,7 +5559,7 @@ class Predictive_Services_Areas_Perspective:
                     ax1.add_feature(PSAs, linewidth=1.5)
                     ax1.set_title('Day 2 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs1 = ax1.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                     cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5554,7 +5568,7 @@ class Predictive_Services_Areas_Perspective:
                     ax2.add_feature(PSAs, linewidth=1.5)
                     ax2.set_title('Day 3 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs2 = ax2.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                     cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5563,7 +5577,7 @@ class Predictive_Services_Areas_Perspective:
                     ax3.add_feature(PSAs, linewidth=1.5)
                     ax3.set_title('Day 4 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                    cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                    cs3 = ax3.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                     cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                     cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5590,9 +5604,10 @@ class Predictive_Services_Areas_Perspective:
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
         
-            extended_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, 'ds.minrh.bin')
+            extended_data = da.FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, 'ds.minrh.bin')
 
             cmap = colormaps.relative_humidity_colormap()
+            cmap_change = colormaps.relative_humidity_change_colormap()
             
             first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(extended_data, 'ds.minrh.bin')
         
@@ -5645,7 +5660,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.5)
                 ax1.set_title('Day 5 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
              
@@ -5669,7 +5684,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.5)
                 ax1.set_title('Day 5 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5678,7 +5693,7 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(PSAs, linewidth=1.5)
                 ax2.set_title('Day 6 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5702,7 +5717,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.5)
                 ax1.set_title('Day 5 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5711,7 +5726,7 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(PSAs, linewidth=1.5)
                 ax2.set_title('Day 6 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5720,7 +5735,7 @@ class Predictive_Services_Areas_Perspective:
                 ax3.add_feature(PSAs, linewidth=1.5)
                 ax3.set_title('Day 7 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink) 
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
@@ -5744,7 +5759,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(PSAs, linewidth=1.5)
                 ax1.set_title('Day 4 Forecast Trend\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs1 = ax1.contourf(lons, lats, grb_2_vals - grb_1_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar1 = fig.colorbar(cs1, shrink=color_table_shrink)
                 cbar1.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5753,7 +5768,7 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(PSAs, linewidth=1.5)
                 ax2.set_title('Day 5 Forecast Trend\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5762,7 +5777,7 @@ class Predictive_Services_Areas_Perspective:
                 ax3.add_feature(PSAs, linewidth=1.5)
                 ax3.set_title('Day 6 Forecast Trend\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs3 = ax3.contourf(lons, lats, grb_4_vals - grb_3_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar3 = fig.colorbar(cs3, shrink=color_table_shrink)
                 cbar3.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
             
@@ -5771,7 +5786,7 @@ class Predictive_Services_Areas_Perspective:
                 ax4.add_feature(PSAs, linewidth=1.5)
                 ax4.set_title('Day 7 Forecast Trend\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap='BrBG', transform=datacrs)
+                cs4 = ax4.contourf(lons, lats, grb_5_vals - grb_4_vals, levels=np.arange(-60, 65, 5), cmap=cmap_change, transform=datacrs)
                 cbar4 = fig.colorbar(cs4, shrink=color_table_shrink)
                 cbar4.set_label(label="Relative Humidity Trend (%)", fontweight='bold')
         
