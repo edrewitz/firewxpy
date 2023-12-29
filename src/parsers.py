@@ -13,6 +13,7 @@ import pygrib
 import numpy as np
 
 from datetime import datetime, timedelta
+from metpy.units import units
 
 class NDFD:
 
@@ -35,56 +36,50 @@ class NDFD:
         frac = 9/5
         if count_of_GRIB_files == 1:
             grb_1_vals = first_GRIB_file.values
-            celsius = grb_1_vals - 273.15
-            fahrenheit = (frac * celsius) + 32
-            grb_1_vals = fahrenheit
+            grb_1_vals_k = units('kelvin') * grb_1_vals
+            grb_1_vals_f = grb_1_vals_k.to('degF')
     
             grb_2_vals = None
             grb_3_vals = None
             grb_4_vals = None
             grb_5_vals = None
                 
-            return grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals
+            return grb_1_vals_f, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals
     
         if count_of_GRIB_files == 2:
-            grb_1_vals = first_GRIB_file.values
-            grb_2_vals = second_GRIB_file.values
+            grb_1_vals1 = first_GRIB_file.values
+            grb_2_vals1 = second_GRIB_file.values
             
-            celsius_1 = grb_1_vals - 273.15
-            fahrenheit_1 = (frac * celsius_1) + 32
-            grb_1_vals = fahrenheit_1
-                
-            celsius_2 = grb_2_vals - 273.15
-            fahrenheit_2 = (frac * celsius_2) + 32
-            grb_2_vals = fahrenheit_2
-    
+            grb_1_vals_k = units('kelvin') * grb_1_vals
+            grb_1_vals_f = grb_1_vals_k.to('degF')
+
+            grb_2_vals_k = units('kelvin') * grb_2_vals
+            grb_2_vals_f = grb_2_vals_k.to('degF')
+
             grb_3_vals = None
             grb_4_vals = None
             grb_5_vals = None
                 
-            return grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals
+            return grb_1_vals_f, grb_2_vals_f, grb_3_vals, grb_4_vals, grb_5_vals
     
         if count_of_GRIB_files == 3:
             grb_1_vals = first_GRIB_file.values
             grb_2_vals = second_GRIB_file.values
             grb_3_vals = third_GRIB_file.values
             
-            celsius_1 = grb_1_vals - 273.15
-            fahrenheit_1 = (frac * celsius_1) + 32
-            grb_1_vals = fahrenheit_1
-                
-            celsius_2 = grb_2_vals - 273.15
-            fahrenheit_2 = (frac * celsius_2) + 32
-            grb_2_vals = fahrenheit_2
-    
-            celsius_3 = grb_3_vals - 273.15
-            fahrenheit_3 = (frac * celsius_3) + 32
-            grb_3_vals = fahrenheit_3
+            grb_1_vals_k = units('kelvin') * grb_1_vals
+            grb_1_vals_f = grb_1_vals_k.to('degF')
+
+            grb_2_vals_k = units('kelvin') * grb_2_vals
+            grb_2_vals_f = grb_2_vals_k.to('degF')
+
+            grb_3_vals_k = units('kelvin') * grb_3_vals
+            grb_3_vals_f = grb_3_vals_k.to('degF')
     
             grb_4_vals = None
             grb_5_vals = None
     
-            return grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals
+            return grb_1_vals_f, grb_2_vals_f, grb_3_vals_f, grb_4_vals, grb_5_vals
     
         if count_of_GRIB_files == 4:
             grb_1_vals = first_GRIB_file.values
@@ -92,25 +87,21 @@ class NDFD:
             grb_3_vals = third_GRIB_file.values
             grb_4_vals = fourth_GRIB_file.values
     
-            celsius_1 = grb_1_vals - 273.15
-            fahrenheit_1 = (frac * celsius_1) + 32
-            grb_1_vals = fahrenheit_1
-                
-            celsius_2 = grb_2_vals - 273.15
-            fahrenheit_2 = (frac * celsius_2) + 32
-            grb_2_vals = fahrenheit_2
-    
-            celsius_3 = grb_3_vals - 273.15
-            fahrenheit_3 = (frac * celsius_3) + 32
-            grb_3_vals = fahrenheit_3
-    
-            celsius_4 = grb_4_vals - 273.15
-            fahrenheit_4 = (frac * celsius_4) + 32
-            grb_4_vals = fahrenheit_4
+            grb_1_vals_k = units('kelvin') * grb_1_vals
+            grb_1_vals_f = grb_1_vals_k.to('degF')
+
+            grb_2_vals_k = units('kelvin') * grb_2_vals
+            grb_2_vals_f = grb_2_vals_k.to('degF')
+
+            grb_3_vals_k = units('kelvin') * grb_3_vals
+            grb_3_vals_f = grb_3_vals_k.to('degF')
+
+            grb_4_vals_k = units('kelvin') * grb_4_vals
+            grb_4_vals_f = grb_4_vals_k.to('degF')            
     
             grb_5_vals = None
                     
-            return grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals
+            return grb_1_vals_f, grb_2_vals_f, grb_3_vals_f, grb_4_vals_f, grb_5_vals
     
         if count_of_GRIB_files >= 5:
             grb_1_vals = first_GRIB_file.values
@@ -119,27 +110,22 @@ class NDFD:
             grb_4_vals = fourth_GRIB_file.values
             grb_5_vals = fifth_GRIB_file.values
             
-            celsius_1 = grb_1_vals - 273.15
-            fahrenheit_1 = (frac * celsius_1) + 32
-            grb_1_vals = fahrenheit_1
-                
-            celsius_2 = grb_2_vals - 273.15
-            fahrenheit_2 = (frac * celsius_2) + 32
-            grb_2_vals = fahrenheit_2
-    
-            celsius_3 = grb_3_vals - 273.15
-            fahrenheit_3 = (frac * celsius_3) + 32
-            grb_3_vals = fahrenheit_3
-    
-            celsius_4 = grb_4_vals - 273.15
-            fahrenheit_4 = (frac * celsius_4) + 32
-            grb_4_vals = fahrenheit_4
-    
-            celsius_5 = grb_5_vals - 273.15
-            fahrenheit_5 = (frac * celsius_5) + 32
-            grb_5_vals = fahrenheit_5
+            grb_1_vals_k = units('kelvin') * grb_1_vals
+            grb_1_vals_f = grb_1_vals_k.to('degF')
+
+            grb_2_vals_k = units('kelvin') * grb_2_vals
+            grb_2_vals_f = grb_2_vals_k.to('degF')
+
+            grb_3_vals_k = units('kelvin') * grb_3_vals
+            grb_3_vals_f = grb_3_vals_k.to('degF')
+
+            grb_4_vals_k = units('kelvin') * grb_4_vals
+            grb_4_vals_f = grb_4_vals_k.to('degF')
+
+            grb_5_vals_k = units('kelvin') * grb_5_vals
+            grb_5_vals_f = grb_5_vals_k.to('degF')            
                     
-            return grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals
+            return grb_1_vals_f, grb_2_vals_f, grb_3_vals_f, grb_4_vals_f, grb_5_vals_f
     
     
     def GRIB_parameter_check_temperature(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, parameter):
