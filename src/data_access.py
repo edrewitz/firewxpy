@@ -1661,6 +1661,7 @@ class NOMADS_OPENDAP_Downloads:
             (C) METEOROLOGIST ERIC J. DREWITZ 2023
 
             '''
+            param = parameter
             
             times = []
             for i in range(0, 5):
@@ -1706,14 +1707,152 @@ class NOMADS_OPENDAP_Downloads:
                                     print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
             try:
                 parameter_data = ds[parameter]
-                return parameter_data
+                lat = parameter_data['lat']
+                lon = parameter_data['lon']
+                time = parameter_data['time']
+                
+                lat_vals = lat[:].squeeze()
+                lon_vals = lon[:].squeeze()
+                time_vals = time[:].squeeze()
+                data_to_plot = parameter_data[0, :, :]
+                if param == 'tmp2m' or param == 'dpt2m':
+                    data_to_plot = units('degF') * data_to_plot
+
+                if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
+                    data_to_plot = units('knots') * data_to_plot
+
+                if param == 'wdir10m':
+                    data_to_plot = units('degree') * data_to_plot
+
+                if param == 'vissfc' or param == 'ceilceil':
+                    data_to_plot = units('meters') * data_to_plot
+
+                if param == 'pressfc':
+                    data_to_plot = units('hPa') * data_to_plot
+
+                if param == 'tcdcclm':
+                    data_to_plot = units('percent') * data_to_plot
+                
+                return lon_vals, lat_vals, time_vals, data_to_plot
+                
             except Exception as f:
                 error = info.invalid_parameter_NOMADS_RTMA_Alaska()
                 print(error)
 
+        def get_RTMA_Data_24_hour_change_single_parameter(current_time, parameter):
+
+            r'''
+
+            THIS FUNCTION RETRIEVES THE RTMA DATA FOR A SINGLE PARAMETER
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+
+            '''
+            param = parameter
+            times = []
+            times_24 = []
+            for i in range(0, 5):
+                time = pd.to_datetime(current_time - timedelta(hours=i))
+                times.append(time)
+                time_24 = pd.to_datetime(time - timedelta(hours=24))
+                times_24.append(time_24)
+
+            ### LATEST TIME URLS ###
+            url_0 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[0].strftime('%Y%m%d')+'/akrtma_anl_'+times[0].strftime('%H')+'z'
+            url_1 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[1].strftime('%Y%m%d')+'/akrtma_anl_'+times[1].strftime('%H')+'z'
+            url_2 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[2].strftime('%Y%m%d')+'/akrtma_anl_'+times[2].strftime('%H')+'z'
+            url_3 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[3].strftime('%Y%m%d')+'/akrtma_anl_'+times[3].strftime('%H')+'z'
+            url_4 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[4].strftime('%Y%m%d')+'/akrtma_anl_'+times[4].strftime('%H')+'z'
+
+
+            ### 24 HOURS AGO URLS ###
+            url_5 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times_24[0].strftime('%Y%m%d')+'/akrtma_anl_'+times_24[0].strftime('%H')+'z'
+            url_6 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times_24[1].strftime('%Y%m%d')+'/akrtma_anl_'+times_24[1].strftime('%H')+'z'
+            url_7 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times_24[2].strftime('%Y%m%d')+'/akrtma_anl_'+times_24[2].strftime('%H')+'z'
+            url_8 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times_24[3].strftime('%Y%m%d')+'/akrtma_anl_'+times_24[3].strftime('%H')+'z'
+            url_9 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times_24[4].strftime('%Y%m%d')+'/akrtma_anl_'+times_24[4].strftime('%H')+'z'
+
+            try:
+                ds = xr.open_dataset(url_0, engine='netcdf4')
+                print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
+                ds_24 = xr.open_dataset(url_5, engine='netcdf4')
+                print("Data was successfully retrieved for " + times_24[0].strftime('%m/%d/%Y %HZ'))
+
+            except Exception as a:
+                try:
+                    print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
+                    ds = xr.open_dataset(url_1, engine='netcdf4')
+                    print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
+                    ds_24 = xr.open_dataset(url_6, engine='netcdf4')
+                    print("Data was successfully retrieved for " + times_24[1].strftime('%m/%d/%Y %HZ'))
+
+                except Exception as b:
+                        try:
+                            print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
+                            ds = xr.open_dataset(url_2, engine='netcdf4')
+                            print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
+                            ds_24 = xr.open_dataset(url_7, engine='netcdf4')
+                            print("Data was successfully retrieved for " + times_24[2].strftime('%m/%d/%Y %HZ'))
+
+                        except Exception as c:
+                            try:
+                                print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
+                                ds = xr.open_dataset(url_3, engine='netcdf4')
+                                print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
+                                ds_24 = xr.open_dataset(url_8, engine='netcdf4')
+                                print("Data was successfully retrieved for " + times_24[3].strftime('%m/%d/%Y %HZ'))
+                            except Exception as d:
+    
+                                try:
+                                    print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    ds = xr.open_dataset(url_4, engine='netcdf4')
+                                    print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    ds_24 = xr.open_dataset(url_9, engine='netcdf4')
+                                    print("Data was successfully retrieved for " + times_24[4].strftime('%m/%d/%Y %HZ'))
+                                except Exception as e:
+                                    print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
+            try:
+                parameter_data = ds[parameter]
+                lat = parameter_data['lat']
+                lon = parameter_data['lon']
+                time = parameter_data['time']
+                
+                lat_vals = lat[:].squeeze()
+                lon_vals = lon[:].squeeze()
+                time_vals = time[:].squeeze()
+
+                parameter_data_24 = ds_24[parameter]
+                time_24 = parameter_data_24['time']
+                time_vals_24 = time_24[:].squeeze()
+                
+                data_to_plot = parameter_data[0, :, :] - parameter_data_24[0, :, :]
+
+                if param == 'tmp2m' or param == 'dpt2m':
+                    data_to_plot = units('degF') * data_to_plot
+
+                if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
+                    data_to_plot = units('knots') * data_to_plot
+
+                if param == 'wdir10m':
+                    data_to_plot = units('degree') * data_to_plot
+
+                if param == 'vissfc' or param == 'ceilceil':
+                    data_to_plot = units('meters') * data_to_plot
+
+                if param == 'pressfc':
+                    data_to_plot = units('hPa') * data_to_plot
+
+                if param == 'tcdcclm':
+                    data_to_plot = units('percent') * data_to_plot
+                
+                return lon_vals, lat_vals, time_vals, time_vals_24, data_to_plot
+                
+            except Exception as f:
+                error = info.invalid_parameter_NOMADS_RTMA_Alaska()
+                print(error)
 
         
-        def get_RTMA_Data_Fire_Weather_Parameters(current_time):
+        def get_RTMA_relative_humidity(current_time):
 
             r'''
             THIS FUNCTION RETRIVES THE RTMA DATA FOR THE USUAL FIRE WEATHER PARAMETERS (TEMPERATURE, DEWPOINT, WIND SPEED AND RELATIVE HUMIDITY
@@ -1766,11 +1905,116 @@ class NOMADS_OPENDAP_Downloads:
                                 except Exception as e:
                                     print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
             
-            temperature = ds['tmp2m'].values * units.K
-            dewpoint = ds['dpt2m'].values * units.K
-            wind_speed = ds['wind10m'].values * units.knots
-            relative_humidity = mpcalc.relative_humidity_from_dewpoint(temperature, dewpoint)
+            temperature = ds['tmp2m']
+            lat = temperature['lat']
+            lon = temperature['lon']
+            time = temperature['time']
+            
+            lat_vals = lat[:].squeeze()
+            lon_vals = lon[:].squeeze()
+            time_vals = time[:].squeeze()
+            
+            dewpoint = ds['dpt2m']
+            temperature_k = units('kelvin') * temperature
+            dewpoint_k = units('kelvin') * dewpoint
+            
+            relative_humidity = mpcalc.relative_humidity_from_dewpoint(temperature_k, dewpoint_k)
                 
-            return temperature, dewpoint, wind_speed, relative_humidity
+            return lon_vals, lat_vals, time_vals, relative_humidity[0, :, :] *100
                 
+
+        def get_RTMA_Data_24_hour_change_relative_humidity(current_time):
+
+            r'''
+
+            THIS FUNCTION RETRIEVES THE RTMA DATA FOR A SINGLE PARAMETER
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+
+            '''
+            times = []
+            times_24 = []
+            for i in range(0, 5):
+                time = pd.to_datetime(current_time - timedelta(hours=i))
+                times.append(time)
+                time_24 = pd.to_datetime(time - timedelta(hours=24))
+                times_24.append(time_24)
+
+            ### LATEST TIME URLS ###
+            url_0 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[0].strftime('%Y%m%d')+'/akrtma_anl_'+times[0].strftime('%H')+'z'
+            url_1 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[1].strftime('%Y%m%d')+'/akrtma_anl_'+times[1].strftime('%H')+'z'
+            url_2 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[2].strftime('%Y%m%d')+'/akrtma_anl_'+times[2].strftime('%H')+'z'
+            url_3 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[3].strftime('%Y%m%d')+'/akrtma_anl_'+times[3].strftime('%H')+'z'
+            url_4 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[4].strftime('%Y%m%d')+'/akrtma_anl_'+times[4].strftime('%H')+'z'
+
+
+            ### 24 HOURS AGO URLS ###
+            url_5 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times_24[0].strftime('%Y%m%d')+'/akrtma_anl_'+times_24[0].strftime('%H')+'z'
+            url_6 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times_24[1].strftime('%Y%m%d')+'/akrtma_anl_'+times_24[1].strftime('%H')+'z'
+            url_7 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times_24[2].strftime('%Y%m%d')+'/akrtma_anl_'+times_24[2].strftime('%H')+'z'
+            url_8 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times_24[3].strftime('%Y%m%d')+'/akrtma_anl_'+times_24[3].strftime('%H')+'z'
+            url_9 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times_24[4].strftime('%Y%m%d')+'/akrtma_anl_'+times_24[4].strftime('%H')+'z'
+
+            try:
+                ds = xr.open_dataset(url_0, engine='netcdf4')
+                print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
+                ds_24 = xr.open_dataset(url_5, engine='netcdf4')
+                print("Data was successfully retrieved for " + times_24[0].strftime('%m/%d/%Y %HZ'))
+
+            except Exception as a:
+                try:
+                    print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
+                    ds = xr.open_dataset(url_1, engine='netcdf4')
+                    print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
+                    ds_24 = xr.open_dataset(url_6, engine='netcdf4')
+                    print("Data was successfully retrieved for " + times_24[1].strftime('%m/%d/%Y %HZ'))
+
+                except Exception as b:
+                        try:
+                            print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
+                            ds = xr.open_dataset(url_2, engine='netcdf4')
+                            print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
+                            ds_24 = xr.open_dataset(url_7, engine='netcdf4')
+                            print("Data was successfully retrieved for " + times_24[2].strftime('%m/%d/%Y %HZ'))
+
+                        except Exception as c:
+                            try:
+                                print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
+                                ds = xr.open_dataset(url_3, engine='netcdf4')
+                                print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
+                                ds_24 = xr.open_dataset(url_8, engine='netcdf4')
+                                print("Data was successfully retrieved for " + times_24[3].strftime('%m/%d/%Y %HZ'))
+                            except Exception as d:
     
+                                try:
+                                    print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    ds = xr.open_dataset(url_4, engine='netcdf4')
+                                    print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    ds_24 = xr.open_dataset(url_9, engine='netcdf4')
+                                    print("Data was successfully retrieved for " + times_24[4].strftime('%m/%d/%Y %HZ'))
+                                except Exception as e:
+                                    print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
+            temperature = ds['tmp2m']
+            temperature_24 = ds_24['tmp2m']
+            lat = temperature['lat']
+            lon = temperature['lon']
+            time = temperature['time']
+            
+            lat_vals = lat[:].squeeze()
+            lon_vals = lon[:].squeeze()
+            time_vals = time[:].squeeze()
+            
+            dewpoint = ds['dpt2m']
+            dewpoint_24 = ds_24['dpt2m']
+            temperature_k = units('kelvin') * temperature
+            dewpoint_k = units('kelvin') * dewpoint
+            temperature_k_24 = units('kelvin') * temperature_24
+            dewpoint_k_24 = units('kelvin') * dewpoint_24
+            
+            relative_humidity = mpcalc.relative_humidity_from_dewpoint(temperature_k, dewpoint_k)
+
+            relative_humidity_24 = mpcalc.relative_humidity_from_dewpoint(temperature_k_24, dewpoint_k_24)
+
+            diff = relative_humidity[0, :, :] - relative_humidity_24[0, :, :]
+                
+            return lon_vals, lat_vals, time_vals, diff * 100
