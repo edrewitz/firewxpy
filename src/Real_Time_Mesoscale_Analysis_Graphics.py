@@ -10,6 +10,7 @@ import data_access as da
 import geometry
 import calc
 import colormaps
+import pandas as pd
 
 from matplotlib.patheffects import withStroke
 from metpy.plots import USCOUNTIES
@@ -30,6 +31,90 @@ class Counties_Perspective:
     (C) METEOROLOGIST ERIC J. DREWITZ 2023
 
     '''
+    class Alaska:
+
+        r'''
+         THIS NESTED CLASS HOSTS THE IMAGES FOR ALASKA
+        '''
+        
+        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            
+            '''            
+            local_time, utc_time = standard.plot_creation_time()
+            param = parameter
+
+            lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_single_parameter(utc_time, param)
+
+            if param == 'tmp2m' or param == 'dpt2m':
+                frac = 9/5
+                data_to_plot = (frac * (data_to_plot - 273.15)) + 32
+
+            if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
+                data_to_plot = data_to_plot * 1.94384
+
+            
+            mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=-50, max_latitude=75.0, globe=None)
+            datacrs = ccrs.PlateCarree()
+
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            ax = plt.subplot(1,1,1, projection=datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.set_extent([-174, -128, 50, 74], datacrs)
+            
+            cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
+            cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+            
+            plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes) 
+
+            return fig
+
+
+
+        def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            
+            '''            
+            local_time, utc_time = standard.plot_creation_time()
+            cmap = colormaps.relative_humidity_change_colormap()
+
+            lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_relative_humidity(utc_time)
+            mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=-50, max_latitude=75.0, globe=None)
+            datacrs = ccrs.PlateCarree()
+
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            ax = plt.subplot(1,1,1, projection=datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.set_extent([-174, -128, 50, 74], datacrs)
+            
+            cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 65, 5), cmap=cmap, transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
+            cbar.set_label(label='Relative Humidity Change (%)', size=12, fontweight='bold')
+            
+            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes) 
+
+            return fig
+            
+    
     class CONUS:
 
         r'''
@@ -84,7 +169,7 @@ class Counties_Perspective:
 
             plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.045, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -155,7 +240,7 @@ class Counties_Perspective:
 
             plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') +"\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.045, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -215,7 +300,7 @@ class Counties_Perspective:
 
             plt.title("Real Time Mesoscale Analysis Relative Humidity\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=12, fontweight='bold')
             
-            ax.text(0.5, -0.045, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -272,7 +357,7 @@ class Counties_Perspective:
 
             plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=12, fontweight='bold')
             
-            ax.text(0.5, -0.045, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -322,7 +407,7 @@ class Counties_Perspective:
 
             plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -343,6 +428,8 @@ class Counties_Perspective:
             cmap = colormaps.relative_humidity_change_colormap()
 
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_relative_humidity_24_hour_difference_data(utc_time)
+
+            rtma_time_24 = rtma_time - timedelta(hours=24)
             
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
@@ -365,9 +452,9 @@ class Counties_Perspective:
             cbar.set_label(label="Relative Humidity Change (%)", size=12, fontweight='bold')
 
 
-            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -386,6 +473,8 @@ class Counties_Perspective:
             local_time, utc_time = standard.plot_creation_time()
 
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Temperature_Analysis_height_above_ground')
+
+            rtma_time_24 = rtma_time - timedelta(hours=24)
 
             rtma_data = calc.unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(rtma_data)
             
@@ -410,9 +499,9 @@ class Counties_Perspective:
             cbar.set_label(label="Temperature Change (\N{DEGREE SIGN}F)", size=12, fontweight='bold')
 
 
-            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -431,6 +520,8 @@ class Counties_Perspective:
             local_time, utc_time = standard.plot_creation_time()
 
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Wind_speed_Analysis_height_above_ground')
+
+            rtma_time_24 = rtma_time - timedelta(hours=24)
 
             rtma_data = rtma_data * 2.23694
             
@@ -455,9 +546,9 @@ class Counties_Perspective:
             cbar.set_label(label="Wind Speed Change (MPH)", size=12, fontweight='bold')
 
 
-            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -502,7 +593,7 @@ class Counties_Perspective:
 
             plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -555,7 +646,7 @@ class Counties_Perspective:
 
             plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Speed >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -608,7 +699,7 @@ class Counties_Perspective:
 
             plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Gust >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -681,7 +772,7 @@ class Predictive_Services_Areas_Perspective:
 
             plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.045, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -752,7 +843,7 @@ class Predictive_Services_Areas_Perspective:
 
             plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') +"\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.045, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -812,7 +903,7 @@ class Predictive_Services_Areas_Perspective:
 
             plt.title("Real Time Mesoscale Analysis Relative Humidity\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=12, fontweight='bold')
             
-            ax.text(0.5, -0.045, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -869,7 +960,7 @@ class Predictive_Services_Areas_Perspective:
 
             plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=12, fontweight='bold')
             
-            ax.text(0.5, -0.045, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -919,7 +1010,7 @@ class Predictive_Services_Areas_Perspective:
 
             plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -938,6 +1029,8 @@ class Predictive_Services_Areas_Perspective:
             local_time, utc_time = standard.plot_creation_time()
 
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_relative_humidity_24_hour_difference_data(utc_time)
+
+            rtma_time_24 = rtma_time - timedelta(hours=24)
             
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
@@ -961,9 +1054,9 @@ class Predictive_Services_Areas_Perspective:
             cbar.set_label(label="Relative Humidity Change (%)", size=12, fontweight='bold')
 
 
-            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -982,6 +1075,8 @@ class Predictive_Services_Areas_Perspective:
             local_time, utc_time = standard.plot_creation_time()
 
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Temperature_Analysis_height_above_ground')
+
+            rtma_time_24 = rtma_time - timedelta(hours=24)
 
             rtma_data = calc.unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(rtma_data)
             
@@ -1006,9 +1101,9 @@ class Predictive_Services_Areas_Perspective:
             cbar.set_label(label="Temperature Change (\N{DEGREE SIGN}F)", size=12, fontweight='bold')
 
 
-            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -1027,6 +1122,8 @@ class Predictive_Services_Areas_Perspective:
             local_time, utc_time = standard.plot_creation_time()
 
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Wind_speed_Analysis_height_above_ground')
+
+            rtma_time_24 = rtma_time - timedelta(hours=24)
 
             rtma_data = rtma_data * 2.23694
             
@@ -1051,9 +1148,9 @@ class Predictive_Services_Areas_Perspective:
             cbar.set_label(label="Wind Speed Change (MPH)", size=12, fontweight='bold')
 
 
-            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -1098,7 +1195,7 @@ class Predictive_Services_Areas_Perspective:
 
             plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -1151,7 +1248,7 @@ class Predictive_Services_Areas_Perspective:
 
             plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Speed >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -1204,7 +1301,7 @@ class Predictive_Services_Areas_Perspective:
 
             plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Gust >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -1257,7 +1354,7 @@ class Predictive_Services_Areas_Perspective:
 
             plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Gust >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
-            ax.text(0.5, -0.051, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(0.5, -0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
