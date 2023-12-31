@@ -1705,24 +1705,6 @@ class NOMADS_OPENDAP_Downloads:
                 
                 lat_vals = lat[:].squeeze()
                 lon_vals = lon[:].squeeze()
-                
-                if param == 'tmp2m' or param == 'dpt2m':
-                    parameter_data = units('degF') * parameter_data
-
-                if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
-                    parameter_data = units('knots') * parameter_data
-
-                if param == 'wdir10m':
-                    parameter_data = units('degree') * parameter_data
-
-                if param == 'vissfc' or param == 'ceilceil':
-                    parameter_data = units('meters') * parameter_data
-
-                if param == 'pressfc':
-                    parameter_data = units('hPa') * parameter_data
-
-                if param == 'tcdcclm':
-                    parameter_data = units('percent') * parameter_data
 
                 data_to_plot = parameter_data[0, :, :]
                 
