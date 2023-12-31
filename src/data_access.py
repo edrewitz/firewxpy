@@ -1625,18 +1625,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             return rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_projection
 
-                
-
             
-            
-
-
-            
-
-            
-
-
-
 class NOMADS_OPENDAP_Downloads:
 
     r'''
@@ -1677,63 +1666,68 @@ class NOMADS_OPENDAP_Downloads:
             try:
                 ds = xr.open_dataset(url_0, engine='netcdf4')
                 print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
-
+                strtime = times[0]
+                
             except Exception as a:
                 try:
                     print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
                     ds = xr.open_dataset(url_1, engine='netcdf4')
                     print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
-
+                    strtime = times[1]
+                    
                 except Exception as b:
                         try:
                             print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
                             ds = xr.open_dataset(url_2, engine='netcdf4')
                             print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
-
+                            strtime = times[2]
+                            
                         except Exception as c:
                             try:
                                 print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
                                 ds = xr.open_dataset(url_3, engine='netcdf4')
                                 print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
-
+                                strtime = times[3]
                             except Exception as d:
     
                                 try:
                                     print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
                                     ds = xr.open_dataset(url_4, engine='netcdf4')
                                     print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
-    
+                                    strtime = times[4]
+                                    
                                 except Exception as e:
                                     print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
             try:
                 parameter_data = ds[parameter]
                 lat = parameter_data['lat']
                 lon = parameter_data['lon']
-                time = parameter_data['time']
                 
                 lat_vals = lat[:].squeeze()
                 lon_vals = lon[:].squeeze()
-                time_vals = time[:].squeeze()
                 data_to_plot = parameter_data[0, :, :]
+                
                 if param == 'tmp2m' or param == 'dpt2m':
-                    data_to_plot = units('degF') * data_to_plot
+                    parameter_data = units('degF') * parameter_data
 
                 if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
-                    data_to_plot = units('knots') * data_to_plot
+                    parameter_data = units('knots') * parameter_data
 
                 if param == 'wdir10m':
-                    data_to_plot = units('degree') * data_to_plot
+                    parameter_data = units('degree') * parameter_data
 
                 if param == 'vissfc' or param == 'ceilceil':
-                    data_to_plot = units('meters') * data_to_plot
+                    parameter_data = units('meters') * parameter_data
 
                 if param == 'pressfc':
-                    data_to_plot = units('hPa') * data_to_plot
+                    parameter_data = units('hPa') * parameter_data
 
                 if param == 'tcdcclm':
-                    data_to_plot = units('percent') * data_to_plot
+                    parameter_data = units('percent') * parameter_data
+
+                data_to_plot = parameter_data[0, :, :]
                 
-                return lon_vals, lat_vals, time_vals, data_to_plot
+                return lon_vals, lat_vals, strtime, data_to_plot
                 
             except Exception as f:
                 error = info.invalid_parameter_NOMADS_RTMA_Alaska()
@@ -1777,6 +1771,8 @@ class NOMADS_OPENDAP_Downloads:
                 print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
                 ds_24 = xr.open_dataset(url_5, engine='netcdf4')
                 print("Data was successfully retrieved for " + times_24[0].strftime('%m/%d/%Y %HZ'))
+                time = times[0]
+                time_24 = times_24[0]
 
             except Exception as a:
                 try:
@@ -1785,6 +1781,8 @@ class NOMADS_OPENDAP_Downloads:
                     print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
                     ds_24 = xr.open_dataset(url_6, engine='netcdf4')
                     print("Data was successfully retrieved for " + times_24[1].strftime('%m/%d/%Y %HZ'))
+                    time = times[1]
+                    time_24 = times_24[1]
 
                 except Exception as b:
                         try:
@@ -1793,6 +1791,8 @@ class NOMADS_OPENDAP_Downloads:
                             print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
                             ds_24 = xr.open_dataset(url_7, engine='netcdf4')
                             print("Data was successfully retrieved for " + times_24[2].strftime('%m/%d/%Y %HZ'))
+                            time = times[2]
+                            time_24 = times_24[2]
 
                         except Exception as c:
                             try:
@@ -1801,6 +1801,9 @@ class NOMADS_OPENDAP_Downloads:
                                 print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
                                 ds_24 = xr.open_dataset(url_8, engine='netcdf4')
                                 print("Data was successfully retrieved for " + times_24[3].strftime('%m/%d/%Y %HZ'))
+                                time = times[3]
+                                time_24 = times_24[3]
+                            
                             except Exception as d:
     
                                 try:
@@ -1809,43 +1812,48 @@ class NOMADS_OPENDAP_Downloads:
                                     print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
                                     ds_24 = xr.open_dataset(url_9, engine='netcdf4')
                                     print("Data was successfully retrieved for " + times_24[4].strftime('%m/%d/%Y %HZ'))
+                                    time = times[4]
+                                    time_24 = times_24[4]
+                                    
                                 except Exception as e:
                                     print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
             try:
                 parameter_data = ds[parameter]
                 lat = parameter_data['lat']
                 lon = parameter_data['lon']
-                time = parameter_data['time']
                 
                 lat_vals = lat[:].squeeze()
                 lon_vals = lon[:].squeeze()
-                time_vals = time[:].squeeze()
 
                 parameter_data_24 = ds_24[parameter]
-                time_24 = parameter_data_24['time']
-                time_vals_24 = time_24[:].squeeze()
-                
-                data_to_plot = parameter_data[0, :, :] - parameter_data_24[0, :, :]
 
                 if param == 'tmp2m' or param == 'dpt2m':
-                    data_to_plot = units('degF') * data_to_plot
+                    parameter_data = units('degF') * parameter_data
+                    parameter_data_24 = units('degF') * parameter_data_24
 
                 if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
-                    data_to_plot = units('knots') * data_to_plot
+                    parameter_data = units('knots') * parameter_data
+                    parameter_data_24 = units('knots') * parameter_data_24
 
                 if param == 'wdir10m':
-                    data_to_plot = units('degree') * data_to_plot
+                    parameter_data = units('degree') * parameter_data
+                    parameter_data_24 = units('degree') * parameter_data_24
 
                 if param == 'vissfc' or param == 'ceilceil':
-                    data_to_plot = units('meters') * data_to_plot
+                    parameter_data = units('meters') * parameter_data
+                    parameter_data_24 = units('meters') * parameter_data_24
 
                 if param == 'pressfc':
-                    data_to_plot = units('hPa') * data_to_plot
+                    parameter_data = units('hPa') * parameter_data
+                    parameter_data_24 = units('hPa') * parameter_data_24
 
                 if param == 'tcdcclm':
-                    data_to_plot = units('percent') * data_to_plot
+                    parameter_data = units('percent') * parameter_data
+                    parameter_data_24 = units('percent') * parameter_data_24
+
+                data_to_plot = parameter_data[0, :, :] - parameter_data_24[0, :, :]
                 
-                return lon_vals, lat_vals, time_vals, time_vals_24, data_to_plot
+                return lon_vals, lat_vals, time, time_24, data_to_plot
                 
             except Exception as f:
                 error = info.invalid_parameter_NOMADS_RTMA_Alaska()
@@ -1876,24 +1884,28 @@ class NOMADS_OPENDAP_Downloads:
             try:
                 ds = xr.open_dataset(url_0, engine='netcdf4')
                 print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
+                time = times[0]
 
             except Exception as a:
                 try:
                     print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
                     ds = xr.open_dataset(url_1, engine='netcdf4')
                     print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
+                    time = times[1]
 
                 except Exception as b:
                         try:
                             print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
                             ds = xr.open_dataset(url_2, engine='netcdf4')
                             print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
+                            time = times[2]
 
                         except Exception as c:
                             try:
                                 print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
                                 ds = xr.open_dataset(url_3, engine='netcdf4')
                                 print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
+                                time = times[3]
 
                             except Exception as d:
     
@@ -1901,6 +1913,7 @@ class NOMADS_OPENDAP_Downloads:
                                     print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
                                     ds = xr.open_dataset(url_4, engine='netcdf4')
                                     print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    time = times[4]
     
                                 except Exception as e:
                                     print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
@@ -1908,20 +1921,20 @@ class NOMADS_OPENDAP_Downloads:
             temperature = ds['tmp2m']
             lat = temperature['lat']
             lon = temperature['lon']
-            time = temperature['time']
             
             lat_vals = lat[:].squeeze()
             lon_vals = lon[:].squeeze()
-            time_vals = time[:].squeeze()
             
             dewpoint = ds['dpt2m']
             temperature_k = units('kelvin') * temperature
             dewpoint_k = units('kelvin') * dewpoint
             
             relative_humidity = mpcalc.relative_humidity_from_dewpoint(temperature_k, dewpoint_k)
+
+            relative_humidity_to_plot = relative_humidity[0, :, :] 
                 
-            return lon_vals, lat_vals, time_vals, relative_humidity[0, :, :] *100
-                
+            return lon_vals, lat_vals, time, relative_humidity_to_plot * 100
+
 
         def get_RTMA_Data_24_hour_change_relative_humidity(current_time):
 
@@ -1960,6 +1973,8 @@ class NOMADS_OPENDAP_Downloads:
                 print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
                 ds_24 = xr.open_dataset(url_5, engine='netcdf4')
                 print("Data was successfully retrieved for " + times_24[0].strftime('%m/%d/%Y %HZ'))
+                time = times[0]
+                time_24 = times_24[0]
 
             except Exception as a:
                 try:
@@ -1968,6 +1983,8 @@ class NOMADS_OPENDAP_Downloads:
                     print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
                     ds_24 = xr.open_dataset(url_6, engine='netcdf4')
                     print("Data was successfully retrieved for " + times_24[1].strftime('%m/%d/%Y %HZ'))
+                    time = times[1]
+                    time_24 = times_24[1]
 
                 except Exception as b:
                         try:
@@ -1976,6 +1993,8 @@ class NOMADS_OPENDAP_Downloads:
                             print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
                             ds_24 = xr.open_dataset(url_7, engine='netcdf4')
                             print("Data was successfully retrieved for " + times_24[2].strftime('%m/%d/%Y %HZ'))
+                            time = times[2]
+                            time_24 = times_24[2]
 
                         except Exception as c:
                             try:
@@ -1984,6 +2003,9 @@ class NOMADS_OPENDAP_Downloads:
                                 print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
                                 ds_24 = xr.open_dataset(url_8, engine='netcdf4')
                                 print("Data was successfully retrieved for " + times_24[3].strftime('%m/%d/%Y %HZ'))
+                                time = times[3]
+                                time_24 = times_24[3]
+                                
                             except Exception as d:
     
                                 try:
@@ -1992,17 +2014,18 @@ class NOMADS_OPENDAP_Downloads:
                                     print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
                                     ds_24 = xr.open_dataset(url_9, engine='netcdf4')
                                     print("Data was successfully retrieved for " + times_24[4].strftime('%m/%d/%Y %HZ'))
+                                    time = times[4]
+                                    time_24 = times_24[4]
+                                    
                                 except Exception as e:
                                     print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
             temperature = ds['tmp2m']
             temperature_24 = ds_24['tmp2m']
             lat = temperature['lat']
             lon = temperature['lon']
-            time = temperature['time']
             
             lat_vals = lat[:].squeeze()
             lon_vals = lon[:].squeeze()
-            time_vals = time[:].squeeze()
             
             dewpoint = ds['dpt2m']
             dewpoint_24 = ds_24['dpt2m']
@@ -2017,4 +2040,7 @@ class NOMADS_OPENDAP_Downloads:
 
             diff = relative_humidity[0, :, :] - relative_humidity_24[0, :, :]
                 
-            return lon_vals, lat_vals, time_vals, diff * 100
+            return lon_vals, lat_vals, time, time_24, diff * 100
+
+
+
