@@ -1705,7 +1705,6 @@ class NOMADS_OPENDAP_Downloads:
                 
                 lat_vals = lat[:].squeeze()
                 lon_vals = lon[:].squeeze()
-                data_to_plot = parameter_data[0, :, :]
                 
                 if param == 'tmp2m' or param == 'dpt2m':
                     parameter_data = units('degF') * parameter_data
