@@ -54,7 +54,7 @@ class Predictive_Services_Areas:
 
         THE USER CUSTOMIZES THE COLOR FOR THE PSA BORDERS
 
-        (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
         '''
 
@@ -81,7 +81,7 @@ class Predictive_Services_Areas:
 
         THE USER CUSTOMIZES THE COLOR FOR THE PSA BORDERS
 
-        (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
         '''
         
@@ -97,3 +97,53 @@ class Predictive_Services_Areas:
             print(error)
 
 
+    def get_GACC_Boundaries(line_color):
+
+        r'''
+        THIS FUNCTION RETURNS THE GEOMETRIES FOR THE PREDICTIVE SERVICES AREAS FOR PLOTTING.
+
+        THIS FUNCTION IS TO BE USED IF THE USER WISHES TO STORE THEIR SHAPEFILES IN THE SAME FOLDER AS THE PYTHON SCRIPTS THEY WISH TO RUN.
+
+        THE USER CUSTOMIZES THE COLOR FOR THE PSA BORDERS
+
+        (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+        '''
+
+        fname = 'National_GACC_Current.shp'
+        
+        try:
+            shape_feature = ShapelyFeature(Reader(fname).geometries(),
+                                           ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor=line_color)
+        
+            return shape_feature
+
+        except Exception as a:
+            error = info.PSA_shape_file_error()
+            print(error)
+
+    
+    def get_GACC_Boundaries_custom_file_path(file_path, line_color):
+
+        r'''
+        THIS FUNCTION RETURNS THE GEOMETRIES FOR THE PREDICTIVE SERVICES AREAS FOR PLOTTING.
+
+        THIS FUNCTION IS TO BE USED IF THE USER WISHES TO STORE THEIR SHAPEFILES ELSEWHERE THAN WHERE THEIR PYTHON
+        SCRIPTS RUN. 
+
+        THE USER CUSTOMIZES THE COLOR FOR THE PSA BORDERS
+
+        (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+        '''
+        
+        
+        try:
+            shape_feature = ShapelyFeature(Reader(file_path).geometries(),
+                                           ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor=line_color)
+        
+            return shape_feature
+
+        except Exception as a:
+            error = info.PSA_shape_file_error()
+            print(error)
