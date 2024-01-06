@@ -37,7 +37,7 @@ class Counties_Perspective:
          THIS NESTED CLASS HOSTS THE IMAGES FOR ALASKA
         '''
         
-        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -55,7 +55,7 @@ class Counties_Perspective:
                 data_to_plot = (frac * (data_to_plot - 273.15)) + 32
 
             if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
-                data_to_plot = data_to_plot * 1.94384
+                data_to_plot = data_to_plot * 2.23694
 
             
             mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=-50, max_latitude=75.0, globe=None)
@@ -66,7 +66,7 @@ class Counties_Perspective:
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
             ax.add_feature(cfeature.STATES, linewidth=0.5)
             ax.add_feature(USCOUNTIES, linewidth=1.5)
-            ax.set_extent([-174, -128, 50, 74], datacrs)
+            ax.set_extent([-174, -128, 45, 80], datacrs)
             
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
@@ -79,6 +79,80 @@ class Counties_Perspective:
 
             return fig
 
+        def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            
+            '''            
+            local_time, utc_time = standard.plot_creation_time()
+
+            lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
+            
+            mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=-50, max_latitude=75.0, globe=None)
+            datacrs = ccrs.PlateCarree()
+
+            cmap = colormaps.relative_humidity_colormap()
+
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            ax = plt.subplot(1,1,1, projection=datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.set_extent([-174, -128, 45, 80], datacrs)
+            
+            cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 105, 5), cmap=cmap, transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
+            cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+            
+            plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes) 
+
+            return fig
+
+
+        def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            
+            '''            
+            local_time, utc_time = standard.plot_creation_time()
+
+            lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
+            
+            mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=-50, max_latitude=75.0, globe=None)
+            datacrs = ccrs.PlateCarree()
+
+            cmap = colormaps.excellent_recovery_colormap()
+
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            ax = plt.subplot(1,1,1, projection=datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.set_extent([-174, -128, 45, 80], datacrs)
+            
+            cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap='YlOrBr_r', transform=datacrs)
+            cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=0.02)
+            cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=8, fontweight='bold')
+
+            cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
+            cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=0.02)
+            cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=8, fontweight='bold')
+            
+            plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes) 
+
+            return fig
 
 
         def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
@@ -101,13 +175,48 @@ class Counties_Perspective:
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
             ax.add_feature(cfeature.STATES, linewidth=0.5)
             ax.add_feature(USCOUNTIES, linewidth=1.5)
-            ax.set_extent([-174, -128, 45, 75], datacrs)
+            ax.set_extent([-174, -128, 45, 80], datacrs)
             
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 65, 5), cmap=cmap, transform=datacrs)
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
             cbar.set_label(label='Relative Humidity Change (%)', size=12, fontweight='bold')
             
             plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes) 
+
+            return fig
+
+
+        def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            
+            '''            
+            local_time, utc_time = standard.plot_creation_time()
+            cmap = colormaps.relative_humidity_change_colormap()
+            parameter = 'tmp2m'
+
+            lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_single_parameter(utc_time, parameter)
+            mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=-50, max_latitude=75.0, globe=None)
+            datacrs = ccrs.PlateCarree()
+
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            ax = plt.subplot(1,1,1, projection=datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.set_extent([-174, -128, 45, 80], datacrs)
+            
+            cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
+            cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+            
+            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
             
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes) 
