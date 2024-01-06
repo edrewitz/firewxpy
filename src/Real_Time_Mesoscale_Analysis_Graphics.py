@@ -267,8 +267,8 @@ class Counties_Perspective:
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(data.metpy.x, data.metpy.y, data, 
                              transform=data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
@@ -320,8 +320,8 @@ class Counties_Perspective:
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
@@ -380,8 +380,8 @@ class Counties_Perspective:
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
@@ -414,7 +414,6 @@ class Counties_Perspective:
 
             return fig
 
-
         def plot_red_flag_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position):
 
             r'''
@@ -437,8 +436,8 @@ class Counties_Perspective:
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=1)
@@ -470,7 +469,7 @@ class Counties_Perspective:
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
-
+ 
 
         def plot_low_and_high_relative_humidity(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
 
@@ -498,8 +497,8 @@ class Counties_Perspective:
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
 
             cs_low = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=1)
@@ -508,10 +507,10 @@ class Counties_Perspective:
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(80, 101, 1), cmap=cmap, alpha=1)
 
             cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=0.03)
-            cbar_low.set_label(label="Low Relative Humidity (RH <= 15%)", size=12, fontweight='bold')
+            cbar_low.set_label(label="Low Relative Humidity (RH <= 15%)", size=8, fontweight='bold')
 
             cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=0.03)
-            cbar_high.set_label(label="High Relative Humidity (RH >= 80%)", size=12, fontweight='bold')
+            cbar_high.set_label(label="High Relative Humidity (RH >= 80%)", size=8, fontweight='bold')
 
 
             plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
@@ -550,8 +549,8 @@ class Counties_Perspective:
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap=cmap, alpha=1)
@@ -597,8 +596,8 @@ class Counties_Perspective:
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='lime', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap='seismic', alpha=1)
@@ -644,8 +643,8 @@ class Counties_Perspective:
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap='PuOr_r', alpha=1)
@@ -689,8 +688,8 @@ class Counties_Perspective:
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap='cool_r', alpha=1)
@@ -736,8 +735,8 @@ class Counties_Perspective:
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
 
             cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
@@ -789,8 +788,8 @@ class Counties_Perspective:
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
 
             cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
@@ -833,7 +832,7 @@ class Predictive_Services_Areas_Perspective:
         '''
 
 
-        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, PSA_Boundary_Color, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, GACC_Boundary_Color, PSA_Boundary_Color, signature_x_position, signature_y_position):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
@@ -865,13 +864,16 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs(PSA_Boundary_Color)
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", PSA_Boundary_Color)
+
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", GACC_Boundary_Color)
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(PSAs, linewidth=1.5)
+            ax.add_feature(GACC, linewidth=2.5, zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(data.metpy.x, data.metpy.y, data, 
                              transform=data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
@@ -887,7 +889,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
 
 
-        def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, PSA_Boundary_Color, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, GACC_Boundary_Color, PSA_Boundary_Color, signature_x_position, signature_y_position):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
@@ -918,13 +920,15 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs(PSA_Boundary_Color)
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", PSA_Boundary_Color)
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", GACC_Boundary_Color)
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(PSAs, linewidth=1.5)
+            ax.add_feature(GACC, linewidth=2.5, zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
@@ -976,7 +980,8 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
 
             cmap = colormaps.relative_humidity_colormap()
 
@@ -984,7 +989,8 @@ class Predictive_Services_Areas_Perspective:
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(PSAs, linewidth=1.5)
+            ax.add_feature(GACC, linewidth=2.5, zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=0.5)
@@ -1035,13 +1041,15 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(PSAs, linewidth=1.5)
+            ax.add_feature(GACC, linewidth=2.5, zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=1)
@@ -1096,13 +1104,15 @@ class Predictive_Services_Areas_Perspective:
 
             plot_proj = rtma_data.metpy.cartopy_crs
 
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(PSAs, linewidth=1.5)
+            ax.add_feature(GACC, linewidth=2.5, zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
 
             cs_low = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=1)
@@ -1111,10 +1121,10 @@ class Predictive_Services_Areas_Perspective:
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(80, 101, 1), cmap=cmap, alpha=1)
 
             cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=0.03)
-            cbar_low.set_label(label="Low Relative Humidity (RH <= 15%)", size=12, fontweight='bold')
+            cbar_low.set_label(label="Low Relative Humidity (RH <= 15%)", size=8, fontweight='bold')
 
             cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=0.03)
-            cbar_high.set_label(label="High Relative Humidity (RH >= 80%)", size=12, fontweight='bold')
+            cbar_high.set_label(label="High Relative Humidity (RH >= 80%)", size=8, fontweight='bold')
 
 
             plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
@@ -1146,14 +1156,16 @@ class Predictive_Services_Areas_Perspective:
 
             plot_proj = rtma_data.metpy.cartopy_crs
 
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
             cmap = colormaps.relative_humidity_change_colormap()
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(PSAs, linewidth=1.5)
+            ax.add_feature(GACC, linewidth=2.5, zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap=cmap, alpha=1)
@@ -1194,13 +1206,15 @@ class Predictive_Services_Areas_Perspective:
 
             plot_proj = rtma_data.metpy.cartopy_crs
 
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'lime')
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(PSAs, linewidth=1.5)
+            ax.add_feature(GACC, linewidth=2.5, zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap='seismic', alpha=1)
@@ -1239,7 +1253,8 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
 
             plot_proj = rtma_data.metpy.cartopy_crs
 
@@ -1247,7 +1262,8 @@ class Predictive_Services_Areas_Perspective:
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(PSAs, linewidth=1.5)
+            ax.add_feature(GACC, linewidth=2.5, zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap='PuOr_r', alpha=1)
@@ -1284,7 +1300,8 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
 
             plot_proj = rtma_data.metpy.cartopy_crs
 
@@ -1292,7 +1309,8 @@ class Predictive_Services_Areas_Perspective:
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(PSAs, linewidth=1.5)
+            ax.add_feature(GACC, linewidth=2.5, zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap='cool_r', alpha=1)
@@ -1331,7 +1349,8 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
 
             plot_proj = rtma_data.metpy.cartopy_crs
 
@@ -1339,7 +1358,8 @@ class Predictive_Services_Areas_Perspective:
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(PSAs, linewidth=1.5)
+            ax.add_feature(GACC, linewidth=2.5, zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
 
             cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
@@ -1384,7 +1404,8 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs('black')
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
 
             plot_proj = rtma_data.metpy.cartopy_crs
 
@@ -1392,7 +1413,8 @@ class Predictive_Services_Areas_Perspective:
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(PSAs, linewidth=1.5)
+            ax.add_feature(GACC, linewidth=2.5, zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
 
             cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
@@ -1437,7 +1459,8 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            PSAs = geometry.Cal_Fire_Boundaries.get_Cal_Fire_Boundaries('black')
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
 
             plot_proj = rtma_data.metpy.cartopy_crs
 
@@ -1445,7 +1468,8 @@ class Predictive_Services_Areas_Perspective:
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(PSAs, linewidth=1.5)
+            ax.add_feature(GACC, linewidth=2.5, zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
 
             cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
