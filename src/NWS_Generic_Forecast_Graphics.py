@@ -93,7 +93,7 @@ class standard:
     
         return fig
 
-class National_Weather_Service_Forecast_Counties_Perspective:
+class Counties_Perspective:
 
     r'''
 
@@ -111,7 +111,7 @@ class National_Weather_Service_Forecast_Counties_Perspective:
     '''
 
 
-    def plot_generic_short_term_forecast(directory_name, parameter, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step, plot_title, sub_plot_1_title, sub_plot_2_title, sub_plot_3_title, sub_plot_4_title, sub_plot_5_title, fig_x_length, fig_y_length, color_bar_shrink): 
+    def plot_generic_short_term_forecast(directory_name, parameter, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step, plot_title, sub_plot_1_title, sub_plot_2_title, sub_plot_3_title, sub_plot_4_title, sub_plot_5_title, fig_x_length, fig_y_length, color_bar_shrink, state_border_color, county_border_color, state_border_line_thickness, county_border_line_thickness, signature_x_position, signature_y_position): 
     
         r'''
         THIS FUNCTION MAKES A GENERIC CUSTOMIZED PLOT OF THE LATEST SHORT-TERM NOAA/NWS NDFD GRID FORECAST DATA
@@ -157,14 +157,14 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         if files == 1:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax = plt.subplot(1, 1, 1, projection=mapcrs)
             ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -173,14 +173,14 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         if files == 2:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
             ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax0.add_feature(cfeature.STATES, linewidth=0.5)
-            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax0.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -189,8 +189,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax1.add_feature(cfeature.STATES, linewidth=0.5)
-            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax1.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -199,14 +199,14 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         if files == 3:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
             ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax0.add_feature(cfeature.STATES, linewidth=0.5)
-            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax0.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -215,8 +215,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax1.add_feature(cfeature.STATES, linewidth=0.5)
-            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax1.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -225,8 +225,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax2.add_feature(cfeature.STATES, linewidth=0.5)
-            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax2.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -235,14 +235,14 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         if files == 4:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
             ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax0.add_feature(cfeature.STATES, linewidth=0.5)
-            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax0.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -251,8 +251,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax1.add_feature(cfeature.STATES, linewidth=0.5)
-            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax1.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -261,8 +261,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax2.add_feature(cfeature.STATES, linewidth=0.5)
-            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax2.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -271,8 +271,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax3.add_feature(cfeature.STATES, linewidth=0.5)
-            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax3.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax3.set_title(sub_plot_4_title + '\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -281,14 +281,14 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         if files >= 5:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
             ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax0.add_feature(cfeature.STATES, linewidth=0.5)
-            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax0.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -297,8 +297,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax1.add_feature(cfeature.STATES, linewidth=0.5)
-            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax1.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -307,8 +307,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax2.add_feature(cfeature.STATES, linewidth=0.5)
-            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax2.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -317,18 +317,18 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax3.add_feature(cfeature.STATES, linewidth=0.5)
-            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax3.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax3.set_title(sub_plot_4_title + '\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
             cbar3 = fig.colorbar(cs3, shrink=color_bar_shrink)
     
-            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax4.add_feature(cfeature.STATES, linewidth=0.5)
-            ax4.add_feature(USCOUNTIES, linewidth=0.75)
+            ax4.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax4.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax4.set_title(sub_plot_5_title + '\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -336,7 +336,7 @@ class National_Weather_Service_Forecast_Counties_Perspective:
     
         return fig
     
-    def plot_generic_extended_forecast(directory_name, parameter, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step, plot_title, sub_plot_1_title, sub_plot_2_title, sub_plot_3_title, sub_plot_4_title, sub_plot_5_title, fig_x_length, fig_y_length, color_bar_shrink): 
+    def plot_generic_extended_forecast(directory_name, parameter, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step, plot_title, sub_plot_1_title, sub_plot_2_title, sub_plot_3_title, sub_plot_4_title, sub_plot_5_title, fig_x_length, fig_y_length, color_bar_shrink, state_border_color, county_border_color, state_border_line_thickness, county_border_line_thickness, signature_x_position, signature_y_position): 
     
         r'''
         THIS FUNCTION MAKES A GENERIC CUSTOMIZED PLOT OF THE LATEST EXTENDED NOAA/NWS NDFD GRID FORECAST DATA
@@ -383,14 +383,14 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         if files == 1:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax = plt.subplot(1, 1, 1, projection=mapcrs)
             ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=0.5)
-            ax.add_feature(USCOUNTIES, linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs = ax.contourf(lons, lats, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -399,14 +399,14 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         if files == 2:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
             ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax0.add_feature(cfeature.STATES, linewidth=0.5)
-            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax0.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -415,8 +415,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax1 = plt.subplot(1, 2, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax1.add_feature(cfeature.STATES, linewidth=0.5)
-            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax1.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -425,14 +425,14 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         if files == 3:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
             ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax0.add_feature(cfeature.STATES, linewidth=0.5)
-            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax0.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -441,8 +441,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax1 = plt.subplot(1, 3, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax1.add_feature(cfeature.STATES, linewidth=0.5)
-            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax1.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -451,8 +451,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax2 = plt.subplot(1, 3, 3, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax2.add_feature(cfeature.STATES, linewidth=0.5)
-            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax2.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -461,14 +461,14 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         if files == 4:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
             ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax0.add_feature(cfeature.STATES, linewidth=0.5)
-            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax0.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -477,8 +477,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax1 = plt.subplot(2, 2, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax1.add_feature(cfeature.STATES, linewidth=0.5)
-            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax1.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -487,8 +487,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax2 = plt.subplot(2, 2, 3, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax2.add_feature(cfeature.STATES, linewidth=0.5)
-            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax2.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -497,8 +497,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax3 = plt.subplot(2, 2, 4, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax3.add_feature(cfeature.STATES, linewidth=0.5)
-            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax3.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax3.set_title(sub_plot_4_title + '\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -507,14 +507,14 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         if files >= 5:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
             ax0.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax0.add_feature(cfeature.STATES, linewidth=0.5)
-            ax0.add_feature(USCOUNTIES, linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax0.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax0.set_title(sub_plot_1_title + '\nStart: ' + grb_1_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_1_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs0 = ax0.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -523,8 +523,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax1 = plt.subplot(1, 5, 2, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax1.add_feature(cfeature.STATES, linewidth=0.5)
-            ax1.add_feature(USCOUNTIES, linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax1.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax1.set_title(sub_plot_2_title + '\nStart: ' + grb_2_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_2_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -533,8 +533,8 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax2 = plt.subplot(1, 5, 3, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax2.add_feature(cfeature.STATES, linewidth=0.5)
-            ax2.add_feature(USCOUNTIES, linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax2.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax2.set_title(sub_plot_3_title + '\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -543,18 +543,18 @@ class National_Weather_Service_Forecast_Counties_Perspective:
             ax3 = plt.subplot(1, 5, 4, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax3.add_feature(cfeature.STATES, linewidth=0.5)
-            ax3.add_feature(USCOUNTIES, linewidth=0.75)
+            ax3.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax3.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax3.set_title(sub_plot_4_title + '\nStart: ' + grb_4_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_4_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
             cbar3 = fig.colorbar(cs3, shrink=color_bar_shrink)
     
-            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax4.add_feature(cfeature.STATES, linewidth=0.5)
-            ax4.add_feature(USCOUNTIES, linewidth=0.75)
+            ax4.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax4.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
             ax4.set_title(sub_plot_5_title + '\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
     
             cs4 = ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
@@ -563,7 +563,7 @@ class National_Weather_Service_Forecast_Counties_Perspective:
         return fig
 
 
-class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
+class Predictive_Services_Areas_Perspective:
 
     r'''
     THIS CLASS HOSTS A VARIETY OF PLOTTING FUNCTIONS. 
@@ -578,7 +578,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
 
     '''
 
-    def plot_generic_short_term_forecast(directory_name, parameter, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step, plot_title, sub_plot_1_title, sub_plot_2_title, sub_plot_3_title, sub_plot_4_title, sub_plot_5_title, fig_x_length, fig_y_length, color_bar_shrink, PSA_Border_Color, PSA_Border_Line_Thickness): 
+    def plot_generic_short_term_forecast(directory_name, parameter, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step, plot_title, sub_plot_1_title, sub_plot_2_title, sub_plot_3_title, sub_plot_4_title, sub_plot_5_title, fig_x_length, fig_y_length, color_bar_shrink, PSA_Border_Color, PSA_Border_Line_Thickness, GACC_Border_Color, GACC_Border_Thickness, signature_x_position, signature_y_position): 
     
         r'''
         THIS FUNCTION MAKES A GENERIC CUSTOMIZED PLOT OF THE LATEST SHORT-TERM NOAA/NWS NDFD GRID FORECAST DATA
@@ -626,7 +626,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         if files == 1:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -640,7 +640,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         if files == 2:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
@@ -662,7 +662,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         if files == 3:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
@@ -692,7 +692,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         if files == 4:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
@@ -730,7 +730,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         if files >= 5:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
@@ -775,7 +775,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
     
         return fig
     
-    def plot_generic_extended_forecast(directory_name, parameter, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step, plot_title, sub_plot_1_title, sub_plot_2_title, sub_plot_3_title, sub_plot_4_title, sub_plot_5_title, fig_x_length, fig_y_length, color_bar_shrink, PSA_Border_Color, PSA_Border_Line_Thickness): 
+    def plot_generic_extended_forecast(directory_name, parameter, grid_time_interval, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, color_table, color_table_start, color_table_stop, color_table_step, plot_title, sub_plot_1_title, sub_plot_2_title, sub_plot_3_title, sub_plot_4_title, sub_plot_5_title, fig_x_length, fig_y_length, color_bar_shrink, PSA_Border_Color, PSA_Border_Line_Thickness, GACC_Border_Color, GACC_Border_Thickness, signature_x_position, signature_y_position): 
     
         r'''
         THIS FUNCTION MAKES A GENERIC CUSTOMIZED PLOT OF THE LATEST EXTENDED NOAA/NWS NDFD GRID FORECAST DATA
@@ -824,7 +824,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         if files == 1:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -838,7 +838,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         if files == 2:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.13, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
@@ -860,7 +860,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         if files == 3:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.26, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
@@ -890,7 +890,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         if files == 4:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.17, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
@@ -928,7 +928,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
         if files >= 5:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(0.40, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
@@ -963,7 +963,7 @@ class National_Weather_Service_Forecast_Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
             cbar3 = fig.colorbar(cs3, shrink=color_bar_shrink)
     
-            ax4 = plt.subplot(1, 5, 4, projection=mapcrs)
+            ax4 = plt.subplot(1, 5, 5, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax4.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness)
             ax4.set_title(sub_plot_5_title + '\nStart: ' + grb_5_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_5_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
