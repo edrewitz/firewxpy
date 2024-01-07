@@ -23,3 +23,8 @@ def excellent_recovery_colormap():
     
     return excellent_recovery_colormap
 
+def low_relative_humidity_colormap():
+    low_relative_humidity_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("relative humidity", ["saddlebrown", "chocolate", "darkorange", "orange", "gold", "yellow"])
+    
+    return low_relative_humidity_colormap
+
