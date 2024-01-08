@@ -2229,7 +2229,11 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
                 ax2.set_title('Day 6 Forecast\nStart: ' + grb_3_start.strftime('%m/%d/%Y %HZ') + '\nEnd: ' + grb_3_end.strftime('%m/%d/%Y %HZ'), fontweight='bold')
             
-                cs2 = ax2.contourf(lons, lats, grb_3_vals - grb_2_vals, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
+                if utc_time.month >= 4 and utc_time.month <= 10:
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals, levels=temp_scale_warm, cmap=cmap, transform=datacrs)
+        
+                if utc_time.month >= 11 or utc_time.month <= 3:
+                    cs2 = ax2.contourf(lons, lats, grb_3_vals, levels=temp_scale_cool, cmap=cmap, transform=datacrs)
                         
                 cbar2 = fig.colorbar(cs2, shrink=color_table_shrink)
                 cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -7310,7 +7314,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
             
             
-        def plot_maximum_temperature_extended_forecast_and_trends(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
+        def plot_maximum_temperature_extended_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length_1, fig_y_length_1, fig_x_length_2, fig_y_length_2, fig_x_length_3, fig_y_length_3, fig_x_length_4, fig_y_length_4, fig_x_length_5, fig_y_length_5, color_table_shrink): 
         
             r'''
             THIS FUNCTION PLOTS THE MAXIMUM TEMPERATURE FORECAST FOR THE EXTENDED FORECAST PERIOD. 
