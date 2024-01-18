@@ -405,7 +405,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
     '''    
 
     class CONUS:
-    
+
     
         def get_current_rtma_data(current_time, parameter):
         
@@ -938,6 +938,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 print("WARNING: Latest dataset is more than 4 hours old.\nQuitting - Please try again later.")
         
                                 return None
+
 
 
     class GUAM:
@@ -1550,7 +1551,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             print("METAR Data successfully retrieved for " + metar_time.strftime('%m/%d/%Y %H00 UTC'))
             return sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time
-
+            
 
         def latest_metar_time(current_time):
 
@@ -1706,6 +1707,29 @@ class NOMADS_OPENDAP_Downloads:
                 lat_vals = lat[:].squeeze()
                 lon_vals = lon[:].squeeze()
 
+                # CONVERTS KELVIN TO FAHRENHEIT
+                if param == 'tmp2m' or param == 'dpt2m':
+                    frac = 9/5
+                    parameter_data = (frac * (parameter_data - 273.15)) + 32
+
+                # CONVERTS M/S TO MPH
+                if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
+                    parameter_data = parameter_data * 2.23694
+
+                if param == 'wdir10m':
+                    parameter_data = units('degree') * parameter_data
+
+                # CONVERTS METERS TO FEET
+                if param == 'vissfc' or param == 'ceilceil':
+                    parameter_data = parameter_data * 3.28084
+
+                # CONVERTS PASCALS TO HECTOPASCALS
+                if param == 'pressfc':
+                    parameter_data = parameter_data * 0.01
+
+                if param == 'tcdcclm':
+                    parameter_data = units('percent') * parameter_data
+
                 data_to_plot = parameter_data[0, :, :]
                 
                 return lon_vals, lat_vals, strtime, data_to_plot
@@ -1808,25 +1832,30 @@ class NOMADS_OPENDAP_Downloads:
 
                 parameter_data_24 = ds_24[parameter]
 
+                # CONVERT KELVIN TO FAHRENHEIT
                 if param == 'tmp2m' or param == 'dpt2m':
-                    parameter_data = units('degF') * parameter_data
-                    parameter_data_24 = units('degF') * parameter_data_24
+                    frac = 9/5
+                    parameter_data = (frac * (parameter_data - 273.15)) + 32
+                    parameter_data_24 = (frac * (parameter_data_24 - 273.15)) + 32
 
+                # CONVERT M/S TO MPH
                 if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
-                    parameter_data = units('knots') * parameter_data
-                    parameter_data_24 = units('knots') * parameter_data_24
+                    parameter_data = parameter_data * 2.23694
+                    parameter_data_24 = parameter_data_24 * 2.23694
 
                 if param == 'wdir10m':
                     parameter_data = units('degree') * parameter_data
                     parameter_data_24 = units('degree') * parameter_data_24
 
+                # CONVERT METERS TO FEET
                 if param == 'vissfc' or param == 'ceilceil':
-                    parameter_data = units('meters') * parameter_data
-                    parameter_data_24 = units('meters') * parameter_data_24
+                    parameter_data = parameter_data * 3.28084
+                    parameter_data = parameter_data * 3.28084
 
+                # CONVERT PASCALS TO HECTOPASCALS
                 if param == 'pressfc':
-                    parameter_data = units('hPa') * parameter_data
-                    parameter_data_24 = units('hPa') * parameter_data_24
+                    parameter_data = parameter_data * 0.01
+                    parameter_data_24 = parameter_data_24 * 0.01
 
                 if param == 'tcdcclm':
                     parameter_data = units('percent') * parameter_data
