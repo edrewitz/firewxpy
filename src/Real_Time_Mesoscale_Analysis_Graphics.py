@@ -222,6 +222,112 @@ class Counties_Perspective:
            verticalalignment='bottom', transform=ax.transAxes) 
 
             return fig
+
+
+        def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            
+            '''            
+            local_time, utc_time = standard.plot_creation_time()
+            parameter = 'wind10m'
+
+            lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_single_parameter(utc_time, parameter)
+            mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=-50, max_latitude=75.0, globe=None)
+            datacrs = ccrs.PlateCarree()
+
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            ax = plt.subplot(1,1,1, projection=datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.set_extent([-174, -128, 45, 80], datacrs)
+            
+            cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='PuOr_r', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
+            cbar.set_label(label='Wind Speed Change (MPH)', size=12, fontweight='bold')
+            
+            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes) 
+
+            return fig
+
+
+        def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            
+            '''            
+            local_time, utc_time = standard.plot_creation_time()
+
+            lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_single_parameter(utc_time, 'tmp2m')
+            
+            mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=-50, max_latitude=75.0, globe=None)
+            datacrs = ccrs.PlateCarree()
+
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            ax = plt.subplot(1,1,1, projection=datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.set_extent([-174, -128, 45, 80], datacrs)
+            
+            cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-40, 33, 1), cmap='cool_r', transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
+            cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+            
+            plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes) 
+
+            return fig
+
+
+        def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            
+            '''            
+            local_time, utc_time = standard.plot_creation_time()
+
+            lon_vals, lat_vals, time, relative_humidity = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)  
+
+            mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=-50, max_latitude=75.0, globe=None)
+            datacrs = ccrs.PlateCarree()
+
+            cmap_rh = colormaps.low_relative_humidity_colormap()
+
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            ax = plt.subplot(1,1,1, projection=datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.set_extent([-174, -128, 45, 80], datacrs)
+
+
+            cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=0.02)
+            cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+
+            
+            plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2023\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes) 
+
+            return fig
             
     
     class CONUS:
@@ -230,7 +336,7 @@ class Counties_Perspective:
         THIS NESTED CLASS HOSTS THE IMAGES FOR CONUS AKA THE "LOWER-48"
         '''
 
-        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, state_border_color, state_border_line_thickness, county_border_color, county_border_line_thickness, signature_x_position, signature_y_position):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
@@ -267,8 +373,8 @@ class Counties_Perspective:
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=3)
-            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
 
             cs = ax.contourf(data.metpy.x, data.metpy.y, data, 
                              transform=data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
@@ -284,7 +390,7 @@ class Counties_Perspective:
             return fig
 
 
-        def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, state_border_color, state_border_line_thickness, county_border_color, county_border_line_thickness, signature_x_position, signature_y_position):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
@@ -320,8 +426,8 @@ class Counties_Perspective:
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=3)
-            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
@@ -832,7 +938,7 @@ class Predictive_Services_Areas_Perspective:
         '''
 
 
-        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, GACC_Boundary_Color, PSA_Boundary_Color, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, GACC_Border_Color, GACC_Border_Line_Thickness, PSA_Border_Line_Thickness, PSA_Border_Color, signature_x_position, signature_y_position):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
@@ -864,16 +970,16 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", PSA_Boundary_Color)
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", PSA_Border_Color)
 
-            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", GACC_Boundary_Color)
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", GACC_Border_Color)
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(GACC, linewidth=2.5, zorder=3)
-            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+            ax.add_feature(GACC, linewidth=GACC_Border_Line_Thickness, zorder=3)
+            ax.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness, zorder=2)
 
             cs = ax.contourf(data.metpy.x, data.metpy.y, data, 
                              transform=data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
@@ -889,7 +995,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
 
 
-        def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, GACC_Boundary_Color, PSA_Boundary_Color, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, GACC_Border_Color, GACC_Border_Line_Thickness, PSA_Border_Line_Thickness, PSA_Border_Color, signature_x_position, signature_y_position):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
@@ -920,15 +1026,15 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", PSA_Boundary_Color)
-            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", GACC_Boundary_Color)
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", PSA_Border_Color)
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", GACC_Border_Color)
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
 
             ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-            ax.add_feature(GACC, linewidth=2.5, zorder=3)
-            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+            ax.add_feature(GACC, linewidth=GACC_Border_Line_Thickness, zorder=3)
+            ax.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
