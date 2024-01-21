@@ -51,7 +51,7 @@ class standard:
         1. DATETIME
         2. PYTZ
         
-        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         '''
     
         now = datetime.now()
@@ -81,14 +81,14 @@ class standard:
         r'''
         THIS FUNCTION RETURNS A DEFAULT GRAPHIC WHEN NO DATA IS PRESENT
     
-        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         '''
         local_time, utc_time = standard.plot_creation_time()
         
         fig = plt.figure(figsize=(20,10))
         ax = plt.subplot(1, 1, 1)
         plt.axis('off')
-        fig.text(0.04, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontsize=20, fontweight='bold')
+        fig.text(0.04, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontsize=20, fontweight='bold')
         ax.text(0.1, 0.6, 'NO DATA FOR: ' + utc_time.strftime('%m/%d/%Y %HZ'), fontsize=60, fontweight='bold')
     
         return fig
@@ -105,7 +105,7 @@ class Counties_Perspective:
 
     THIS CLASS PLOTS THE DATA USING COUNTY AND STATE BOUNDARIES AS A REFERENCE POINT. 
 
-    (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
 
     '''
@@ -137,7 +137,7 @@ class Counties_Perspective:
     
         **IF THE USER WANTS TO MAKE 2 SEPERATE PLOTS WITH 1 AS THE SHORT-TERM AND THE OTHER AS THE EXTENDED, THE PROGRAMS FOR EACH NEED TO BE RUN IN DIFFERENT FOLDERS SO THE BINARY FILE DOESN'T OVERWRITE ITSELF**
     
-        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         '''
         
         short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
@@ -157,7 +157,7 @@ class Counties_Perspective:
         if files == 1:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -173,7 +173,7 @@ class Counties_Perspective:
         if files == 2:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
@@ -199,7 +199,7 @@ class Counties_Perspective:
         if files == 3:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
@@ -235,7 +235,7 @@ class Counties_Perspective:
         if files == 4:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
@@ -281,7 +281,7 @@ class Counties_Perspective:
         if files >= 5:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
@@ -363,7 +363,7 @@ class Counties_Perspective:
     
         **IF THE USER WANTS TO MAKE 2 SEPERATE PLOTS WITH 1 AS THE SHORT-TERM AND THE OTHER AS THE EXTENDED, THE PROGRAMS FOR EACH NEED TO BE RUN IN DIFFERENT FOLDERS SO THE BINARY FILE DOESN'T OVERWRITE ITSELF**
         
-        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         '''
         
         
@@ -383,7 +383,7 @@ class Counties_Perspective:
         if files == 1:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -399,7 +399,7 @@ class Counties_Perspective:
         if files == 2:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
@@ -425,7 +425,7 @@ class Counties_Perspective:
         if files == 3:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
@@ -461,7 +461,7 @@ class Counties_Perspective:
         if files == 4:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
@@ -507,7 +507,7 @@ class Counties_Perspective:
         if files >= 5:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
@@ -574,7 +574,7 @@ class Predictive_Services_Areas_Perspective:
 
     THIS CLASS PLOTS THE DATA USING PREDICTIVE SERVICES AREAS (PSA) BOUNDARIES AS A REFERENCE POINT. 
 
-    (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
     '''
 
@@ -604,7 +604,7 @@ class Predictive_Services_Areas_Perspective:
     
         **IF THE USER WANTS TO MAKE 2 SEPERATE PLOTS WITH 1 AS THE SHORT-TERM AND THE OTHER AS THE EXTENDED, THE PROGRAMS FOR EACH NEED TO BE RUN IN DIFFERENT FOLDERS SO THE BINARY FILE DOESN'T OVERWRITE ITSELF**
     
-        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         '''
         
         short_term_data = da.FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
@@ -626,7 +626,7 @@ class Predictive_Services_Areas_Perspective:
         if files == 1:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -640,7 +640,7 @@ class Predictive_Services_Areas_Perspective:
         if files == 2:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
@@ -662,7 +662,7 @@ class Predictive_Services_Areas_Perspective:
         if files == 3:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
@@ -692,7 +692,7 @@ class Predictive_Services_Areas_Perspective:
         if files == 4:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
@@ -730,7 +730,7 @@ class Predictive_Services_Areas_Perspective:
         if files >= 5:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
@@ -802,7 +802,7 @@ class Predictive_Services_Areas_Perspective:
     
         **IF THE USER WANTS TO MAKE 2 SEPERATE PLOTS WITH 1 AS THE SHORT-TERM AND THE OTHER AS THE EXTENDED, THE PROGRAMS FOR EACH NEED TO BE RUN IN DIFFERENT FOLDERS SO THE BINARY FILE DOESN'T OVERWRITE ITSELF**
         
-        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         '''
         
         
@@ -824,7 +824,7 @@ class Predictive_Services_Areas_Perspective:
         if files == 1:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax = plt.subplot(1, 1, 1, projection=mapcrs)
@@ -838,7 +838,7 @@ class Predictive_Services_Areas_Perspective:
         if files == 2:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 2, 1, projection=mapcrs)
@@ -860,7 +860,7 @@ class Predictive_Services_Areas_Perspective:
         if files == 3:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 3, 1, projection=mapcrs)
@@ -890,7 +890,7 @@ class Predictive_Services_Areas_Perspective:
         if files == 4:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(2, 2, 1, projection=mapcrs)
@@ -928,7 +928,7 @@ class Predictive_Services_Areas_Perspective:
         if files >= 5:
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2023 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/NDFD\n               Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontweight='bold')
             fig.suptitle("National Weather Service Forecast\n" + plot_title, fontweight='bold')
             
             ax0 = plt.subplot(1, 5, 1, projection=mapcrs)
