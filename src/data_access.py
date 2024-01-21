@@ -41,7 +41,7 @@ class info:
 
     THIS CLASS HOSTS FUNCTIONS THAT DISPLAY ERROR MESSAGES TO THE USER FOR A VARIETY OF TYPES OF USER ERROR
 
-    (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
     '''
 
@@ -232,7 +232,7 @@ class FTP_Downloads:
 
     THIS CLASS HOSTS FUNCTIONS THAT USE THE FTPLIB MODULE TO PING AND DOWNLOAD WEATHER DATA FROM FTP SERVERS
 
-    (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
     '''
 
@@ -247,7 +247,7 @@ class FTP_Downloads:
     
         https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
     
-        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         '''
     
         ###################################################
@@ -308,7 +308,7 @@ class FTP_Downloads:
     
         https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
     
-        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         '''
     
         ###################################################
@@ -362,7 +362,7 @@ class FTP_Downloads:
         r'''
         THIS FUNCTION DOWNLOADS THE NATIONAL WEATHER SERVICE FORECAST DATA AND PARSES THROUGH THE DATA TO EXTRACT ALL THE VALUES. THIS IS NEEDED TO BE DONE SINCE THE NATIONAL WEATHER SERVICE KEEPS THEIR SHORT-TERM AND EXTENDED FORECAST DATA SEPERATE ON THEIR FTP SERVER. WE NEED TO EXTRACT THE VALUES FOR THE SHORT-TERM DATA IN A SEPERATE FUNCTION SINCE WHEN PREVIOUSLY TESTING THE DATA KEPT OVERWRITNG ITSELF DUE TO THE FILENAMES BEING THE SAME DESPITE THE DATA IS FOR DIFFERENT FORECAST PERIODS. 
 
-        (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
         '''
         
@@ -379,7 +379,7 @@ class FTP_Downloads:
         r'''
         THIS FUNCTION USES THE PREVIOUS FUNCTION TO EXTRACT THE SHORT-TERM NATIONAL WEATHER SERVICE FORECAST DATA BEFORE DOWNLOADING AND EXTRACTING THE NATIONAL WEATHER SERVICE FORECAST DATA FOR THE EXTENDED PERIOD. THIS FUNCTION THEN RETURNS ALL 7 DAYS WORTH OF NATIONAL WEATHER SERVICE FORECAST DATA. 
 
-        (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
         '''
         
@@ -399,7 +399,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
     THIS CLASS HOSTS FUNCTIONS TO DOWNLOAD VARIOUS TYPES OF DATASETS FROM THE UCAR THREDDS SERVER
 
-    (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
 
     '''    
@@ -426,7 +426,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         
             CURRENT RTMA DATASET FOR THE PARAMETER DEFINED BY THE USER
         
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         
             """
         
@@ -529,7 +529,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         
             THE DIFFERENCE IN VALUES BETWEEN THE CURRENT DATASET AND DATASET FROM 24 HOURS AGO FOR THE PARAMETER DEFINED BY THE USER
         
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         
             """
         
@@ -674,7 +674,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         
             CURRENT RTMA DATASET FOR RELATIVE HUMIDITY
         
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         
             """
         
@@ -796,7 +796,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         
             24 HOUR DIFFERENCE IN RELATIVE HUMIDITY
         
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         
             """
         
@@ -967,7 +967,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         
             CURRENT RTMA DATASET FOR THE PARAMETER DEFINED BY THE USER
         
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         
             """
         
@@ -1079,7 +1079,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         
             THE DIFFERENCE IN VALUES BETWEEN THE CURRENT DATASET AND DATASET FROM 24 HOURS AGO FOR THE PARAMETER DEFINED BY THE USER
         
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         
             """
         
@@ -1224,7 +1224,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         
             CURRENT RTMA DATASET FOR RELATIVE HUMIDITY
         
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         
             """
         
@@ -1345,7 +1345,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         
             24 HOUR DIFFERENCE IN RELATIVE HUMIDITY
         
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
         
             """
         
@@ -1503,7 +1503,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             THIS FUNCTION DOWNLOADS THE LATEST METAR DATA FROM THE UCAR THREDDS SERVER AND RETURNS THE METAR DATA
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
             metar_time = current_time
@@ -1551,6 +1551,56 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             print("METAR Data successfully retrieved for " + metar_time.strftime('%m/%d/%Y %H00 UTC'))
             return sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time
+
+
+        def get_METAR_Data_Hawaii(current_time):
+
+            r'''
+
+            THIS FUNCTION DOWNLOADS THE LATEST METAR DATA FROM THE UCAR THREDDS SERVER AND RETURNS THE METAR DATA
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+            '''
+            metar_time = current_time
+            
+            # Pings server for airport data
+            airports_df = pd.read_csv(get_test_data('airport-codes.csv'))
+            
+            # Queries our airport types (airport sizes)
+            airports_df = airports_df[(airports_df['type'] == 'large_airport') | (airports_df['type'] == 'small_airport')]
+            
+            # Accesses the METAR data
+            try:
+                metar_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.xml')
+            
+            except Exception as e:
+                metar_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.xml')
+                
+            # Opens METAR file
+            metar_file = metar_cat.datasets.filter_time_nearest(metar_time).remote_open()
+            
+            # Decodes bytes into strings
+            metar_text = StringIO(metar_file.read().decode('latin-1'))
+            
+            # Parses through data
+            sfc_data = parse_metar_file(metar_text, year=metar_time.year, month=metar_time.month)
+            sfc_units = sfc_data.units
+            
+            # Creates dataframe
+            sfc_data = sfc_data[sfc_data['station_id'].isin(airports_df['ident'])]
+            
+            sfc_data = pandas_dataframe_to_unit_arrays(sfc_data, sfc_units)
+            
+            sfc_data['u'], sfc_data['v'] = mpcalc.wind_components(sfc_data['wind_speed'], sfc_data['wind_direction'])
+            
+            sfc_data_u_kt = sfc_data['u'].to('kts')
+            sfc_data_v_kt = sfc_data['v'].to('kts')
+            
+            sfc_data_rh = mpcalc.relative_humidity_from_dewpoint(sfc_data['air_temperature'], sfc_data['dew_point_temperature'])
+
+            print("METAR Data successfully retrieved for " + metar_time.strftime('%m/%d/%Y %H00 UTC'))
+            return sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, metar_time
             
 
         def latest_metar_time(current_time):
@@ -1582,7 +1632,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             THIS FUNCTION RETURNS THE LATEST RTMA DATASET WITH THE LATEST METAR DATASET AND SYNCS UP BOTH DATASETS TO BE REPRESENTATIVE OF THE SAME TIME SINCE THE METAR DATA IS AVAILIABLE MUCH QUICKER THAN THE RTMA DATA. THIS ALLOWS USERS TO OVERLAY METAR DATA ONTO RTMA DATA AND HAVE THE TIMES BETWEEN BOTH DATASETS MATCH. 
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
 
@@ -1602,13 +1652,66 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             return rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_projection
 
+        def RTMA_Synced_With_METAR_Hawaii(parameter, current_time):
+
+            r'''
+
+            THIS FUNCTION RETURNS THE LATEST RTMA DATASET WITH THE LATEST METAR DATASET AND SYNCS UP BOTH DATASETS TO BE REPRESENTATIVE OF THE SAME TIME SINCE THE METAR DATA IS AVAILIABLE MUCH QUICKER THAN THE RTMA DATA. THIS ALLOWS USERS TO OVERLAY METAR DATA ONTO RTMA DATA AND HAVE THE TIMES BETWEEN BOTH DATASETS MATCH. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+            '''
+
+            parameter = parameter
+            current_time = current_time
+
+            metar_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.latest_metar_time(current_time)
+
+            lon_vals, lat_vals, time, relative_humidity_to_plot = NOMADS_OPENDAP_Downloads.RTMA_Hawaii.get_RTMA_Data_single_parameter(current_time, parameter)
+
+            
+            new_metar_time = parsers.checks.check_RTMA_vs_METAR_Times(time, metar_time)
+
+
+            sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, metar_time_revised = UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.get_METAR_Data_Hawaii(new_metar_time)
+
+            return lon_vals, lat_vals, time, relative_humidity_to_plot, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, metar_time_revised
+
+
+
+        def RTMA_Synced_With_METAR_GUAM(parameter, current_time, mask):
+
+            r'''
+
+            THIS FUNCTION RETURNS THE LATEST RTMA DATASET WITH THE LATEST METAR DATASET AND SYNCS UP BOTH DATASETS TO BE REPRESENTATIVE OF THE SAME TIME SINCE THE METAR DATA IS AVAILIABLE MUCH QUICKER THAN THE RTMA DATA. THIS ALLOWS USERS TO OVERLAY METAR DATA ONTO RTMA DATA AND HAVE THE TIMES BETWEEN BOTH DATASETS MATCH. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+            '''
+
+            parameter = parameter
+            current_time = current_time
+            mask = mask
+
+            metar_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.latest_metar_time(current_time)
+
+            rtma_data, rtma_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.GUAM.get_current_rtma_data(current_time, parameter)
+
+            plot_projection = rtma_data.metpy.cartopy_crs
+            
+            new_metar_time = parsers.checks.check_RTMA_vs_METAR_Times(rtma_time, metar_time)
+
+            sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised = UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.get_METAR_Data(new_metar_time, plot_projection, mask)
+
+            return rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_projection
+
 
         def RTMA_Relative_Humidity_Synced_With_METAR(current_time, mask):
 
             r'''
             THIS FUNCTION RETURNS THE LATEST RTMA RELATIVE HUMIDITY DATASET WITH THE LATEST METAR DATASET AND SYNCS UP BOTH DATASETS TO BE REPRESENTATIVE OF THE SAME TIME SINCE THE METAR DATA IS AVAILIABLE MUCH QUICKER THAN THE RTMA DATA. THIS ALLOWS USERS TO OVERLAY METAR DATA ONTO RTMA DATA AND HAVE THE TIMES BETWEEN BOTH DATASETS MATCH. 
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
             '''
 
             current_time = current_time
@@ -1625,6 +1728,53 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised = UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.get_METAR_Data(new_metar_time, plot_projection, mask)
 
             return rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_projection
+
+
+        def RTMA_Relative_Humidity_Synced_With_METAR_GUAM(current_time, mask):
+
+            r'''
+            THIS FUNCTION RETURNS THE LATEST RTMA RELATIVE HUMIDITY DATASET WITH THE LATEST METAR DATASET AND SYNCS UP BOTH DATASETS TO BE REPRESENTATIVE OF THE SAME TIME SINCE THE METAR DATA IS AVAILIABLE MUCH QUICKER THAN THE RTMA DATA. THIS ALLOWS USERS TO OVERLAY METAR DATA ONTO RTMA DATA AND HAVE THE TIMES BETWEEN BOTH DATASETS MATCH. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            '''
+
+            current_time = current_time
+            mask = mask
+
+            metar_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.latest_metar_time(current_time)
+
+            rtma_data, rtma_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.GUAM.get_current_rtma_relative_humidity_data(current_time)
+
+            plot_projection = rtma_data.metpy.cartopy_crs
+            
+            new_metar_time = parsers.checks.check_RTMA_vs_METAR_Times(rtma_time, metar_time)
+
+            sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised = UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.get_METAR_Data(new_metar_time, plot_projection, mask)
+
+            return rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_projection
+
+
+        def RTMA_Relative_Humidity_Synced_With_METAR_Hawaii(current_time):
+
+            r'''
+            THIS FUNCTION RETURNS THE LATEST RTMA RELATIVE HUMIDITY DATASET WITH THE LATEST METAR DATASET AND SYNCS UP BOTH DATASETS TO BE REPRESENTATIVE OF THE SAME TIME SINCE THE METAR DATA IS AVAILIABLE MUCH QUICKER THAN THE RTMA DATA. THIS ALLOWS USERS TO OVERLAY METAR DATA ONTO RTMA DATA AND HAVE THE TIMES BETWEEN BOTH DATASETS MATCH. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            '''
+
+            current_time = current_time
+
+            metar_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.latest_metar_time(current_time)
+
+            lon_vals, lat_vals, time, relative_humidity_to_plot = NOMADS_OPENDAP_Downloads.RTMA_Hawaii.get_RTMA_relative_humidity(current_time)
+
+            
+            new_metar_time = parsers.checks.check_RTMA_vs_METAR_Times(time, metar_time)
+
+
+            sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, metar_time_revised = UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.get_METAR_Data_Hawaii(new_metar_time)
+
+            return lon_vals, lat_vals, time, relative_humidity_to_plot, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, metar_time_revised
 
             
 class NOMADS_OPENDAP_Downloads:
@@ -1648,7 +1798,7 @@ class NOMADS_OPENDAP_Downloads:
 
             THIS FUNCTION RETRIEVES THE RTMA DATA FOR A SINGLE PARAMETER
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
             param = parameter
@@ -1746,7 +1896,7 @@ class NOMADS_OPENDAP_Downloads:
 
             THIS FUNCTION RETRIEVES THE RTMA DATA FOR A SINGLE PARAMETER
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
             param = parameter
@@ -1877,7 +2027,7 @@ class NOMADS_OPENDAP_Downloads:
             r'''
             THIS FUNCTION RETRIVES THE RTMA DATA FOR THE USUAL FIRE WEATHER PARAMETERS (TEMPERATURE, DEWPOINT, WIND SPEED AND RELATIVE HUMIDITY
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
 
@@ -1954,7 +2104,7 @@ class NOMADS_OPENDAP_Downloads:
 
             THIS FUNCTION RETRIEVES THE RTMA DATA FOR A SINGLE PARAMETER
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
             times = []
@@ -2069,7 +2219,7 @@ class NOMADS_OPENDAP_Downloads:
 
             THIS FUNCTION RETRIEVES THE RTMA DATA FOR A SINGLE PARAMETER
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
             param = parameter
@@ -2167,7 +2317,7 @@ class NOMADS_OPENDAP_Downloads:
 
             THIS FUNCTION RETRIEVES THE RTMA DATA FOR A SINGLE PARAMETER
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
             param = parameter
@@ -2298,7 +2448,7 @@ class NOMADS_OPENDAP_Downloads:
             r'''
             THIS FUNCTION RETRIVES THE RTMA DATA FOR THE USUAL FIRE WEATHER PARAMETERS (TEMPERATURE, DEWPOINT, WIND SPEED AND RELATIVE HUMIDITY
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
 
@@ -2375,7 +2525,7 @@ class NOMADS_OPENDAP_Downloads:
 
             THIS FUNCTION RETRIEVES THE RTMA DATA FOR A SINGLE PARAMETER
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
             times = []
@@ -2489,7 +2639,7 @@ class NOMADS_OPENDAP_Downloads:
 
             THIS FUNCTION RETRIEVES THE RTMA DATA FOR A SINGLE PARAMETER
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
             param = parameter
@@ -2587,7 +2737,7 @@ class NOMADS_OPENDAP_Downloads:
 
             THIS FUNCTION RETRIEVES THE RTMA DATA FOR A SINGLE PARAMETER
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
             param = parameter
@@ -2718,7 +2868,7 @@ class NOMADS_OPENDAP_Downloads:
             r'''
             THIS FUNCTION RETRIVES THE RTMA DATA FOR THE USUAL FIRE WEATHER PARAMETERS (TEMPERATURE, DEWPOINT, WIND SPEED AND RELATIVE HUMIDITY
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
 
@@ -2795,7 +2945,7 @@ class NOMADS_OPENDAP_Downloads:
 
             THIS FUNCTION RETRIEVES THE RTMA DATA FOR A SINGLE PARAMETER
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2023
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
             '''
             times = []
