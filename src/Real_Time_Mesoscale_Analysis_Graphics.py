@@ -39,7 +39,7 @@ class Counties_Perspective:
              THIS NESTED CLASS HOSTS THE IMAGES FOR THE ENTIRE STATE OF ALASKA
             '''
             
-            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -71,17 +71,17 @@ class Counties_Perspective:
                 ax.set_extent([-174, -128, 45, 80], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
-            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -106,18 +106,18 @@ class Counties_Perspective:
                 ax.set_extent([-174, -128, 45, 80], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 105, 5), cmap=cmap, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -126,6 +126,10 @@ class Counties_Perspective:
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
+
+                colorbar_label_font_size = colorbar_label_font_size
+
+                colorbar_pad = colorbar_pad
     
                 lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
                 
@@ -142,22 +146,22 @@ class Counties_Perspective:
                 ax.set_extent([-174, -128, 45, 80], datacrs)
                 
                 cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap='YlOrBr_r', transform=datacrs)
-                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=0.02)
-                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=8, fontweight='bold')
+                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=colorbar_label_font_size, fontweight='bold')
     
                 cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
-                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=0.02)
+                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
                 cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=8, fontweight='bold')
                 
-                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -180,18 +184,18 @@ class Counties_Perspective:
                 ax.set_extent([-174, -128, 45, 80], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 65, 5), cmap=cmap, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Relative Humidity Change (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity Change (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -215,18 +219,18 @@ class Counties_Perspective:
                 ax.set_extent([-174, -128, 45, 80], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -249,18 +253,18 @@ class Counties_Perspective:
                 ax.set_extent([-174, -128, 45, 80], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='PuOr_r', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Wind Speed Change (MPH)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Wind Speed Change (MPH)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -283,18 +287,18 @@ class Counties_Perspective:
                 ax.set_extent([-174, -128, 45, 80], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-40, 33, 1), cmap='cool_r', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontsize=title_font_size, fontweight='bold')
                 
                 plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -320,13 +324,13 @@ class Counties_Perspective:
     
     
                 cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=0.02)
-                cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, location='right', pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
     
                 
-                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
@@ -341,7 +345,7 @@ class Counties_Perspective:
 
 
 
-            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -373,17 +377,17 @@ class Counties_Perspective:
                 ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
-            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -408,18 +412,18 @@ class Counties_Perspective:
                 ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 105, 5), cmap=cmap, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -428,6 +432,10 @@ class Counties_Perspective:
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
+
+                colorbar_label_font_size = colorbar_label_font_size
+
+                colorbar_pad = colorbar_pad
     
                 lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
                 
@@ -444,22 +452,22 @@ class Counties_Perspective:
                 ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
                 
                 cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap='YlOrBr_r', transform=datacrs)
-                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=0.02)
-                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=8, fontweight='bold')
+                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=colorbar_label_font_size, fontweight='bold')
     
                 cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
-                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=0.02)
-                cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=8, fontweight='bold')
+                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -482,18 +490,18 @@ class Counties_Perspective:
                 ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 65, 5), cmap=cmap, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Relative Humidity Change (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity Change (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -517,18 +525,18 @@ class Counties_Perspective:
                 ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -551,18 +559,18 @@ class Counties_Perspective:
                 ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='PuOr_r', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Wind Speed Change (MPH)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Wind Speed Change (MPH)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -585,18 +593,18 @@ class Counties_Perspective:
                 ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-40, 33, 1), cmap='cool_r', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -622,13 +630,13 @@ class Counties_Perspective:
     
     
                 cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=0.02)
-                cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
     
                 
-                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
@@ -640,7 +648,7 @@ class Counties_Perspective:
             THIS NESTED CLASS IS FOR SOUTHWEST ALASKA
             '''
 
-            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -672,17 +680,17 @@ class Counties_Perspective:
                 ax.set_extent([-168, -153, 55, 64], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
-            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -707,18 +715,18 @@ class Counties_Perspective:
                 ax.set_extent([-168, -153, 55, 64], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 105, 5), cmap=cmap, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -727,6 +735,10 @@ class Counties_Perspective:
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
+
+                colorbar_label_font_size = colorbar_label_font_size
+
+                colorbar_pad = colorbar_pad
     
                 lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
                 
@@ -743,22 +755,22 @@ class Counties_Perspective:
                 ax.set_extent([-168, -153, 55, 64], datacrs)
                 
                 cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap='YlOrBr_r', transform=datacrs)
-                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=0.02)
-                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=8, fontweight='bold')
+                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=colorbar_label_font_size, fontweight='bold')
     
                 cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
-                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=0.02)
+                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
                 cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=8, fontweight='bold')
                 
-                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -781,18 +793,18 @@ class Counties_Perspective:
                 ax.set_extent([-168, -153, 55, 64], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 65, 5), cmap=cmap, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Relative Humidity Change (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity Change (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -816,18 +828,18 @@ class Counties_Perspective:
                 ax.set_extent([-168, -153, 55, 64], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -850,18 +862,18 @@ class Counties_Perspective:
                 ax.set_extent([-168, -153, 55, 64], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='PuOr_r', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Wind Speed Change (MPH)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Wind Speed Change (MPH)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -884,18 +896,18 @@ class Counties_Perspective:
                 ax.set_extent([-168, -153, 55, 64], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-40, 33, 1), cmap='cool_r', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -921,13 +933,13 @@ class Counties_Perspective:
     
     
                 cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=0.02)
-                cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, location='right', pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
     
                 
-                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
@@ -939,7 +951,7 @@ class Counties_Perspective:
             THIS NESTED CLASS IS FOR SOUTHWEST ALASKA
             '''
 
-            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -971,17 +983,17 @@ class Counties_Perspective:
                 ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
-            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1006,18 +1018,18 @@ class Counties_Perspective:
                 ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 105, 5), cmap=cmap, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1026,6 +1038,10 @@ class Counties_Perspective:
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
+
+                colorbar_label_font_size = colorbar_label_font_size
+
+                colorbar_pad = colorbar_pad
     
                 lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
                 
@@ -1042,22 +1058,22 @@ class Counties_Perspective:
                 ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
                 
                 cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap='YlOrBr_r', transform=datacrs)
-                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=0.02)
-                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=8, fontweight='bold')
+                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=colorbar_label_font_size, fontweight='bold')
     
                 cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
-                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=0.02)
-                cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=8, fontweight='bold')
+                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1080,18 +1096,18 @@ class Counties_Perspective:
                 ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 65, 5), cmap=cmap, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Relative Humidity Change (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity Change (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1115,18 +1131,18 @@ class Counties_Perspective:
                 ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1149,18 +1165,18 @@ class Counties_Perspective:
                 ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='PuOr_r', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Wind Speed Change (MPH)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Wind Speed Change (MPH)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1183,18 +1199,18 @@ class Counties_Perspective:
                 ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-40, 33, 1), cmap='cool_r', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1220,13 +1236,13 @@ class Counties_Perspective:
     
     
                 cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=0.02)
-                cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, location='right', pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
     
                 
-                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
@@ -1238,7 +1254,7 @@ class Counties_Perspective:
             THIS NESTED CLASS IS FOR THE INTERIOR AND NORTHSLOPE OF ALASKA
             '''
 
-            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1270,17 +1286,17 @@ class Counties_Perspective:
                 ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
-            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1305,18 +1321,18 @@ class Counties_Perspective:
                 ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 105, 5), cmap=cmap, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1325,6 +1341,10 @@ class Counties_Perspective:
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
+
+                colorbar_label_font_size = colorbar_label_font_size
+
+                colorbar_pad = colorbar_pad
     
                 lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
                 
@@ -1341,22 +1361,22 @@ class Counties_Perspective:
                 ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
                 
                 cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap='YlOrBr_r', transform=datacrs)
-                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=0.02)
-                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=8, fontweight='bold')
+                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=colorbar_label_font_size, fontweight='bold')
     
                 cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
-                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=0.02)
-                cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=8, fontweight='bold')
+                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1379,18 +1399,18 @@ class Counties_Perspective:
                 ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 65, 5), cmap=cmap, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Relative Humidity Change (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity Change (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1414,18 +1434,18 @@ class Counties_Perspective:
                 ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1448,18 +1468,18 @@ class Counties_Perspective:
                 ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='PuOr_r', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Wind Speed Change (MPH)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Wind Speed Change (MPH)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1482,18 +1502,18 @@ class Counties_Perspective:
                 ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
                 
                 cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-40, 33, 1), cmap='cool_r', transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
                 
-                plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
     
     
-            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
                 THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -1519,13 +1539,13 @@ class Counties_Perspective:
     
     
                 cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
-                cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=0.02)
-                cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
     
                 
-                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
                 return fig
@@ -1539,7 +1559,7 @@ class Counties_Perspective:
         THIS NESTED CLASS HOSTS THE IMAGES FOR CONUS AKA THE "LOWER-48"
         '''
 
-        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, state_border_color, state_border_line_thickness, county_border_color, county_border_line_thickness, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, state_border_color, state_border_line_thickness, county_border_color, county_border_line_thickness, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
@@ -1582,18 +1602,18 @@ class Counties_Perspective:
             cs = ax.contourf(data.metpy.x, data.metpy.y, data, 
                              transform=data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
 
-            plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, state_border_color, state_border_line_thickness, county_border_color, county_border_line_thickness, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, state_border_color, state_border_line_thickness, county_border_color, county_border_line_thickness, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
@@ -1635,8 +1655,8 @@ class Counties_Perspective:
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
 
             # Plots METAR
             stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
@@ -1656,16 +1676,16 @@ class Counties_Perspective:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') +"\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') +"\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
 
-        def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position):
+        def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
@@ -1695,8 +1715,8 @@ class Counties_Perspective:
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
             # Plots METAR
             stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
@@ -1716,14 +1736,14 @@ class Counties_Perspective:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title("Real Time Mesoscale Analysis Relative Humidity\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=12, fontweight='bold')
+            plt.title("Real Time Mesoscale Analysis Relative Humidity\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
-        def plot_red_flag_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position):
+        def plot_red_flag_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT FILTERS THE RELATIVE HUMIDITY DATASET TO ONLY PLOT WHERE THE RELATIVE HUMIDITY IS 15% OR LESS. 
@@ -1751,8 +1771,8 @@ class Counties_Perspective:
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=1)
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
             # Plots METAR
             stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
@@ -1772,15 +1792,15 @@ class Counties_Perspective:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=12, fontweight='bold')
+            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
  
 
-        def plot_low_and_high_relative_humidity(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_low_and_high_relative_humidity(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT FILTERS THE RELATIVE HUMIDITY DATASET TO ONLY PLOT WHERE THE RELATIVE HUMIDITY IS 15% OR LESS. 
@@ -1788,7 +1808,9 @@ class Counties_Perspective:
             (C) METEOROLOGIST ERIC J. DREWITZ 2024
             
             '''
+            colorbar_label_font_size = colorbar_label_font_size
 
+            colorbar_pad = colorbar_pad
 
             local_time, utc_time = standard.plot_creation_time()
 
@@ -1815,22 +1837,22 @@ class Counties_Perspective:
             cs_high = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(80, 101, 1), cmap=cmap, alpha=1)
 
-            cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=0.03)
-            cbar_low.set_label(label="Low Relative Humidity (RH <= 15%)", size=8, fontweight='bold')
+            cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_low.set_label(label="Low Relative Humidity (RH <= 15%)", size=colorbar_label_font_size, fontweight='bold')
 
-            cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=0.03)
-            cbar_high.set_label(label="High Relative Humidity (RH >= 80%)", size=8, fontweight='bold')
+            cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_high.set_label(label="High Relative Humidity (RH >= 80%)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE RELATIVE HUMIDITY FROM THE CURRENT TIME AND THE RELATIVE HUMIDITY FROM 24 HOURS AGO AND PLOTS THE 24 HOUR RELATIVE HUMIDITY CHANGE
@@ -1865,19 +1887,19 @@ class Counties_Perspective:
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap=cmap, alpha=1)
 
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Relative Humidity Change (%)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity Change (%)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE TEMPERATURE FROM THE CURRENT TIME AND THE TEMPERATURE FROM 24 HOURS AGO AND PLOTS THE 24 HOUR TEMPERATURE CHANGE
@@ -1912,19 +1934,19 @@ class Counties_Perspective:
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap='seismic', alpha=1)
 
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Temperature Change (\N{DEGREE SIGN}F)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Temperature Change (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE WIND SPEED FROM THE CURRENT TIME AND THE WIND SPEED FROM 24 HOURS AGO AND PLOTS THE 24 HOUR WIND SPEED CHANGE
@@ -1959,19 +1981,19 @@ class Counties_Perspective:
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap='PuOr_r', alpha=1)
 
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Wind Speed Change (MPH)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
             
 
-        def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT SHOWS THE CURRENT AREAS EXPERIENCING BELOW FREEZING TEMPERATURES SINCE FROST/FREEZE CAN TURN LIVE FUEL INTO DEAD FUEL WHICH CAN ULTIMATELY LEAD TO MORE SUCCEPTABLE FUELS FOR WILDFIRE.
@@ -2004,19 +2026,19 @@ class Counties_Perspective:
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap='cool_r', alpha=1)
 
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_red_flag_criteria_based_on_sustained_winds(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_red_flag_criteria_based_on_sustained_winds(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
@@ -2024,7 +2046,9 @@ class Counties_Perspective:
             (C) METEOROLOGIST ERIC J. DREWITZ 2024
             
             '''
+            colorbar_label_font_size = colorbar_label_font_size
 
+            colorbar_pad = colorbar_pad
 
             local_time, utc_time = standard.plot_creation_time()
 
@@ -2054,22 +2078,22 @@ class Counties_Perspective:
                              transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 100, 5), cmap='BuPu', alpha=0.5)
 
 
-            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=0.03)
-            cbar_rh.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
-            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=0.03)
-            cbar_wind.set_label(label="Wind Speed (MPH)", size=12, fontweight='bold')
+            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_wind.set_label(label="Wind Speed (MPH)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Speed >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Speed >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_red_flag_criteria_based_on_wind_gusts(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_red_flag_criteria_based_on_wind_gusts(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON WIND GUSTS. 
@@ -2077,9 +2101,11 @@ class Counties_Perspective:
             (C) METEOROLOGIST ERIC J. DREWITZ 2024
             
             '''
-
+            colorbar_label_font_size = colorbar_label_font_size
 
             local_time, utc_time = standard.plot_creation_time()
+
+            colorbar_pad = colorbar_pad
 
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time)
 
@@ -2107,16 +2133,16 @@ class Counties_Perspective:
                              transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 100, 5), cmap='BuPu', alpha=0.5)
 
 
-            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=0.03)
-            cbar_rh.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
-            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=0.03)
-            cbar_wind.set_label(label="Wind Gust (MPH)", size=12, fontweight='bold')
+            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Gust >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Gust >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -2141,7 +2167,7 @@ class Predictive_Services_Areas_Perspective:
         '''
 
 
-        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, GACC_Border_Color, GACC_Border_Line_Thickness, PSA_Border_Line_Thickness, PSA_Border_Color, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, GACC_Border_Color, GACC_Border_Line_Thickness, PSA_Border_Line_Thickness, PSA_Border_Color, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
@@ -2187,18 +2213,18 @@ class Predictive_Services_Areas_Perspective:
             cs = ax.contourf(data.metpy.x, data.metpy.y, data, 
                              transform=data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
 
-            plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, GACC_Border_Color, GACC_Border_Line_Thickness, PSA_Border_Line_Thickness, PSA_Border_Color, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, GACC_Border_Color, GACC_Border_Line_Thickness, PSA_Border_Line_Thickness, PSA_Border_Color, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
@@ -2242,8 +2268,8 @@ class Predictive_Services_Areas_Perspective:
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
 
             # Plots METAR
             stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
@@ -2263,16 +2289,16 @@ class Predictive_Services_Areas_Perspective:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') +"\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') +"\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
 
-        def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position):
+        def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
@@ -2304,8 +2330,8 @@ class Predictive_Services_Areas_Perspective:
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=0.5)
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
             # Plots METAR
             stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
@@ -2325,15 +2351,15 @@ class Predictive_Services_Areas_Perspective:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title("Real Time Mesoscale Analysis Relative Humidity\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=12, fontweight='bold')
+            plt.title("Real Time Mesoscale Analysis Relative Humidity\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_red_flag_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position):
+        def plot_red_flag_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT FILTERS THE RELATIVE HUMIDITY DATASET TO ONLY PLOT WHERE THE RELATIVE HUMIDITY IS 15% OR LESS. 
@@ -2363,8 +2389,8 @@ class Predictive_Services_Areas_Perspective:
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=1)
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
             # Plots METAR
             stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
@@ -2384,15 +2410,15 @@ class Predictive_Services_Areas_Perspective:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=12, fontweight='bold')
+            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_low_and_high_relative_humidity(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_low_and_high_relative_humidity(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT FILTERS THE RELATIVE HUMIDITY DATASET TO ONLY PLOT WHERE THE RELATIVE HUMIDITY IS 15% OR LESS. 
@@ -2401,7 +2427,10 @@ class Predictive_Services_Areas_Perspective:
             
             '''
 
+            colorbar_label_font_size = colorbar_label_font_size
 
+            colorbar_pad = colorbar_pad
+            
             local_time, utc_time = standard.plot_creation_time()
 
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time)
@@ -2429,22 +2458,22 @@ class Predictive_Services_Areas_Perspective:
             cs_high = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(80, 101, 1), cmap=cmap, alpha=1)
 
-            cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=0.03)
-            cbar_low.set_label(label="Low Relative Humidity (RH <= 15%)", size=8, fontweight='bold')
+            cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_low.set_label(label="Low Relative Humidity (RH <= 15%)", size=colorbar_label_font_size, fontweight='bold')
 
-            cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=0.03)
-            cbar_high.set_label(label="High Relative Humidity (RH >= 80%)", size=8, fontweight='bold')
+            cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_high.set_label(label="High Relative Humidity (RH >= 80%)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE RELATIVE HUMIDITY FROM THE CURRENT TIME AND THE RELATIVE HUMIDITY FROM 24 HOURS AGO AND PLOTS THE 24 HOUR RELATIVE HUMIDITY CHANGE
@@ -2480,19 +2509,19 @@ class Predictive_Services_Areas_Perspective:
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap=cmap, alpha=1)
 
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Relative Humidity Change (%)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity Change (%)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE TEMPERATURE FROM THE CURRENT TIME AND THE TEMPERATURE FROM 24 HOURS AGO AND PLOTS THE 24 HOUR TEMPERATURE CHANGE
@@ -2529,19 +2558,19 @@ class Predictive_Services_Areas_Perspective:
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap='seismic', alpha=1)
 
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Temperature Change (\N{DEGREE SIGN}F)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Temperature Change (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE WIND SPEED FROM THE CURRENT TIME AND THE WIND SPEED FROM 24 HOURS AGO AND PLOTS THE 24 HOUR WIND SPEED CHANGE
@@ -2578,19 +2607,19 @@ class Predictive_Services_Areas_Perspective:
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap='PuOr_r', alpha=1)
 
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Wind Speed Change (MPH)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
             
 
-        def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT SHOWS THE CURRENT AREAS EXPERIENCING BELOW FREEZING TEMPERATURES SINCE FROST/FREEZE CAN TURN LIVE FUEL INTO DEAD FUEL WHICH CAN ULTIMATELY LEAD TO MORE SUCCEPTABLE FUELS FOR WILDFIRE.
@@ -2625,19 +2654,19 @@ class Predictive_Services_Areas_Perspective:
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap='cool_r', alpha=1)
 
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_red_flag_criteria_based_on_sustained_winds(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_red_flag_criteria_based_on_sustained_winds(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
@@ -2646,7 +2675,10 @@ class Predictive_Services_Areas_Perspective:
             
             '''
 
+            colorbar_label_font_size = colorbar_label_font_size
 
+            colorbar_pad = colorbar_pad
+            
             local_time, utc_time = standard.plot_creation_time()
 
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time)
@@ -2677,22 +2709,22 @@ class Predictive_Services_Areas_Perspective:
                              transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 100, 5), cmap='BuPu', alpha=0.5)
 
 
-            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=0.03)
-            cbar_rh.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
-            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=0.03)
-            cbar_wind.set_label(label="Wind Speed (MPH)", size=12, fontweight='bold')
+            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_wind.set_label(label="Wind Speed (MPH)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Speed >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Speed >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_red_flag_criteria_based_on_wind_gusts(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_red_flag_criteria_based_on_wind_gusts(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON WIND GUSTS. 
@@ -2700,7 +2732,9 @@ class Predictive_Services_Areas_Perspective:
             (C) METEOROLOGIST ERIC J. DREWITZ 2024
             
             '''
+            colorbar_label_font_size = colorbar_label_font_size
 
+            colorbar_pad = colorbar_pad
 
             local_time, utc_time = standard.plot_creation_time()
 
@@ -2732,22 +2766,22 @@ class Predictive_Services_Areas_Perspective:
                              transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 100, 5), cmap='BuPu', alpha=0.5)
 
 
-            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=0.03)
-            cbar_rh.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
-            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=0.03)
-            cbar_wind.set_label(label="Wind Gust (MPH)", size=12, fontweight='bold')
+            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Gust >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Gust >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_red_flag_criteria_based_on_wind_gusts_test(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_red_flag_criteria_based_on_wind_gusts_test(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON WIND GUSTS. 
@@ -2755,7 +2789,9 @@ class Predictive_Services_Areas_Perspective:
             (C) METEOROLOGIST ERIC J. DREWITZ 2024
             
             '''
+            colorbar_label_font_size = colorbar_label_font_size
 
+            colorbar_pad = colorbar_pad
 
             local_time, utc_time = standard.plot_creation_time()
 
@@ -2787,16 +2823,16 @@ class Predictive_Services_Areas_Perspective:
                              transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 100, 5), cmap='BuPu', alpha=0.5)
 
 
-            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=0.03)
-            cbar_rh.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
-            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=0.03)
-            cbar_wind.set_label(label="Wind Gust (MPH)", size=12, fontweight='bold')
+            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Gust >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Gust >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
@@ -2813,7 +2849,7 @@ class Islands:
         THIS NESTED CLASS IS FOR THE GRAPHICS FOR HAWAII
         '''
 
-        def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -2845,17 +2881,17 @@ class Islands:
             ax.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
                 
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-            cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
     
-        def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -2880,17 +2916,17 @@ class Islands:
             ax.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
                 
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 105, 5), cmap=cmap, transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-            cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
 
-        def plot_red_flag_relative_humidity_with_METARs(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_red_flag_relative_humidity_with_METARs(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF HAWAII. THIS PLOT FILTERS THE RELATIVE HUMIDITY DATASET TO ONLY PLOT WHERE THE RELATIVE HUMIDITY IS 15% OR LESS. 
@@ -2917,8 +2953,8 @@ class Islands:
 
             cs = ax.contourf(lon_vals, lat_vals, relative_humidity_to_plot, levels=np.arange(0, 16, 1), cmap=cmap, transform=datacrs)
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
             # Plots METAR
             stn = mpplots.StationPlot(ax, sfc_data['longitude'].m, sfc_data['latitude'].m,
@@ -2938,15 +2974,15 @@ class Islands:
             
             stn.plot_barb(sfc_data['u'], sfc_data['v'])
 
-            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=12, fontweight='bold')
+            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
     
     
-        def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF HAWAII. 
@@ -2955,6 +2991,10 @@ class Islands:
                 
             '''            
             local_time, utc_time = standard.plot_creation_time()
+
+            colorbar_label_font_size = colorbar_label_font_size
+
+            colorbar_pad = colorbar_pad
     
             lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Hawaii.get_RTMA_relative_humidity(utc_time)
                 
@@ -2972,22 +3012,22 @@ class Islands:
             ax.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
                 
             cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap=cmap_low, transform=datacrs)
-            cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=0.02)
-            cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=8, fontweight='bold')
+            cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=colorbar_label_font_size, fontweight='bold')
     
             cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap_high, transform=datacrs)
-            cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=0.02)
-            cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=8, fontweight='bold')
+            cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
     
     
-        def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -3010,21 +3050,21 @@ class Islands:
             ax.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
                 
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 61, 1), cmap=cmap, transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-            cbar.set_label(label='Relative Humidity Change (%)', size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label='Relative Humidity Change (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
     
     
-        def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF HAWAII. 
     
             (C) METEOROLOGIST ERIC J. DREWITZ 2024
                 
@@ -3045,18 +3085,18 @@ class Islands:
             ax.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
                 
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-            cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
     
     
-        def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -3079,18 +3119,18 @@ class Islands:
             ax.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
                 
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='PuOr_r', transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-            cbar.set_label(label='Wind Speed Change (MPH)', size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label='Wind Speed Change (MPH)', size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
     
     
-        def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -3113,18 +3153,18 @@ class Islands:
             ax.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
                 
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-40, 33, 1), cmap='cool_r', transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-            cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
     
     
-        def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -3150,13 +3190,13 @@ class Islands:
     
     
             cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=0.02)
-            cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, location='right', pad=colorbar_pad)
+            cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
     
                 
-            plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
@@ -3168,7 +3208,7 @@ class Islands:
         THIS NESTED CLASS IS FOR THE GRAPHICS FOR PUERTO RICO
         '''
 
-        def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -3200,17 +3240,17 @@ class Islands:
             ax.set_extent([-68, -64.5, 17.5, 18.7], datacrs)
                 
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-            cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
     
-        def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -3235,18 +3275,18 @@ class Islands:
             ax.set_extent([-68, -64.5, 17.5, 18.7], datacrs)
                 
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 105, 5), cmap=cmap, transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-            cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
     
     
-        def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -3255,6 +3295,10 @@ class Islands:
                 
             '''            
             local_time, utc_time = standard.plot_creation_time()
+
+            colorbar_label_font_size = colorbar_label_font_size
+
+            colorbar_pad = colorbar_pad
     
             lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Puerto_Rico.get_RTMA_relative_humidity(utc_time)
                 
@@ -3271,22 +3315,22 @@ class Islands:
             ax.set_extent([-68, -64.5, 17.5, 18.7], datacrs)
                 
             cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap='YlOrBr_r', transform=datacrs)
-            cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=0.02)
-            cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=8, fontweight='bold')
+            cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=colorbar_label_font_size, fontweight='bold')
     
             cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
-            cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=0.02)
-            cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=8, fontweight='bold')
+            cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
     
     
-        def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -3309,18 +3353,18 @@ class Islands:
             ax.set_extent([-68, -64.5, 17.5, 18.7], datacrs)
                 
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 65, 5), cmap=cmap, transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-            cbar.set_label(label='Relative Humidity Change (%)', size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label='Relative Humidity Change (%)', size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
     
     
-        def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -3344,18 +3388,18 @@ class Islands:
             ax.set_extent([-68, -64.5, 17.5, 18.7], datacrs)
                 
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-            cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
     
     
-        def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -3378,18 +3422,18 @@ class Islands:
             ax.set_extent([-68, -64.5, 17.5, 18.7], datacrs)
                 
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='PuOr_r', transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-            cbar.set_label(label='Wind Speed Change (MPH)', size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label='Wind Speed Change (MPH)', size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
     
     
-        def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -3412,18 +3456,18 @@ class Islands:
             ax.set_extent([-68, -64.5, 17.5, 18.7], datacrs)
                 
             cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-40, 33, 1), cmap='cool_r', transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=0.02)
-            cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
                 
-            plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
     
     
-        def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
@@ -3449,13 +3493,13 @@ class Islands:
     
     
             cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
-            cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=0.02)
-            cbar.set_label(label='Relative Humidity (%)', size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=colorbar_pad)
+            cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
     
                 
-            plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
     
             return fig
@@ -3468,7 +3512,7 @@ class Islands:
 
         '''
 
-        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, state_border_color, state_border_line_thickness, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, state_border_color, state_border_line_thickness, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF GUAM. 
@@ -3510,18 +3554,18 @@ class Islands:
             cs = ax.contourf(data.metpy.x, data.metpy.y, data[0, :, :], 
                              transform=data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
 
-            plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, state_border_color, state_border_line_thickness, signature_x_position, signature_y_position):
+        def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, state_border_color, state_border_line_thickness, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF GUAM. 
@@ -3561,8 +3605,8 @@ class Islands:
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data[0, :, :], 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label=color_table_title, size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
 
             # Plots METAR
             stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
@@ -3582,16 +3626,16 @@ class Islands:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') +"\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title(plot_title + "\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\n\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') +"\n\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
 
-        def plot_relative_humidity_with_METARs(fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position):
+        def plot_relative_humidity_with_METARs(fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF GUAM. 
@@ -3620,8 +3664,8 @@ class Islands:
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data[0, :, :], 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 101, 1), cmap=cmap, alpha=1)
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
             # Plots METAR
             stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
@@ -3641,14 +3685,14 @@ class Islands:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title("Real Time Mesoscale Analysis Relative Humidity\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=12, fontweight='bold')
+            plt.title("Real Time Mesoscale Analysis Relative Humidity\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
-        def plot_red_flag_relative_humidity_with_METARs(fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position):
+        def plot_red_flag_relative_humidity_with_METARs(fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF GUAM. THIS PLOT FILTERS THE RELATIVE HUMIDITY DATASET TO ONLY PLOT WHERE THE RELATIVE HUMIDITY IS 15% OR LESS. 
@@ -3674,8 +3718,8 @@ class Islands:
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data[0, :, :], 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=1)
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
             # Plots METAR
             stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
@@ -3695,15 +3739,15 @@ class Islands:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=12, fontweight='bold')
+            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
  
 
-        def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF GUAM. THIS PLOT FILTERS THE RELATIVE HUMIDITY DATASET TO ONLY PLOT WHERE THE RELATIVE HUMIDITY IS 15% OR LESS. 
@@ -3711,7 +3755,9 @@ class Islands:
             (C) METEOROLOGIST ERIC J. DREWITZ 2024
             
             '''
+            colorbar_label_font_size = colorbar_label_font_size
 
+            colorbar_pad = colorbar_pad
 
             local_time, utc_time = standard.plot_creation_time()
 
@@ -3736,22 +3782,22 @@ class Islands:
             cs_high = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data[0, :, :], 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(80, 101, 1), cmap=cmap, alpha=1)
 
-            cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=0.03)
-            cbar_low.set_label(label="Low Relative Humidity (RH <= 15%)", size=8, fontweight='bold')
+            cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_low.set_label(label="Low Relative Humidity (RH <= 15%)", size=colorbar_label_font_size, fontweight='bold')
 
-            cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=0.03)
-            cbar_high.set_label(label="High Relative Humidity (RH >= 80%)", size=8, fontweight='bold')
+            cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_high.set_label(label="High Relative Humidity (RH >= 80%)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF GUAM. THIS PLOT COMPARES THE RELATIVE HUMIDITY FROM THE CURRENT TIME AND THE RELATIVE HUMIDITY FROM 24 HOURS AGO AND PLOTS THE 24 HOUR RELATIVE HUMIDITY CHANGE
@@ -3784,19 +3830,19 @@ class Islands:
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 61, 1), cmap=cmap, alpha=1)
 
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Relative Humidity Change (%)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity Change (%)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Relative Humidity Change (%)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF GUAM. THIS PLOT COMPARES THE TEMPERATURE FROM THE CURRENT TIME AND THE TEMPERATURE FROM 24 HOURS AGO AND PLOTS THE 24 HOUR TEMPERATURE CHANGE
@@ -3829,19 +3875,19 @@ class Islands:
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap='seismic', alpha=1)
 
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Temperature Change (\N{DEGREE SIGN}F)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Temperature Change (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF GUAM. THIS PLOT COMPARES THE WIND SPEED FROM THE CURRENT TIME AND THE WIND SPEED FROM 24 HOURS AGO AND PLOTS THE 24 HOUR WIND SPEED CHANGE
@@ -3874,20 +3920,20 @@ class Islands:
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap='PuOr_r', alpha=1)
 
 
-            cbar = fig.colorbar(cs, shrink=color_table_shrink)
-            cbar.set_label(label="Wind Speed Change (MPH)", size=12, fontweight='bold')
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + rtma_time_24.strftime('%m/%d/%Y %HZ') + " - " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
             
 
 
-        def plot_red_flag_criteria_based_on_sustained_winds(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_red_flag_criteria_based_on_sustained_winds(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF GUAM. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
@@ -3895,7 +3941,9 @@ class Islands:
             (C) METEOROLOGIST ERIC J. DREWITZ 2024
             
             '''
+            colorbar_label_font_size = colorbar_label_font_size
 
+            colorbar_pad = colorbar_pad
 
             local_time, utc_time = standard.plot_creation_time()
 
@@ -3923,22 +3971,22 @@ class Islands:
                              transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 100, 5), cmap='BuPu', alpha=0.5)
 
 
-            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=0.03)
-            cbar_rh.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
-            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=0.03)
-            cbar_wind.set_label(label="Wind Speed (MPH)", size=12, fontweight='bold')
+            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_wind.set_label(label="Wind Speed (MPH)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Speed >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Speed >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
 
 
-        def plot_red_flag_criteria_based_on_wind_gusts(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position):
+        def plot_red_flag_criteria_based_on_wind_gusts(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF GUAM. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON WIND GUSTS. 
@@ -3946,7 +3994,9 @@ class Islands:
             (C) METEOROLOGIST ERIC J. DREWITZ 2024
             
             '''
+            colorbar_label_font_size = colorbar_label_font_size
 
+            colorbar_pad = colorbar_pad
 
             local_time, utc_time = standard.plot_creation_time()
 
@@ -3974,16 +4024,16 @@ class Islands:
                              transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 100, 5), cmap='BuPu', alpha=0.5)
 
 
-            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=0.03)
-            cbar_rh.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
+            cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
-            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=0.03)
-            cbar_wind.set_label(label="Wind Gust (MPH)", size=12, fontweight='bold')
+            cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Gust >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+            plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Gust >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
