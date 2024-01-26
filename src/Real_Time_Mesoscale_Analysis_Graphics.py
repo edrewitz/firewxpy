@@ -2038,7 +2038,7 @@ class Counties_Perspective:
             return fig
 
 
-        def plot_red_flag_criteria_based_on_sustained_winds(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+        def plot_red_flag_criteria_based_on_sustained_winds_plotted_seperate(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
@@ -2086,6 +2086,66 @@ class Counties_Perspective:
 
 
             plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Speed >= 25 MPH)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+            return fig
+
+
+        def plot_red_flag_criteria_based_on_sustained_winds(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            
+            '''
+            colorbar_label_font_size = colorbar_label_font_size
+
+            colorbar_pad = colorbar_pad
+
+            local_time, utc_time = standard.plot_creation_time()
+
+            rtma_rh, rtma_wind, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_red_flag_warning_conditions(utc_time)
+
+            rtma_wind = rtma_wind * 2.23694
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+
+            mask = (rtma_rh <= 15) & (rtma_wind >= 25)
+            lon = mask['longitude']
+            lat = mask['latitude']
+
+            plot_proj = mask.metpy.cartopy_crs
+
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+            
+            
+            # Import matplotlib's colormap registry
+            from matplotlib.colors import ListedColormap
+            
+            mask_rgba = [(255/255,255/255,255/255,0),(255/255, 0/255, 0/255,1)]
+            
+            # Register the colormap
+            mask_cmap = ListedColormap(mask_rgba)
+            
+            # Plot the mask
+            try:
+                ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=mask_cmap,vmin=0.1)
+
+            except Exception as e:
+                pass
+
+
+            plt.title("Red-Flag Warning Conditions (Shaded)\nRH <= 15% and Wind Speed >= 25 MPH\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
@@ -3061,7 +3121,7 @@ class Islands:
             return fig
     
     
-        def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+        def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF HAWAII. 
