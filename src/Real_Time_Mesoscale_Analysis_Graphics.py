@@ -2356,7 +2356,7 @@ class Counties_Perspective:
                 pass
                 
 
-            plt.title("Red-Flag Warning Conditions (Shaded)\nRH <= 15% & Wind Speed >= 25 MPH\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+            plt.title("Red-Flag Warning Conditions (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Speed >= " + str(red_flag_warning_wind_speed_threshold) + " MPH\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
@@ -2379,7 +2379,7 @@ class Counties_Perspective:
 
             red_flag_warning_relative_humidity_threshold = red_flag_warning_relative_humidity_threshold
 
-            red_flag_warning_gust_speed_threshold = red_flag_warning_wind_gust_threshold
+            red_flag_warning_wind_gust_threshold = red_flag_warning_wind_gust_threshold
 
             rtma_rh, rtma_gust, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_red_flag_warning_parameters_using_wind_gust(utc_time)
 
@@ -2411,7 +2411,7 @@ class Counties_Perspective:
                 pass
                 
 
-            plt.title("Red-Flag Warning Conditions (Shaded)\nRH <= 15% & Wind Gust >= 25 MPH\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+            plt.title("Red-Flag Warning Conditions (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
@@ -3288,6 +3288,119 @@ class Predictive_Services_Areas_Perspective:
 
             return fig
 
+
+        def plot_red_flag_warning_areas_based_on_sustained_winds(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            
+            '''
+
+            local_time, utc_time = standard.plot_creation_time()
+
+            cmap = colormaps.red_flag_warning_criteria_colormap()
+
+            red_flag_warning_relative_humidity_threshold = red_flag_warning_relative_humidity_threshold
+
+            red_flag_warning_wind_speed_threshold = red_flag_warning_wind_speed_threshold
+
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+
+            rtma_rh, rtma_wind, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_red_flag_warning_parameters_using_wind_speed(utc_time)
+
+            rtma_wind = rtma_wind * 2.23694
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+
+
+            mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_speed_threshold)
+            lon = mask['longitude']
+            lat = mask['latitude']
+
+            plot_proj = mask.metpy.cartopy_crs
+
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(GACC, linewidth=2, edgecolor='blue', zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+
+            # Plot the mask
+            try:
+                ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap)
+
+            except Exception as e:
+                pass
+                
+
+            plt.title("Red-Flag Warning Conditions (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Speed >= " + str(red_flag_warning_wind_speed_threshold) + " MPH\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+            return fig
+
+
+        def plot_red_flag_warning_areas_based_on_wind_gusts(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON WIND GUSTS. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            
+            '''
+
+            local_time, utc_time = standard.plot_creation_time()
+
+            cmap = colormaps.red_flag_warning_criteria_colormap()
+
+            red_flag_warning_relative_humidity_threshold = red_flag_warning_relative_humidity_threshold
+
+            red_flag_warning_wind_gust_threshold = red_flag_warning_wind_gust_threshold
+
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+
+            rtma_rh, rtma_gust, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_red_flag_warning_parameters_using_wind_gust(utc_time)
+
+            rtma_wind = rtma_gust * 2.23694
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+
+
+            mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_gust >= red_flag_warning_wind_gust_threshold)
+            lon = mask['longitude']
+            lat = mask['latitude']
+
+            plot_proj = mask.metpy.cartopy_crs
+
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(GACC, linewidth=2, edgecolor='blue', zorder=3)
+            ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+
+            # Plot the mask
+            try:
+                ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap)
+
+            except Exception as e:
+                pass
+                
+
+            plt.title("Red-Flag Warning Conditions (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+            return fig
 
 
         def plot_red_flag_warning_parameters_and_areas_based_on_sustained_winds(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size):
