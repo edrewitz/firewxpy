@@ -28,3 +28,19 @@ def low_relative_humidity_colormap():
     
     return low_relative_humidity_colormap
 
+
+def red_flag_warning_alaska_temperature_parameter_colormap():
+    red_flag_warning_alaska_temperature_parameter_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("temperature", ["pink", "lightcoral", "red", "darkred"])
+    
+    return red_flag_warning_alaska_temperature_parameter_colormap
+
+def red_flag_warning_wind_parameter_colormap():
+    red_flag_warning_wind_parameter_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("wind speed", ["dodgerblue", "royalblue", "blue", "darkblue", "blueviolet", "darkviolet"])
+    
+    return red_flag_warning_wind_parameter_colormap
+
+def red_flag_warning_criteria_colormap():
+    red_flag_warning_criteria_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("red flag warning", ["white", "red"])
+    return red_flag_warning_criteria_colormap
+
+
