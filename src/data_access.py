@@ -777,6 +777,129 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 return None
 
 
+        def get_wind_velocity_and_u_and_v_components(current_time):
+        
+            r"""
+            THIS FUNCTION RETRIEVES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATASETS FOR TEMPERATURE AND DEWPOINT
+        
+            THIS FUNCTION THEN CALCULATES A RELATIVE HUMIDITY DATASET USING METPY.CALC FROM THE TEMPERATURE AND DEWPOINT DATASETS
+        
+            IF THE DATASET FOR THE CURRENT TIME IS UNAVAILABLE THE FUNCTION WILL TRY TO RETURN THE MOST RECENT DATASET IN THE PAST 4 HOURS
+        
+            PYTHON PACKAGE DEPENDENCIES:
+        
+            1. SIPHON
+            2. METPY
+            3. DATETIME
+        
+            RETURNS:
+        
+            CURRENT RTMA DATASET FOR RELATIVE HUMIDITY
+        
+            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+        
+            """
+        
+            times = []
+        
+            for i in range(0,5):
+                new_time = current_time - timedelta(hours=i)
+                times.append(new_time)
+        
+            try:
+                rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                u = rtma_data['u-component_of_wind_Analysis_height_above_ground'].squeeze()
+                v = rtma_data['v-component_of_wind_Analysis_height_above_ground'].squeeze()
+                rtma_wind = rtma_data['Wind_speed_Analysis_height_above_ground'].squeeze()
+        
+                print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+
+                time = times[0]
+                
+                return u, v, rtma_wind, time
+                
+            except Exception as e:
+        
+                print("Relative Humidity Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
+                
+                try:
+                    rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                    u = rtma_data['u-component_of_wind_Analysis_height_above_ground'].squeeze()
+                    v = rtma_data['v-component_of_wind_Analysis_height_above_ground'].squeeze()
+                    rtma_wind = rtma_data['Wind_speed_Analysis_height_above_ground'].squeeze()
+            
+                    print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+
+                    time = times[1]
+                    
+                    return u, v, rtma_wind, time
+          
+                except Exception as a:
+        
+                    print("Relative Humidity data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
+                    
+                    try:
+                        rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                        u = rtma_data['u-component_of_wind_Analysis_height_above_ground'].squeeze()
+                        v = rtma_data['v-component_of_wind_Analysis_height_above_ground'].squeeze()
+                        rtma_wind = rtma_data['Wind_speed_Analysis_height_above_ground'].squeeze()
+                
+                        print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+
+                        time = times[2]
+                        
+                        return u, v, rtma_wind, time
+        
+                    except Exception as b:
+                                    
+                        print("Relative Humidity data is unavailiable for "+times[2].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
+                        
+                        try:
+                            rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                            u = rtma_data['u-component_of_wind_Analysis_height_above_ground'].squeeze()
+                            v = rtma_data['v-component_of_wind_Analysis_height_above_ground'].squeeze()
+                            rtma_wind = rtma_data['Wind_speed_Analysis_height_above_ground'].squeeze()
+                    
+                            print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+
+                            time = times[3]
+                            
+                            return u, v, rtma_wind, time
+        
+                        except Exception as c:
+                                    
+                            print("Relative Humidity data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[4].strftime('%m/%d/%Y %H00 UTC'))
+                            
+                            try:
+                                rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                                u = rtma_data['u-component_of_wind_Analysis_height_above_ground'].squeeze()
+                                v = rtma_data['v-component_of_wind_Analysis_height_above_ground'].squeeze()
+                                rtma_wind = rtma_data['Wind_speed_Analysis_height_above_ground'].squeeze()
+                        
+                                print("Data retrieval for " + times[4].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+
+                                time = times[4]
+                                
+                                return u, v, rtma_wind, time
+                                       
+                        
+                            except Exception as k:
+                                print("WARNING: Latest dataset is more than 4 hours old.\nQuitting - Please try again later.")
+        
+                                return None
+
+
+
         def get_red_flag_warning_parameters_using_wind_speed(current_time):
         
             r"""
@@ -2432,9 +2555,10 @@ class NOMADS_OPENDAP_Downloads:
             relative_humidity_to_plot = relative_humidity[0, :, :] 
             temperature_to_plot = temperature_f[0, :, :]
             wind_speed_to_plot = wind_speed_mph[0, :, :]
+            u_to_plot = u[0, :, :]
+            v_to_plot = v[0, :, :]
                 
             return lon_vals, lat_vals, time, relative_humidity_to_plot * 100, temperature_to_plot, wind_speed_to_plot
-
 
         def get_RTMA_red_flag_warning_parameters_using_wind_gust(current_time):
 
