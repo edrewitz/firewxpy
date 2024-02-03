@@ -2555,8 +2555,6 @@ class NOMADS_OPENDAP_Downloads:
             relative_humidity_to_plot = relative_humidity[0, :, :] 
             temperature_to_plot = temperature_f[0, :, :]
             wind_speed_to_plot = wind_speed_mph[0, :, :]
-            u_to_plot = u[0, :, :]
-            v_to_plot = v[0, :, :]
                 
             return lon_vals, lat_vals, time, relative_humidity_to_plot * 100, temperature_to_plot, wind_speed_to_plot
 
