@@ -3882,3 +3882,164 @@ class NOMADS_OPENDAP_Downloads:
                 
             return lon_vals, lat_vals, time, time_24, diff * 100
 
+
+        def get_RTMA_red_flag_warning_parameters_using_wind_speed(current_time):
+
+            r'''
+            THIS FUNCTION RETRIVES THE RTMA DATA FOR THE USUAL FIRE WEATHER PARAMETERS (TEMPERATURE, DEWPOINT, WIND SPEED AND RELATIVE HUMIDITY
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+            '''
+
+            
+            times = []
+            for i in range(0, 5):
+                time = pd.to_datetime(current_time - timedelta(hours=i))
+                times.append(time)
+
+            url_0 = 'http://nomads.ncep.noaa.gov:80/dods/prrtma/prrtma'+times[0].strftime('%Y%m%d')+'/prrtma_anl_'+times[0].strftime('%H')+'z'
+            url_1 = 'http://nomads.ncep.noaa.gov:80/dods/prrtma/prrtma'+times[1].strftime('%Y%m%d')+'/prrtma_anl_'+times[1].strftime('%H')+'z'
+            url_2 = 'http://nomads.ncep.noaa.gov:80/dods/prrtma/prrtma'+times[2].strftime('%Y%m%d')+'/prrtma_anl_'+times[2].strftime('%H')+'z'
+            url_3 = 'http://nomads.ncep.noaa.gov:80/dods/prrtma/prrtma'+times[3].strftime('%Y%m%d')+'/prrtma_anl_'+times[3].strftime('%H')+'z'
+            url_4 = 'http://nomads.ncep.noaa.gov:80/dods/prrtma/prrtma'+times[4].strftime('%Y%m%d')+'/prrtma_anl_'+times[4].strftime('%H')+'z'
+
+            try:
+                ds = xr.open_dataset(url_0, engine='netcdf4')
+                print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
+                time = times[0]
+
+            except Exception as a:
+                try:
+                    print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
+                    ds = xr.open_dataset(url_1, engine='netcdf4')
+                    print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
+                    time = times[1]
+
+                except Exception as b:
+                        try:
+                            print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
+                            ds = xr.open_dataset(url_2, engine='netcdf4')
+                            print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
+                            time = times[2]
+
+                        except Exception as c:
+                            try:
+                                print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
+                                ds = xr.open_dataset(url_3, engine='netcdf4')
+                                print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
+                                time = times[3]
+
+                            except Exception as d:
+    
+                                try:
+                                    print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    ds = xr.open_dataset(url_4, engine='netcdf4')
+                                    print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    time = times[4]
+    
+                                except Exception as e:
+                                    print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
+            
+            temperature = ds['tmp2m']
+            lat = temperature['lat']
+            lon = temperature['lon']
+
+            wind_speed = ds['wind10m']
+            wind_speed_mph = wind_speed * 2.23694
+            
+            lat_vals = lat[:].squeeze()
+            lon_vals = lon[:].squeeze()
+            
+            dewpoint = ds['dpt2m']
+            temperature_k = units('kelvin') * temperature
+            dewpoint_k = units('kelvin') * dewpoint
+            
+            relative_humidity = mpcalc.relative_humidity_from_dewpoint(temperature_k, dewpoint_k)
+
+            relative_humidity_to_plot = relative_humidity[0, :, :] 
+            wind_speed_to_plot = wind_speed_mph[0, :, :]
+                
+            return lon_vals, lat_vals, time, relative_humidity_to_plot * 100, wind_speed_to_plot
+
+
+        def get_RTMA_red_flag_warning_parameters_using_wind_gust(current_time):
+
+            r'''
+            THIS FUNCTION RETRIVES THE RTMA DATA FOR THE USUAL FIRE WEATHER PARAMETERS (TEMPERATURE, DEWPOINT, WIND SPEED AND RELATIVE HUMIDITY
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+            '''
+
+            
+            times = []
+            for i in range(0, 5):
+                time = pd.to_datetime(current_time - timedelta(hours=i))
+                times.append(time)
+
+            url_0 = 'http://nomads.ncep.noaa.gov:80/dods/prrtma/prrtma'+times[0].strftime('%Y%m%d')+'/prrtma_anl_'+times[0].strftime('%H')+'z'
+            url_1 = 'http://nomads.ncep.noaa.gov:80/dods/prrtma/prrtma'+times[1].strftime('%Y%m%d')+'/prrtma_anl_'+times[1].strftime('%H')+'z'
+            url_2 = 'http://nomads.ncep.noaa.gov:80/dods/prrtma/prrtma'+times[2].strftime('%Y%m%d')+'/prrtma_anl_'+times[2].strftime('%H')+'z'
+            url_3 = 'http://nomads.ncep.noaa.gov:80/dods/prrtma/prrtma'+times[3].strftime('%Y%m%d')+'/prrtma_anl_'+times[3].strftime('%H')+'z'
+            url_4 = 'http://nomads.ncep.noaa.gov:80/dods/prrtma/prrtma'+times[4].strftime('%Y%m%d')+'/prrtma_anl_'+times[4].strftime('%H')+'z'
+
+            try:
+                ds = xr.open_dataset(url_0, engine='netcdf4')
+                print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
+                time = times[0]
+
+            except Exception as a:
+                try:
+                    print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
+                    ds = xr.open_dataset(url_1, engine='netcdf4')
+                    print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
+                    time = times[1]
+
+                except Exception as b:
+                        try:
+                            print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
+                            ds = xr.open_dataset(url_2, engine='netcdf4')
+                            print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
+                            time = times[2]
+
+                        except Exception as c:
+                            try:
+                                print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
+                                ds = xr.open_dataset(url_3, engine='netcdf4')
+                                print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
+                                time = times[3]
+
+                            except Exception as d:
+    
+                                try:
+                                    print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    ds = xr.open_dataset(url_4, engine='netcdf4')
+                                    print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    time = times[4]
+    
+                                except Exception as e:
+                                    print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
+            
+            temperature = ds['tmp2m']
+            lat = temperature['lat']
+            lon = temperature['lon']
+
+            wind_gust = ds['gust10m']
+            wind_gust_mph = wind_gust * 2.23694
+            
+            lat_vals = lat[:].squeeze()
+            lon_vals = lon[:].squeeze()
+            
+            dewpoint = ds['dpt2m']
+            temperature_k = units('kelvin') * temperature
+            dewpoint_k = units('kelvin') * dewpoint
+            
+            relative_humidity = mpcalc.relative_humidity_from_dewpoint(temperature_k, dewpoint_k)
+
+            relative_humidity_to_plot = relative_humidity[0, :, :] 
+            wind_gust_to_plot = wind_gust_mph[0, :, :]
+                
+            return lon_vals, lat_vals, time, relative_humidity_to_plot * 100, wind_gust_to_plot
+
+
