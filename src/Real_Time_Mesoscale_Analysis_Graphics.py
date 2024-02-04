@@ -1019,7 +1019,6 @@ class Counties_Perspective:
                 lat = mask['lat']
                 
                 fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-                gs = gridspec.GridSpec(9, 9)
                 ax0 = plt.subplot(4,1,1, projection=datacrs)
                 ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax0.add_feature(cfeature.STATES, linewidth=0.5)
@@ -1107,7 +1106,6 @@ class Counties_Perspective:
                 lat = mask['lat']
                 
                 fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-                gs = gridspec.GridSpec(9, 9)
                 ax0 = plt.subplot(4,1,1, projection=datacrs)
                 ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
                 ax0.add_feature(cfeature.STATES, linewidth=0.5)
@@ -1516,6 +1514,179 @@ class Counties_Perspective:
                 return fig
 
 
+            def plot_hot_dry_windy_areas_based_on_sustained_winds_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_speed = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_speed(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_speed >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=1.5)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-168, -153, 55, 64], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=1.5)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-168, -153, 55, 64], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=1.5)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-168, -153, 55, 64], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5, zorder=3)
+                ax3.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-168, -153, 55, 64], datacrs)
+                ax3.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_speed, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs, zorder=1)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Speed (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Sustained Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
+    
+                return fig
+
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=1.5)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-168, -153, 55, 64], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=1.5)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-168, -153, 55, 64], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=1.5)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-168, -153, 55, 64], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5)
+                ax3.add_feature(USCOUNTIES, linewidth=1.5)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-168, -153, 55, 64], datacrs)
+                ax3.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_gust, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Gust (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gusts >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
+    
+                return fig
+
+
         class Southeast:
 
             r'''
@@ -1863,6 +2034,179 @@ class Counties_Perspective:
                 return fig
 
 
+            def plot_hot_dry_windy_areas_based_on_sustained_winds_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_speed = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_speed(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_speed >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=1.5)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=1.5)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=1.5)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5, zorder=3)
+                ax3.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax3.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_speed, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs, zorder=1)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Speed (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Sustained Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
+    
+                return fig
+
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=1.5)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=1.5)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=1.5)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5)
+                ax3.add_feature(USCOUNTIES, linewidth=1.5)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax3.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_gust, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Gust (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gusts >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
+    
+                return fig
+
+
         class Interior_And_Northslope:
 
             r'''
@@ -2205,6 +2549,180 @@ class Counties_Perspective:
                 
                 ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+
+            def plot_hot_dry_windy_areas_based_on_sustained_winds_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_speed = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_speed(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_speed >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=1.5)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=1.5)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=1.5)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5, zorder=3)
+                ax3.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax3.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_speed, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs, zorder=1)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Speed (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Sustained Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
+    
+                return fig
+
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax0.add_feature(cfeature.STATES, linewidth=0.5)
+                ax0.add_feature(USCOUNTIES, linewidth=1.5)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax1.add_feature(cfeature.STATES, linewidth=0.5)
+                ax1.add_feature(USCOUNTIES, linewidth=1.5)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax2.add_feature(cfeature.STATES, linewidth=0.5)
+                ax2.add_feature(USCOUNTIES, linewidth=1.5)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax3.add_feature(cfeature.STATES, linewidth=0.5)
+                ax3.add_feature(USCOUNTIES, linewidth=1.5)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax3.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_gust, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Gust (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gusts >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
     
                 return fig
 
@@ -2859,7 +3377,7 @@ class Counties_Perspective:
             return fig
 
 
-        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size):
+        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
@@ -2901,7 +3419,7 @@ class Counties_Perspective:
             ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
             ax0.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
             ax0.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
-            ax0.set_aspect(1)
+            ax0.set_aspect(first_subplot_aspect_ratio)
             ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
             # Plot the mask
@@ -2917,7 +3435,7 @@ class Counties_Perspective:
             ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
             ax1.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
             ax1.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
-            ax1.set_aspect(1)
+            ax1.set_aspect(subsequent_subplot_aspect_ratio)
             ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
             cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh, 
@@ -2932,7 +3450,7 @@ class Counties_Perspective:
             ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
             ax2.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
             ax2.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
-            ax2.set_aspect(1)
+            ax2.set_aspect(subsequent_subplot_aspect_ratio)
             ax2.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
 
             cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
@@ -2950,7 +3468,7 @@ class Counties_Perspective:
             return fig        
 
 
-        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size):
+        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
@@ -2992,7 +3510,7 @@ class Counties_Perspective:
             ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
             ax0.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
             ax0.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
-            ax0.set_aspect(1)
+            ax0.set_aspect(first_subplot_aspect_ratio)
             ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
             # Plot the mask
@@ -3008,7 +3526,7 @@ class Counties_Perspective:
             ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
             ax1.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
             ax1.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
-            ax1.set_aspect(1)
+            ax1.set_aspect(subsequent_subplot_aspect_ratio)
             ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
             cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh, 
@@ -3023,7 +3541,7 @@ class Counties_Perspective:
             ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
             ax2.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
             ax2.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
-            ax2.set_aspect(1)
+            ax2.set_aspect(subsequent_subplot_aspect_ratio)
             ax2.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
 
             cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
@@ -3108,6 +3626,2794 @@ class Predictive_Services_Areas_Perspective:
     (C) METEOROLOGIST ERIC J. DREWITZ 2024
 
     '''
+
+
+    class Alaska:
+
+        class Entire_State:
+
+            r'''
+             THIS NESTED CLASS HOSTS THE IMAGES FOR THE ENTIRE STATE OF ALASKA
+            '''
+            
+            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, PSA_Border_Color, GACC_Border_Color):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                param = parameter
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_single_parameter(utc_time, param)
+    
+                if param == 'tmp2m' or param == 'dpt2m':
+                    frac = 9/5
+                    data_to_plot = (frac * (data_to_plot - 273.15)) + 32
+    
+                if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
+                    data_to_plot = data_to_plot * 2.23694
+    
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", PSA_Border_Color)
+
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", GACC_Border_Color)
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax.add_feature(cfeature.STATES, linewidth=0.5)
+                ax.add_feature(USCOUNTIES, linewidth=1.5)
+                ax.set_extent([-174, -128, 45, 80], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.relative_humidity_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-174, -128, 45, 80], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 105, 5), cmap=cmap, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+
+                colorbar_label_font_size = colorbar_label_font_size
+
+                colorbar_pad = colorbar_pad
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.excellent_recovery_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-174, -128, 45, 80], datacrs)
+                
+                cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=colorbar_label_font_size, fontweight='bold')
+    
+                cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
+                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=8, fontweight='bold')
+                
+                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                cmap = colormaps.relative_humidity_change_colormap()
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_relative_humidity(utc_time)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-174, -128, 45, 80], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 65, 5), cmap=cmap, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity Change (%)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                cmap = colormaps.relative_humidity_change_colormap()
+                parameter = 'tmp2m'
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_single_parameter(utc_time, parameter)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'lime')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-174, -128, 45, 80], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                parameter = 'wind10m'
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_single_parameter(utc_time, parameter)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-174, -128, 45, 80], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='PuOr_r', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Wind Speed Change (MPH)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_single_parameter(utc_time, 'tmp2m')
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-174, -128, 45, 80], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-40, 33, 1), cmap='cool_r', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontsize=title_font_size, fontweight='bold')
+                
+                plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-174, -128, 45, 80], datacrs)
+    
+    
+                cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, location='right', pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
+    
+                
+                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+            def plot_hot_dry_windy_areas_based_on_sustained_winds(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_speed = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_speed(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_speed >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-174, -128, 45, 80], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Sutained Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-174, -128, 45, 80], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gust >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+            def plot_hot_dry_windy_areas_based_on_sustained_winds_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_speed = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_speed(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_speed >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                gs = gridspec.GridSpec(15, 15)
+                ax0 = plt.subplot(gs[0:8, 0:7], projection=datacrs)
+                ax0.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax0.set_aspect(1)
+                ax0.set_extent([-174, -128, 45, 80], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(gs[0:8, 8:15], projection=datacrs)
+                ax1.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax1.set_aspect(1)
+                ax1.set_extent([-174, -128, 45, 80], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=0.02)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(gs[8:15, 0:7], projection=datacrs)
+                ax2.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax2.set_aspect(1)
+                ax2.set_extent([-174, -128, 45, 80], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=0.02)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(gs[8:15, 8:15], projection=datacrs)
+                ax3.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax3.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax3.set_aspect(1)
+                ax3.set_extent([-174, -128, 45, 80], datacrs)
+                ax3.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_speed, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=0.02)
+                cbar_wind.set_label(label='Wind Speed (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Sutained Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax2.transAxes) 
+    
+                return fig
+
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                gs = gridspec.GridSpec(15, 15)
+                ax0 = plt.subplot(gs[0:8, 0:7], projection=datacrs)
+                ax0.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax0.set_aspect(1)
+                ax0.set_extent([-174, -128, 45, 80], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(gs[0:8, 8:15], projection=datacrs)
+                ax1.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax1.set_aspect(1)
+                ax1.set_extent([-174, -128, 45, 80], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=0.02)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(gs[8:15, 0:7], projection=datacrs)
+                ax2.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax2.set_aspect(1)
+                ax2.set_extent([-174, -128, 45, 80], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=0.02)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(gs[8:15, 8:15], projection=datacrs)
+                ax3.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax3.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax3.set_aspect(1)
+                ax3.set_extent([-174, -128, 45, 80], datacrs)
+                ax3.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_gust, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=0.02)
+                cbar_wind.set_label(label='Wind Gust (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gusts >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax2.transAxes) 
+    
+                return fig
+
+
+
+        class South_Central:
+
+            r'''
+            THIS NESTED CLASS WILL ZOOM INTO SOUTHCENTRAL ALASKA
+
+            '''
+
+
+
+            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, PSA_Border_Color, GACC_Border_Color):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                param = parameter
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_single_parameter(utc_time, param)
+    
+                if param == 'tmp2m' or param == 'dpt2m':
+                    frac = 9/5
+                    data_to_plot = (frac * (data_to_plot - 273.15)) + 32
+    
+                if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
+                    data_to_plot = data_to_plot * 2.23694
+    
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", PSA_Border_Color)
+    
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", GACC_Border_Color)
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.relative_humidity_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 105, 5), cmap=cmap, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+
+                colorbar_label_font_size = colorbar_label_font_size
+
+                colorbar_pad = colorbar_pad
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.excellent_recovery_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                
+                cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=colorbar_label_font_size, fontweight='bold')
+    
+                cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
+                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                cmap = colormaps.relative_humidity_change_colormap()
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_relative_humidity(utc_time)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 65, 5), cmap=cmap, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity Change (%)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                cmap = colormaps.relative_humidity_change_colormap()
+                parameter = 'tmp2m'
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_single_parameter(utc_time, parameter)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'lime')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                parameter = 'wind10m'
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_single_parameter(utc_time, parameter)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='PuOr_r', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Wind Speed Change (MPH)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_single_parameter(utc_time, 'tmp2m')
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-40, 33, 1), cmap='cool_r', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
+    
+    
+                cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
+    
+                
+                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+            def plot_hot_dry_windy_areas_based_on_sustained_winds(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_speed = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_speed(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_speed >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-155, -140.75, 58.75, 64], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gust >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+            def plot_hot_dry_windy_areas_based_on_sustained_winds_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_speed = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_speed(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_speed >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax3.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                ax3.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_speed, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs, zorder=1)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Speed (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Sustained Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
+    
+                return fig
+
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax3.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-155, -140.75, 58.75, 64], datacrs)
+                ax3.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_gust, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Gust (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gusts >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
+    
+                return fig
+
+
+        class Southwest:
+
+            r'''
+            THIS NESTED CLASS IS FOR SOUTHWEST ALASKA
+            '''
+
+            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, PSA_Border_Color, GACC_Border_Color):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                param = parameter
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_single_parameter(utc_time, param)
+    
+                if param == 'tmp2m' or param == 'dpt2m':
+                    frac = 9/5
+                    data_to_plot = (frac * (data_to_plot - 273.15)) + 32
+    
+                if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
+                    data_to_plot = data_to_plot * 2.23694
+    
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", PSA_Border_Color)
+    
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", GACC_Border_Color)
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-168, -153, 55, 64], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.relative_humidity_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-168, -153, 55, 64], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 105, 5), cmap=cmap, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+
+                colorbar_label_font_size = colorbar_label_font_size
+
+                colorbar_pad = colorbar_pad
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.excellent_recovery_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-168, -153, 55, 64], datacrs)
+                
+                cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=colorbar_label_font_size, fontweight='bold')
+    
+                cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
+                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=8, fontweight='bold')
+                
+                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                cmap = colormaps.relative_humidity_change_colormap()
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_relative_humidity(utc_time)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-168, -153, 55, 64], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 65, 5), cmap=cmap, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity Change (%)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                cmap = colormaps.relative_humidity_change_colormap()
+                parameter = 'tmp2m'
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_single_parameter(utc_time, parameter)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'lime')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-168, -153, 55, 64], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                parameter = 'wind10m'
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_single_parameter(utc_time, parameter)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-168, -153, 55, 64], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='PuOr_r', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Wind Speed Change (MPH)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_single_parameter(utc_time, 'tmp2m')
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-168, -153, 55, 64], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-40, 33, 1), cmap='cool_r', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-168, -153, 55, 64], datacrs)
+    
+    
+                cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, location='right', pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
+    
+                
+                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+            def plot_hot_dry_windy_areas_based_on_sustained_winds(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_speed = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_speed(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_speed >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-168, -153, 55, 64], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+            def plot_hot_dry_windy_areas_based_on_sustained_winds_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_speed = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_speed(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_speed >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-168, -153, 55, 64], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-168, -153, 55, 64], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-168, -153, 55, 64], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax3.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-168, -153, 55, 64], datacrs)
+                ax3.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_speed, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs, zorder=1)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Speed (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Sustained Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
+    
+                return fig
+
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-168, -153, 55, 64], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-168, -153, 55, 64], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-168, -153, 55, 64], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax3.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-168, -153, 55, 64], datacrs)
+                ax3.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_gust, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Gust (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gusts >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
+    
+                return fig
+
+
+        class Southeast:
+
+            r'''
+            THIS NESTED CLASS IS FOR SOUTHWEST ALASKA
+            '''
+
+            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, PSA_Border_Color, GACC_Border_Color):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                param = parameter
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_single_parameter(utc_time, param)
+    
+                if param == 'tmp2m' or param == 'dpt2m':
+                    frac = 9/5
+                    data_to_plot = (frac * (data_to_plot - 273.15)) + 32
+    
+                if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
+                    data_to_plot = data_to_plot * 2.23694
+    
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", PSA_Border_Color)
+    
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", GACC_Border_Color)
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.relative_humidity_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 105, 5), cmap=cmap, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+
+                colorbar_label_font_size = colorbar_label_font_size
+
+                colorbar_pad = colorbar_pad
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.excellent_recovery_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                
+                cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=colorbar_label_font_size, fontweight='bold')
+    
+                cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
+                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                cmap = colormaps.relative_humidity_change_colormap()
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_relative_humidity(utc_time)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 65, 5), cmap=cmap, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity Change (%)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                cmap = colormaps.relative_humidity_change_colormap()
+                parameter = 'tmp2m'
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_single_parameter(utc_time, parameter)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'lime')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                parameter = 'wind10m'
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_single_parameter(utc_time, parameter)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='PuOr_r', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Wind Speed Change (MPH)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_single_parameter(utc_time, 'tmp2m')
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-40, 33, 1), cmap='cool_r', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+    
+    
+                cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, location='right', pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
+    
+                
+                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+            def plot_hot_dry_windy_areas_based_on_sustained_winds(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_speed = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_speed(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_speed >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+            def plot_hot_dry_windy_areas_based_on_sustained_winds_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_speed = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_speed(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_speed >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax3.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax3.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_speed, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs, zorder=1)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Speed (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Sustained Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
+    
+                return fig
+
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax3.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+                ax3.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_gust, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Gust (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gusts >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
+    
+                return fig
+
+
+        class Interior_And_Northslope:
+
+            r'''
+            THIS NESTED CLASS IS FOR THE INTERIOR AND NORTHSLOPE OF ALASKA
+            '''
+
+            def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, PSA_Border_Color, GACC_Border_Color):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                param = parameter
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_single_parameter(utc_time, param)
+    
+                if param == 'tmp2m' or param == 'dpt2m':
+                    frac = 9/5
+                    data_to_plot = (frac * (data_to_plot - 273.15)) + 32
+    
+                if param == 'wind10m' or param == 'gust10m' or param == 'ugrd10m' or param == 'vgrd10m':
+                    data_to_plot = data_to_plot * 2.23694
+    
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", PSA_Border_Color)
+    
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", GACC_Border_Color)
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title(plot_title + "\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+            def plot_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.relative_humidity_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 105, 5), cmap=cmap, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("2.5km Real Time Mesoscale Analysis\nRelative Humidity (%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_low_and_high_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+
+                colorbar_label_font_size = colorbar_label_font_size
+
+                colorbar_pad = colorbar_pad
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.excellent_recovery_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                
+                cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap='YlOrBr_r', transform=datacrs)
+                cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=colorbar_label_font_size, fontweight='bold')
+    
+                cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap, transform=datacrs)
+                cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+                cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_relative_humidity_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                cmap = colormaps.relative_humidity_change_colormap()
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_relative_humidity(utc_time)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-60, 65, 5), cmap=cmap, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity Change (%)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Relative Humidity Change (%)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_temperature_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                cmap = colormaps.relative_humidity_change_colormap()
+                parameter = 'tmp2m'
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_single_parameter(utc_time, parameter)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'lime')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='seismic', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature Change (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+                parameter = 'wind10m'
+    
+                lon_vals, lat_vals, time, time_24, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_24_hour_change_single_parameter(utc_time, parameter)
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-30, 31, 1), cmap='PuOr_r', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Wind Speed Change (MPH)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("24-Hour Wind Speed Change (MPH)\nValid: " + time_24.strftime('%m/%d/%Y %HZ') + " - " + time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, data_to_plot = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_Data_single_parameter(utc_time, 'tmp2m')
+                
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                
+                cs = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(-40, 33, 1), cmap='cool_r', transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+                cbar.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold')
+                
+                plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+    
+    
+            def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_relative_humidity(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
+    
+    
+                cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
+                cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=colorbar_pad)
+                cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
+    
+                
+                plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+            def plot_hot_dry_windy_areas_based_on_sustained_winds(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_speed = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_speed(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_speed >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+
+            def plot_hot_dry_windy_areas_based_on_sustained_winds_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_speed = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_speed(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_speed >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax3.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax3.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_speed, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs, zorder=1)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Speed (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Sustained Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
+    
+                return fig
+
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
+    
+                r'''
+                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+                cmap_rh = colormaps.low_relative_humidity_colormap()
+                cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+                cmap_temperature = colormaps.red_flag_warning_alaska_temperature_parameter_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax0 = plt.subplot(4,1,1, projection=datacrs)
+                ax0.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax0.set_aspect(first_subplot_aspect_ratio)
+                ax0.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+                try:
+                    ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+
+
+                ax1 = plt.subplot(4,1,2, projection=datacrs)
+                ax1.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
+                ax1.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
+
+                ax2 = plt.subplot(4,1,3, projection=datacrs)
+                ax2.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
+                ax2.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
+
+
+                ax3 = plt.subplot(4,1,4, projection=datacrs)
+                ax3.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax3.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
+                ax3.set_extent([-169.5, -140.75, 63, 75], datacrs)
+                ax3.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
+
+                cs_wind = ax3.contourf(lon_vals, lat_vals, wind_gust, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+                cbar_wind.set_label(label='Wind Gust (MPH)', size=colorbar_label_font_size, fontweight='bold') 
+    
+                
+                fig.suptitle("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gusts >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax3.transAxes) 
+    
+                return fig
+
+
+    
     class CONUS:
 
         r'''
@@ -3843,7 +7149,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
 
 
-        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size):
+        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
@@ -3887,7 +7193,7 @@ class Predictive_Services_Areas_Perspective:
             ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax0.add_feature(GACC, linewidth=2, edgecolor='blue', zorder=3)
             ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
-            ax0.set_aspect(1)
+            ax0.set_aspect(first_subplot_aspect_ratio)
             ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
             # Plot the mask
@@ -3902,7 +7208,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax1.add_feature(GACC, linewidth=2, edgecolor='blue', zorder=3)
             ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
-            ax1.set_aspect(1)
+            ax1.set_aspect(subsequent_subplot_aspect_ratio)
             ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
             cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh, 
@@ -3916,7 +7222,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax2.add_feature(GACC, linewidth=2, edgecolor='blue', zorder=3)
             ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
-            ax2.set_aspect(1)
+            ax2.set_aspect(subsequent_subplot_aspect_ratio)
             ax2.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
 
             cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
@@ -3934,7 +7240,7 @@ class Predictive_Services_Areas_Perspective:
             return fig 
 
 
-        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size):
+        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio):
 
             r'''
             THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
@@ -3978,7 +7284,7 @@ class Predictive_Services_Areas_Perspective:
             ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax0.add_feature(GACC, linewidth=2, edgecolor='blue', zorder=3)
             ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
-            ax0.set_aspect(1)
+            ax0.set_aspect(first_subplot_aspect_ratio)
             ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
             # Plot the mask
@@ -3993,7 +7299,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax1.add_feature(GACC, linewidth=2, edgecolor='blue', zorder=3)
             ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
-            ax1.set_aspect(1)
+            ax1.set_aspect(subsequent_subplot_aspect_ratio)
             ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
             cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh, 
@@ -4007,7 +7313,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax2.add_feature(GACC, linewidth=2, edgecolor='blue', zorder=3)
             ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
-            ax2.set_aspect(1)
+            ax2.set_aspect(subsequent_subplot_aspect_ratio)
             ax2.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
 
             cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
