@@ -7504,11 +7504,11 @@ class Islands:
             ax.add_feature(USCOUNTIES, linewidth=1.5)
             ax.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
                 
-            cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 26, 1), cmap=cmap_low, transform=datacrs)
+            cs_low = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(0, 61, 1), cmap=cmap_low, transform=datacrs)
             cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
             cbar_low.set_label(label='Low Relative Humidity (RH <= 25%)', size=colorbar_label_font_size, fontweight='bold')
     
-            cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(80, 101, 1), cmap=cmap_high, transform=datacrs)
+            cs_high = ax.contourf(lon_vals, lat_vals, data_to_plot, levels=np.arange(90, 101, 1), cmap=cmap_high, transform=datacrs)
             cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
             cbar_high.set_label(label='High Relative Humidity (RH >= 80%)', size=colorbar_label_font_size, fontweight='bold')
                 
@@ -7738,7 +7738,50 @@ class Islands:
             return fig
 
 
-        def plot_dry_and_windy_areas_based_on_sustained_winds(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+        def plot_dry_and_windy_areas_based_on_wind_gust(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+            r'''
+            THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+            '''            
+            local_time, utc_time = standard.plot_creation_time()
+    
+            lon_vals, lat_vals, time, relative_humidity, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Hawaii.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+            mapcrs = ccrs.Mercator(central_longitude=-157, min_latitude=0, max_latitude=30.0, globe=None)
+            datacrs = ccrs.PlateCarree()
+    
+            cmap = colormaps.red_flag_warning_criteria_colormap()
+
+            mask = (relative_humidity <= 45) & (wind_gust >= 20)
+            lon = mask['lon']
+            lat = mask['lat']
+                
+    
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            ax = plt.subplot(1,1,1, projection=datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=0.5)
+            ax.add_feature(USCOUNTIES, linewidth=1.5)
+            ax.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
+    
+            try:
+                ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+            except Exception as e:
+                pass
+
+            plt.title("Exceptionally Dry & Windy Areas (Shaded)\nRH <= 45% & Wind Gust >= 20 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+            return fig
+
+
+        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, subplot_title_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio):
     
             r'''
             THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
@@ -7754,6 +7797,8 @@ class Islands:
             datacrs = ccrs.PlateCarree()
     
             cmap = colormaps.red_flag_warning_criteria_colormap()
+            cmap_rh = colormaps.low_relative_humidity_colormap()
+            cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
 
             mask = (relative_humidity <= 45) & (wind_speed >= 20)
             lon = mask['lon']
@@ -7761,12 +7806,14 @@ class Islands:
                 
     
             fig = plt.figure(figsize=(fig_x_length,fig_y_length))
-            ax0 = plt.subplot(1,3,1, projection=datacrs)
+            ax0 = plt.subplot(3,1,1, projection=datacrs)
             ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
             ax0.add_feature(cfeature.STATES, linewidth=0.5)
             ax0.add_feature(USCOUNTIES, linewidth=1.5)
             ax0.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
-                
+            ax0.set_aspect(first_subplot_aspect_ratio)
+            ax0.set_title("Exceptionally Dry and Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
     
             try:
                 ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
@@ -7775,22 +7822,115 @@ class Islands:
                 pass
 
 
-            ax1 = plt.subplot(1,3,2, projection=datacrs)
+            ax1 = plt.subplot(3,1,2, projection=datacrs)
             ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
             ax1.add_feature(cfeature.STATES, linewidth=0.5)
             ax1.add_feature(USCOUNTIES, linewidth=1.5)
             ax1.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
+            ax1.set_aspect(subsequent_subplot_aspect_ratio)
+            ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
         
         
-            cs1 = ax1.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 46, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
-            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink, location='right', pad=colorbar_pad)
+            cs1 = ax1.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 46, 1), cmap=cmap_rh, transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
             cbar1.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
+
+
+            ax2 = plt.subplot(3,1,3, projection=datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=1.5)
+            ax2.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
+            ax2.set_aspect(subsequent_subplot_aspect_ratio)
+            ax2.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
+        
+        
+            cs2 = ax2.contourf(lon_vals, lat_vals, wind_speed, levels=np.arange(20, 85, 5), cmap=cmap_wind, transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+            cbar2.set_label(label='Wind Speed (MPH)', size=colorbar_label_font_size, fontweight='bold')
     
                 
-            plt.title("Exceptionally Dry & Windy Areas (Shaded)\nRH <= 45% & Wind Speed >= 20 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+            fig.suptitle("Exceptionally Dry & Windy Areas (Shaded)\nRH <= 45% & Sustained Wind Speed >= 20 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-               verticalalignment='bottom', transform=ax.transAxes) 
+            ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax2.transAxes) 
+    
+            return fig
+
+
+        def plot_dry_and_windy_areas_based_on_wind_gust_3_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, subplot_title_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio):
+    
+            r'''
+            THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
+    
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+            '''            
+            local_time, utc_time = standard.plot_creation_time()
+    
+            lon_vals, lat_vals, time, relative_humidity, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Hawaii.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+            mapcrs = ccrs.Mercator(central_longitude=-157, min_latitude=0, max_latitude=30.0, globe=None)
+            datacrs = ccrs.PlateCarree()
+    
+            cmap = colormaps.red_flag_warning_criteria_colormap()
+            cmap_rh = colormaps.low_relative_humidity_colormap()
+            cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+
+            mask = (relative_humidity <= 45) & (wind_gust >= 20)
+            lon = mask['lon']
+            lat = mask['lat']
+                
+    
+            fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+            ax0 = plt.subplot(3,1,1, projection=datacrs)
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=0.5)
+            ax0.add_feature(USCOUNTIES, linewidth=1.5)
+            ax0.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
+            ax0.set_aspect(first_subplot_aspect_ratio)
+            ax0.set_title("Exceptionally Dry and Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+    
+    
+            try:
+                ax0.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+            except Exception as e:
+                pass
+
+
+            ax1 = plt.subplot(3,1,2, projection=datacrs)
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=0.5)
+            ax1.add_feature(USCOUNTIES, linewidth=1.5)
+            ax1.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
+            ax1.set_aspect(subsequent_subplot_aspect_ratio)
+            ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
+        
+        
+            cs1 = ax1.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 46, 1), cmap=cmap_rh, transform=datacrs)
+            cbar1 = fig.colorbar(cs1, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+            cbar1.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
+
+
+            ax2 = plt.subplot(3,1,3, projection=datacrs)
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=0.5)
+            ax2.add_feature(USCOUNTIES, linewidth=1.5)
+            ax2.set_extent([-160.5, -154.5, 18.5, 22.5], datacrs)
+            ax2.set_aspect(subsequent_subplot_aspect_ratio)
+            ax2.set_title("Wind Gusts", fontsize=subplot_title_font_size, fontweight='bold')
+        
+        
+            cs2 = ax2.contourf(lon_vals, lat_vals, wind_gust, levels=np.arange(20, 85, 5), cmap=cmap_wind, transform=datacrs)
+            cbar2 = fig.colorbar(cs2, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
+            cbar2.set_label(label='Wind Gust (MPH)', size=colorbar_label_font_size, fontweight='bold')
+    
+                
+            fig.suptitle("Exceptionally Dry & Windy Areas (Shaded)\nRH <= 45% & Wind Gust >= 20 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+            ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax2.transAxes) 
     
             return fig
 
@@ -8630,3 +8770,295 @@ class Islands:
            verticalalignment='bottom', transform=ax.transAxes)
 
             return fig
+
+
+        def plot_dry_and_windy_areas_based_on_sustained_winds(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            
+            '''
+
+            local_time, utc_time = standard.plot_creation_time()
+
+            cmap = colormaps.red_flag_warning_criteria_colormap()
+
+            red_flag_warning_relative_humidity_threshold = red_flag_warning_relative_humidity_threshold
+
+            red_flag_warning_wind_speed_threshold = red_flag_warning_wind_speed_threshold
+
+            rtma_rh, rtma_wind, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.GUAM.get_red_flag_warning_parameters_using_wind_speed(utc_time)
+
+            rtma_wind = rtma_wind * 2.23694
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=144.8, central_latitude=13.45, standard_parallels=(0,30))
+            datacrs = ccrs.PlateCarree()
+
+
+            mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_speed_threshold)
+            lon = mask['longitude']
+            lat = mask['latitude']
+
+            plot_proj = mask.metpy.cartopy_crs
+
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((144.5, 145.1, 13.15, 13.75), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+
+            # Plot the mask
+            try:
+                ax.pcolormesh(lon,lat,mask[0, :, :],transform=ccrs.PlateCarree(),cmap=cmap)
+
+            except Exception as e:
+                pass
+                
+
+            plt.title("Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Speed >= " + str(red_flag_warning_wind_speed_threshold) + " MPH\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+            return fig
+
+
+        def plot_dry_and_windy_areas_based_on_wind_gusts(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON WIND GUSTS. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            
+            '''
+
+            local_time, utc_time = standard.plot_creation_time()
+
+            cmap = colormaps.red_flag_warning_criteria_colormap()
+
+            red_flag_warning_relative_humidity_threshold = red_flag_warning_relative_humidity_threshold
+
+            red_flag_warning_wind_gust_threshold = red_flag_warning_wind_gust_threshold
+
+            rtma_rh, rtma_gust, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.GUAM.get_red_flag_warning_parameters_using_wind_gust(utc_time)
+
+            rtma_gust = rtma_gust * 2.23694
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=144.8, central_latitude=13.45, standard_parallels=(0,30))
+            datacrs = ccrs.PlateCarree()
+
+
+            mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_gust >= red_flag_warning_wind_gust_threshold)
+            lon = mask['longitude']
+            lat = mask['latitude']
+
+            plot_proj = mask.metpy.cartopy_crs
+
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((144.5, 145.1, 13.15, 13.75), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+
+            # Plot the mask
+            try:
+                ax.pcolormesh(lon,lat,mask[0, :, :],transform=ccrs.PlateCarree(),cmap=cmap)
+
+            except Exception as e:
+                pass
+                
+
+            plt.title("Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+            return fig
+
+
+        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            
+            '''
+
+            local_time, utc_time = standard.plot_creation_time()
+
+            cmap_rfw = colormaps.red_flag_warning_criteria_colormap()
+            cmap_rh = colormaps.low_relative_humidity_colormap()
+            cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+
+            red_flag_warning_relative_humidity_threshold = red_flag_warning_relative_humidity_threshold
+
+            red_flag_warning_wind_speed_threshold = red_flag_warning_wind_speed_threshold
+
+            rtma_rh, rtma_wind, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.GUAM.get_red_flag_warning_parameters_using_wind_speed(utc_time)
+
+            rtma_wind = rtma_wind * 2.23694
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=144.8, central_latitude=13.45, standard_parallels=(0,30))
+            datacrs = ccrs.PlateCarree()
+
+
+            mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_speed_threshold)
+            lon = mask['longitude']
+            lat = mask['latitude']
+
+            plot_proj_1 = mask.metpy.cartopy_crs
+            plot_proj_2 = rtma_rh.metpy.cartopy_crs
+            plot_proj_3 = rtma_wind.metpy.cartopy_crs
+
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+
+            ax0 = fig.add_subplot(1, 3, 1, projection=plot_proj_1)
+            ax0.set_extent((144.5, 145.1, 13.15, 13.75), crs=ccrs.PlateCarree())
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax0.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+            ax0.set_aspect(first_subplot_aspect_ratio)
+            ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+
+            # Plot the mask
+            try:
+                ax0.pcolormesh(lon,lat,mask[0, :, :], transform=ccrs.PlateCarree(),cmap=cmap_rfw)
+
+            except Exception as e:
+                pass
+
+
+            ax1 = fig.add_subplot(1, 3, 2, projection=plot_proj_2)
+            ax1.set_extent((144.5, 145.1, 13.15, 13.75), crs=ccrs.PlateCarree())
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax1.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+            ax1.set_aspect(subsequent_subplot_aspect_ratio)
+            ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
+
+            cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh[0, :, :], 
+                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 61, 1), cmap=cmap_rh, alpha=1)
+
+            cbar_rh = fig.colorbar(cs_rh, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
+            cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+
+
+            ax2 = fig.add_subplot(1, 3, 3, projection=plot_proj_3)
+            ax2.set_extent((144.5, 145.1, 13.15, 13.75), crs=ccrs.PlateCarree())
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax2.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+            ax2.set_aspect(subsequent_subplot_aspect_ratio)
+            ax2.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
+
+            cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind[0, :, :], 
+                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(20, 85, 5), cmap=cmap_wind, alpha=1)
+
+            cbar_wind = fig.colorbar(cs_wind, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
+            cbar_wind.set_label(label="Sustained Wind Speed (MPH)", size=colorbar_label_font_size, fontweight='bold')   
+            
+
+            fig.suptitle("Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Sustained Wind Speed >= " + str(red_flag_warning_wind_speed_threshold) + " MPH\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=plot_title_font_size, fontweight='bold')
+            
+            ax0.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy\n(C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax0.transAxes)
+
+            return fig        
+
+
+        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio):
+
+            r'''
+            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            
+            '''
+
+            local_time, utc_time = standard.plot_creation_time()
+
+            cmap_rfw = colormaps.red_flag_warning_criteria_colormap()
+            cmap_rh = colormaps.low_relative_humidity_colormap()
+            cmap_wind = colormaps.red_flag_warning_wind_parameter_colormap()
+
+            red_flag_warning_relative_humidity_threshold = red_flag_warning_relative_humidity_threshold
+
+            red_flag_warning_wind_gust_threshold = red_flag_warning_wind_gust_threshold
+
+            rtma_rh, rtma_wind, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.GUAM.get_red_flag_warning_parameters_using_wind_gust(utc_time)
+
+            rtma_wind = rtma_wind * 2.23694
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=144.8, central_latitude=13.45, standard_parallels=(0,30))
+            datacrs = ccrs.PlateCarree()
+
+
+            mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_gust_threshold)
+            lon = mask['longitude']
+            lat = mask['latitude']
+
+            plot_proj_1 = mask.metpy.cartopy_crs
+            plot_proj_2 = rtma_rh.metpy.cartopy_crs
+            plot_proj_3 = rtma_wind.metpy.cartopy_crs
+
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+
+            ax0 = fig.add_subplot(3, 1, 1, projection=plot_proj_1)
+            ax0.set_extent((144.5, 145.1, 13.15, 13.75), crs=ccrs.PlateCarree())
+            ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax0.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax0.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+            ax0.set_aspect(first_subplot_aspect_ratio)
+            ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
+
+            # Plot the mask
+            try:
+                ax0.pcolormesh(lon,lat,mask[0, :, :], transform=ccrs.PlateCarree(),cmap=cmap_rfw, shading='auto')
+
+            except Exception as e:
+                pass
+
+
+            ax1 = fig.add_subplot(3, 1, 2, projection=plot_proj_2)
+            ax1.set_extent((144.5, 145.1, 13.15, 13.75), crs=ccrs.PlateCarree())
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax1.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+            ax1.set_aspect(subsequent_subplot_aspect_ratio)
+            ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
+
+            cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh[0, :, :], 
+                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 61, 1), cmap=cmap_rh, alpha=1)
+
+            cbar_rh = fig.colorbar(cs_rh, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
+            cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+
+
+            ax2 = fig.add_subplot(3, 1, 3, projection=plot_proj_3)
+            ax2.set_extent((144.5, 145.1, 13.15, 13.75), crs=ccrs.PlateCarree())
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.STATES, linewidth=2, edgecolor='blue', zorder=3)
+            ax2.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+            ax2.set_aspect(subsequent_subplot_aspect_ratio)
+            ax2.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
+
+            cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind[0, :, :], 
+                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(20, 85, 5), cmap=cmap_wind, alpha=1)
+
+            cbar_wind = fig.colorbar(cs_wind, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
+            cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')   
+            
+
+            fig.suptitle("Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=plot_title_font_size, fontweight='bold')
+            
+            ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy\n(C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax2.transAxes)
+
+            return fig    
