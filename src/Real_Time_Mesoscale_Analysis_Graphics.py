@@ -4164,18 +4164,26 @@ class Counties_Perspective:
                     18) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
                     19) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+              
+                    19) state_border_color (String) - Color of the state border. 
 
-                    20) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+                    20) state_border_line_thickness (Integer or Float) - Thickness of the state border lines. 
 
-                    21) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+                    21) county_border_color (String) - Color of the county border. 
 
-                    22) title_font_size (Integer) - The fontsize of the title of the figure. 
+                    22) county_border_line_thickness (Integer or Float) - Thickness of the county border lines.
 
-                    23) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+                    23) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
-                    24) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+                    24) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
 
-                    25) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                    25) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    26) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    27) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    28) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
                                                Default setting is 0.05.
                                                Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
                                                Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
@@ -8345,9 +8353,79 @@ class Predictive_Services_Areas_Perspective:
         def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, GACC_Border_Color, GACC_Border_Line_Thickness, PSA_Border_Line_Thickness, PSA_Border_Color, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                                3) Converts the units of the data (if needed).
+                                                4) Plots the data that corresponds to the parameter the user requests. 
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot. For the full parameter list, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/Best.html
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                    4) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                    5) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                    6) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                    7) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                    8) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                    9) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                    10) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+                    
+                    11) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    12) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    13) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    14) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    15) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    16) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    17) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    18) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    19) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+              
+                    19) GACC_Border_Color (String) - Color of the GACC border. 
+
+                    20) GACC_Border_Line_Thickness (Integer or Float) - Thickness of the GACC border lines. 
+
+                    21) PSA_Border_Line_Thickness (String) - Color of the PSA border. 
+
+                    22) PSA_Border_Color (Integer or Float) - Thickness of the PSA border lines.
+
+                    23) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    24) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    25) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    26) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    27) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    28) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot plus the METAR plots for the same time as the Real Time Mesoscale Analysis. 
             
             '''
 
