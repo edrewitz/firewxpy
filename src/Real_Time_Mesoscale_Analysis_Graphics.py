@@ -97,13 +97,55 @@ class Counties_Perspective:
 
                 This function does the following:
                                                 1) Downloads the data that corresponds to the parameter the user requests. 
-                                                2) Converts the units of the data (if needed)
+                                                2) Converts the units of the data (if needed).
                                                 3) Plots the data that corresponds to the parameter the user requests. 
 
                 
 
                 Inputs:
-                    1) parameter (String) - The parameter the user chooses to plot. For the full parameter list, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/Best.html
+                    1) parameter (String) - The parameter the user chooses to plot. 
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
 
                     2) plot_title (String) - The title of the entire figure. 
 
@@ -182,9 +224,9 @@ class Counties_Perspective:
                 r'''
 
                 This function does the following:
-                                                1) Downloads the temperature and dewpoint data arrays 
-                                                2) Uses MetPy to calculate the relative humidity from the temperature and dewpoint data arrays
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for Relative Humidity (%)
+                                                1) Downloads the temperature and dewpoint data arrays.
+                                                2) Uses MetPy to calculate the relative humidity from the temperature and dewpoint data arrays.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for Relative Humidity (%).
 
                 
 
@@ -246,9 +288,9 @@ class Counties_Perspective:
     
                 r'''
                 This function does the following:
-                                                1) Downloads the temperature and dewpoint data arrays 
-                                                2) Uses MetPy to calculate the relative humidity from the temperature and dewpoint data arrays
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for Relative Humidity (%) filtering out any relative humidity values > 25% and < 80%
+                                                1) Downloads the temperature and dewpoint data arrays.
+                                                2) Uses MetPy to calculate the relative humidity from the temperature and dewpoint data arrays.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for Relative Humidity (%) filtering out any relative humidity values > 25% and < 80%.
 
                 
 
@@ -319,10 +361,10 @@ class Counties_Perspective:
     
                 r'''
                 This function does the following:
-                                                1) Downloads the temperature and dewpoint data arrays for the current time and the data arrays for 24 hours ago from the data arrays for the current time
-                                                2) Uses MetPy to calculate the relative humidity from the temperature and dewpoint data arrays for both times (current time and current time - 24 hours)
-                                                3) Subtracts the relative humidity data array from 24 hours ago from the relative humidity data array of the current time (Current RH - RH from 24 hours ago)
-                                                4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of the difference between the current relative humidity data array from the relative humidity data array from 24 hours ago
+                                                1) Downloads the temperature and dewpoint data arrays for the current time and the data arrays for 24 hours ago from the data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity from the temperature and dewpoint data arrays for both times (current time and current time - 24 hours).
+                                                3) Subtracts the relative humidity data array from 24 hours ago from the relative humidity data array of the current time (Current RH - RH from 24 hours ago).
+                                                4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of the difference between the current relative humidity data array from the relative humidity data array from 24 hours ago.
                 
 
                 Inputs:
@@ -382,10 +424,10 @@ class Counties_Perspective:
     
                 r'''
                 This function does the following:
-                                                1) Downloads the temperature data array for the current time and the temperature data array for 24 hours ago from the data array for the current time
-                                                2) Converts the temperature values from Kelvin to Fahrenheit
-                                                3) Subtracts the temperature data array from 24 hours ago from the temperature data array of the current time (Current Temperature - Temperature from 24 hours ago)
-                                                4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of the difference between the current temperature data array from the temperature data array from 24 hours ago
+                                                1) Downloads the temperature data array for the current time and the temperature data array for 24 hours ago from the data array for the current time.
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Subtracts the temperature data array from 24 hours ago from the temperature data array of the current time (Current Temperature - Temperature from 24 hours ago).
+                                                4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of the difference between the current temperature data array from the temperature data array from 24 hours ago.
                 
 
                 Inputs:
@@ -444,9 +486,37 @@ class Counties_Perspective:
             def plot_24_hour_wind_speed_change(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the wind speed data array for the current time and the wind speed data array for 24 hours ago from the data array for the current time.
+                                                2) Converts the wind speed values from m/s to MPH.
+                                                3) Subtracts the wind speed data array from 24 hours ago from the wind speed data array of the current time (Current Wind Speed - Wind Speed from 24 hours ago).
+                                                4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of the difference between the current wind speed data array from the wind speed data array from 24 hours ago.
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the 24-Hour difference with respect to temperature (degrees F)
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -478,9 +548,36 @@ class Counties_Perspective:
             def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest temperature data array.
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the temperature is <= 32F.
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the 24-Hour difference with respect to temperature (degrees F)
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -512,9 +609,36 @@ class Counties_Perspective:
             def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the temperature and dewpoint data arrays for the current time and the temperature data array for 24 hours ago from the data array for the current time.
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the temperature is <= 32F.
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the 24-Hour difference with respect to temperature (degrees F)
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -823,9 +947,94 @@ class Counties_Perspective:
             def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot. 
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -1386,9 +1595,95 @@ class Counties_Perspective:
             def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot. 
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -1906,9 +2201,95 @@ class Counties_Perspective:
             def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot. 
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
+                
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -2426,9 +2807,95 @@ class Counties_Perspective:
             def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot. 
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -2947,9 +3414,95 @@ class Counties_Perspective:
             def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot. 
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -3467,9 +4020,53 @@ class Counties_Perspective:
         def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, state_border_color, state_border_line_thickness, county_border_color, county_border_line_thickness, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot. For the full parameter list, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/Best.html
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
             
             '''
 
@@ -4370,9 +4967,95 @@ class Predictive_Services_Areas_Perspective:
             def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, PSA_Border_Color, GACC_Border_Color):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot.
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -4960,9 +5643,95 @@ class Predictive_Services_Areas_Perspective:
             def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, PSA_Border_Color, GACC_Border_Color):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot. 
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -5542,9 +6311,95 @@ class Predictive_Services_Areas_Perspective:
             def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, PSA_Border_Color, GACC_Border_Color):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot. 
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -6079,9 +6934,95 @@ class Predictive_Services_Areas_Perspective:
             def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, PSA_Border_Color, GACC_Border_Color):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot.
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -6616,9 +7557,95 @@ class Predictive_Services_Areas_Perspective:
             def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, PSA_Border_Color, GACC_Border_Color):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot. 
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -7154,9 +8181,53 @@ class Predictive_Services_Areas_Perspective:
         def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, GACC_Border_Color, GACC_Border_Line_Thickness, PSA_Border_Line_Thickness, PSA_Border_Color, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. 
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot. For the full parameter list, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/Best.html
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
             
             '''
 
@@ -8075,9 +9146,95 @@ class Islands:
         def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot.
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
                 
             '''            
             local_time, utc_time = standard.plot_creation_time()
@@ -8674,9 +9831,95 @@ class Islands:
         def plot_generic_real_time_mesoanalysis(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot.
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
                 
             '''            
             local_time, utc_time = standard.plot_creation_time()
@@ -8978,9 +10221,95 @@ class Islands:
         def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, state_border_color, state_border_line_thickness, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF GUAM. 
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the data that corresponds to the parameter the user requests. 
+                                                2) Converts the units of the data (if needed).
+                                                3) Plots the data that corresponds to the parameter the user requests. 
+
+                
+
+                Inputs:
+                    1) parameter (String) - The parameter the user chooses to plot.
+
+                                Parameters:
+                                    (total of 13)
+                                     
+                                    ceilceil
+                                    ** cloud ceiling ceiling [m]
+                                     
+                                    dpt2m
+                                    ** 2 m above ground dew point temperature [k]
+                                     
+                                    gust10m
+                                    ** 10 m above ground wind speed (gust) [m/s]
+                                     
+                                    hgtsfc
+                                    ** surface geopotential height [gpm]
+                                     
+                                    pressfc
+                                    ** surface pressure [pa]
+                                     
+                                    spfh2m
+                                    ** 2 m above ground specific humidity [kg/kg]
+                                     
+                                    tcdcclm
+                                    ** entire atmosphere (considered as a single layer) total cloud cover [%]
+                                     
+                                    tmp2m
+                                    ** 2 m above ground temperature [k]
+                                     
+                                    ugrd10m
+                                    ** 10 m above ground u-component of wind [m/s]
+                                     
+                                    vgrd10m
+                                    ** 10 m above ground v-component of wind [m/s]
+                                     
+                                    vissfc
+                                    ** surface visibility [m]
+                                     
+                                    wdir10m
+                                    ** 10 m above ground wind direction (from which blowing) [degtrue]
+                                     
+                                    wind10m
+                                    ** 10 m above ground wind speed [m/s]
+
+                    2) plot_title (String) - The title of the entire figure. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                    6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                    7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                    8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                    9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                    10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
             
             '''
 
