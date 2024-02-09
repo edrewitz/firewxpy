@@ -4049,17 +4049,25 @@ class Counties_Perspective:
 
                     10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+                    11) state_border_color (String) - Color of the state border. 
 
-                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+                    12) state_border_line_thickness (Integer or Float) - Thickness of the state border lines. 
 
-                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+                    13) county_border_color (String) - Color of the county border. 
 
-                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+                    14) county_border_line_thickness (Integer or Float) - Thickness of the county border lines.
 
-                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+                    15) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
-                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                    16) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    17) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    18) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    19) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    20) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
                                                Default setting is 0.05.
                                                Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
                                                Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
@@ -8280,18 +8288,26 @@ class Predictive_Services_Areas_Perspective:
                     9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
 
                     10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+   
+                    11) GACC_Border_Color (String) - Color of the GACC border. 
 
-                    11) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+                    12) GACC_Border_Line_Thickness (Integer or Float) - Thickness of the GACC border lines. 
 
-                    12) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+                    13) PSA_Border_Line_Thickness (String) - Color of the PSA border. 
 
-                    13) title_font_size (Integer) - The fontsize of the title of the figure. 
+                    14) PSA_Border_Color (Integer or Float) - Thickness of the PSA border lines.
 
-                    14) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+                    15) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
-                    15) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+                    16) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
 
-                    16) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                    17) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    18) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    19) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    20) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
                                                Default setting is 0.05.
                                                Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
                                                Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
