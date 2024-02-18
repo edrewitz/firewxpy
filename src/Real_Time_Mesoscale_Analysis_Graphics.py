@@ -1611,9 +1611,32 @@ class Counties_Perspective:
             def plot_hot_dry_windy_areas_based_on_wind_gusts(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
     
                 r'''
-                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Gust >= 15 MPH). 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -2445,6 +2468,73 @@ class Counties_Perspective:
     
                 
                 plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Gust >= 15 MPH). 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax.add_feature(cfeature.STATES, linewidth=0.5)
+                ax.add_feature(USCOUNTIES, linewidth=1.5)
+                ax.set_extent([-168, -153, 55, 64], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gust >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
                 ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
@@ -3347,6 +3437,73 @@ class Counties_Perspective:
                 return fig
 
 
+            def plot_hot_dry_windy_areas_based_on_wind_gusts(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Gust >= 15 MPH). 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax.add_feature(cfeature.STATES, linewidth=0.5)
+                ax.add_feature(USCOUNTIES, linewidth=1.5)
+                ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gust >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
             def plot_hot_dry_windy_areas_based_on_sustained_winds_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
     
                 r'''
@@ -4186,6 +4343,74 @@ class Counties_Perspective:
     
                 
                 plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Gust >= 15 MPH). 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax.add_feature(cfeature.STATES, linewidth=0.5)
+                ax.add_feature(USCOUNTIES, linewidth=1.5)
+                ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gust >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
                 ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
@@ -5036,6 +5261,73 @@ class Counties_Perspective:
     
                 
                 plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Gust >= 15 MPH). 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+                ax.add_feature(cfeature.STATES, linewidth=0.5)
+                ax.add_feature(USCOUNTIES, linewidth=1.5)
+                ax.set_extent([-156, -150.75, 56, 59.1], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gust >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
                 ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
@@ -7076,9 +7368,32 @@ class Predictive_Services_Areas_Perspective:
             def plot_hot_dry_windy_areas_based_on_wind_gusts(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
     
                 r'''
-                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Gust >= 15 MPH). 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -7992,9 +8307,32 @@ class Predictive_Services_Areas_Perspective:
             def plot_hot_dry_windy_areas_based_on_wind_gusts(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
     
                 r'''
-                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Gust >= 15 MPH). 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -8873,6 +9211,75 @@ class Predictive_Services_Areas_Perspective:
                 return fig
 
 
+            def plot_hot_dry_windy_areas_based_on_wind_gusts(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Gust >= 15 MPH). 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-168, -153, 55, 64], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gust >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
             def plot_hot_dry_windy_areas_based_on_sustained_winds_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
     
                 r'''
@@ -9738,6 +10145,75 @@ class Predictive_Services_Areas_Perspective:
                 return fig
 
 
+            def plot_hot_dry_windy_areas_based_on_wind_gusts(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Gust >= 15 MPH). 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-144.75, -129.75, 54.5, 61], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gust >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
             def plot_hot_dry_windy_areas_based_on_sustained_winds_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
     
                 r'''
@@ -10595,6 +11071,75 @@ class Predictive_Services_Areas_Perspective:
     
                 
                 plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Speed >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+                
+                ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+               verticalalignment='bottom', transform=ax.transAxes) 
+    
+                return fig
+
+
+            def plot_hot_dry_windy_areas_based_on_wind_gusts(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
+    
+                r'''
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Gust >= 15 MPH). 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
+                
+                '''            
+                local_time, utc_time = standard.plot_creation_time()
+    
+                lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
+    
+                mapcrs = ccrs.Mercator(central_longitude=-150, min_latitude=50, max_latitude=75.0, globe=None)
+                datacrs = ccrs.PlateCarree()
+
+                PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+                GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'blue')
+    
+                cmap = colormaps.red_flag_warning_criteria_colormap()
+
+                mask = (temperature >= 75) & (relative_humidity <= 25) & (wind_gust >= 15)
+                lon = mask['lon']
+                lat = mask['lat']
+                
+    
+                fig = plt.figure(figsize=(fig_x_length,fig_y_length))
+                ax = plt.subplot(1,1,1, projection=datacrs)
+                ax.add_feature(GACC, linewidth=2.5, zorder=3)
+                ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+                ax.set_extent([-169.5, -140.75, 63, 75], datacrs)
+    
+                try:
+                    ax.pcolormesh(lon,lat,mask,transform=datacrs,cmap=cmap)
+                    
+                except Exception as e:
+                    pass
+    
+                
+                plt.title("Hot & Dry & Windy Areas (Shaded)\nT >= 75\N{DEGREE SIGN}F & RH <= 25% & Wind Gust >= 15 MPH\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
                 ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
@@ -12652,11 +13197,10 @@ class Islands:
             r'''
                 This function does the following:
                                                 1) Downloads the latest available temperature, dewpoint, and wind speed data arrays. 
-                                                2) Converts the temperature values from Kelvin to Fahrenheit.
-                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
-                                                4) Converts the wind speed data array from m/s to MPH. 
-                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                                                2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                3) Converts the wind speed data array from m/s to MPH. 
+                                                4) Masks all areas where the following criteria is not met: RH <= 45% and Wind Speed >= 20 MPH). 
+                                                5) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
                 
 
                 Inputs:
@@ -12716,9 +13260,31 @@ class Islands:
         def plot_dry_and_windy_areas_based_on_wind_gust(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
     
             r'''
-            THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
-    
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind speed data arrays. 
+                                                2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                3) Converts the wind speed data array from m/s to MPH. 
+                                                4) Masks all areas where the following criteria is not met: RH <= 45% and Wind Gust >= 20 MPH). 
+                                                5) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
                 
             '''            
             local_time, utc_time = standard.plot_creation_time()
@@ -14239,26 +14805,29 @@ class Islands:
             r'''
                 This function does the following:
                                                 1) Downloads the latest available temperature, dewpoint, and wind speed data arrays. 
-                                                2) Converts the temperature values from Kelvin to Fahrenheit.
-                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
-                                                4) Converts the wind speed data array from m/s to MPH. 
-                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                                                2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                3) Converts the wind speed data array from m/s to MPH. 
+                                                4) Masks all areas where the following criteria is not met:RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Speed >= red_flag_warning_wind_speed_threshold (MPH). 
+                                                5) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
                 
 
                 Inputs:
 
-                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+                    1) red_flag_warning_relative_humidity_threshold (Integer) - The National Weather Service red flag warning threshold for relative humidity. 
 
-                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+                    2) red_flag_warning_wind_speed_threshold (Integer) - The National Weather Service red flag warning threshold for wind speed. 
 
-                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
 
-                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
 
-                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+                    5) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
-                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+                    6) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    7) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    8) signature_font_size (Integer) - The fontsize of the signature of the figure. 
 
 
                 Returns:
@@ -14315,9 +14884,35 @@ class Islands:
         def plot_dry_and_windy_areas_based_on_wind_gusts(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON WIND GUSTS. 
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind speed data arrays. 
+                                                2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                3) Converts the wind speed data array from m/s to MPH. 
+                                                4) Masks all areas where the following criteria is not met:RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Gust >= red_flag_warning_wind_gust_threshold (MPH). 
+                                                5) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                Inputs:
+
+                    1) red_flag_warning_relative_humidity_threshold (Integer) - The National Weather Service red flag warning threshold for relative humidity. 
+
+                    2) red_flag_warning_wind_gust_threshold (Integer) - The National Weather Service red flag warning threshold for wind speed. 
+
+                    3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    5) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    6) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    7) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    8) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
             
             '''
 
