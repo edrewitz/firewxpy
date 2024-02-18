@@ -697,13 +697,6 @@ class Counties_Perspective:
 
                     6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
 
-                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                               Default setting is 0.05.
-                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
-
 
                 Returns:
                         1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
@@ -748,9 +741,32 @@ class Counties_Perspective:
             def plot_hot_dry_windy_areas_based_on_wind_gusts(fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
     
                 r'''
-                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Gust >= 15 MPH). 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -1534,7 +1550,7 @@ class Counties_Perspective:
                                                 3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                                 4) Converts the wind speed data array from m/s to MPH. 
                                                 5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
                 
 
                 Inputs:
@@ -1550,13 +1566,6 @@ class Counties_Perspective:
                     5) title_font_size (Integer) - The fontsize of the title of the figure. 
 
                     6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                               Default setting is 0.05.
-                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
 
 
                 Returns:
@@ -2401,13 +2410,6 @@ class Counties_Perspective:
                     5) title_font_size (Integer) - The fontsize of the title of the figure. 
 
                     6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                               Default setting is 0.05.
-                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
 
 
                 Returns:
@@ -3287,7 +3289,7 @@ class Counties_Perspective:
                                                 3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                                 4) Converts the wind speed data array from m/s to MPH. 
                                                 5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
                 
 
                 Inputs:
@@ -3303,13 +3305,6 @@ class Counties_Perspective:
                     5) title_font_size (Integer) - The fontsize of the title of the figure. 
 
                     6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                               Default setting is 0.05.
-                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
 
 
                 Returns:
@@ -4140,7 +4135,7 @@ class Counties_Perspective:
                                                 3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                                 4) Converts the wind speed data array from m/s to MPH. 
                                                 5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
                 
 
                 Inputs:
@@ -4156,13 +4151,6 @@ class Counties_Perspective:
                     5) title_font_size (Integer) - The fontsize of the title of the figure. 
 
                     6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                               Default setting is 0.05.
-                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
 
 
                 Returns:
@@ -4997,7 +4985,7 @@ class Counties_Perspective:
                                                 3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                                 4) Converts the wind speed data array from m/s to MPH. 
                                                 5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
                 
 
                 Inputs:
@@ -5013,13 +5001,6 @@ class Counties_Perspective:
                     5) title_font_size (Integer) - The fontsize of the title of the figure. 
 
                     6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                               Default setting is 0.05.
-                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
 
 
                 Returns:
@@ -7032,7 +7013,7 @@ class Predictive_Services_Areas_Perspective:
                                                 3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                                 4) Converts the wind speed data array from m/s to MPH. 
                                                 5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
                 
 
                 Inputs:
@@ -7048,13 +7029,6 @@ class Predictive_Services_Areas_Perspective:
                     5) title_font_size (Integer) - The fontsize of the title of the figure. 
 
                     6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                               Default setting is 0.05.
-                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
 
 
                 Returns:
@@ -7955,7 +7929,7 @@ class Predictive_Services_Areas_Perspective:
                                                 3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                                 4) Converts the wind speed data array from m/s to MPH. 
                                                 5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
                 
 
                 Inputs:
@@ -7971,13 +7945,6 @@ class Predictive_Services_Areas_Perspective:
                     5) title_font_size (Integer) - The fontsize of the title of the figure. 
 
                     6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                               Default setting is 0.05.
-                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
 
 
                 Returns:
@@ -8846,7 +8813,7 @@ class Predictive_Services_Areas_Perspective:
                                                 3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                                 4) Converts the wind speed data array from m/s to MPH. 
                                                 5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
                 
 
                 Inputs:
@@ -8862,13 +8829,6 @@ class Predictive_Services_Areas_Perspective:
                     5) title_font_size (Integer) - The fontsize of the title of the figure. 
 
                     6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                               Default setting is 0.05.
-                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
 
 
                 Returns:
@@ -9718,7 +9678,7 @@ class Predictive_Services_Areas_Perspective:
                                                 3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                                 4) Converts the wind speed data array from m/s to MPH. 
                                                 5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
                 
 
                 Inputs:
@@ -9734,13 +9694,6 @@ class Predictive_Services_Areas_Perspective:
                     5) title_font_size (Integer) - The fontsize of the title of the figure. 
 
                     6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                               Default setting is 0.05.
-                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
 
 
                 Returns:
@@ -10589,7 +10542,7 @@ class Predictive_Services_Areas_Perspective:
                                                 3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                                 4) Converts the wind speed data array from m/s to MPH. 
                                                 5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Hot Dry and Windy" criteria are met. 
                 
 
                 Inputs:
@@ -10605,13 +10558,6 @@ class Predictive_Services_Areas_Perspective:
                     5) title_font_size (Integer) - The fontsize of the title of the figure. 
 
                     6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                               Default setting is 0.05.
-                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
 
 
                 Returns:
@@ -12727,13 +12673,6 @@ class Islands:
 
                     6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
 
-                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                               Default setting is 0.05.
-                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
-
 
                 Returns:
                         1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of hot, dry and windy conditions. 
@@ -14320,13 +14259,6 @@ class Islands:
                     5) title_font_size (Integer) - The fontsize of the title of the figure. 
 
                     6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                               Default setting is 0.05.
-                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
 
 
                 Returns:
