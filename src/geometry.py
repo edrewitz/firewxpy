@@ -1,4 +1,7 @@
-# THIS FILE CONTAINS FUNCTIONS THAT RETURN VARIOUS TYPES OF GEOMETRIES FOR PLOTTING
+'''
+This file consists of functions that read in the shapefiles for both the Geographic Area Coordination Center (GACC) Boundaries and Predictive Services Areas (PSA) boundaries. 
+These files can be downloaded from either the FireWxPy Github or on NIFC's website. 
+
 # PYTHON DEPENDENCIES:
 # 1) MATPLOTLIB
 # 2) CARTOPY
@@ -6,18 +9,27 @@
 #  (C) METEOROLOGIST ERIC J. DREWITZ
 #               USDA/USFS
 
+
+'''
 ###### IMPORTS ################
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from cartopy.io.shapereader import Reader
 from cartopy.feature import ShapelyFeature
 
-#### INFORMATION CLASS ####
-# The information class returns helpful tips for when the user encounters errors
 
 class info:
 
+    '''
+    This class hosts all the error messages that will be returned to the user. 
+
+    '''
+
     def PSA_shape_file_error():
+
+        '''
+        This function returns an error message for the user if the shapefile is not found. 
+        '''
         error_msg = f"""
         
         WARNING: COULD NOT FIND FILE. PLEASE MAKE SURE YOU HAVE THE CORRECT FILE PATH. 
@@ -41,20 +53,20 @@ class info:
         """
         return error_msg
 
-### PREDICTIVE SERVICES AREAS ###
-# The Predictive Services Areas class returns the geometries for the predictive services areas to be used in plotting
+
 class Predictive_Services_Areas:
+
+    '''
+    This class hosts the functions that return the GACC and PSA Boundaries
+
+    '''
 
     def get_PSAs(line_color):
 
         r'''
-        THIS FUNCTION RETURNS THE GEOMETRIES FOR THE PREDICTIVE SERVICES AREAS FOR PLOTTING.
+        This function reads the shapefile (.SHP) and returns the geometries for the PSA boundaries in the color specified by the user.
 
-        THIS FUNCTION IS TO BE USED IF THE USER WISHES TO STORE THEIR SHAPEFILES IN THE SAME FOLDER AS THE PYTHON SCRIPTS THEY WISH TO RUN.
-
-        THE USER CUSTOMIZES THE COLOR FOR THE PSA BORDERS
-
-        (C) METEOROLOGIST ERIC J. DREWITZ 2024
+        This function is to only be used if the files are in the same folder the script is running. 
 
         '''
 
@@ -74,14 +86,9 @@ class Predictive_Services_Areas:
     def get_PSAs_custom_file_path(file_path, line_color):
 
         r'''
-        THIS FUNCTION RETURNS THE GEOMETRIES FOR THE PREDICTIVE SERVICES AREAS FOR PLOTTING.
+        This function reads the shapefile (.SHP) and returns the geometries for the PSA boundaries in the color specified by the user.
 
-        THIS FUNCTION IS TO BE USED IF THE USER WISHES TO STORE THEIR SHAPEFILES ELSEWHERE THAN WHERE THEIR PYTHON
-        SCRIPTS RUN. 
-
-        THE USER CUSTOMIZES THE COLOR FOR THE PSA BORDERS
-
-        (C) METEOROLOGIST ERIC J. DREWITZ 2024
+        This function is to be used if the user wishes to run the script in a seperate folder than the folder that hosts the shapefiles. 
 
         '''
         
@@ -100,13 +107,9 @@ class Predictive_Services_Areas:
     def get_GACC_Boundaries(line_color):
 
         r'''
-        THIS FUNCTION RETURNS THE GEOMETRIES FOR THE GACC BOUNDARIES FOR PLOTTING.
+        This function reads the shapefile (.SHP) and returns the geometries for the GACC boundaries in the color specified by the user.
 
-        THIS FUNCTION IS TO BE USED IF THE USER WISHES TO STORE THEIR SHAPEFILES IN THE SAME FOLDER AS THE PYTHON SCRIPTS THEY WISH TO RUN.
-
-        THE USER CUSTOMIZES THE COLOR FOR THE PSA BORDERS
-
-        (C) METEOROLOGIST ERIC J. DREWITZ 2024
+        This function is to only be used if the files are in the same folder the script is running. 
 
         '''
 
@@ -126,14 +129,9 @@ class Predictive_Services_Areas:
     def get_GACC_Boundaries_custom_file_path(file_path, line_color):
 
         r'''
-        THIS FUNCTION RETURNS THE GEOMETRIES FOR THE GACC BOUNDARIES FOR PLOTTING.
+        This function reads the shapefile (.SHP) and returns the geometries for the GACC boundaries in the color specified by the user.
 
-        THIS FUNCTION IS TO BE USED IF THE USER WISHES TO STORE THEIR SHAPEFILES ELSEWHERE THAN WHERE THEIR PYTHON
-        SCRIPTS RUN. 
-
-        THE USER CUSTOMIZES THE COLOR FOR THE PSA BORDERS
-
-        (C) METEOROLOGIST ERIC J. DREWITZ 2024
+        This function is to be used if the user wishes to run the script in a seperate folder than the folder that hosts the shapefiles. 
 
         '''
         
