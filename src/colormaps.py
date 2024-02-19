@@ -1,3 +1,24 @@
+'''
+This file hosts functions that call custom colormaps which are used for plotting. 
+
+This file hosts colormaps for:
+                            1) Temperature
+                            2) Relative Humidity
+                            3) Relative Humidity Change
+                            4) Areas of high relative humidity
+                            5) Areas of low relative humidity
+                            6) The temperature parameter for National Weather Service Red Flag Warnings in Alaska
+                            7) The wind speed parameter for National Weather Service Red Flag Warnings nationally. 
+                            8) The red shading for areas that meet the weather criteria for National Weather Service Red Flag Warnings. 
+
+This file was written by Meteorologist Eric J. Drewitz 
+
+            (C) Meteorologist Eric J. Drewitz 
+                        USDA/USFS
+
+
+'''
+
 import matplotlib.colors
 
 def temperature_colormap():
