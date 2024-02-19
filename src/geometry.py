@@ -2,13 +2,10 @@
 This file consists of functions that read in the shapefiles for both the Geographic Area Coordination Center (GACC) Boundaries and Predictive Services Areas (PSA) boundaries. 
 These files can be downloaded from either the FireWxPy Github or on NIFC's website. 
 
-# PYTHON DEPENDENCIES:
-# 1) MATPLOTLIB
-# 2) CARTOPY
-#
-#  (C) METEOROLOGIST ERIC J. DREWITZ
-#               USDA/USFS
+This file was written by Meteorologist Eric J. Drewitz 
 
+            (C) Meteorologist Eric J. Drewitz 
+                        USDA/USFS
 
 '''
 ###### IMPORTS ################
