@@ -1,21 +1,17 @@
-# THIS SCRIPT HAS FUNCTIONS THAT DOWNLOAD FORECAST DATA FROM THE NOAA/NWS FTP SERVER, ORGANIZE THE GRIB FILES AND RETURN BOOLEAN VALUES DEPENDING ON IF THE GRIB FILE EXISTS OR NOT
-#
-# THIS IS THE NWS FTP DATA ACCESS FILE FOR FIREPY
-#
-# THIS SCRIPT ALSO ACCESSES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA (RTMA DATA) FROM THE UCAR THREDDS SERVER. RTMA DATA IS USEFUL FOR REAL-TIME ANALYSIS PLOTTING
-#
-#
-# DEPENDENCIES INCLUDE:
-# 1. PYGRIB
-# 2. XARRAY
-# 3. OS
-# 4. FTPLIB
-# 5. DATETIME
-# 6. SIPHON
-# 7. METPY
-#
-#  (C) METEOROLOGIST ERIC J. DREWITZ
-#               USDA/USFS
+'''
+This file hosts all the functions used for data access. 
+These functions request data from the various data sources.
+Depending on the data source, the data will be downloaded either from an FTP server or an OPENDAP server. 
+ - National Weather Service Forecast Data is downloaded from the National Weather Service FTP server. 
+ - Real Time Mesoscale Analysis is downloaded from OPENDAP servers: 1) UCAR THREDDS Server or 2) NCEP NOMADS Server
+
+ This file was written by Meteorologist Eric J. Drewitz 
+
+            (C) Meteorologist Eric J. Drewitz 
+                        USDA/USFS
+
+
+'''
 
 ##### IMPORTS NEEDED PYTHON MODULES #######
 import pygrib
@@ -39,9 +35,8 @@ class info:
 
     r'''
 
-    THIS CLASS HOSTS FUNCTIONS THAT DISPLAY ERROR MESSAGES TO THE USER FOR A VARIETY OF TYPES OF USER ERROR
-
-    (C) METEOROLOGIST ERIC J. DREWITZ 2024
+    This class hosts all the functions that are used if an error message is needed to be returned. 
+    Each error message function returns detailed instructions to the user so they do not need to look for the proper syntax for a parameter or a directory. 
 
     '''
 
@@ -230,24 +225,58 @@ class FTP_Downloads:
 
     r'''
 
-    THIS CLASS HOSTS FUNCTIONS THAT USE THE FTPLIB MODULE TO PING AND DOWNLOAD WEATHER DATA FROM FTP SERVERS
+    This class downloads the National Weather Service NDFD Forecast grids from the NWS FTP server. 
 
-    (C) METEOROLOGIST ERIC J. DREWITZ 2024
+    National Weather Service NDFD Forecast grids are in a GRIB2 file format. 
+
+    These functions connect to the National Weather Service FTP server and retrieve the binaries and append those binaries to a blank file created on the user's computer. 
+    The new file is created automatically by running the script, thus the user does not need to manually create a blank file as that wouldn't work with the script as written. 
 
     '''
 
     def get_NWS_NDFD_short_term_grid_data(directory_name, parameter):
         
         r'''
-        THIS FUNCTION DOWNLOADS THE DAYS 1-3 FORECAST DATA FROM THE NOAA/NWS FTP SERVER. 
-    
-        THE USER NEEDS TO ENTER THE NAME OF THE DIRECTORY IN WHICH THE USER NEEDS DATA FROM AS WELL AS THE PARAMETER
-    
-        FOR THE FULL LIST OF THE VARIOUS PARAMETERS PLEASE REFER TO: 
-    
-        https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-    
-        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+         This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
+         This function is specifically for downloading the National Weather Service SHORT-TERM (Days 1-3) Forecast grids. 
+
+         Inputs:
+             1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
+                                          The directory determines the domain the forecast data is valid for. 
+                                          Here is the full directory list: 
+                                                                    ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
+                                                                    CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
+                                                                    CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
+                                                                    CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
+                                                                    CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
+                                                                    CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
+                                                                    EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
+                                                                    GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
+                                                                    HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
+                                                                    MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
+                                                                    NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
+                                                                    NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
+                                                                    NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
+                                                                    NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
+                                                                    NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
+                                                                    OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
+                                                                    PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
+                                                                    PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
+                                                                    PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
+                                                                    SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
+                                                                    SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
+                                                                    SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
+                                                                    SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
+                                                                    UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
+
+
+            2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
+                                    Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
+                                    https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
+
+        Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the short-term forecast period (Days 1-3). 
+                 This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
+         
         '''
     
         ###################################################
@@ -300,15 +329,45 @@ class FTP_Downloads:
     def get_NWS_NDFD_extended_grid_data(directory_name, parameter):
         
         r'''
-        THIS FUNCTION DOWNLOADS THE DAYS 4-7 FORECAST DATA FROM THE NOAA/NWS FTP SERVER. 
-    
-        THE USER NEEDS TO ENTER THE NAME OF THE DIRECTORY IN WHICH THE USER NEEDS DATA FROM AS WELL AS THE PARAMETER
-    
-        FOR THE FULL LIST OF THE VARIOUS PARAMETERS PLEASE REFER TO: 
-    
-        https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-    
-        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+         This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
+         This function is specifically for downloading the National Weather Service EXTENDED (Days 4-7) Forecast grids. 
+
+         Inputs:
+             1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
+                                          The directory determines the domain the forecast data is valid for. 
+                                          Here is the full directory list: 
+                                                                    ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
+                                                                    CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
+                                                                    CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
+                                                                    CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
+                                                                    CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
+                                                                    CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
+                                                                    EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
+                                                                    GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
+                                                                    HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
+                                                                    MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
+                                                                    NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
+                                                                    NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
+                                                                    NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
+                                                                    NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
+                                                                    NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
+                                                                    OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
+                                                                    PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
+                                                                    PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
+                                                                    PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
+                                                                    SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
+                                                                    SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
+                                                                    SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
+                                                                    SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
+                                                                    UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
+
+
+            2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
+                                    Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
+                                    https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
+
+        Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the extended forecast period (Days 4-7). 
+                 This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
         '''
     
         ###################################################
@@ -360,9 +419,57 @@ class FTP_Downloads:
     def get_first_half_of_data(directory_name, parameter):
 
         r'''
-        THIS FUNCTION DOWNLOADS THE NATIONAL WEATHER SERVICE FORECAST DATA AND PARSES THROUGH THE DATA TO EXTRACT ALL THE VALUES. THIS IS NEEDED TO BE DONE SINCE THE NATIONAL WEATHER SERVICE KEEPS THEIR SHORT-TERM AND EXTENDED FORECAST DATA SEPERATE ON THEIR FTP SERVER. WE NEED TO EXTRACT THE VALUES FOR THE SHORT-TERM DATA IN A SEPERATE FUNCTION SINCE WHEN PREVIOUSLY TESTING THE DATA KEPT OVERWRITNG ITSELF DUE TO THE FILENAMES BEING THE SAME DESPITE THE DATA IS FOR DIFFERENT FORECAST PERIODS. 
+        This function is a background function that is utilized in the get_full_7_day_grid_data function. 
+        The National Weather Service hosts their short-term and extended forecast grids in different places. 
+        In order to download all of the short-term and extended forecast data, we need to break it up into two parts and this function is part one. 
 
-        (C) METEOROLOGIST ERIC J. DREWITZ 2024
+        This function goes farther than the functions that download the short-term and extended grids respectively as in order to complete this task, this function parses through the data using the FireWxPy Parsers Module to extract the following information:
+        1) The values of the parameter the user is plotting. 
+        2) The start time of the forecast validity corresponding to each value. 
+        3) The end time of the forecast validity corresponding to each value. 
+
+        Example: The National Weather Service Maximum Relative Humidity Grids are valid for 12 hours (06z through 18z). 
+                 Thus the first period (Night 1) is 06z tonight through 18z tomorrow. 
+                 The second period (Night 2) is 06z tomorrow night through 18z the next day and so on with the same temporal increments. 
+
+         Inputs:
+             1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
+                                          The directory determines the domain the forecast data is valid for. 
+                                          Here is the full directory list: 
+                                                                    ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
+                                                                    CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
+                                                                    CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
+                                                                    CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
+                                                                    CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
+                                                                    CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
+                                                                    EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
+                                                                    GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
+                                                                    HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
+                                                                    MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
+                                                                    NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
+                                                                    NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
+                                                                    NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
+                                                                    NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
+                                                                    NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
+                                                                    OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
+                                                                    PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
+                                                                    PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
+                                                                    PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
+                                                                    SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
+                                                                    SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
+                                                                    SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
+                                                                    SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
+                                                                    UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
+
+
+            2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
+                                    Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
+                                    https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
+
+
+        Returns: 1) The values of the forecast parameter within the GRIB2 file for each corresponding time period. 
+                 2) The start time of each forecast period. 
+                 3) The end time of each forecast period. 
 
         '''
         
@@ -377,9 +484,60 @@ class FTP_Downloads:
     def get_full_7_day_grid_data(directory_name, parameter):
 
         r'''
-        THIS FUNCTION USES THE PREVIOUS FUNCTION TO EXTRACT THE SHORT-TERM NATIONAL WEATHER SERVICE FORECAST DATA BEFORE DOWNLOADING AND EXTRACTING THE NATIONAL WEATHER SERVICE FORECAST DATA FOR THE EXTENDED PERIOD. THIS FUNCTION THEN RETURNS ALL 7 DAYS WORTH OF NATIONAL WEATHER SERVICE FORECAST DATA. 
+        This function allows the user to download and extract the National Weather Service NDFD short-term and extended forecast data all at once. 
+        The National Weather Service hosts their short-term and extended forecast grids in different places. 
+        In order to download all of the short-term and extended forecast data, we need to break it up into two parts and this function is part two. 
+        This function calls the previous function: get_first_half_of_data(directory_name, parameter) to get all the forecast values, forecast start and end times. 
+        The next step is this function repeats the same process as the aforementioned function, except this function extracts all those values for the extended forecast grids. 
+        The final result is this function combines all the data from the first download with the data of the second download so the user can retrieve this data all at once. 
 
-        (C) METEOROLOGIST ERIC J. DREWITZ 2024
+        This function goes farther than the functions that download the short-term and extended grids respectively as in order to complete this task, this function parses through the data using the FireWxPy Parsers Module to extract the following information:
+        1) The values of the parameter the user is plotting. 
+        2) The start time of the forecast validity corresponding to each value. 
+        3) The end time of the forecast validity corresponding to each value. 
+
+        Example: The National Weather Service Maximum Relative Humidity Grids are valid for 12 hours (06z through 18z). 
+                 Thus the first period (Night 1) is 06z tonight through 18z tomorrow. 
+                 The second period (Night 2) is 06z tomorrow night through 18z the next day and so on with the same temporal increments. 
+
+         Inputs:
+             1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
+                                          The directory determines the domain the forecast data is valid for. 
+                                          Here is the full directory list: 
+                                                                    ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
+                                                                    CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
+                                                                    CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
+                                                                    CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
+                                                                    CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
+                                                                    CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
+                                                                    EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
+                                                                    GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
+                                                                    HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
+                                                                    MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
+                                                                    NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
+                                                                    NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
+                                                                    NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
+                                                                    NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
+                                                                    NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
+                                                                    OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
+                                                                    PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
+                                                                    PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
+                                                                    PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
+                                                                    SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
+                                                                    SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
+                                                                    SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
+                                                                    SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
+                                                                    UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
+
+
+            2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
+                                    Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
+                                    https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
+
+
+        Returns: 1) The values of the forecast parameter within the GRIB2 file for each corresponding time period for all 7 days. 
+                 2) The start time of each forecast period for all 7 days. 
+                 3) The end time of each forecast period for all 7 days. 
 
         '''
         
