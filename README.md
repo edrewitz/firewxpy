@@ -14,7 +14,7 @@ This package makes it easier for users to access and parse through the National 
 
 This package makes it easier for users to automate their weather graphics since the plotting functions of FireWxPy handle different run times so users will be able to automate their scripts in either the Windows Task Scheduler or a Cron Job.
 
-Copyright (C) Meteorologist Eric J. Drewitz 2023
+Copyright (C) Meteorologist Eric J. Drewitz 2024
 
 # Inspiration
 This package is largely inspired by the MetPy package which was developed and is currently being maintained by Unidata (please see citation below in the citations section).
