@@ -610,9 +610,9 @@ class Counties_Perspective:
     
                 r'''
                 This function does the following:
-                                                1) Downloads the temperature and dewpoint data arrays for the current time and the temperature data array for 24 hours ago from the data array for the current time.
-                                                2) Converts the temperature values from Kelvin to Fahrenheit.
-                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the temperature is <= 32F.
+                                                1) Downloads the temperature and dewpoint data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data array.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the relative humidity <= 25%. 
                 
 
                 Inputs:
@@ -638,7 +638,7 @@ class Counties_Perspective:
 
 
                 Returns:
-                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the 24-Hour difference with respect to temperature (degrees F)
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis filtered low relative humidity (RH <= 25%)
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -1603,9 +1603,36 @@ class Counties_Perspective:
             def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the temperature and dewpoint data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data array.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the relative humidity <= 25%. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis filtered low relative humidity (RH <= 25%)
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -2565,9 +2592,36 @@ class Counties_Perspective:
             def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the temperature and dewpoint data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data array.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the relative humidity <= 25%. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis filtered low relative humidity (RH <= 25%)
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -3527,10 +3581,36 @@ class Counties_Perspective:
             def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the temperature and dewpoint data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data array.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the relative humidity <= 25%. 
                 
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis filtered low relative humidity (RH <= 25%)
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
     
@@ -4441,9 +4521,36 @@ class Counties_Perspective:
             def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the temperature and dewpoint data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data array.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the relative humidity <= 25%. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis filtered low relative humidity (RH <= 25%)
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -5358,9 +5465,36 @@ class Counties_Perspective:
             def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the temperature and dewpoint data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data array.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the relative humidity <= 25%. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis filtered low relative humidity (RH <= 25%)
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -7451,9 +7585,36 @@ class Predictive_Services_Areas_Perspective:
             def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the temperature and dewpoint data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data array.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the relative humidity <= 25%. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis filtered low relative humidity (RH <= 25%)
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -8391,9 +8552,36 @@ class Predictive_Services_Areas_Perspective:
             def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the temperature and dewpoint data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data array.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the relative humidity <= 25%. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis filtered low relative humidity (RH <= 25%)
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -9297,9 +9485,36 @@ class Predictive_Services_Areas_Perspective:
             def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the temperature and dewpoint data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data array.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the relative humidity <= 25%. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis filtered low relative humidity (RH <= 25%)
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -10231,9 +10446,36 @@ class Predictive_Services_Areas_Perspective:
             def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the temperature and dewpoint data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data array.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the relative humidity <= 25%. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis filtered low relative humidity (RH <= 25%)
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -11165,9 +11407,36 @@ class Predictive_Services_Areas_Perspective:
             def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the temperature and dewpoint data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data array.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the relative humidity <= 25%. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis filtered low relative humidity (RH <= 25%)
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -13349,9 +13618,36 @@ class Islands:
         def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the temperature and dewpoint data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data array.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the relative humidity <= 45%. 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis filtered low relative humidity (RH <= 45%)
                 
             '''            
             local_time, utc_time = standard.plot_creation_time()
@@ -14250,15 +14546,46 @@ class Islands:
             return fig
     
     
-        def plot_red_flag_warning_filtered_relative_humidity(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+        def plot_red_flag_warning_filtered_relative_humidity(red_flag_warning_relative_humidity_threshold, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the temperature and dewpoint data arrays for the current time.
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data array.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the relative humidity <= red_flag_warning_relative_humidity_threshold (%). 
+                
+
+                Inputs:
+
+                    1) red_flag_warning_relative_humidity_threshold (Integer) - The National Weather Service Red Flag Warning relative humidity threshold for San Juan, PR. 
+
+                    2) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    3) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    4) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    5) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    6) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    7) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    8) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    9) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis filtered low relative humidity (RH <= red_flag_warning_relative_humidity_threshold (%))
                 
             '''            
             local_time, utc_time = standard.plot_creation_time()
+
+            red_flag_warning_relative_humidity_threshold = red_flag_warning_relative_humidity_threshold
     
             lon_vals, lat_vals, time, relative_humidity = da.NOMADS_OPENDAP_Downloads.RTMA_Puerto_Rico.get_RTMA_relative_humidity(utc_time)  
     
@@ -14275,12 +14602,12 @@ class Islands:
             ax.set_extent([-68, -64.5, 17.5, 18.7], datacrs)
     
     
-            cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
+            cs = ax.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, red_flag_warning_relative_humidity_threshold, 1), cmap=cmap_rh, alpha=0.3, transform=datacrs)
             cbar = fig.colorbar(cs, shrink=color_table_shrink, ax=ax, location='right', pad=colorbar_pad)
             cbar.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold')
     
                 
-            plt.title("Red Flag Warning Filtered Relative Humidity (RH <= 25%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+            plt.title("Red Flag Warning Filtered Relative Humidity (RH <= "+ str(red_flag_warning_relative_humidity_threshold) +"%)\nValid: " + time.strftime('%m/%d/%Y %HZ') + " | Image Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
                 
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
                verticalalignment='bottom', transform=ax.transAxes) 
