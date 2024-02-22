@@ -6289,7 +6289,7 @@ class Counties_Perspective:
                                                 1) Downloads the latest availiable temperature and dewpoint data arrays. 
                                                 2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
                                                 3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
-                                                4) Plots the data that corresponds to the parameter the user requests. 
+                                                4) Plots the relative humidity data overlayed with the METAR reports. 
 
                 
 
@@ -6389,16 +6389,67 @@ class Counties_Perspective:
 
             return fig
 
-        def plot_red_flag_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+        def plot_red_flag_relative_humidity_with_METARs(red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT FILTERS THE RELATIVE HUMIDITY DATASET TO ONLY PLOT WHERE THE RELATIVE HUMIDITY IS 15% OR LESS. 
+                This function does the following:
+                                                1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                                2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                                3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Plots the relative humidity data filtered RH <= red_flag_warning_relative_humidity_threshold (%) overlayed with the latest METAR reports. 
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+
+                Inputs:
+
+                    1) red_flag_warning_relative_humidity_threshold (Integer) - The National Weather Service Red Flag Warning threshold for relative humidity. 
+
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+                    
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+
+                    13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    15) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity data filtered RH <= red_flag_warning_relative_humidity_threshold (%) overlayed with the latest METAR reports. 
             
             '''
 
-
+            red_flag_warning_relative_humidity_threshold = red_flag_warning_relative_humidity_threshold
             local_time, utc_time = standard.plot_creation_time()
 
             rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_proj = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(utc_time, mask)
@@ -6415,7 +6466,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
 
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold, 1), cmap='YlOrBr_r', alpha=1)
 
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
             cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -6438,7 +6489,7 @@ class Counties_Perspective:
             
             stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
 
-            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <=15%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+            plt.title("Real Time Mesoscale Analysis Red-Flag Relative Humidity (RH <= "+ str(red_flag_warning_relative_humidity_threshold) +"%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nMETAR Observations Valid: " + metar_time_revised.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
@@ -6446,17 +6497,72 @@ class Counties_Perspective:
             return fig
  
 
-        def plot_low_and_high_relative_humidity(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
+        def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT FILTERS THE RELATIVE HUMIDITY DATASET TO ONLY PLOT WHERE THE RELATIVE HUMIDITY IS 15% OR LESS. 
+                This function does the following:
+                                                1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                                2) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Plots the relative humidity data filtered RH <= low_relative_humidity_threshold (%) and RH >= high_relative_humidity_threshold (%)
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                
+
+                Inputs:
+
+                    1) low_relative_humidity_threshold (Integer) - The user defines the threshold for what is considered low relative humidity for the respective geographic area.  
+
+                    2) high_relative_humidity_threshold (Integer) - The user defines the threshold for what is considered high relative humidity for the respective geographic area.  
+
+                    3) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                    4) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                    5) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                    6) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                    7) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                    8) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                    9) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                    10) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+                    
+                    11) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    12) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    13) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    14) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+
+                    15) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    16) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    17) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    18) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    19) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    20) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity data filtered RH <= red_flag_warning_relative_humidity_threshold (%) overlayed with the latest METAR reports. 
             
             '''
             colorbar_label_font_size = colorbar_label_font_size
 
             colorbar_pad = colorbar_pad
+
+            low_relative_humidity_threshold = low_relative_humidity_threshold
+            high_relative_humidity_threshold = high_relative_humidity_threshold
 
             local_time, utc_time = standard.plot_creation_time()
 
@@ -6465,7 +6571,8 @@ class Counties_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            cmap = colormaps.excellent_recovery_colormap()
+            cmap_high = colormaps.excellent_recovery_colormap()
+            cmap_low = colormaps.low_relative_humidity_colormap()
 
             plot_proj = rtma_data.metpy.cartopy_crs
 
@@ -6478,19 +6585,19 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
 
             cs_low = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold, 1), cmap=cmap_low, alpha=1)
 
             cs_high = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(80, 101, 1), cmap=cmap, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(high_relative_humidity_threshold, 101, 1), cmap=cmap_high, alpha=1)
 
             cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
-            cbar_low.set_label(label="Low Relative Humidity (RH <= 15%)", size=colorbar_label_font_size, fontweight='bold')
+            cbar_low.set_label(label="Low Relative Humidity (RH <=" + str(low_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
 
             cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
-            cbar_high.set_label(label="High Relative Humidity (RH >= 80%)", size=colorbar_label_font_size, fontweight='bold')
+            cbar_high.set_label(label="High Relative Humidity (RH >= " + str(high_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
 
 
-            plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
+            plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=" + str(low_relative_humidity_threshold) +"%) & High RH (RH >= " + str(high_relative_humidity_threshold) +"%)\nValid: " + rtma_time.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=title_font_size, fontweight='bold')
             
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
