@@ -6887,9 +6887,54 @@ class Counties_Perspective:
         def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT SHOWS THE CURRENT AREAS EXPERIENCING BELOW FREEZING TEMPERATURES SINCE FROST/FREEZE CAN TURN LIVE FUEL INTO DEAD FUEL WHICH CAN ULTIMATELY LEAD TO MORE SUCCEPTABLE FUELS FOR WILDFIRE.
+                This function does the following:
+                                                1) Downloads the latest available temperature data array.
+                                                2) Converts temperature from Kelvin to Fahrenheit
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of temperature filtered to only areas where T <= 32F. 
+                
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                Inputs:
+
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    14) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis of temperature filtered to only areas where T <= 32F. 
             
             '''
 
@@ -6932,9 +6977,55 @@ class Counties_Perspective:
         def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_speed(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint and wind speed data arrays. 
+                                                2) Uses MetPy to create a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                3) Converts wind speed from m/s to MPH. 
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of both relative humidity where RH <= 15% and wind speed >= 25 MPH overlayed on the same plot. 
+                
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                Inputs:
+
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    14) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis of both relative humidity where RH <= 15% and wind speed >= 25 MPH overlayed on the same plot. 
             
             '''
             colorbar_label_font_size = colorbar_label_font_size
@@ -6987,9 +7078,51 @@ class Counties_Perspective:
         def plot_dry_and_windy_areas_based_on_sustained_winds(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind speed data arrays. 
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind speed data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Speed >= red_flag_warning_wind_speed_threshold (MPH). 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Dry and Windy" criteria are met. 
+                
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                Inputs:
+
+                    1) red_flag_warning_relative_humidity_threshold (Integer) - The National Weather Service Red Flag Warning threshold for relative humidity. 
+                    
+                    2) red_flag_warning_wind_speed_threshold (Integer) - The National Weather Service Red Flag Warning threshold for wind speed. 
+
+                    3) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                    4) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                    5) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                    6) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                    7) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                    8) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                    9) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                    10) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+
+                    11) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    12) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    15) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of dry and windy conditions. 
             
             '''
 
@@ -7042,9 +7175,51 @@ class Counties_Perspective:
         def plot_dry_and_windy_areas_based_on_wind_gusts(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON WIND GUSTS. 
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Gust >= red_flag_warning_wind_gust_threshold (MPH). 
+                                                6) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Dry and Windy" criteria are met. 
+                
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                Inputs:
+
+                    1) red_flag_warning_relative_humidity_threshold (Integer) - The National Weather Service Red Flag Warning threshold for relative humidity. 
+                    
+                    2) red_flag_warning_wind_gust_threshold (Integer) - The National Weather Service Red Flag Warning threshold for wind speed using wind gusts. 
+
+                    3) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                    4) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                    5) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                    6) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                    7) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                    8) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                    9) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                    10) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+
+                    11) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    12) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    15) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis showing current areas of dry and windy conditions. 
             
             '''
 
@@ -7097,9 +7272,75 @@ class Counties_Perspective:
         def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind speed data arrays. 
+                                                2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                3) Converts the wind speed data array from m/s to MPH. 
+                                                4) Masks all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Speed >= red_flag_warning_wind_speed_threshold (MPH). 
+                                                5) Plots a figure that consists of 3 subplots.
+                                                List of subplots:
+                                                            1) Plot where the dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= red_flag_warning_relative_humidity_threshold (%)
+                                                            3) Plot the wind speed filtered only showing areas where Wind Speed >= red_flag_warning_wind_speed_threshold (MPH)
+                                                 
+                
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                Inputs:
+
+
+                    1) red_flag_warning_relative_humidity_threshold (Integer) - The National Weather Service Red Flag Warning threshold for relative humidity. 
+                    
+                    2) red_flag_warning_wind_speed_threshold (Integer) - The National Weather Service Red Flag Warning threshold for wind speed.
+
+                    3) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                    4) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                    5) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                    6) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                    7) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                    8) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                    9) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                    10) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) color_table_shrink (Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    9) subplot_title_font_size (Integer) - Fontsize of all subplot titles. 
+                    
+                    10) first_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the first subplot. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size. 
+                    
+                    11) subsequent_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the second, third and fourth subplots. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size.
+
+                    12) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure showing the four aforementioned subplots:                                                             
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= red_flag_warning_relative_humidity_threshold (%)
+                                                            3) Plot the wind speed filtered only showing areas where Wind Speed >= red_flag_warning_wind_speed_threshold (MPH)
             
             '''
 
@@ -7188,9 +7429,75 @@ class Counties_Perspective:
         def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON SUSTAINED WINDS. 
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                3) Converts the wind gust data array from m/s to MPH. 
+                                                4) Masks all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Gust >= red_flag_warning_wind_gust_threshold (MPH). 
+                                                5) Plots a figure that consists of 3 subplots.
+                                                List of subplots:
+                                                            1) Plot where the dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= red_flag_warning_relative_humidity_threshold (%)
+                                                            3) Plot the wind speed filtered only showing areas where Wind Speed >= red_flag_warning_wind_gust_threshold (MPH)
+                                                 
+                
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                Inputs:
+
+
+                    1) red_flag_warning_relative_humidity_threshold (Integer) - The National Weather Service Red Flag Warning threshold for relative humidity. 
+                    
+                    2) red_flag_warning_wind_gust_threshold (Integer) - The National Weather Service Red Flag Warning threshold for wind speed using wind gusts. 
+
+                    3) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                    4) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                    5) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                    6) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                    7) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                    8) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                    9) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                    10) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) color_table_shrink (Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    9) subplot_title_font_size (Integer) - Fontsize of all subplot titles. 
+                    
+                    10) first_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the first subplot. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size. 
+                    
+                    11) subsequent_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the second, third and fourth subplots. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size.
+
+                    12) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure showing the four aforementioned subplots:                                                             
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= red_flag_warning_relative_humidity_threshold (%)
+                                                            3) Plot the wind speed filtered only showing areas where Wind Speed >= red_flag_warning_wind_speed_threshold (MPH)
             
             '''
 
@@ -7279,9 +7586,55 @@ class Counties_Perspective:
         def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_gusts(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
 
             r'''
-            THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF CONUS. THIS PLOT COMPARES THE AREAS OF RED-FLAG RELATIVE HUMIDITY CRITERIA WITH RED-FLAG WIND CRITERIA BASED ON WIND GUSTS. 
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint and wind gust data arrays. 
+                                                2) Uses MetPy to create a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                3) Converts wind speed from m/s to MPH. 
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of both relative humidity where RH <= 15% and wind gust >= 25 MPH overlayed on the same plot. 
+                
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                Inputs:
+
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    14) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis of both relative humidity where RH <= 15% and wind gust >= 25 MPH overlayed on the same plot. 
             
             '''
             colorbar_label_font_size = colorbar_label_font_size
