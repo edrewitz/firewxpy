@@ -3914,9 +3914,57 @@ class Counties_Perspective:
             def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
     
                 r'''
-                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
+                                                6) Plots a figure that consists of 4 subplots.
+                                                List of subplots:
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH
+                                                 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) color_table_shrink (Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    9) subplot_title_font_size (Integer) - Fontsize of all subplot titles. 
+                    
+                    10) first_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the first subplot. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size. 
+                    
+                    11) subsequent_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the second, third and fourth subplots. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size.
+
+                    12) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure showing the four aforementioned subplots:                                                             
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -4721,9 +4769,57 @@ class Counties_Perspective:
             def plot_hot_dry_windy_areas_based_on_sustained_winds_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
     
                 r'''
-                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind speed data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind speed data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
+                                                6) Plots a figure that consists of 4 subplots.
+                                                List of subplots:
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind speed filtered only showing areas where Wind Speed >= 15 MPH
+                                                 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) color_table_shrink (Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    9) subplot_title_font_size (Integer) - Fontsize of all subplot titles. 
+                    
+                    10) first_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the first subplot. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size. 
+                    
+                    11) subsequent_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the second, third and fourth subplots. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size.
+
+                    12) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure showing the four aforementioned subplots:                                                             
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind speed filtered only showing areas where Wind Speed >= 15 MPH
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -5800,9 +5896,57 @@ class Counties_Perspective:
             def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
     
                 r'''
-                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
+                                                6) Plots a figure that consists of 4 subplots.
+                                                List of subplots:
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH
+                                                 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) color_table_shrink (Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    9) subplot_title_font_size (Integer) - Fontsize of all subplot titles. 
+                    
+                    10) first_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the first subplot. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size. 
+                    
+                    11) subsequent_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the second, third and fourth subplots. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size.
+
+                    12) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure showing the four aforementioned subplots:                                                             
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -7923,15 +8067,69 @@ class Predictive_Services_Areas_Perspective:
 
 
 
-            def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size):
+            def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
     
                 r'''
-                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
+                                                6) Plots a figure that consists of 4 subplots.
+                                                List of subplots:
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH
+                                                 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) color_table_shrink (Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    9) subplot_title_font_size (Integer) - Fontsize of all subplot titles. 
+                    
+                    10) first_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the first subplot. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size. 
+                    
+                    11) subsequent_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the second, third and fourth subplots. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size.
+
+                    12) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure showing the four aforementioned subplots:                                                             
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
+
+                colorbar_pad = colorbar_pad
+
+                first_subplot_aspect_ratio = first_subplot_aspect_ratio
+
+                subsequent_subplot_aspect_ratio = subsequent_subplot_aspect_ratio
     
                 lon_vals, lat_vals, time, relative_humidity, temperature, wind_gust = da.NOMADS_OPENDAP_Downloads.RTMA_Alaska.get_RTMA_red_flag_warning_parameters_using_wind_gust(utc_time)  
     
@@ -7955,7 +8153,7 @@ class Predictive_Services_Areas_Perspective:
                 ax0 = plt.subplot(gs[0:8, 0:7], projection=datacrs)
                 ax0.add_feature(GACC, linewidth=2.5, zorder=3)
                 ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
-                ax0.set_aspect(1)
+                ax0.set_aspect(first_subplot_aspect_ratio)
                 ax0.set_extent([-174, -128, 45, 80], datacrs)
                 ax0.set_title("Hot & Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
     
@@ -7969,35 +8167,35 @@ class Predictive_Services_Areas_Perspective:
                 ax1 = plt.subplot(gs[0:8, 8:15], projection=datacrs)
                 ax1.add_feature(GACC, linewidth=2.5, zorder=3)
                 ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
-                ax1.set_aspect(1)
+                ax1.set_aspect(subsequent_subplot_aspect_ratio)
                 ax1.set_extent([-174, -128, 45, 80], datacrs)
                 ax1.set_title("Temperature", fontsize=subplot_title_font_size, fontweight='bold')
 
                 cs_temp = ax1.contourf(lon_vals, lat_vals, temperature, levels=np.arange(75, 100, 1), cmap=cmap_temperature, transform=datacrs)
-                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=0.02)
+                cbar_temp = fig.colorbar(cs_temp, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
                 cbar_temp.set_label(label='Temperature (\N{DEGREE SIGN}F)', size=colorbar_label_font_size, fontweight='bold') 
 
                 ax2 = plt.subplot(gs[8:15, 0:7], projection=datacrs)
                 ax2.add_feature(GACC, linewidth=2.5, zorder=3)
                 ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
-                ax2.set_aspect(1)
+                ax2.set_aspect(subsequent_subplot_aspect_ratio)
                 ax2.set_extent([-174, -128, 45, 80], datacrs)
                 ax2.set_title("Relative Humidity", fontsize=subplot_title_font_size, fontweight='bold')
 
                 cs_rh = ax2.contourf(lon_vals, lat_vals, relative_humidity, levels=np.arange(0, 26, 1), cmap=cmap_rh, transform=datacrs)
-                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=0.02)
+                cbar_rh = fig.colorbar(cs_rh, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
                 cbar_rh.set_label(label='Relative Humidity (%)', size=colorbar_label_font_size, fontweight='bold') 
 
 
                 ax3 = plt.subplot(gs[8:15, 8:15], projection=datacrs)
                 ax3.add_feature(GACC, linewidth=2.5, zorder=3)
                 ax3.add_feature(PSAs, linewidth=1.5, zorder=2)
-                ax3.set_aspect(1)
+                ax3.set_aspect(subsequent_subplot_aspect_ratio)
                 ax3.set_extent([-174, -128, 45, 80], datacrs)
                 ax3.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
 
                 cs_wind = ax3.contourf(lon_vals, lat_vals, wind_gust, levels=np.arange(15, 75, 5), cmap=cmap_wind, transform=datacrs)
-                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=0.02)
+                cbar_wind = fig.colorbar(cs_wind, shrink=color_table_shrink, location='bottom', pad=colorbar_pad)
                 cbar_wind.set_label(label='Wind Gust (MPH)', size=colorbar_label_font_size, fontweight='bold') 
     
                 
@@ -8891,9 +9089,57 @@ class Predictive_Services_Areas_Perspective:
             def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
     
                 r'''
-                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
+                                                6) Plots a figure that consists of 4 subplots.
+                                                List of subplots:
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH
+                                                 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) color_table_shrink (Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    9) subplot_title_font_size (Integer) - Fontsize of all subplot titles. 
+                    
+                    10) first_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the first subplot. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size. 
+                    
+                    11) subsequent_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the second, third and fourth subplots. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size.
+
+                    12) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure showing the four aforementioned subplots:                                                             
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -9449,9 +9695,36 @@ class Predictive_Services_Areas_Perspective:
             def plot_current_frost_freeze_areas(fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad):
     
                 r'''
-                THIS FUNCTION CREATES A CUSTOMIZED PLOT OF THE 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATA FOR ANY AREA INSIDE OF ALASKA. 
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest temperature data array.
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the temperature is <= 32F.
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for temperature, filtered to areas where the temperature is below freezing. 
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -9825,9 +10098,57 @@ class Predictive_Services_Areas_Perspective:
             def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
     
                 r'''
-                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
+                                                6) Plots a figure that consists of 4 subplots.
+                                                List of subplots:
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH
+                                                 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) color_table_shrink (Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    9) subplot_title_font_size (Integer) - Fontsize of all subplot titles. 
+                    
+                    10) first_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the first subplot. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size. 
+                    
+                    11) subsequent_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the second, third and fourth subplots. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size.
+
+                    12) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure showing the four aforementioned subplots:                                                             
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -10786,9 +11107,57 @@ class Predictive_Services_Areas_Perspective:
             def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
     
                 r'''
-                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
+                                                6) Plots a figure that consists of 4 subplots.
+                                                List of subplots:
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH
+                                                 
+                
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) color_table_shrink (Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    9) subplot_title_font_size (Integer) - Fontsize of all subplot titles. 
+                    
+                    10) first_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the first subplot. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size. 
+                    
+                    11) subsequent_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the second, third and fourth subplots. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size.
+
+                    12) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure showing the four aforementioned subplots:                                                             
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH
                 
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
@@ -11747,10 +12116,57 @@ class Predictive_Services_Areas_Perspective:
             def plot_hot_dry_windy_areas_based_on_wind_gusts_4_panel(fig_x_length, fig_y_length, signature_x_position, signature_y_position, signature_font_size, title_font_size, colorbar_label_font_size, color_table_shrink, subplot_title_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, colorbar_pad):
     
                 r'''
-                THIS FUNCTION SHADES ALL AREAS EXPERIENCING RED FLAG WARNING CONDITIONS BASED ON ALASKA CRITERIA (TEMPERATURE >= 75F, RELATIVE HUMIDITY <= 25% AND WIND SPEED >= 15 MPH)
-    
-                (C) METEOROLOGIST ERIC J. DREWITZ 2024
+                This function does the following:
+                                                1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
+                                                2) Converts the temperature values from Kelvin to Fahrenheit.
+                                                3) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Converts the wind gust data array from m/s to MPH. 
+                                                5) Masks all areas where the following criteria is not met: Temperature >= 75F, RH <= 25% and Wind Speed >= 15 MPH). 
+                                                6) Plots a figure that consists of 4 subplots.
+                                                List of subplots:
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH
+                                                 
                 
+
+                Inputs:
+
+                    1) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                    2) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                    3) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                    4) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                    5) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                    6) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                    7) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                    8) color_table_shrink (Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                    9) subplot_title_font_size (Integer) - Fontsize of all subplot titles. 
+                    
+                    10) first_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the first subplot. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size. 
+                    
+                    11) subsequent_subplot_aspect_ratio (Integer or Float) - The width to height ratio of the second, third and fourth subplots. When some subplots have colorbars while others do not in the same figure, this needs to be edited so all subplots appear to have the same size.
+
+                    12) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+
+                Returns:
+                        1) A figure showing the four aforementioned subplots:                                                             
+                                                            1) Plot where the hot, dry and windy conditions are located. 
+                                                            2) Plot the relative humidity filtered only showing areas where the RH <= 25%
+                                                            3) Plot the temperature filtered only showing areas where T >= 75F
+                                                            4) Plot the wind gust filtered only showing areas where Wind Gust >= 15 MPH                
                 '''            
                 local_time, utc_time = standard.plot_creation_time()
     
