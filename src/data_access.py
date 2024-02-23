@@ -555,7 +555,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
     r'''
     This class hosts three nested classes: 1) CONUS, 2) GUAM and 3) METARS. 
-    Each of these nested classes download and return data from the UCAR THREDDS Server. 
+    Each of these nested classes download and return data from the UCAR THREDDS Server: thredds.ucar.edu 
     The UCAR THREDDS Server hosts the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for CONUS and Guam as well as the METAR data. 
     '''    
 
@@ -665,7 +665,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         
             r"""
             This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis dataset and the dataset from 24 hours prior to the current dataset. 
-            The function will then take the difference between the two datasets to show the 24 hour difference and create a new dataset based on that.
+            This function will then take the difference between the two datasets to show the 24 hour difference and create a new dataset based on that.
 
             24 hour difference dataset = current dataset - dataset from 24 hours prior to the current dataset
 
@@ -919,23 +919,17 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         def get_red_flag_warning_parameters_using_wind_speed(current_time):
         
             r"""
-            THIS FUNCTION RETRIEVES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATASETS FOR TEMPERATURE AND DEWPOINT
-        
-            THIS FUNCTION THEN CALCULATES A RELATIVE HUMIDITY DATASET USING METPY.CALC FROM THE TEMPERATURE AND DEWPOINT DATASETS
-        
-            IF THE DATASET FOR THE CURRENT TIME IS UNAVAILABLE THE FUNCTION WILL TRY TO RETURN THE MOST RECENT DATASET IN THE PAST 4 HOURS
-        
-            PYTHON PACKAGE DEPENDENCIES:
-        
-            1. SIPHON
-            2. METPY
-            3. DATETIME
-        
-            RETURNS:
-        
-            CURRENT RTMA DATASET FOR RELATIVE HUMIDITY
-        
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis datasets for: 1) Temperature, 2) Dewpoint and 3) Wind Speed. 
+            This function uses MetPy to create a relative humidity dataset from the temperature and dewpoint datasets. 
+            This function then returns the relative humidity dataset, wind speed dataset and the time for the datasets. 
+
+            Inputs:
+                   1) current_time (Datetime) - Current time in UTC. 
+
+            Returns:
+                    1) 2.5km x 2.5km Real Time Mesoscale Analysis Relative Humidity dataset. 
+                    2) 2.5km x 2.5km Real Time Mesoscale Analysis Wind Speed dataset. 
+                    3) Time of the latest available datasets. 
         
             """
         
@@ -1046,23 +1040,17 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         def get_red_flag_warning_parameters_using_wind_gust(current_time):
         
             r"""
-            THIS FUNCTION RETRIEVES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATASETS FOR TEMPERATURE AND DEWPOINT
-        
-            THIS FUNCTION THEN CALCULATES A RELATIVE HUMIDITY DATASET USING METPY.CALC FROM THE TEMPERATURE AND DEWPOINT DATASETS
-        
-            IF THE DATASET FOR THE CURRENT TIME IS UNAVAILABLE THE FUNCTION WILL TRY TO RETURN THE MOST RECENT DATASET IN THE PAST 4 HOURS
-        
-            PYTHON PACKAGE DEPENDENCIES:
-        
-            1. SIPHON
-            2. METPY
-            3. DATETIME
-        
-            RETURNS:
-        
-            CURRENT RTMA DATASET FOR RELATIVE HUMIDITY
-        
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis datasets for: 1) Temperature, 2) Dewpoint and 3) Wind Gust. 
+            This function uses MetPy to create a relative humidity dataset from the temperature and dewpoint datasets. 
+            This function then returns the relative humidity dataset, wind gust dataset and the time for the datasets. 
+
+            Inputs:
+                   1) current_time (Datetime) - Current time in UTC. 
+
+            Returns:
+                    1) 2.5km x 2.5km Real Time Mesoscale Analysis Relative Humidity dataset. 
+                    2) 2.5km x 2.5km Real Time Mesoscale Analysis Wind Gust dataset. 
+                    3) Time of the latest available datasets. 
         
             """
         
@@ -1173,23 +1161,17 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         def get_rtma_relative_humidity_24_hour_difference_data(current_time):
         
             r"""
-            THIS FUNCTION RETRIEVES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATASETS FOR TEMPERATURE AND DEWPOINT AND THE CORRESPONDING DATASETS FROM 24 HOURS AGO
-        
-            THIS FUNCTION THEN CALCULATES A RELATIVE HUMIDITY DATASET USING METPY.CALC FROM THE TEMPERATURE AND DEWPOINT DATASETS
-        
-            IF THE DATASET FOR THE CURRENT TIME IS UNAVAILABLE THE FUNCTION WILL SEARCH FOR THE LATEST DATASET IN THE PAST 4 HOURS
-        
-            PYTHON PACKAGE DEPENDENCIES:
-        
-            1. SIPHON
-            2. METPY
-            3. DATETIME
-        
-            RETURNS:
-        
-            24 HOUR DIFFERENCE IN RELATIVE HUMIDITY
-        
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis temperature and dewpoint dataset and the temperature and dewpoint dataset from 24 hours prior to the current dataset. 
+            This function will then use MetPy to create a relative humidity dataset for the latest available time and for 24 hours prior to the latest available time. 
+            The function will then take the difference between the two relative humidity datasets to show the 24 hour difference and create a new dataset based on that.
+
+            24 hour difference relative humidity dataset = current relative humidity dataset - relative humidity dataset from 24 hours prior to the current dataset
+
+            Inputs:
+                   1) current_time (Datetime) - Current time in UTC.
+
+            Returns: 1) If there are zero errors, the latest 24 hour relative humidity difference dataset and the time of the latest available relative humidity dataset for the requested parameter will be returned. 
+                     2) If there is an error, an error message is returned. 
         
             """
         
@@ -1336,31 +1318,22 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
     class GUAM:
 
-        r'''
-        THIS CLASS HAS FUNCTIONS TO RETRIEVE THE LATEST RTMA DATA FOR GUAM
-
-        '''
+     r'''
+     This subclass is responsible for downloading and returning various 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) datasets for Guam.  
+     '''
 
         def get_current_rtma_data(current_time, parameter):
         
             r"""
-            THIS FUNCTION RETRIEVES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATASET FOR A PARAMETER SPECIFIED BY THE USER
-        
-            IF THE DATASET FOR THE CURRENT TIME IS UNAVAILABLE THE FUNCTION WILL TRY TO RETURN THE MOST RECENT DATASET IN THE PAST 4 HOURS
-        
-            IF THE USER HAS A SYNTAX ERROR THE LINK TO THE UCAR THREDDS OPENDAP PARAMETER LIST WILL BE DISPLAYED
-        
-            PYTHON PACKAGE DEPENDENCIES:
-        
-            1. SIPHON
-            2. METPY
-            3. DATETIME
-        
-            RETURNS:
-        
-            CURRENT RTMA DATASET FOR THE PARAMETER DEFINED BY THE USER
-        
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis for any available parameter. 
+
+            Inputs:
+                   1) current_time (Datetime) - Current time in UTC.
+                   2) parameter (String) - The weather parameter the user wishes to download. 
+                                           To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
+
+            Returns: 1) If there are zero errors, the latest dataset and the time of the dataset for the requested parameter will be returned. 
+                     2) If there is an error, an error message is returned. 
         
             """
         
@@ -1456,23 +1429,18 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         def get_rtma_data_24_hour_difference(current_time, parameter):
         
             r"""
-            THIS FUNCTION RETRIEVES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATASET FOR A PARAMETER SPECIFIED BY THE USER
-        
-            THIS FUNCTION ALSO RETRIEVES THE DATASET FROM 24 HOURS PRIOR TO THE CURRENT DATASET FOR A 24 HOUR COMPARISON
-        
-            THE 24 HOUR COMPARISON IS SUBTRACTING THE CURRENT VALUES FROM THE VALUES FROM 24 HOURS AGO TO SHOW THE CHANGE
-            
-            PYTHON PACKAGE DEPENDENCIES:
-        
-            1. SIPHON
-            2. METPY
-            3. DATETIME
-        
-            RETURNS:
-        
-            THE DIFFERENCE IN VALUES BETWEEN THE CURRENT DATASET AND DATASET FROM 24 HOURS AGO FOR THE PARAMETER DEFINED BY THE USER
-        
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis dataset and the dataset from 24 hours prior to the current dataset. 
+            This function will then take the difference between the two datasets to show the 24 hour difference and create a new dataset based on that.
+
+            24 hour difference dataset = current dataset - dataset from 24 hours prior to the current dataset
+
+            Inputs:
+                   1) current_time (Datetime) - Current time in UTC.
+                   2) parameter (String) - The weather parameter the user wishes to download. 
+                                           To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
+
+            Returns: 1) If there are zero errors, the latest 24 hour difference dataset and the time of the latest available dataset for the requested parameter will be returned. 
+                     2) If there is an error, an error message is returned. 
         
             """
         
@@ -1601,23 +1569,15 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         def get_current_rtma_relative_humidity_data(current_time):
         
             r"""
-            THIS FUNCTION RETRIEVES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATASETS FOR TEMPERATURE AND DEWPOINT
-        
-            THIS FUNCTION THEN CALCULATES A RELATIVE HUMIDITY DATASET USING METPY.CALC FROM THE TEMPERATURE AND DEWPOINT DATASETS
-        
-            IF THE DATASET FOR THE CURRENT TIME IS UNAVAILABLE THE FUNCTION WILL TRY TO RETURN THE MOST RECENT DATASET IN THE PAST 4 HOURS
-        
-            PYTHON PACKAGE DEPENDENCIES:
-        
-            1. SIPHON
-            2. METPY
-            3. DATETIME
-        
-            RETURNS:
-        
-            CURRENT RTMA DATASET FOR RELATIVE HUMIDITY
-        
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis for temperature and dewpoint. 
+            This function then uses MetPy to create a relative humidity dataset from the temperature and dewpoint datasets. 
+            This function then returns the relative humidity dataset. 
+
+            Inputs:
+                   1) current_time (Datetime) - Current time in UTC.
+
+            Returns: 1) If there are zero errors, the latest relative humidity dataset and the time for that dataset are returned. 
+                     2) If there is an error, an error message is returned. 
         
             """
         
@@ -1722,23 +1682,17 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         def get_rtma_relative_humidity_24_hour_difference_data(current_time):
         
             r"""
-            THIS FUNCTION RETRIEVES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATASETS FOR TEMPERATURE AND DEWPOINT AND THE CORRESPONDING DATASETS FROM 24 HOURS AGO
-        
-            THIS FUNCTION THEN CALCULATES A RELATIVE HUMIDITY DATASET USING METPY.CALC FROM THE TEMPERATURE AND DEWPOINT DATASETS
-        
-            IF THE DATASET FOR THE CURRENT TIME IS UNAVAILABLE THE FUNCTION WILL SEARCH FOR THE LATEST DATASET IN THE PAST 4 HOURS
-        
-            PYTHON PACKAGE DEPENDENCIES:
-        
-            1. SIPHON
-            2. METPY
-            3. DATETIME
-        
-            RETURNS:
-        
-            24 HOUR DIFFERENCE IN RELATIVE HUMIDITY
-        
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis temperature and dewpoint dataset and the temperature and dewpoint dataset from 24 hours prior to the current dataset. 
+            This function will then use MetPy to create a relative humidity dataset for the latest available time and for 24 hours prior to the latest available time. 
+            The function will then take the difference between the two relative humidity datasets to show the 24 hour difference and create a new dataset based on that.
+
+            24 hour difference relative humidity dataset = current relative humidity dataset - relative humidity dataset from 24 hours prior to the current dataset
+
+            Inputs:
+                   1) current_time (Datetime) - Current time in UTC.
+
+            Returns: 1) If there are zero errors, the latest 24 hour relative humidity difference dataset and the time of the latest available relative humidity dataset for the requested parameter will be returned. 
+                     2) If there is an error, an error message is returned. 
         
             """
         
@@ -1887,23 +1841,17 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         def get_red_flag_warning_parameters_using_wind_speed(current_time):
         
             r"""
-            THIS FUNCTION RETRIEVES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATASETS FOR TEMPERATURE AND DEWPOINT
-        
-            THIS FUNCTION THEN CALCULATES A RELATIVE HUMIDITY DATASET USING METPY.CALC FROM THE TEMPERATURE AND DEWPOINT DATASETS
-        
-            IF THE DATASET FOR THE CURRENT TIME IS UNAVAILABLE THE FUNCTION WILL TRY TO RETURN THE MOST RECENT DATASET IN THE PAST 4 HOURS
-        
-            PYTHON PACKAGE DEPENDENCIES:
-        
-            1. SIPHON
-            2. METPY
-            3. DATETIME
-        
-            RETURNS:
-        
-            CURRENT RTMA DATASET FOR RELATIVE HUMIDITY
-        
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis datasets for: 1) Temperature, 2) Dewpoint and 3) Wind Speed. 
+            This function uses MetPy to create a relative humidity dataset from the temperature and dewpoint datasets. 
+            This function then returns the relative humidity dataset, wind speed dataset and the time for the datasets. 
+
+            Inputs:
+                   1) current_time (Datetime) - Current time in UTC. 
+
+            Returns:
+                    1) 2.5km x 2.5km Real Time Mesoscale Analysis Relative Humidity dataset. 
+                    2) 2.5km x 2.5km Real Time Mesoscale Analysis Wind Speed dataset. 
+                    3) Time of the latest available datasets. 
         
             """
         
@@ -2014,23 +1962,17 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         def get_red_flag_warning_parameters_using_wind_gust(current_time):
         
             r"""
-            THIS FUNCTION RETRIEVES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATASETS FOR TEMPERATURE AND DEWPOINT
-        
-            THIS FUNCTION THEN CALCULATES A RELATIVE HUMIDITY DATASET USING METPY.CALC FROM THE TEMPERATURE AND DEWPOINT DATASETS
-        
-            IF THE DATASET FOR THE CURRENT TIME IS UNAVAILABLE THE FUNCTION WILL TRY TO RETURN THE MOST RECENT DATASET IN THE PAST 4 HOURS
-        
-            PYTHON PACKAGE DEPENDENCIES:
-        
-            1. SIPHON
-            2. METPY
-            3. DATETIME
-        
-            RETURNS:
-        
-            CURRENT RTMA DATASET FOR RELATIVE HUMIDITY
-        
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis datasets for: 1) Temperature, 2) Dewpoint and 3) Wind Gust. 
+            This function uses MetPy to create a relative humidity dataset from the temperature and dewpoint datasets. 
+            This function then returns the relative humidity dataset, wind gust dataset and the time for the datasets. 
+
+            Inputs:
+                   1) current_time (Datetime) - Current time in UTC. 
+
+            Returns:
+                    1) 2.5km x 2.5km Real Time Mesoscale Analysis Relative Humidity dataset. 
+                    2) 2.5km x 2.5km Real Time Mesoscale Analysis Wind Gust dataset. 
+                    3) Time of the latest available datasets. 
         
             """
         
@@ -2141,7 +2083,8 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
     class METARs:
         
         r'''
-        THIS CLASS HOSTS FUNCTIONS TO DOWNLOAD METAR DATA
+        This class downloads the latest METAR data from the UCAR THREDDS Server: thredds.ucar.edu
+        The functions in this class use MetPy to parse the METAR data
 
         '''
 
@@ -2428,7 +2371,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 class NOMADS_OPENDAP_Downloads:
 
     r'''
-    THIS CLASS RETRIEVES DATA FROM THE NOMADS OPENDAP
+    This class hosts functions that download and return the latest Real Time Mesoscale Analysis datasets from the NCEP NOMADS server for 1) Hawaii, 2) Puerto Rico and 3) Guam.  
 
     '''
 
