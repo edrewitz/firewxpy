@@ -570,6 +570,14 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         
             r"""
             This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis for any available parameter. 
+
+            Inputs:
+                   1) current_time (Datetime) - Current time in UTC.
+                   2) parameter (String) - The weather parameter the user wishes to download. 
+                                           To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
+
+            Returns: 1) If there are zero errors, the latest dataset and the time of the dataset for the requested parameter will be returned. 
+                     2) If there is an error, an error message is returned. 
         
             """
         
@@ -656,23 +664,18 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         def get_rtma_data_24_hour_difference(current_time, parameter):
         
             r"""
-            THIS FUNCTION RETRIEVES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATASET FOR A PARAMETER SPECIFIED BY THE USER
-        
-            THIS FUNCTION ALSO RETRIEVES THE DATASET FROM 24 HOURS PRIOR TO THE CURRENT DATASET FOR A 24 HOUR COMPARISON
-        
-            THE 24 HOUR COMPARISON IS SUBTRACTING THE CURRENT VALUES FROM THE VALUES FROM 24 HOURS AGO TO SHOW THE CHANGE
-            
-            PYTHON PACKAGE DEPENDENCIES:
-        
-            1. SIPHON
-            2. METPY
-            3. DATETIME
-        
-            RETURNS:
-        
-            THE DIFFERENCE IN VALUES BETWEEN THE CURRENT DATASET AND DATASET FROM 24 HOURS AGO FOR THE PARAMETER DEFINED BY THE USER
-        
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis dataset and the dataset from 24 hours prior to the current dataset. 
+            The function will then take the difference between the two datasets to show the 24 hour difference and create a new dataset based on that.
+
+            24 hour difference dataset = current dataset - dataset from 24 hours prior to the current dataset
+
+            Inputs:
+                   1) current_time (Datetime) - Current time in UTC.
+                   2) parameter (String) - The weather parameter the user wishes to download. 
+                                           To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
+
+            Returns: 1) If there are zero errors, the latest 24 hour difference dataset and the time of the latest available dataset for the requested parameter will be returned. 
+                     2) If there is an error, an error message is returned. 
         
             """
         
@@ -801,23 +804,15 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         def get_current_rtma_relative_humidity_data(current_time):
         
             r"""
-            THIS FUNCTION RETRIEVES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATASETS FOR TEMPERATURE AND DEWPOINT
-        
-            THIS FUNCTION THEN CALCULATES A RELATIVE HUMIDITY DATASET USING METPY.CALC FROM THE TEMPERATURE AND DEWPOINT DATASETS
-        
-            IF THE DATASET FOR THE CURRENT TIME IS UNAVAILABLE THE FUNCTION WILL TRY TO RETURN THE MOST RECENT DATASET IN THE PAST 4 HOURS
-        
-            PYTHON PACKAGE DEPENDENCIES:
-        
-            1. SIPHON
-            2. METPY
-            3. DATETIME
-        
-            RETURNS:
-        
-            CURRENT RTMA DATASET FOR RELATIVE HUMIDITY
-        
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis for temperature and dewpoint. 
+            This function then uses MetPy to create a relative humidity dataset from the temperature and dewpoint datasets. 
+            This function then returns the relative humidity dataset. 
+
+            Inputs:
+                   1) current_time (Datetime) - Current time in UTC.
+
+            Returns: 1) If there are zero errors, the latest relative humidity dataset and the time for that dataset are returned. 
+                     2) If there is an error, an error message is returned. 
         
             """
         
