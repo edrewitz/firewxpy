@@ -554,37 +554,22 @@ class FTP_Downloads:
 class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
     r'''
-
-    THIS CLASS HOSTS FUNCTIONS TO DOWNLOAD VARIOUS TYPES OF DATASETS FROM THE UCAR THREDDS SERVER
-
-    (C) METEOROLOGIST ERIC J. DREWITZ 2024
-
-
+    This class hosts three nested classes: 1) CONUS, 2) GUAM and 3) METARS. 
+    Each of these nested classes download and return data from the UCAR THREDDS Server. 
+    The UCAR THREDDS Server hosts the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for CONUS and Guam as well as the METAR data. 
     '''    
 
     class CONUS:
+
+     r'''
+     This subclass is responsible for downloading and returning various 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) datasets for CONUS aka the "Lower-48" 
+     '''
 
     
         def get_current_rtma_data(current_time, parameter):
         
             r"""
-            THIS FUNCTION RETRIEVES THE LATEST 2.5KM X 2.5KM REAL TIME MESOSCALE ANALYSIS DATASET FOR A PARAMETER SPECIFIED BY THE USER
-        
-            IF THE DATASET FOR THE CURRENT TIME IS UNAVAILABLE THE FUNCTION WILL TRY TO RETURN THE MOST RECENT DATASET IN THE PAST 4 HOURS
-        
-            IF THE USER HAS A SYNTAX ERROR THE LINK TO THE UCAR THREDDS OPENDAP PARAMETER LIST WILL BE DISPLAYED
-        
-            PYTHON PACKAGE DEPENDENCIES:
-        
-            1. SIPHON
-            2. METPY
-            3. DATETIME
-        
-            RETURNS:
-        
-            CURRENT RTMA DATASET FOR THE PARAMETER DEFINED BY THE USER
-        
-            COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis for any available parameter. 
         
             """
         
