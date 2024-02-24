@@ -2091,10 +2091,24 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         def get_METAR_Data(current_time, plot_projection, mask):
 
             r'''
+            This function downloads and returns the latest METAR data. 
+            This function also uses MetPy to calculate the relative humidity dataset from the temperature and dewpoint datasets. 
+            
+            Inputs: 1) current_time (Datetime) - Current date and time in UTC. 
+                    2) plot_projection (Cartopy Coordinate Reference System) - The coordinate reference system of the data being plotted. This is usually PlateCarree. 
+                                                                               This function is to be used if the user does not want the Real Time Mesoscale Analysis data synced with the METAR. 
+                                                                               METAR data updates faster than Real Time Mesoscale Analysis data so that is the only advantage of having both 
+                                                                               datasets not time synced. However in most cases, this is NOT the recommended option and the time synced data
+                                                                               is recommended. 
+                   
+                    3) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
-            THIS FUNCTION DOWNLOADS THE LATEST METAR DATA FROM THE UCAR THREDDS SERVER AND RETURNS THE METAR DATA
-
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            Returns: 1) sfc_data - The entire METAR dataset. 
+                     2) sfc_data_u_kt - The u-component (west-east) of the wind velocity in knots. 
+                     3) sfc_data_v_kt - The v-component (north-south) of the wind velocity in knots. 
+                     4) sfc_data_rh - The relative humidity in the METAR dataset. 
+                     5) sfc_data_mask - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                     6) metar_time - The time of the METAR report. 
 
             '''
             metar_time = current_time
@@ -2148,9 +2162,17 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             r'''
 
-            THIS FUNCTION DOWNLOADS THE LATEST METAR DATA FROM THE UCAR THREDDS SERVER AND RETURNS THE METAR DATA
+            This function downloads and returns the latest METAR data. 
+            This function also uses MetPy to calculate the relative humidity dataset from the temperature and dewpoint datasets. 
+            This function is only used for METAR observations in Hawaii. 
+            
+            Inputs: 1) current_time (Datetime) - Current date and time in UTC. 
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            Returns: 1) sfc_data - The entire METAR dataset. 
+                     2) sfc_data_u_kt - The u-component (west-east) of the wind velocity in knots. 
+                     3) sfc_data_v_kt - The v-component (north-south) of the wind velocity in knots. 
+                     4) sfc_data_rh - The relative humidity in the METAR dataset. 
+                     5) metar_time - The time of the METAR report. 
 
             '''
             metar_time = current_time
@@ -2197,10 +2219,15 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         def latest_metar_time(current_time):
 
             r'''
-            THIS FUNCTION SERVES AS A TIMECHECK FOR THE LATEST TIME A COMPLETE DATASET OF METAR DATA. IF THE PROGRAM RUNS AFTER 30 MINUTES PAST THE HOUR, NEW DATA TRICKLES IN AND IS VERY SPARSE SO THIS ENSURES WE HAVE THE LATEST FULL DATASET. 
+            This function is a timecheck to ensure the latest full dataset is downloaded rather than an incomplete dataset. 
+            After 30 minutes past the hour, the newer dataset begins to trickle in, however at this time the new dataset is missing several observations. 
+            This check uses the python datetime module to get the current time and if the current minute is past the 30 minute mark, the metar_time
+            which is the time variable used in our dataset query will be adjusted to back to the top of the current hour to ensure the latest complete 
+            dataset is the dataset that is downloaded. 
 
-            (C) METEOROLOGIST ERIC J. DREWITZ
+            Inputs: 1) current_time (Datetime) - Current date and time in UTC. 
 
+            Returns: 1) metar_time (Datetime) - The corrected time if the script the user is running runs past the 30 minute mark. 
             '''
 
             
@@ -2220,11 +2247,24 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         def RTMA_Synced_With_METAR(parameter, current_time, mask):
 
             r'''
+            This function is the recommended method to download the Real Time Mesoscale Analysis dataset with the METAR dataset as this function syncs the time of the
+            latest available Real Time Mesoscale Analysis dataset with the latest available complete METAR dataset. 
 
-            THIS FUNCTION RETURNS THE LATEST RTMA DATASET WITH THE LATEST METAR DATASET AND SYNCS UP BOTH DATASETS TO BE REPRESENTATIVE OF THE SAME TIME SINCE THE METAR DATA IS AVAILIABLE MUCH QUICKER THAN THE RTMA DATA. THIS ALLOWS USERS TO OVERLAY METAR DATA ONTO RTMA DATA AND HAVE THE TIMES BETWEEN BOTH DATASETS MATCH. 
+            Inputs: 1) parameter (String) - The weather parameter the user wishes to download. 
+                                           To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
 
-            (C) METEOROLOGIST ERIC J. DREWITZ 2024
-
+                    2) current_time (Datetime) - Current date and time in UTC. 
+                    3) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+            
+            Returns: 1) rtma_data - The latest avaiable Real Time Mesoscale Analysis dataset
+                     2) rtma_time - The time of the latest avaiable Real Time Mesoscale Analysis dataset
+                     3) sfc_data - The entire METAR dataset. 
+                     4) sfc_data_u_kt - The u-component (west-east) of the wind velocity in knots. 
+                     5) sfc_data_v_kt - The v-component (north-south) of the wind velocity in knots. 
+                     6) sfc_data_rh - The relative humidity in the METAR dataset. 
+                     7) sfc_data_mask - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed.
+                     8) metar_time_revised - The corrected time (if needed) for the latest complete METAR dataset. 
+                     9) plot_projection - The coordinate reference system of the data being plotted. This is usually PlateCarree.
             '''
 
             parameter = parameter
