@@ -121,7 +121,6 @@ class CONUS:
     
             mask = (rh <= red_flag_warning_relative_humidity_threshold) & (ds_mph >= red_flag_warning_wind_speed_threshold)
 
-
             times = []
             val_time = mask['valid_time']
             time = pd.to_datetime(val_time)
@@ -186,12 +185,12 @@ class CONUS:
             ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy|(C) Eric J. Drewitz 2024|Data Source: NOAA/NWS\nPlot Creation Time: " + current_time.strftime('%m/%d/%Y %HZ'), fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax5.transAxes)
             
-            ax1.set_title("Valid: " + times[0].strftime('%m/%d %HZ') + " - " + times[1].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax2.set_title("Valid: " + times[1].strftime('%m/%d %HZ') + " - " + times[2].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax3.set_title("Valid: " + times[2].strftime('%m/%d %HZ') + " - " + times[3].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax4.set_title("Valid: " + times[3].strftime('%m/%d %HZ') + " - " + times[4].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax5.set_title("Valid: " + times[4].strftime('%m/%d %HZ') + " - " + times[5].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax6.set_title("Valid: " + times[5].strftime('%m/%d %HZ') + " - " + times[6].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax1.set_title("Valid: " + current_time.strftime('%m/%d %HZ') + " - " + times[0].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax2.set_title("Valid: " + times[0].strftime('%m/%d %HZ') + " - " + times[1].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax3.set_title("Valid: " + times[1].strftime('%m/%d %HZ') + " - " + times[2].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax4.set_title("Valid: " + times[2].strftime('%m/%d %HZ') + " - " + times[3].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax5.set_title("Valid: " + times[3].strftime('%m/%d %HZ') + " - " + times[4].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax6.set_title("Valid: " + times[4].strftime('%m/%d %HZ') + " - " + times[5].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
 
         
             try:
@@ -362,12 +361,12 @@ class CONUS:
             ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy|(C) Eric J. Drewitz 2024|Data Source: NOAA/NWS\nPlot Creation Time: " + current_time.strftime('%m/%d/%Y %HZ'), fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax5.transAxes)
             
-            ax1.set_title("Valid: " + times[0].strftime('%m/%d %HZ') + " - " + times[1].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax2.set_title("Valid: " + times[1].strftime('%m/%d %HZ') + " - " + times[2].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax3.set_title("Valid: " + times[2].strftime('%m/%d %HZ') + " - " + times[3].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax4.set_title("Valid: " + times[3].strftime('%m/%d %HZ') + " - " + times[4].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax5.set_title("Valid: " + times[4].strftime('%m/%d %HZ') + " - " + times[5].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax6.set_title("Valid: " + times[5].strftime('%m/%d %HZ') + " - " + times[6].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax1.set_title("Valid: " + current_time.strftime('%m/%d %HZ') + " - " + times[0].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax2.set_title("Valid: " + times[0].strftime('%m/%d %HZ') + " - " + times[1].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax3.set_title("Valid: " + times[1].strftime('%m/%d %HZ') + " - " + times[2].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax4.set_title("Valid: " + times[2].strftime('%m/%d %HZ') + " - " + times[3].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax5.set_title("Valid: " + times[3].strftime('%m/%d %HZ') + " - " + times[4].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax6.set_title("Valid: " + times[4].strftime('%m/%d %HZ') + " - " + times[5].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
 
         
             try:
@@ -542,12 +541,12 @@ class CONUS:
             ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy|(C) Eric J. Drewitz 2024|Data Source: NOAA/NWS\nPlot Creation Time: " + current_time.strftime('%m/%d/%Y %HZ'), fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax5.transAxes)
             
-            ax1.set_title("Valid: " + times[0].strftime('%m/%d %HZ') + " - " + times[1].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax2.set_title("Valid: " + times[1].strftime('%m/%d %HZ') + " - " + times[2].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax3.set_title("Valid: " + times[2].strftime('%m/%d %HZ') + " - " + times[3].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax4.set_title("Valid: " + times[3].strftime('%m/%d %HZ') + " - " + times[4].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax5.set_title("Valid: " + times[4].strftime('%m/%d %HZ') + " - " + times[5].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax6.set_title("Valid: " + times[5].strftime('%m/%d %HZ') + " - " + times[6].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax1.set_title("Valid: " + current_time.strftime('%m/%d %HZ') + " - " + times[0].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax2.set_title("Valid: " + times[0].strftime('%m/%d %HZ') + " - " + times[1].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax3.set_title("Valid: " + times[1].strftime('%m/%d %HZ') + " - " + times[2].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax4.set_title("Valid: " + times[2].strftime('%m/%d %HZ') + " - " + times[3].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax5.set_title("Valid: " + times[3].strftime('%m/%d %HZ') + " - " + times[4].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax6.set_title("Valid: " + times[4].strftime('%m/%d %HZ') + " - " + times[5].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
 
         
             try:
@@ -715,12 +714,12 @@ class CONUS:
             ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy|(C) Eric J. Drewitz 2024|Data Source: NOAA/NWS\nPlot Creation Time: " + current_time.strftime('%m/%d/%Y %HZ'), fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax5.transAxes)
             
-            ax1.set_title("Valid: " + times[0].strftime('%m/%d %HZ') + " - " + times[1].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax2.set_title("Valid: " + times[1].strftime('%m/%d %HZ') + " - " + times[2].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax3.set_title("Valid: " + times[2].strftime('%m/%d %HZ') + " - " + times[3].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax4.set_title("Valid: " + times[3].strftime('%m/%d %HZ') + " - " + times[4].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax5.set_title("Valid: " + times[4].strftime('%m/%d %HZ') + " - " + times[5].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
-            ax6.set_title("Valid: " + times[5].strftime('%m/%d %HZ') + " - " + times[6].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax1.set_title("Valid: " + current_time.strftime('%m/%d %HZ') + " - " + times[0].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax2.set_title("Valid: " + times[0].strftime('%m/%d %HZ') + " - " + times[1].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax3.set_title("Valid: " + times[1].strftime('%m/%d %HZ') + " - " + times[2].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax4.set_title("Valid: " + times[2].strftime('%m/%d %HZ') + " - " + times[3].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax5.set_title("Valid: " + times[3].strftime('%m/%d %HZ') + " - " + times[4].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
+            ax6.set_title("Valid: " + times[4].strftime('%m/%d %HZ') + " - " + times[5].strftime('%m/%d %HZ'), fontsize=subplot_title_fontsize, fontweight='bold')
 
         
             try:
