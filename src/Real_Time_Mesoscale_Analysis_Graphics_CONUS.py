@@ -129,8 +129,8 @@ class Counties_Perspective:
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=4)
-        ax.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
+        ax.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=4)
 
         cs = ax.contourf(data.metpy.x, data.metpy.y, data, 
                          transform=data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
@@ -254,8 +254,8 @@ class Counties_Perspective:
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=4)
-        ax.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=2)
+        ax.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=county_border_line_thickness, edgecolor=county_border_color, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
@@ -365,8 +365,8 @@ class Counties_Perspective:
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
@@ -474,8 +474,8 @@ class Counties_Perspective:
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold, 1), cmap='YlOrBr_r', alpha=1)
@@ -598,8 +598,8 @@ class Counties_Perspective:
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
 
         cs_low = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=1)
@@ -698,8 +698,8 @@ class Counties_Perspective:
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap=cmap, alpha=1)
@@ -793,8 +793,8 @@ class Counties_Perspective:
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='lime', zorder=4)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='lime', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap='seismic', alpha=1)
@@ -888,8 +888,8 @@ class Counties_Perspective:
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap='PuOr_r', alpha=1)
@@ -980,8 +980,8 @@ class Counties_Perspective:
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap='cool_r', alpha=1)
@@ -1077,8 +1077,8 @@ class Counties_Perspective:
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
 
         cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
@@ -1182,8 +1182,8 @@ class Counties_Perspective:
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
 
         # Plot the mask
         try:
@@ -1281,8 +1281,8 @@ class Counties_Perspective:
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
 
         # Plot the mask
         try:
@@ -1408,8 +1408,8 @@ class Counties_Perspective:
         ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax0.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax0.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax0.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax0.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax0.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax0.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
         ax0.set_aspect(first_subplot_aspect_ratio)
         ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -1426,8 +1426,8 @@ class Counties_Perspective:
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax1.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax1.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax1.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax1.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
         ax1.set_aspect(subsequent_subplot_aspect_ratio)
         ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -1443,8 +1443,8 @@ class Counties_Perspective:
         ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax2.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax2.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax2.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax2.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
         ax2.set_aspect(subsequent_subplot_aspect_ratio)
         ax2.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -1571,8 +1571,8 @@ class Counties_Perspective:
         ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax0.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax0.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax0.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax0.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax0.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax0.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
         ax0.set_aspect(first_subplot_aspect_ratio)
         ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -1589,8 +1589,8 @@ class Counties_Perspective:
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax1.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax1.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax1.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax1.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
         ax1.set_aspect(subsequent_subplot_aspect_ratio)
         ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -1606,8 +1606,8 @@ class Counties_Perspective:
         ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax2.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax2.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax2.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax2.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
         ax2.set_aspect(subsequent_subplot_aspect_ratio)
         ax2.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -1704,8 +1704,8 @@ class Counties_Perspective:
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=4)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=2)
+        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
 
         cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
@@ -1826,10 +1826,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=GACC_Border_Line_Thickness, zorder=4)
+        ax.add_feature(GACC, linewidth=GACC_Border_Line_Thickness, zorder=5)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness, zorder=2)
+        ax.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness, zorder=4)
 
         cs = ax.contourf(data.metpy.x, data.metpy.y, data, 
                          transform=data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
@@ -1953,10 +1953,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=GACC_Border_Line_Thickness, zorder=4)
+        ax.add_feature(GACC, linewidth=GACC_Border_Line_Thickness, zorder=5)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness, zorder=2)
+        ax.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(color_table_start, color_table_stop, color_table_step), cmap=color_table, alpha=0.5)
@@ -2066,10 +2066,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax.add_feature(GACC, linewidth=2.5, zorder=5)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=0.5)
@@ -2178,10 +2178,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax.add_feature(GACC, linewidth=2.5, zorder=5)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=1)
@@ -2304,10 +2304,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax.add_feature(GACC, linewidth=2.5, zorder=5)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs_low = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap='YlOrBr_r', alpha=1)
@@ -2405,10 +2405,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax.add_feature(GACC, linewidth=2.5, zorder=5)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap=cmap, alpha=1)
@@ -2502,10 +2502,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax.add_feature(GACC, linewidth=2.5, zorder=5)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap='seismic', alpha=1)
@@ -2599,10 +2599,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax.add_feature(GACC, linewidth=2.5, zorder=5)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap='PuOr_r', alpha=1)
@@ -2693,10 +2693,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax.add_feature(GACC, linewidth=2.5, zorder=5)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap='cool_r', alpha=1)
@@ -2793,10 +2793,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax.add_feature(GACC, linewidth=2.5, zorder=5)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
@@ -2898,10 +2898,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax.add_feature(GACC, linewidth=2.5, zorder=5)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
@@ -3005,10 +3005,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax.add_feature(GACC, linewidth=2.5, zorder=5)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         # Plot the mask
         try:
@@ -3106,10 +3106,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax.add_feature(GACC, linewidth=2.5, zorder=5)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         # Plot the mask
         try:
@@ -3235,10 +3235,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax0 = fig.add_subplot(1, 3, 1, projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax0.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax0.add_feature(GACC, linewidth=2.5, zorder=5)
         ax0.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax0.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax0.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax0.set_aspect(first_subplot_aspect_ratio)
         ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -3252,10 +3252,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax1 = fig.add_subplot(1, 3, 2, projection=plot_proj_2)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax1.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax1.add_feature(GACC, linewidth=2.5, zorder=5)
         ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax1.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax1.set_aspect(subsequent_subplot_aspect_ratio)
         ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -3268,10 +3268,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax2 = fig.add_subplot(1, 3, 3, projection=plot_proj_3)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax2.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax2.add_feature(GACC, linewidth=2.5, zorder=5)
         ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax2.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax2.set_aspect(subsequent_subplot_aspect_ratio)
         ax2.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -3398,10 +3398,10 @@ class Predictive_Services_Areas_Perspective:
         gs = gridspec.GridSpec(1, 9)
         ax0 = fig.add_subplot(gs[0:1, 0:3], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax0.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax0.add_feature(GACC, linewidth=2.5, zorder=5)
         ax0.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax0.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax0.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax0.set_aspect(first_subplot_aspect_ratio)
         ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -3415,10 +3415,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax1 = fig.add_subplot(gs[0:1, 3:6], projection=plot_proj_2)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax1.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax1.add_feature(GACC, linewidth=2.5, zorder=5)
         ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax1.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax1.set_aspect(subsequent_subplot_aspect_ratio)
         ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -3431,10 +3431,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax2 = fig.add_subplot(gs[0:1, 6:9], projection=plot_proj_3)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax2.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax2.add_feature(GACC, linewidth=2.5, zorder=5)
         ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax2.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax2.set_aspect(subsequent_subplot_aspect_ratio)
         ax2.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -3562,10 +3562,10 @@ class Predictive_Services_Areas_Perspective:
         gs = gridspec.GridSpec(2, 9)
         ax0 = fig.add_subplot(gs[0:2, 0:6], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax0.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax0.add_feature(GACC, linewidth=2.5, zorder=5)
         ax0.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax0.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax0.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax0.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax0.set_aspect(first_subplot_aspect_ratio)
         ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_1_title_font_size, fontweight='bold')
 
@@ -3579,10 +3579,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax1 = fig.add_subplot(gs[0:1, 5:12], projection=plot_proj_2)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax1.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax1.add_feature(GACC, linewidth=2.5, zorder=5)
         ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax1.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax1.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax1.set_aspect(subsequent_subplot_aspect_ratio)
         ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_2_and_3_title_font_size, fontweight='bold')
 
@@ -3595,10 +3595,10 @@ class Predictive_Services_Areas_Perspective:
 
         ax2 = fig.add_subplot(gs[1:2, 5:12], projection=plot_proj_3)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax2.add_feature(GACC, linewidth=2.5, zorder=4)
+        ax2.add_feature(GACC, linewidth=2.5, zorder=5)
         ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax2.add_feature(PSAs, linewidth=1.5, zorder=2)
+        ax2.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax2.set_aspect(subsequent_subplot_aspect_ratio)
         ax2.set_title("Wind Gust", fontsize=subplot_2_and_3_title_font_size, fontweight='bold')
 
