@@ -3086,6 +3086,8 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             df = df.sort_values(['wind_gust'], ascending=False)
             maximum_wind_gust = df['wind_gust'].iloc[0]
             maximum_wind_gust_time = df['date_time'].iloc[0]
+
+            print("Data retrieved successfully!")
         
             return maximum_temperature, maximum_temperature_time, minimum_temperature, minimum_temperature_time, minimum_relative_humidity, minimum_relative_humidity_time, maximum_relative_humidity, maximum_relative_humidity_time, maximum_wind_speed, maximum_wind_speed_time, maximum_wind_gust, maximum_wind_gust_time
 
