@@ -7,6 +7,25 @@ class unit_conversion:
     THIS CLASS HOSTS A VARIETY OF FUNCTIONS TO CONVERT UNITS
     '''
 
+    def knots_to_mph(wind_speed):
+
+        r'''
+        This function converts wind speed from kts to mph
+        '''
+
+        mph = wind_speed * 1.15078
+        return mph
+
+    def celsius_to_fahrenheit(temperature):
+
+        r'''
+        This function converts temperature from celsius to fahrenheit
+        '''
+
+        frac = 9/5
+        degF = (temperature * frac) + 32
+        return degF
+
     def RTMA_Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temperature_data_or_dewpoint_data):
 
         r'''
