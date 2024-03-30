@@ -1,3 +1,5 @@
+import math
+import numpy as np
 
 class unit_conversion:
 
@@ -100,3 +102,27 @@ class unit_conversion:
         '''
 
         return current_temperature_or_dewpoint_dataset * 1.8
+
+class Thermodynamics:
+
+    def saturation_vapor_pressure(temperature):
+
+        r'''
+        This function calculates the saturation vapor pressure from temperature.
+        This function uses the formula from Bolton 1980.         
+
+        '''
+
+        e = 6.112 * np.exp(17.67 * (temperature) / (temperature + 243.5))
+        return e
+
+
+    def relative_humidity_from_temperature_and_dewpoint_celsius(temperature, dewpoint):
+
+        r'''
+        This function calculates the relative humidity from temperature and dewpoint. 
+        '''
+
+        e = Thermodynamics.saturation_vapor_pressure(dewpoint)
+        e_s = Thermodynamics.saturation_vapor_pressure(temperature)
+        return (e / e_s) * 100
