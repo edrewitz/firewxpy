@@ -14,8 +14,6 @@ Depending on the data source, the data will be downloaded either from an FTP ser
 '''
 
 ##### IMPORTS NEEDED PYTHON MODULES #######
-from datetime import datetime, timedelta
-from NWS_Generic_Forecast_Graphics import standard
 import pygrib
 import xarray as xr
 import os
@@ -35,6 +33,8 @@ from io import StringIO
 from metpy.io import parse_metar_file
 from metpy.units import units, pandas_dataframe_to_unit_arrays
 from dateutil import tz
+from datetime import datetime, timedelta
+from NWS_Generic_Forecast_Graphics import standard
 
 class info:
 
