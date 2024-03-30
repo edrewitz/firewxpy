@@ -3028,6 +3028,9 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 
                 except Exception as e:
                     print("ERROR! Cannot connect to either the main or backup server. Aborting!")
+
+            if main_server_status != 200 and backup_server_status != 200:
+                print("ERROR! Cannot connect to either the main or backup server. Aborting!")
                 
             # Opens METAR file
             metar_file = metar_cat.datasets.filter_time_nearest(metar_time).remote_open()
