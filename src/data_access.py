@@ -2975,7 +2975,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
         '''
 
-        def observation_parameter_extremes_previous_day(station_id):
+        def previous_day_weather_summary(station_id):
         
             r'''
             This function retrieves the 24 hour observations for the previous day and returns the extreme maximum and minimum values as well as the times associated with those values.
@@ -3003,6 +3003,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             year = local_time.year
             month = local_time.month
             day = local_time.day
+            station_id = station_id
         
             main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
             backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
@@ -3093,7 +3094,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             print("Data retrieved successfully!")
         
-            return maximum_temperature, maximum_temperature_time, minimum_temperature, minimum_temperature_time, minimum_relative_humidity, minimum_relative_humidity_time, maximum_relative_humidity, maximum_relative_humidity_time, maximum_wind_speed, maximum_wind_speed_time, maximum_wind_gust, maximum_wind_gust_time
+            return maximum_temperature, maximum_temperature_time, minimum_temperature, minimum_temperature_time, minimum_relative_humidity, minimum_relative_humidity_time, maximum_relative_humidity, maximum_relative_humidity_time, maximum_wind_speed, maximum_wind_speed_time, maximum_wind_gust, maximum_wind_gust_time, station_id, previous_day_utc
 
         def get_METAR_Data(current_time, plot_projection, mask):
 
