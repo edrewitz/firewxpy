@@ -3099,7 +3099,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             df = df.sort_values(['wind_speed'], ascending=False)
             maximum_wind_speed = df['wind_speed'].iloc[0]
             wind_direction = df['wind_direction'].iloc[0]
-            wind_direction = parsers.checks.wind_direction_number_to_abbreviation(wind_direction)
+            wind_dir = parsers.checks.wind_direction_number_to_abbreviation(wind_direction)
             maximum_wind_speed_time = df['date_time'].iloc[0]
             maximum_wind_speed_time_utc = maximum_wind_speed_time.replace(tzinfo=to_zone)
             maximum_wind_speed_time_local = maximum_wind_speed_time_utc.astimezone(from_zone)
@@ -3112,7 +3112,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             print("Data retrieved successfully!")
         
-            return maximum_temperature, maximum_temperature_time, maximum_temperature_time_local, minimum_temperature, minimum_temperature_time, minimum_temperature_time_local, minimum_relative_humidity, minimum_relative_humidity_time, minimum_relative_humidity_time_local, maximum_relative_humidity, maximum_relative_humidity_time, maximum_relative_humidity_time_local, maximum_wind_speed, wind_direction, maximum_wind_speed_time, maximum_wind_speed_time_local, maximum_wind_gust, maximum_wind_gust_time, maximum_wind_gust_time_local, station_id, previous_day_utc
+            return maximum_temperature, maximum_temperature_time, maximum_temperature_time_local, minimum_temperature, minimum_temperature_time, minimum_temperature_time_local, minimum_relative_humidity, minimum_relative_humidity_time, minimum_relative_humidity_time_local, maximum_relative_humidity, maximum_relative_humidity_time, maximum_relative_humidity_time_local, maximum_wind_speed, wind_dir, maximum_wind_speed_time, maximum_wind_speed_time_local, maximum_wind_gust, maximum_wind_gust_time, maximum_wind_gust_time_local, station_id, previous_day_utc
 
 
         def get_METAR_Data(current_time, plot_projection, mask):
