@@ -3066,7 +3066,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             
             df = pd.concat(sfc_data_list)
             
-            df = df.loc[:, ['station_id', 'latitude', 'longitude', 'date_time', 'air_temperature', 'dew_point_temperature', 'wind_speed', 'wind_gust']]
+            df = df.loc[:, ['station_id', 'latitude', 'longitude', 'date_time', 'air_temperature', 'dew_point_temperature', 'wind_speed', 'wind_gust', 'wind_direction']]
         
             df['relative_humidity'] = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(df['air_temperature'], df['dew_point_temperature'])
            
