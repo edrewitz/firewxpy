@@ -1095,40 +1095,42 @@ class checks:
                 1) wind_direction (String)
 
         '''
+        wind_direction = wind_direction
+        
         if wind_direction >= 358 or wind_direction <= 2:
-            wind_direction = 'N'
+            wind_dir = 'N'
         if wind_direction > 2 and wind_direction <= 30:
-            wind_direction = 'NNE'
+            wind_dir = 'NNE'
         if wind_direction > 30 and wind_direction <= 60:
-            wind_direction = 'NE'
+            wind_dir = 'NE'
         if wind_direction > 60 and wind_direction < 88:
-            wind_direction = 'ENE'
+            wind_dir = 'ENE'
         if wind_direction >= 88 and wind_direction <= 92:
-            wind_direction = 'E'
+            wind_dir = 'E'
         if wind_direction > 92 and wind_direction <= 120:
-            wind_direction = 'ESE'
+            wind_dir = 'ESE'
         if wind_direction > 120 and wind_direction <= 150:
-            wind_direction = 'SE'
+            wind_dir = 'SE'
         if wind_direction > 150 and wind_direction < 178:
-            wind_direction = 'SSE'
+            wind_dir = 'SSE'
         if wind_direction >= 178 and wind_direction <= 182:
-            wind_direction = 'S'
+            wind_dir = 'S'
         if wind_direction > 182 and wind_direction <= 210:
-            wind_direction = 'SSW'
+            wind_dir = 'SSW'
         if wind_direction > 210 and wind_direction <= 240:
-            wind_direction = 'SW'
+            wind_dir = 'SW'
         if wind_direction > 240 and wind_direction < 268:
-            wind_direction = 'WSW'
+            wind_dir = 'WSW'
         if wind_direction >= 268 and wind_direction <= 272:
-            wind_direction = 'W'
+            wind_dir = 'W'
         if wind_direction > 272 and wind_direction <= 300:
-            wind_direction = 'WNW'
+            wind_dir = 'WNW'
         if wind_direction > 300 and wind_direction <= 330:
-            wind_direction = 'NW'
+            wind_dir = 'NW'
         if wind_direction > 330 and wind_direction < 358:
-            wind_direction = 'NNW'
+            wind_dir = 'NNW'
 
-        return wind_direction
+        return wind_dir
     
 
     def check_RTMA_vs_METAR_Times(real_time_mesoscale_analysis_time, metar_observation_time):
