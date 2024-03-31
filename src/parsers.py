@@ -11,6 +11,7 @@
 
 import pygrib
 import numpy as np
+import data_access as da
 
 from datetime import datetime, timedelta
 from metpy.units import units
@@ -22,6 +23,202 @@ class NDFD:
 
     '''
     
+
+    def GRIB_temperature_conversion_test(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files):
+    
+        r'''
+        THIS FUNCTION CONVERTS THE TEMPERATURE VALUES FROM KELVIN TO FAHRENHEIT FOR OUR PLOT
+    
+        RETURNS: TEMPERATURE VALUES IN FAHRENHEIT
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        frac = 9/5
+        if count_of_GRIB_files == 1:
+            grb_1_vals = first_GRIB_file.values
+            grb_1_vals_f = (frac * (grb_1_vals - 273.15)) + 32
+    
+            grb_2_vals = None
+            grb_3_vals = None
+            grb_4_vals = None
+            grb_5_vals = None
+                
+            return grb_1_vals_f, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals
+    
+        if count_of_GRIB_files == 2:
+            grb_1_vals = first_GRIB_file.values
+            grb_2_vals = second_GRIB_file.values
+            
+            grb_1_vals_f = (frac * (grb_1_vals - 273.15)) + 32
+
+            grb_2_vals_f = (frac * (grb_2_vals - 273.15)) + 32
+
+            grb_3_vals = None
+            grb_4_vals = None
+            grb_5_vals = None
+                
+            return grb_1_vals_f, grb_2_vals_f, grb_3_vals, grb_4_vals, grb_5_vals
+    
+        if count_of_GRIB_files == 3:
+            grb_1_vals = first_GRIB_file.values
+            grb_2_vals = second_GRIB_file.values
+            grb_3_vals = third_GRIB_file.values
+            
+            grb_1_vals_f = (frac * (grb_1_vals - 273.15)) + 32
+
+            grb_2_vals_f = (frac * (grb_2_vals - 273.15)) + 32
+
+            grb_3_vals_f = (frac * (grb_3_vals - 273.15)) + 32
+    
+            grb_4_vals = None
+            grb_5_vals = None
+    
+            return grb_1_vals_f, grb_2_vals_f, grb_3_vals_f, grb_4_vals, grb_5_vals
+    
+        if count_of_GRIB_files == 4:
+            grb_1_vals = first_GRIB_file.values
+            grb_2_vals = second_GRIB_file.values
+            grb_3_vals = third_GRIB_file.values
+            grb_4_vals = fourth_GRIB_file.values
+    
+            grb_1_vals_f = (frac * (grb_1_vals - 273.15)) + 32
+
+            grb_2_vals_f = (frac * (grb_2_vals - 273.15)) + 32
+
+            grb_3_vals_f = (frac * (grb_3_vals - 273.15)) + 32
+
+            grb_4_vals_f = (frac * (grb_4_vals - 273.15)) + 32
+
+            grb_1_vals_f = units('degF') * grb_1_vals_f
+            grb_2_vals_f = units('degF') * grb_2_vals_f
+            grb_3_vals_f = units('degF') * grb_3_vals_f
+            grb_4_vals_f = units('degF') * grb_4_vals_f
+
+            grb_5_vals = None
+                    
+            return grb_1_vals_f, grb_2_vals_f, grb_3_vals_f, grb_4_vals_f, grb_5_vals
+    
+        if count_of_GRIB_files >= 5:
+            grb_1_vals = first_GRIB_file.values
+            grb_2_vals = second_GRIB_file.values
+            grb_3_vals = third_GRIB_file.values
+            grb_4_vals = fourth_GRIB_file.values
+            grb_5_vals = fifth_GRIB_file.values
+            
+            grb_1_vals_f = (frac * (grb_1_vals - 273.15)) + 32
+
+            grb_2_vals_f = (frac * (grb_2_vals - 273.15)) + 32
+
+            grb_3_vals_f = (frac * (grb_3_vals - 273.15)) + 32
+
+            grb_4_vals_f = (frac * (grb_4_vals - 273.15)) + 32
+
+            grb_5_vals_f = (frac * (grb_5_vals - 273.15)) + 32          
+                    
+            return grb_1_vals_f, grb_2_vals_f, grb_3_vals_f, grb_4_vals_f, grb_5_vals_f
+
+
+    def GRIB_temperature_conversion_test1(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files):
+    
+        r'''
+        THIS FUNCTION CONVERTS THE TEMPERATURE VALUES FROM KELVIN TO FAHRENHEIT FOR OUR PLOT
+    
+        RETURNS: TEMPERATURE VALUES IN FAHRENHEIT
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        frac = 9/5
+        if count_of_GRIB_files == 1:
+            grb_1_vals = first_GRIB_file.values
+            grb_1_vals_f = (frac * (grb_1_vals - 273.15)) + 32
+    
+            grb_2_vals = None
+            grb_3_vals = None
+            grb_4_vals = None
+            grb_5_vals = None
+                
+            return grb_1_vals_f, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals
+    
+        if count_of_GRIB_files == 2:
+            grb_1_vals = first_GRIB_file.values
+            grb_2_vals = second_GRIB_file.values
+            
+            grb_1_vals_k = units('kelvin') * grb_1_vals
+            grb_1_vals_f = grb_1_vals_k.to('degF')
+
+            grb_2_vals_k = units('kelvin') * grb_2_vals
+            grb_2_vals_f = grb_2_vals_k.to('degF')
+
+            grb_3_vals = None
+            grb_4_vals = None
+            grb_5_vals = None
+                
+            return grb_1_vals_f, grb_2_vals_f, grb_3_vals, grb_4_vals, grb_5_vals
+    
+        if count_of_GRIB_files == 3:
+            grb_1_vals = first_GRIB_file.values
+            grb_2_vals = second_GRIB_file.values
+            grb_3_vals = third_GRIB_file.values
+            
+            grb_1_vals_f = (frac * (grb_1_vals - 273.15)) + 32
+
+            grb_2_vals_f = (frac * (grb_2_vals - 273.15)) + 32
+
+            grb_3_vals_f = (frac * (grb_3_vals - 273.15)) + 32
+    
+            grb_4_vals = None
+            grb_5_vals = None
+    
+            return grb_1_vals_f, grb_2_vals_f, grb_3_vals_f, grb_4_vals, grb_5_vals
+    
+        if count_of_GRIB_files == 4:
+            grb_1_vals = first_GRIB_file.values
+            grb_2_vals = second_GRIB_file.values
+            grb_3_vals = third_GRIB_file.values
+            grb_4_vals = fourth_GRIB_file.values
+    
+            grb_1_vals_k = units('kelvin') * grb_1_vals
+            grb_1_vals_f = grb_1_vals_k.to('degF')
+
+            grb_2_vals_k = units('kelvin') * grb_2_vals
+            grb_2_vals_f = grb_2_vals_k.to('degF')
+
+            grb_3_vals_k = units('kelvin') * grb_3_vals
+            grb_3_vals_f = grb_3_vals_k.to('degF')
+
+            grb_4_vals_k = units('kelvin') * grb_4_vals
+            grb_4_vals_f = grb_4_vals_k.to('degF') 
+
+            grb_5_vals = None
+                    
+            return grb_1_vals_f, grb_2_vals_f, grb_3_vals_f, grb_4_vals_f, grb_5_vals
+            
+        if count_of_GRIB_files >= 5:
+            grb_1_vals = first_GRIB_file.values
+            grb_2_vals = second_GRIB_file.values
+            grb_3_vals = third_GRIB_file.values
+            grb_4_vals = fourth_GRIB_file.values
+            grb_5_vals = fifth_GRIB_file.values
+            
+            grb_1_vals_k = units('kelvin') * grb_1_vals
+            grb_1_vals_f = grb_1_vals_k.to('degF')
+
+            grb_2_vals_k = units('kelvin') * grb_2_vals
+            grb_2_vals_f = grb_2_vals_k.to('degF')
+
+            grb_3_vals_k = units('kelvin') * grb_3_vals
+            grb_3_vals_f = grb_3_vals_k.to('degF')
+
+            grb_4_vals_k = units('kelvin') * grb_4_vals
+            grb_4_vals_f = grb_4_vals_k.to('degF')
+
+            grb_5_vals_k = units('kelvin') * grb_5_vals
+            grb_5_vals_f = grb_5_vals_k.to('degF')            
+                    
+            return grb_1_vals_f, grb_2_vals_f, grb_3_vals_f, grb_4_vals_f, grb_5_vals_f
+
 
     def GRIB_temperature_conversion(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files):
     
@@ -567,7 +764,7 @@ class NDFD:
     
         if param == 'ds.mint.bin' or param == 'ds.maxt.bin':
             
-            grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals = NDFD.GRIB_temperature_conversion(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files)
+            grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals = NDFD.GRIB_temperature_conversion_test1(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files)
             if files == 1:
                 grb_1_start = first_GRIB_file.validDate
                 grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
@@ -658,9 +855,7 @@ class NDFD:
                 lats_3, lons_3 = third_GRIB_file.latlons()
                 lats_4, lons_4 = fourth_GRIB_file.latlons()
                 lats_5, lons_5 = fifth_GRIB_file.latlons()
-            
         
-    
         else:       
        
             if files == 1:
@@ -888,6 +1083,54 @@ class checks:
 
     '''
 
+    def wind_direction_number_to_abbreviation(wind_direction):
+
+        r'''
+        This function takes the numerical wind direction and assigns an abbreviation (i.e. N vs. NW) to the value
+
+        Inputs:
+                1) wind_direction (Integer or Float)
+
+        Returns:
+                1) wind_direction (String)
+
+        '''
+        if wind_direction >= 358 or wind_direction <= 2:
+            wind_direction = 'N'
+        if wind_direction > 2 and wind_direction <= 30:
+            wind_direction = 'NNE'
+        if wind_direction > 30 and wind_direction <= 60:
+            wind_direction = 'NE'
+        if wind_direction > 60 and wind_direction < 88:
+            wind_direction = 'ENE'
+        if wind_direction >= 88 and wind_direction <= 92:
+            wind_direction = 'E'
+        if wind_direction > 92 and wind_direction <= 120:
+            wind_direction = 'ESE'
+        if wind_direction > 120 and wind_direction <= 150:
+            wind_direction = 'SE'
+        if wind_direction > 150 and wind_direction < 178:
+            wind_direction = 'SSE'
+        if wind_direction >= 178 and wind_direction <= 182:
+            wind_direction = 'S'
+        if wind_direction > 182 and wind_direction <= 210:
+            wind_direction = 'SSW'
+        if wind_direction > 210 and wind_direction <= 240:
+            wind_direction = 'SW'
+        if wind_direction > 240 and wind_direction < 268:
+            wind_direction = 'WSW'
+        if wind_direction >= 268 and wind_direction <= 272:
+            wind_direction = 'W'
+        if wind_direction > 272 and wind_direction <= 300:
+            wind_direction = 'WNW'
+        if wind_direction > 300 and wind_direction <= 330:
+            wind_direction = 'NW'
+        if wind_direction > 330 and wind_direction < 358:
+            wind_direction = 'NNW'
+
+        return wind_direction
+    
+
     def check_RTMA_vs_METAR_Times(real_time_mesoscale_analysis_time, metar_observation_time):
 
         r'''
@@ -919,3 +1162,44 @@ class checks:
             
 
         return new_metar_time
+
+
+    def check_RTMA_vs_METAR_Times_Alaska(real_time_mesoscale_analysis_time, metar_observation_time):
+
+        r'''
+        THIS FUNCTION MAKES SURE THE TIMES MATCH BETWEEN THE RTMA DATA AND METAR DATA. A LOT OF TIMES, THE METAR DATA IS 1-2 HOURS AHEAD OF THE RTMA DATA. THE FUNCTION RETURNS THE TIME OF THE LATEST RTMA DATASET TO USE AS THE TIME WHEN QUERYING THE METAR DATASETS
+
+        (C) METEOROLOGIST ERIC J. DREWITZ
+
+        '''
+
+        metar_time = metar_observation_time
+
+        rtma_time = real_time_mesoscale_analysis_time
+
+        time_diff = metar_time.hour - rtma_time.hour
+
+        minute = 55
+
+        if metar_time.hour > rtma_time.hour:
+            new_metar_time = metar_time - timedelta(hours=2)
+            new_metar_time1 = datetime(new_metar_time.year, new_metar_time.month, new_metar_time.day, new_metar_time.hour, minute)
+
+        if metar_time.hour < rtma_time.hour:
+            hour = rtma_time.hour
+            new_metar_time = metar_time - timedelta(days=1)
+            year = new_metar_time.year
+            month = new_metar_time.month
+            day = new_metar_time.day
+            new_metar_time1 = datetime(year, month, day, hour, minute)
+
+        else:
+            new_metar_time = metar_time - timedelta(hours=1)
+            new_metar_time1 = datetime(new_metar_time.year, new_metar_time.month, new_metar_time.day, new_metar_time.hour, minute)
+
+        return new_metar_time1
+
+                    
+        
+        
+        
