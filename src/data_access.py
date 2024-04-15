@@ -3115,6 +3115,147 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             return maximum_temperature, maximum_temperature_time, maximum_temperature_time_local, minimum_temperature, minimum_temperature_time, minimum_temperature_time_local, minimum_relative_humidity, minimum_relative_humidity_time, minimum_relative_humidity_time_local, maximum_relative_humidity, maximum_relative_humidity_time, maximum_relative_humidity_time_local, maximum_wind_speed, wind_dir, maximum_wind_speed_time, maximum_wind_speed_time_local, maximum_wind_gust, maximum_wind_gust_time, maximum_wind_gust_time_local, station_id, previous_day_utc
 
 
+        def previous_day_weather_summary_and_all_data(station_id):
+        
+            r'''
+            This function retrieves the 24 hour observations for the previous day and returns the extreme maximum and minimum values as well as the times associated with those values.
+        
+            Inputs:
+                   1) station_id (String) - The 4 letter station identifier for the observational site. 
+        
+            Returns:
+                    1) Maximum Temperature (°F)
+                    2) The time the maximum temperature occurred
+                    3) Minimum Temperature (°F)
+                    4) The time the minimum temperature occurred
+                    5) Minimum Relative Humidity (%)
+                    6) The time the minimum relative humidity occurred
+                    7) Maximum Relative Humidity (%)
+                    8) The time the maximum relative humidity occurred
+                    9) Maximum Wind Speed (MPH)
+                    10) The time the maximum wind speed occurred
+                    11) Maximum Wind Gust (MPH)
+                    12) The time the maximum wind gust occurred 
+        
+            '''
+        
+            local_time, utc_time = standard.plot_creation_time()
+            year = local_time.year
+            month = local_time.month
+            day = local_time.day
+            station_id = station_id
+        
+            main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
+            backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            main_server_status = main_server_response.status_code
+            backup_server_status = backup_server_response.status_code
+            
+            hour = 0
+            date = datetime(year, month, day, hour)
+            
+            to_zone = tz.tzutc()
+            from_zone = tz.tzlocal()
+            
+            time = date.replace(tzinfo=from_zone)
+            date_utc = date.astimezone(to_zone)
+            
+            new_date_utc = date_utc.replace(tzinfo=None)
+            
+            previous_day_utc = new_date_utc - timedelta(days=1)
+            
+            # Pings server for airport data
+            airports_df = pd.read_csv(get_test_data('airport-codes.csv'))
+            
+            # Queries our airport types (airport sizes)
+            airports_df = airports_df[(airports_df['type'] == 'large_airport') | (airports_df['type'] == 'medium_airport') | (airports_df['type'] == 'small_airport')]
+            
+            # Accesses the METAR data
+        
+            if main_server_status == 200:
+                print("Main UCAR THREDDS Server is online. Connecting!")
+                try:
+                    print("Downloading...")
+                    metar_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.xml')
+                
+                except Exception as e:
+                    print("Downloading...")
+                    metar_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.xml')
+        
+            if main_server_status != 200 and backup_server_status == 200:
+                print("Main UCAR THREDDS Server is down. Connecting to the backup UCAR THREDDS Server!") 
+                try:
+                    print("Downloading...")
+                    metar_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.xml')
+                
+                except Exception as e:
+                    print("ERROR! Cannot connect to either the main or backup server. Aborting!")
+        
+            if main_server_status != 200 and backup_server_status != 200:
+                print("ERROR! Cannot connect to either the main or backup server. Aborting!")
+        
+            metar_file = metar_cat.datasets.filter_time_range(previous_day_utc, previous_day_utc + timedelta(days=1))
+            
+            sfc_data_list = []
+            for i in range(0,25):
+                data = metar_file[i].remote_open()
+                metar_text = StringIO(data.read().decode('latin-1'))
+                sfc_data = parse_metar_file(metar_text)
+                sfc_units = sfc_data.units
+                sfc_data_list.append(sfc_data)
+            
+            df = pd.concat(sfc_data_list)
+            
+            df = df.loc[:, ['station_id', 'latitude', 'longitude', 'date_time', 'air_temperature', 'dew_point_temperature', 'wind_speed', 'wind_gust', 'wind_direction']]
+        
+            df['relative_humidity'] = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(df['air_temperature'], df['dew_point_temperature'])
+           
+            df = df[df['station_id'] == station_id]
+            
+            df['air_temperature'] = calc.unit_conversion.celsius_to_fahrenheit(df['air_temperature'])
+            df['wind_speed'] = calc.unit_conversion.knots_to_mph(df['wind_speed'])
+            df['wind_gust'] = calc.unit_conversion.knots_to_mph(df['wind_gust'])
+            
+            df = df.sort_values(['air_temperature'], ascending=False)
+            maximum_temperature = df['air_temperature'].iloc[0]
+            maximum_temperature_time = df['date_time'].iloc[0]
+            maximum_temperature_time_utc = maximum_temperature_time.replace(tzinfo=to_zone)
+            maximum_temperature_time_local = maximum_temperature_time_utc.astimezone(from_zone)
+            minimum_temperature = df['air_temperature'].iloc[-1]
+            minimum_temperature_time = df['date_time'].iloc[-1]
+            minimum_temperature_time_utc = minimum_temperature_time.replace(tzinfo=to_zone)
+            minimum_temperature_time_local = minimum_temperature_time_utc.astimezone(from_zone)
+            
+            df = df.sort_values(['relative_humidity'], ascending=True)
+            minimum_relative_humidity = df['relative_humidity'].iloc[0]
+            minimum_relative_humidity_time = df['date_time'].iloc[0]
+            minimum_relative_humidity_time_utc = minimum_relative_humidity_time.replace(tzinfo=to_zone)
+            minimum_relative_humidity_time_local = minimum_relative_humidity_time_utc.astimezone(from_zone)
+            maximum_relative_humidity = df['relative_humidity'].iloc[-1]
+            maximum_relative_humidity_time = df['date_time'].iloc[-1]
+            maximum_relative_humidity_time_utc = maximum_relative_humidity_time.replace(tzinfo=to_zone)
+            maximum_relative_humidity_time_local = maximum_relative_humidity_time_utc.astimezone(from_zone)
+            
+            df = df.sort_values(['wind_speed'], ascending=False)
+            maximum_wind_speed = df['wind_speed'].iloc[0]
+            wind_direction = df['wind_direction'].iloc[0]
+            wind_dir = parsers.checks.wind_direction_number_to_abbreviation(wind_direction)
+            maximum_wind_speed_time = df['date_time'].iloc[0]
+            maximum_wind_speed_time_utc = maximum_wind_speed_time.replace(tzinfo=to_zone)
+            maximum_wind_speed_time_local = maximum_wind_speed_time_utc.astimezone(from_zone)
+            
+            df = df.sort_values(['wind_gust'], ascending=False)
+            maximum_wind_gust = df['wind_gust'].iloc[0]
+            maximum_wind_gust_time = df['date_time'].iloc[0]
+            maximum_wind_gust_time_utc = maximum_wind_gust_time.replace(tzinfo=to_zone)
+            maximum_wind_gust_time_local = maximum_wind_gust_time_utc.astimezone(from_zone)
+
+            df = df.sort_values(['date_time'], ascending=True)
+
+            print("Data retrieved successfully!")
+        
+            return df, maximum_temperature, maximum_temperature_time, maximum_temperature_time_local, minimum_temperature, minimum_temperature_time, minimum_temperature_time_local, minimum_relative_humidity, minimum_relative_humidity_time, minimum_relative_humidity_time_local, maximum_relative_humidity, maximum_relative_humidity_time, maximum_relative_humidity_time_local, maximum_wind_speed, wind_dir, maximum_wind_speed_time, maximum_wind_speed_time_local, maximum_wind_gust, maximum_wind_gust_time, maximum_wind_gust_time_local, station_id, previous_day_utc
+
+
         def get_METAR_Data(current_time, plot_projection, mask):
 
             r'''
