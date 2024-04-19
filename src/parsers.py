@@ -12,6 +12,7 @@
 import pygrib
 import numpy as np
 import data_access as da
+import matplotlib.pyplot as plt
 
 from datetime import datetime, timedelta
 from metpy.units import units
@@ -1201,7 +1202,79 @@ class checks:
 
         return new_metar_time1
 
-                    
+class save:
+
+    r'''
+    This class hosts the function that parses through a figure list and saves the figures to a specified file location
+
+    '''
         
+    def extract_NWS_NDFD_figures(figure_list, file_count, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5):
+
+        r'''
+        This function extracts indivdual figures from a list of figures and saves them with a specified file path. 
+        *This function is only to be used for the National Weather Service NDFD graphics.* 
+
+        Inputs: 1) figure_list (List) - List of figures returned by the plotting function. 
+                2) file_count (Integer) - Count of files returned by the plotting function. 
+                3) file_path_1 (String) - Path to where the first figure is saved. 
+                4) file_path_2 (String) - Path to where the second figure is saved. 
+                5) file_path_3 (String) - Path to where the third figure is saved. 
+                6) file_path_4 (String) - Path to where the fourth figure is saved. 
+                7) file_path_5 (String) - Path to where the fifth figure is saved. 
+
+        Return: Each figure in the list is saved as its own file to a specified file path
+
+        '''
         
+        if file_count == 1:
+            fig1 = figure_list[0]
+            fig1 = fig1.savefig(file_path_1)
+            plt.close(fig1)
+        if file_count == 2:
+            fig1 = figure_list[0]
+            fig2 = figure_list[1]
+            fig1 = fig1.savefig(file_path_1)
+            plt.close(fig1)
+            fig2 = fig2.savefig(file_path_2)
+            plt.close(fig2)
+        if file_count == 3:
+            fig1 = figure_list[0]
+            fig2 = figure_list[1]
+            fig3 = figure_list[2]
+            fig1 = fig1.savefig(file_path_1)
+            plt.close(fig1)
+            fig2 = fig2.savefig(file_path_2)
+            plt.close(fig2)
+            fig3 = fig3.savefig(file_path_3)
+            plt.close(fig3)
+        if file_count == 4:
+            fig1 = figure_list[0]
+            fig2 = figure_list[1]
+            fig3 = figure_list[2]
+            fig4 = figure_list[3]
+            fig1 = fig1.savefig(file_path_1)
+            plt.close(fig1)
+            fig2 = fig2.savefig(file_path_2)
+            plt.close(fig2)
+            fig3 = fig3.savefig(file_path_3)
+            plt.close(fig3)
+            fig4 = fig4.savefig(file_path_4)
+            plt.close(fig4)
+        if file_count == 5:
+            fig1 = figure_list[0]
+            fig2 = figure_list[1]
+            fig3 = figure_list[2]
+            fig4 = figure_list[3]
+            fig5 = figure_list[4]
+            fig1 = fig1.savefig(file_path_1)
+            plt.close(fig1)
+            fig2 = fig2.savefig(file_path_2)
+            plt.close(fig2)
+            fig3 = fig3.savefig(file_path_3)
+            plt.close(fig3)
+            fig4 = fig4.savefig(file_path_4)
+            plt.close(fig4)
+            fig5 = fig5.savefig(file_path_5)
+            plt.close(fig5)
         
