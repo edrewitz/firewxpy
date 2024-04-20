@@ -1277,4 +1277,66 @@ class save:
             plt.close(fig4)
             fig5 = fig5.savefig(file_path_5)
             plt.close(fig5)
+
+    def extract_SPC_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4):
+
+        r'''
+        This function extracts indivdual figures from a list of figures and saves them with a specified file path. 
+        *This function is only to be used for the SPC Fire Weather Outlook Graphics.* 
+
+        Inputs: 1) figure_list (List) - List of figures returned by the plotting function. 
+                2) file_path_1 (String) - Path to where the first figure is saved. 
+                3) file_path_2 (String) - Path to where the second figure is saved. 
+                4) file_path_3 (String) - Path to where the third figure is saved. 
+                5) file_path_4 (String) - Path to where the fourth figure is saved.  
+
+        Return: Each figure in the list is saved as its own file to a specified file path
+
+        '''
+    
+        try:
+            fig1 = figure_list[0]
+            fig1 = fig1.savefig(file_path_1)
+            plt.close(fig1)
+            fig2 = figure_list[1]
+            fig2 = fig2.savefig(file_path_2)
+            plt.close(fig2)
+            fig3 = figure_list[2]
+            fig3 = fig3.savefig(file_path_3)
+            plt.close(fig3)
+            fig4 = figure_list[3]
+            fig4 = fig4.savefig(file_path_3)
+            plt.close(fig4)
+    
+        except Exception as a:
+            try:     
+                fig1 = figure_list[0]
+                fig1 = fig1.savefig(file_path_1)
+                plt.close(fig1)
+                fig2 = figure_list[1]
+                fig2 = fig2.savefig(file_path_2)
+                plt.close(fig2)
+                fig3 = figure_list[2]
+                fig3 = fig3.savefig(file_path_3)
+                plt.close(fig3)
+    
+            except Exception as b:
+                try:
+                    fig1 = figure_list[0]
+                    fig1 = fig1.savefig(file_path_1)
+                    plt.close(fig1)
+                    fig2 = figure_list[1]
+                    fig2 = fig2.savefig(file_path_2)
+                    plt.close(fig2)
+    
+                except Exception as c:
+                    try:
+                        fig1 = figure_list[0]
+                        fig1 = fig1.savefig(file_path_1)
+                        plt.close(fig1)
+    
+                    except Exception as d:
+                        pass
+
+
         
