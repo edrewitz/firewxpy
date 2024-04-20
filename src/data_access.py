@@ -271,6 +271,14 @@ class FTP_Downloads:
             else:
                 if local_hour < 5 or local_hour >= 16:
                     print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+
+                    year = utc.year
+                    month = utc.month
+                    day = utc.day
+                    start_hour = 6
+
+                    grb_1_start = datetime(year, month, day, start_hour)
+                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -292,6 +300,14 @@ class FTP_Downloads:
             else:
                 if local_hour < 15 or local_hour >= 18:
                     print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 15:00 (3PM)\nThe first maximum temperature grid is still returned.")
+
+                    year = utc.year
+                    month = utc.month
+                    day = utc.day
+                    start_hour = 18
+
+                    grb_1_start = datetime(year, month, day, start_hour)
+                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -313,6 +329,14 @@ class FTP_Downloads:
             else:
                 if local_hour < 15 or local_hour >= 18:
                     print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 15:00 (3PM)\nThe first maximum temperature grid is still returned.")
+
+                    year = utc.year
+                    month = utc.month
+                    day = utc.day
+                    start_hour = 12
+
+                    grb_1_start = datetime(year, month, day, start_hour)
+                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -334,6 +358,72 @@ class FTP_Downloads:
             else:
                 if local_hour < 5 or local_hour >= 16:
                     print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+
+                    year = utc.year
+                    month = utc.month
+                    day = utc.day
+                    start_hour = 0
+
+                    grb_1_start = datetime(year, month, day, start_hour)
+                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                    
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
+                    
+                else:
+                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
+
+                    grb_1_vals = None
+                    grb_1_start = None
+                    grb_1_end = None
+                    
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
+
+        if parameter == 'ds.critfireo.bin':
+            if forecast_hour == 12:
+                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                
+                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
+                
+            else:
+                if local_hour < 13:
+                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 10:00 (5AM)\nThe first maximum temperature grid is still returned.")
+
+                    year = utc.year
+                    month = utc.month
+                    day = utc.day
+                    start_hour = 12
+
+                    grb_1_start = datetime(year, month, day, start_hour)
+                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                    
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
+                    
+                else:
+                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
+
+                    grb_1_vals = None
+                    grb_1_start = None
+                    grb_1_end = None
+                    
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
+
+        if parameter == 'ds.dryfireo.bin':
+            if forecast_hour == 12:
+                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                
+                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
+                
+            else:
+                if local_hour < 13:
+                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 10:00 (5AM)\nThe first maximum temperature grid is still returned.")
+
+                    year = utc.year
+                    month = utc.month
+                    day = utc.day
+                    start_hour = 12
+
+                    grb_1_start = datetime(year, month, day, start_hour)
+                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
