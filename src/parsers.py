@@ -13,6 +13,7 @@ import pygrib
 import numpy as np
 import data_access as da
 import matplotlib.pyplot as plt
+import imageio
 
 from datetime import datetime, timedelta
 from metpy.units import units
@@ -739,15 +740,83 @@ class NDFD:
             grb_4 = GRIB_File_List[4]
             grb_5 = None
     
-        if count >= 5: 
+        if count == 5: 
             grb_1 = GRIB_File_List[1]
             grb_2 = GRIB_File_List[2]
             grb_3 = GRIB_File_List[3]
             grb_4 = GRIB_File_List[4]
             grb_5 = GRIB_File_List[5]
+
     
         print("There are " + str(count) + " GRIB files in the " + parameter + " download.")
         return grb_1, grb_2, grb_3, grb_4, grb_5, count
+
+
+    def sort_extended_GRIB_files(GRIB_File_List, parameter):
+        
+        r'''
+        THIS FUNCTION SORTS AND RETURNS THE INDIVIDUAL GRIB FILES IN THE DOWNLOADED DATASET. 
+    
+        THIS FUNCTION ALSO RETURNS THE COUNT OF THE NUMBER OF GRIB FILES IN THE DATASET.
+    
+        THIS FUNCTION IS TO BE USED IN THE PROGRAMMER'S CODE AFTER THE get_NWS_NDFD_grid_data(directory_name, parameter) FUNCTION IS USED
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+        count = 0
+        for grb in GRIB_File_List:
+            count = count + 1
+        if count == 1:
+            grb_1 = GRIB_File_List[1]
+            grb_2 = None
+            grb_3 = None
+            grb_4 = None
+            grb_5 = None
+            grb_6 = None
+        
+        if count == 2:
+            grb_1 = GRIB_File_List[1]
+            grb_2 = GRIB_File_List[2]
+            grb_3 = None
+            grb_4 = None
+            grb_5 = None
+            grb_6 = None
+            
+        if count == 3: 
+            grb_1 = GRIB_File_List[1]
+            grb_2 = GRIB_File_List[2]
+            grb_3 = GRIB_File_List[3]
+            grb_4 = None
+            grb_5 = None
+            grb_6 = None
+        
+        if count == 4: 
+            grb_1 = GRIB_File_List[1]
+            grb_2 = GRIB_File_List[2]
+            grb_3 = GRIB_File_List[3]
+            grb_4 = GRIB_File_List[4]
+            grb_5 = None
+            grb_6 = None
+    
+        if count == 5: 
+            grb_1 = GRIB_File_List[1]
+            grb_2 = GRIB_File_List[2]
+            grb_3 = GRIB_File_List[3]
+            grb_4 = GRIB_File_List[4]
+            grb_5 = GRIB_File_List[5]
+            grb_6 = None
+
+        if count >= 6: 
+            grb_1 = GRIB_File_List[1]
+            grb_2 = GRIB_File_List[2]
+            grb_3 = GRIB_File_List[3]
+            grb_4 = GRIB_File_List[4]
+            grb_5 = GRIB_File_List[5]
+            grb_6 = GRIB_File_List[6]
+
+    
+        print("There are " + str(count) + " GRIB files in the " + parameter + " download.")
+        return grb_1, grb_2, grb_3, grb_4, grb_5, grb_6, count
     
     
     def parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter):
@@ -977,6 +1046,185 @@ class NDFD:
     
     
         return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5
+
+
+    def parse_extended_SPC_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, sixth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter):
+    
+        r'''
+        THIS FUNCTION PARSES THROUGH EACH GRIB FILE AND RETURNS THE VALUES OF THE FILE, THE START AND END TIME FOR THE FORECAST VALIDITY, THE LATITUDE AND LONGITUDE COORDINATES CORRESPONDING TO THE VALUES IN THE FILE. 
+    
+        (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    
+        '''
+    
+        
+        files = count_of_GRIB_files
+        param = parameter
+
+        if files == 1:
+            grb_1_vals = first_GRIB_file.values
+            grb_1_start = first_GRIB_file.validDate
+            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+            grb_2_vals = None
+            grb_2_start = None
+            grb_2_end = None
+            grb_3_vals = None
+            grb_3_start = None
+            grb_3_end = None
+            grb_4_vals = None
+            grb_4_start = None
+            grb_4_end = None
+            grb_5_vals = None
+            grb_5_start = None
+            grb_5_end = None
+            grb_6_vals = None
+            grb_6_start = None
+            grb_6_end = None
+                      
+            lats_1, lons_1 = first_GRIB_file.latlons()
+            lats_2, lons_2 = None, None
+            lats_3, lons_3 = None, None
+            lats_4, lons_4 = None, None
+            lats_5, lons_5 = None, None
+            lats_6, lons_6 = None, None
+    
+        if files == 2:
+            grb_1_vals = first_GRIB_file.values
+            grb_1_start = first_GRIB_file.validDate
+            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+            grb_2_vals = second_GRIB_file.values
+            grb_2_start = second_GRIB_file.validDate
+            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+            grb_3_vals = None
+            grb_3_start = None
+            grb_3_end = None
+            grb_4_vals = None
+            grb_4_start = None
+            grb_4_end = None
+            grb_5_vals = None
+            grb_5_start = None
+            grb_5_end = None
+            grb_6_vals = None
+            grb_6_start = None
+            grb_6_end = None
+                      
+            lats_1, lons_1 = first_GRIB_file.latlons()
+            lats_2, lons_2 = second_GRIB_file.latlons()
+            lats_3, lons_3 = None, None
+            lats_4, lons_4 = None, None
+            lats_5, lons_5 = None, None
+            lats_6, lons_6 = None, None
+    
+        if files == 3:
+            grb_1_vals = first_GRIB_file.values
+            grb_1_start = first_GRIB_file.validDate
+            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+            grb_2_vals = second_GRIB_file.values
+            grb_2_start = second_GRIB_file.validDate
+            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+            grb_3_vals = third_GRIB_file.values
+            grb_3_start = third_GRIB_file.validDate
+            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+            grb_4_vals = None
+            grb_4_start = None
+            grb_4_end = None
+            grb_5_vals = None
+            grb_5_start = None
+            grb_5_end = None
+            grb_6_vals = None
+            grb_6_start = None
+            grb_6_end = None
+                      
+            lats_1, lons_1 = first_GRIB_file.latlons()
+            lats_2, lons_2 = second_GRIB_file.latlons()
+            lats_3, lons_3 = third_GRIB_file.latlons()
+            lats_4, lons_4 = None, None
+            lats_5, lons_5 = None, None
+            lats_6, lons_6 = None, None
+    
+        if files == 4:
+            grb_1_vals = first_GRIB_file.values
+            grb_1_start = first_GRIB_file.validDate
+            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+            grb_2_vals = second_GRIB_file.values
+            grb_2_start = second_GRIB_file.validDate
+            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+            grb_3_vals = third_GRIB_file.values
+            grb_3_start = third_GRIB_file.validDate
+            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+            grb_4_vals = fourth_GRIB_file.values
+            grb_4_start = fourth_GRIB_file.validDate
+            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+            grb_5_vals = None
+            grb_5_start = None
+            grb_5_end = None
+            grb_6_vals = None
+            grb_6_start = None
+            grb_6_end = None
+                      
+            lats_1, lons_1 = first_GRIB_file.latlons()
+            lats_2, lons_2 = second_GRIB_file.latlons()
+            lats_3, lons_3 = third_GRIB_file.latlons()
+            lats_4, lons_4 = fourth_GRIB_file.latlons()
+            lats_5, lons_5 = None, None
+            lats_6, lons_6 = None, None
+        
+        
+        if files == 5:
+            grb_1_vals = first_GRIB_file.values
+            grb_1_start = first_GRIB_file.validDate
+            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+            grb_2_vals = second_GRIB_file.values
+            grb_2_start = second_GRIB_file.validDate
+            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+            grb_3_vals = third_GRIB_file.values
+            grb_3_start = third_GRIB_file.validDate
+            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+            grb_4_vals = fourth_GRIB_file.values
+            grb_4_start = fourth_GRIB_file.validDate
+            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+            grb_5_vals = fifth_GRIB_file.values
+            grb_5_start = fifth_GRIB_file.validDate
+            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+            grb_6_vals = None
+            grb_6_start = None
+            grb_6_end = None
+                      
+            lats_1, lons_1 = first_GRIB_file.latlons()
+            lats_2, lons_2 = second_GRIB_file.latlons()
+            lats_3, lons_3 = third_GRIB_file.latlons()
+            lats_4, lons_4 = fourth_GRIB_file.latlons()
+            lats_5, lons_5 = fifth_GRIB_file.latlons()
+            lats_6, lons_6 = None, None
+
+        if files >= 6:
+            grb_1_vals = first_GRIB_file.values
+            grb_1_start = first_GRIB_file.validDate
+            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+            grb_2_vals = second_GRIB_file.values
+            grb_2_start = second_GRIB_file.validDate
+            grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+            grb_3_vals = third_GRIB_file.values
+            grb_3_start = third_GRIB_file.validDate
+            grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+            grb_4_vals = fourth_GRIB_file.values
+            grb_4_start = fourth_GRIB_file.validDate
+            grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+            grb_5_vals = fifth_GRIB_file.values
+            grb_5_start = fifth_GRIB_file.validDate
+            grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+            grb_6_vals = sixth_GRIB_file.values
+            grb_6_start = sixth_GRIB_file.validDate
+            grb_6_end = grb_6_start + timedelta(hours=grid_time_interval)
+                      
+            lats_1, lons_1 = first_GRIB_file.latlons()
+            lats_2, lons_2 = second_GRIB_file.latlons()
+            lats_3, lons_3 = third_GRIB_file.latlons()
+            lats_4, lons_4 = fourth_GRIB_file.latlons()
+            lats_5, lons_5 = fifth_GRIB_file.latlons()
+            lats_6, lons_6 = sixth_GRIB_file.latlons()
+    
+        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6
     
     def GRIB_file_checker(GRIB_File_List):
         
@@ -1278,7 +1526,7 @@ class save:
             fig5 = fig5.savefig(file_path_5)
             plt.close(fig5)
 
-    def extract_SPC_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4):
+    def extract_SPC_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6):
 
         r'''
         This function extracts indivdual figures from a list of figures and saves them with a specified file path. 
@@ -1288,12 +1536,11 @@ class save:
                 2) file_path_1 (String) - Path to where the first figure is saved. 
                 3) file_path_2 (String) - Path to where the second figure is saved. 
                 4) file_path_3 (String) - Path to where the third figure is saved. 
-                5) file_path_4 (String) - Path to where the fourth figure is saved.  
+                5) file_path_4 (String) - Path to where the fourth figure is saved. 
 
         Return: Each figure in the list is saved as its own file to a specified file path
 
         '''
-    
         try:
             fig1 = figure_list[0]
             fig1 = fig1.savefig(file_path_1)
@@ -1305,11 +1552,17 @@ class save:
             fig3 = fig3.savefig(file_path_3)
             plt.close(fig3)
             fig4 = figure_list[3]
-            fig4 = fig4.savefig(file_path_3)
-            plt.close(fig4)
-    
+            fig4 = fig4.savefig(file_path_4)
+            plt.close(fig4) 
+            fig5 = figure_list[4]
+            fig5 = fig5.savefig(file_path_5)
+            plt.close(fig5) 
+            fig6 = figure_list[5]
+            fig6 = fig6.savefig(file_path_6)
+            plt.close(fig6) 
+
         except Exception as a:
-            try:     
+            try:
                 fig1 = figure_list[0]
                 fig1 = fig1.savefig(file_path_1)
                 plt.close(fig1)
@@ -1319,8 +1572,13 @@ class save:
                 fig3 = figure_list[2]
                 fig3 = fig3.savefig(file_path_3)
                 plt.close(fig3)
-    
-            except Exception as b:
+                fig4 = figure_list[3]
+                fig4 = fig4.savefig(file_path_4)
+                plt.close(fig4) 
+                fig5 = figure_list[4]
+                fig5 = fig5.savefig(file_path_5)
+                plt.close(fig5)
+            except Exception as b:    
                 try:
                     fig1 = figure_list[0]
                     fig1 = fig1.savefig(file_path_1)
@@ -1328,15 +1586,46 @@ class save:
                     fig2 = figure_list[1]
                     fig2 = fig2.savefig(file_path_2)
                     plt.close(fig2)
-    
+                    fig3 = figure_list[2]
+                    fig3 = fig3.savefig(file_path_3)
+                    plt.close(fig3)
+                    fig4 = figure_list[3]
+                    fig4 = fig4.savefig(file_path_3)
+                    plt.close(fig4)
+                
                 except Exception as c:
-                    try:
+                    try:     
                         fig1 = figure_list[0]
                         fig1 = fig1.savefig(file_path_1)
                         plt.close(fig1)
-    
-                    except Exception as d:
-                        pass
+                        fig2 = figure_list[1]
+                        fig2 = fig2.savefig(file_path_2)
+                        plt.close(fig2)
+                        fig3 = figure_list[2]
+                        fig3 = fig3.savefig(file_path_3)
+                        plt.close(fig3)
+            
+                    except Exception as b:
+                        try:
+                            fig1 = figure_list[0]
+                            fig1 = fig1.savefig(file_path_1)
+                            plt.close(fig1)
+                            fig2 = figure_list[1]
+                            fig2 = fig2.savefig(file_path_2)
+                            plt.close(fig2)
+            
+                        except Exception as c:
+                            try:
+                                fig1 = figure_list[0]
+                                fig1 = fig1.savefig(file_path_1)
+                                plt.close(fig1)
+            
+                            except Exception as d:
+                                pass
 
 
+
+            
+        
+        
         
