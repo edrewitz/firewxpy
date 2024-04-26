@@ -24,6 +24,13 @@ class NDFD:
     THIS CLASS HOSTS A VARIETY OF FUNCTIONS TO PARSE THROUGH THE NWS NDFD GRIB DATA
 
     '''
+
+    def figure_count(figure_list):
+    
+        figure_list = figure_list
+        for i in figure_list:
+            i = i + 1
+            return i
     
 
     def GRIB_temperature_conversion_test(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files):
@@ -831,6 +838,8 @@ class NDFD:
         
         files = count_of_GRIB_files
         param = parameter
+
+        grid_time_interval = grid_time_interval
     
         if param == 'ds.mint.bin' or param == 'ds.maxt.bin':
             
@@ -1590,7 +1599,7 @@ class save:
                     fig3 = fig3.savefig(file_path_3)
                     plt.close(fig3)
                     fig4 = figure_list[3]
-                    fig4 = fig4.savefig(file_path_3)
+                    fig4 = fig4.savefig(file_path_4)
                     plt.close(fig4)
                 
                 except Exception as c:
