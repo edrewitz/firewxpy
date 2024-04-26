@@ -1545,7 +1545,9 @@ class save:
                 2) file_path_1 (String) - Path to where the first figure is saved. 
                 3) file_path_2 (String) - Path to where the second figure is saved. 
                 4) file_path_3 (String) - Path to where the third figure is saved. 
-                5) file_path_4 (String) - Path to where the fourth figure is saved. 
+                5) file_path_4 (String) - Path to where the fourth figure is saved.
+                6) file_path_5 (String) - Path to where the fifth figure is saved.
+                7) file_path_6 (String) - Path to where the sixth figure is saved.
 
         Return: Each figure in the list is saved as its own file to a specified file path
 
@@ -1634,7 +1636,89 @@ class save:
 
 
 
+    def make_SPC_Outlook_GIF(GIF_Image_file_path, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, file_path_8, fps):
+
+        r'''
+        This function makes an animated GIF images of the SPC Outlooks and saves the GIF to a specified location. 
+
+        Inputs: 1) GIF_Image_file_path (String) - The path to where the GIF image saves to plus the filename of the GIF image. 
+                2) file_path_1 (String) - Path to where the first figure is saved. 
+                3) file_path_2 (String) - Path to where the second figure is saved. 
+                4) file_path_3 (String) - Path to where the third figure is saved. 
+                5) file_path_4 (String) - Path to where the fourth figure is saved.
+                6) file_path_5 (String) - Path to where the fifth figure is saved.
+                7) file_path_6 (String) - Path to where the sixth figure is saved.
+                8) file_path_7 (String) - Path to where the seventh figure is saved.
+                9) file_path_8 (String) - Path to where the eigth figure is saved.
+                10) fps (Integer) - The rate in frames per second the GIF loops. 
+
+        '''
+
+
+        filenames = []
+        filenames.append(file_path_1)
+        filenames.append(file_path_2)
+        filenames.append(file_path_3)
+        filenames.append(file_path_4)
+        filenames.append(file_path_5)
+        filenames.append(file_path_6)
+        filenames.append(file_path_7)
+        filenames.append(file_path_8)
+
+
+        try:
+            with imageio.get_writer(GIF_Image_file_path, fps=fps) as writer:
+                for filename in filenames:
+                    image = imageio.v2.imread(filename)
+                    writer.append_data(image)
+        
+        except Exception as a:
+            try:
+                with imageio.get_writer(GIF_Image_file_path, fps=fps) as writer:
+                    new_list = []
+                    image_1 = filenames[0]
+                    image_2 = filenames[1]
+                    image_3 = filenames[2]
+                    image_4 = filenames[3]
+                    image_5 = filenames[4]
+                    image_6 = filenames[5]
+                    image_7 = filenames[6]
+                    new_list.append(image_1)
+                    new_list.append(image_2)
+                    new_list.append(image_3)
+                    new_list.append(image_4)
+                    new_list.append(image_5)
+                    new_list.append(image_6)
+                    new_list.append(image_7)
             
+                    for filename in new_list:
+                        image = imageio.v2.imread(filename)
+                        writer.append_data(image)
+                        
+            
+        
+            except Exception as b:
+                with imageio.get_writer(GIF_Image_file_path, fps=fps) as writer:
+                    new_list = []
+                    image_1 = filenames[0]
+                    image_2 = filenames[1]
+                    image_3 = filenames[2]
+                    image_4 = filenames[3]
+                    image_5 = filenames[4]
+                    image_6 = filenames[5]
+                    new_list.append(image_1)
+                    new_list.append(image_2)
+                    new_list.append(image_3)
+                    new_list.append(image_4)
+                    new_list.append(image_5)
+                    new_list.append(image_6)
+            
+                    for filename in new_list:
+                        image = imageio.v2.imread(filename)
+                        writer.append_data(image)        
+        
+        print("GIF Saved!")        
+        
         
         
         
