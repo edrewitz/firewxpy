@@ -39,7 +39,7 @@ class Counties_Perspective:
     r'''
     This class hosts the graphics using county and state boundaries as the geographic reference
     '''
-    def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, state_border_color, state_border_line_thickness, county_border_color, county_border_line_thickness, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, state_border_color, state_border_line_thickness, county_border_color, county_border_line_thickness, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
 
@@ -133,6 +133,7 @@ class Counties_Perspective:
         datacrs = ccrs.PlateCarree()
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -160,7 +161,7 @@ class Counties_Perspective:
         return fig
 
 
-    def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, state_border_color, state_border_line_thickness, county_border_color, county_border_line_thickness, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, state_border_color, state_border_line_thickness, county_border_color, county_border_line_thickness, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -272,6 +273,7 @@ class Counties_Perspective:
         datacrs = ccrs.PlateCarree()
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -317,7 +319,7 @@ class Counties_Perspective:
 
 
 
-    def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -396,6 +398,7 @@ class Counties_Perspective:
         cmap = colormaps.relative_humidity_colormap()
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -406,8 +409,8 @@ class Counties_Perspective:
             ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
@@ -440,7 +443,7 @@ class Counties_Perspective:
 
         return fig
 
-    def plot_red_flag_relative_humidity_with_METARs(red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_red_flag_relative_humidity_with_METARs(red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -522,6 +525,7 @@ class Counties_Perspective:
         datacrs = ccrs.PlateCarree()
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -532,8 +536,8 @@ class Counties_Perspective:
             ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold_numpy, 1), cmap=cmap, alpha=1)
@@ -567,7 +571,7 @@ class Counties_Perspective:
         return fig
 
 
-    def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -659,6 +663,7 @@ class Counties_Perspective:
         plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -669,8 +674,8 @@ class Counties_Perspective:
             ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs_low = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=1)
@@ -693,7 +698,7 @@ class Counties_Perspective:
         return fig
 
 
-    def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -759,7 +764,8 @@ class Counties_Perspective:
         rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_relative_humidity_24_hour_difference_data(utc_time)
 
         rtma_time_24 = rtma_time - timedelta(hours=24)
-
+        
+        
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
         rtma_time = rtma_time.replace(tzinfo=from_zone)
@@ -775,6 +781,7 @@ class Counties_Perspective:
         plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -785,11 +792,11 @@ class Counties_Perspective:
             ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap=cmap, alpha=1)
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-80, 85, 5), cmap=cmap, alpha=1)
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -804,7 +811,7 @@ class Counties_Perspective:
         return fig
 
 
-    def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -886,6 +893,7 @@ class Counties_Perspective:
         plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -897,10 +905,10 @@ class Counties_Perspective:
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='lime', zorder=5)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap='seismic', alpha=1)
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-40, 41, 1), cmap='seismic', alpha=1)
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -915,7 +923,7 @@ class Counties_Perspective:
         return fig
 
 
-    def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -997,6 +1005,7 @@ class Counties_Perspective:
         plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -1007,8 +1016,8 @@ class Counties_Perspective:
             ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap='PuOr_r', alpha=1)
@@ -1026,7 +1035,7 @@ class Counties_Perspective:
         return fig
 
 
-    def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -1102,6 +1111,7 @@ class Counties_Perspective:
         plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -1112,8 +1122,8 @@ class Counties_Perspective:
             ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap='cool_r', alpha=1)
@@ -1131,7 +1141,7 @@ class Counties_Perspective:
         return fig
 
 
-    def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_speed(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_speed(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -1212,6 +1222,7 @@ class Counties_Perspective:
         plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -1222,8 +1233,8 @@ class Counties_Perspective:
             ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
@@ -1247,7 +1258,7 @@ class Counties_Perspective:
         return fig
 
 
-    def plot_dry_and_windy_areas_based_on_sustained_winds(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size, show_rivers):
+    def plot_dry_and_windy_areas_based_on_sustained_winds(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -1330,6 +1341,7 @@ class Counties_Perspective:
         plot_proj = mask.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -1341,7 +1353,7 @@ class Counties_Perspective:
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         # Plot the mask
         try:
@@ -1359,7 +1371,7 @@ class Counties_Perspective:
         return fig
 
 
-    def plot_dry_and_windy_areas_based_on_wind_gusts(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size, show_rivers):
+    def plot_dry_and_windy_areas_based_on_wind_gusts(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -1442,6 +1454,7 @@ class Counties_Perspective:
         plot_proj = mask.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -1453,7 +1466,7 @@ class Counties_Perspective:
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         # Plot the mask
         try:
@@ -1471,7 +1484,7 @@ class Counties_Perspective:
         return fig
 
 
-    def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers):
+    def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -1582,6 +1595,7 @@ class Counties_Perspective:
         plot_proj_3 = rtma_wind.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
         gs = gridspec.GridSpec(1, 9)
         ax0 = fig.add_subplot(gs[0:1, 0:3], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -1593,7 +1607,7 @@ class Counties_Perspective:
             ax0.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax0.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax0.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
         ax0.set_aspect(first_subplot_aspect_ratio)
         ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -1615,7 +1629,7 @@ class Counties_Perspective:
             ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax1.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
         ax1.set_aspect(subsequent_subplot_aspect_ratio)
         ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -1636,7 +1650,7 @@ class Counties_Perspective:
             ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax2.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
         ax2.set_aspect(subsequent_subplot_aspect_ratio)
         ax2.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -1655,7 +1669,7 @@ class Counties_Perspective:
         return fig        
 
 
-    def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers):
+    def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -1766,6 +1780,7 @@ class Counties_Perspective:
         plot_proj_3 = rtma_wind.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
         gs = gridspec.GridSpec(1, 9)
         ax0 = fig.add_subplot(gs[0:1, 0:3], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -1777,7 +1792,7 @@ class Counties_Perspective:
             ax0.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax0.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax0.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
         ax0.set_aspect(first_subplot_aspect_ratio)
         ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -1799,7 +1814,7 @@ class Counties_Perspective:
             ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax1.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
         ax1.set_aspect(subsequent_subplot_aspect_ratio)
         ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -1820,7 +1835,7 @@ class Counties_Perspective:
             ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax2.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
         ax2.set_aspect(subsequent_subplot_aspect_ratio)
         ax2.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
 
@@ -1839,7 +1854,7 @@ class Counties_Perspective:
         return fig     
 
 
-    def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_gusts(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_gusts(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -1920,18 +1935,19 @@ class Counties_Perspective:
         plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='red', zorder=5)
+        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
         if show_rivers == True:
             ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         else:
             pass
-        ax.add_feature(USCOUNTIES, linewidth=1.5, zorder=4)
+        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
@@ -1960,7 +1976,7 @@ class Predictive_Services_Areas_Perspective:
     This class hosts the graphics using Geographic Area Coordination Center (GACC) and Predictive Services Area (PSA) boundaries as the geographic reference. 
     '''
   
-    def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, GACC_Border_Color, GACC_Border_Line_Thickness, PSA_Border_Line_Thickness, PSA_Border_Color, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, GACC_Border_Color, GACC_Border_Line_Thickness, PSA_Border_Line_Thickness, PSA_Border_Color, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
 
@@ -2058,6 +2074,7 @@ class Predictive_Services_Areas_Perspective:
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", GACC_Border_Color)
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -2084,7 +2101,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, GACC_Border_Color, GACC_Border_Line_Thickness, PSA_Border_Line_Thickness, PSA_Border_Color, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, mask, GACC_Border_Color, GACC_Border_Line_Thickness, PSA_Border_Line_Thickness, PSA_Border_Color, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -2198,6 +2215,7 @@ class Predictive_Services_Areas_Perspective:
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", GACC_Border_Color)
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -2243,7 +2261,7 @@ class Predictive_Services_Areas_Perspective:
 
 
 
-    def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -2325,6 +2343,7 @@ class Predictive_Services_Areas_Perspective:
         cmap = colormaps.relative_humidity_colormap()
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -2369,7 +2388,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_red_flag_relative_humidity_with_METARs(red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_red_flag_relative_humidity_with_METARs(red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -2456,6 +2475,7 @@ class Predictive_Services_Areas_Perspective:
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -2500,7 +2520,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
         This function does the following:
@@ -2596,6 +2616,7 @@ class Predictive_Services_Areas_Perspective:
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -2629,7 +2650,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -2713,6 +2734,7 @@ class Predictive_Services_Areas_Perspective:
         cmap = colormaps.relative_humidity_change_colormap()
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -2726,7 +2748,7 @@ class Predictive_Services_Areas_Perspective:
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap=cmap, alpha=1)
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-80, 85, 5), cmap=cmap, alpha=1)
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -2741,7 +2763,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -2826,6 +2848,7 @@ class Predictive_Services_Areas_Perspective:
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'lime')
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -2839,7 +2862,7 @@ class Predictive_Services_Areas_Perspective:
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap='seismic', alpha=1)
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-40, 41, 1), cmap='seismic', alpha=1)
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -2854,7 +2877,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -2939,6 +2962,7 @@ class Predictive_Services_Areas_Perspective:
         plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -2967,7 +2991,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
         
 
-    def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -3046,6 +3070,7 @@ class Predictive_Services_Areas_Perspective:
         plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -3074,7 +3099,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_speed(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_speed(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -3159,6 +3184,7 @@ class Predictive_Services_Areas_Perspective:
         plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -3193,7 +3219,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_gusts(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_gusts(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -3277,6 +3303,7 @@ class Predictive_Services_Areas_Perspective:
         plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -3311,7 +3338,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_dry_and_windy_areas_based_on_sustained_winds(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size, show_rivers):
+    def plot_dry_and_windy_areas_based_on_sustained_winds(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -3397,6 +3424,7 @@ class Predictive_Services_Areas_Perspective:
         plot_proj = mask.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -3425,7 +3453,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_dry_and_windy_areas_based_on_wind_gusts(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size, show_rivers):
+    def plot_dry_and_windy_areas_based_on_wind_gusts(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -3511,6 +3539,7 @@ class Predictive_Services_Areas_Perspective:
         plot_proj = mask.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -3539,7 +3568,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers):
+    def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -3653,6 +3682,7 @@ class Predictive_Services_Areas_Perspective:
         plot_proj_3 = rtma_wind.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
         gs = gridspec.GridSpec(1, 9)
         ax0 = fig.add_subplot(gs[0:1, 0:3], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -3723,7 +3753,7 @@ class Predictive_Services_Areas_Perspective:
         return fig 
 
 
-    def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers):
+    def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -3837,6 +3867,7 @@ class Predictive_Services_Areas_Perspective:
         plot_proj_3 = rtma_wind.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
         gs = gridspec.GridSpec(1, 9)
         ax0 = fig.add_subplot(gs[0:1, 0:3], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -3906,7 +3937,7 @@ class Predictive_Services_Areas_Perspective:
 
         return fig
 
-    def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel_compact_view(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_1_title_font_size, subplot_2_and_3_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers):
+    def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel_compact_view(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_1_title_font_size, subplot_2_and_3_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -4022,6 +4053,7 @@ class Predictive_Services_Areas_Perspective:
         plot_proj_3 = rtma_wind.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig.set_facecolor('aliceblue')
         gs = gridspec.GridSpec(2, 9)
         ax0 = fig.add_subplot(gs[0:2, 0:6], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
