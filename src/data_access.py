@@ -1172,9 +1172,11 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 times.append(new_time)
 
             main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
             main_server_status = main_server_response.status_code
-            backup_server_status = backup_server_response.status_code
+            first_backup_server_status = first_backup_server_response.status_code
+            second_backup_server_status = second_backup_server_response.status_code
 
             if main_server_status == 200:
                 print("Main UCAR THREDDS Server is online. Connecting!")
@@ -1251,8 +1253,84 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             
                                     return error
 
-            if main_server_status != 200 and backup_server_status == 200:
-                print("Main UCAR THREDDS Server is down. Connecting to the backup UCAR THREDDS Server!")
+            if main_server_status != 200 and first_backup_server_status == 200:
+                print("Main UCAR THREDDS Server is down. Connected to the first backup UCAR THREDDS Server!")
+                try:
+                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_parameter = rtma_data[parameter].squeeze()
+    
+                    print("Data retrieval for " + current_time.strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                    
+                    return rtma_parameter, current_time
+                    
+                except Exception as e:
+            
+                    print(parameter + " Data is unavailiable for "+current_time.strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[0].strftime('%m/%d/%Y %H00 UTC'))
+                    
+                    try:
+                        rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_parameter = rtma_data[parameter].squeeze()
+                        time = times[0]
+            
+                        print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                        return rtma_parameter, time
+            
+                    except Exception as a:
+            
+                        print(parameter + " Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
+                       
+                        try:
+                            rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_parameter = rtma_data[parameter].squeeze()
+                            time = times[1]
+                
+                            print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                            return rtma_parameter, time
+            
+            
+                        except Exception as b:
+                                        
+                            print(parameter + " Data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
+            
+                            try:
+                                rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_parameter = rtma_data[parameter].squeeze()
+                                time = times[2]
+                
+                                print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                                return rtma_parameter, time
+            
+                            except Exception as c:
+                                        
+                                print(parameter + " Data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
+            
+                                try:
+                                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_parameter = rtma_data[parameter].squeeze()
+                                    time = times[3]
+                    
+                                    print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                                    return rtma_parameter, time
+                                
+                            
+                                except syntaxError as k:
+                                    error = info.syntax_error()
+            
+                                    return error
+
+            if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status == 200:
+
+                print("Main UCAR THREDDS Server is down. Connected to the second backup UCAR THREDDS Server!")
                 try:
                     rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
@@ -1325,8 +1403,10 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                     error = info.syntax_error()
             
                                     return error
+                
+                print("Unable to connect to either the main or backup servers. Aborting!")
 
-            if main_server_status != 200 and backup_server_status != 200:
+            if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
                 print("Unable to connect to either the main or backup servers. Aborting!")
         
         
@@ -1358,9 +1438,11 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 times_24.append(old_time)
 
             main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
             main_server_status = main_server_response.status_code
-            backup_server_status = backup_server_response.status_code
+            first_backup_server_status = first_backup_server_response.status_code
+            second_backup_server_status = second_backup_server_response.status_code
             
             if main_server_status == 200:
                 print("Main UCAR THREDDS Server is online. Connecting!")
@@ -1478,8 +1560,123 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                     return error
 
             
-            if main_server_status != 200 and backup_server_status == 200:
+            if main_server_status != 200 and first_backup_server_status == 200:
                 print("Main UCAR THREDDS Server is down. Connecting to the backup UCAR THREDDS Server!")
+                
+                try:
+                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_parameter = rtma_data[parameter].squeeze()
+            
+                    rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                    rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                    rtma_parameter_24 = rtma_data_24[parameter].squeeze()
+            
+                    print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                    time = times[0]
+                    
+                    return rtma_parameter - rtma_parameter_24, time
+                    
+                except Exception as e:
+                    
+                    print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " and/or " + times_24[0].strftime('%m/%d/%Y %H00 UTC') + " is unsuccessful")
+                    print("Will try to download the most recent datasets from "+times[1].strftime('%m/%d/%Y %H00 UTC')+ " and " + times_24[1].strftime('%m/%d/%Y %H00 UTC'))
+                    
+                    try:
+                        rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_parameter = rtma_data[parameter].squeeze()
+                
+                        rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                        rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                        rtma_parameter_24 = rtma_data_24[parameter].squeeze()
+                
+                        print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                        time = times[1]
+                        
+                        return rtma_parameter - rtma_parameter_24, time
+                 
+                    except Exception as a:
+            
+                        print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " and/or " + times_24[1].strftime('%m/%d/%Y %H00 UTC') + " is unsuccessful")
+                        print("Will try to download the most recent datasets from "+times[2].strftime('%m/%d/%Y %H00 UTC')+ " and " + times_24[2].strftime('%m/%d/%Y %H00 UTC'))
+                        
+                        try:
+                            rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_parameter = rtma_data[parameter].squeeze()
+                    
+                            rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                            rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                            rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                            rtma_parameter_24 = rtma_data_24[parameter].squeeze()
+                    
+                            print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                            time = times[2]
+                            
+                            return rtma_parameter - rtma_parameter_24, time
+            
+            
+                        except Exception as b:
+                                        
+                            print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " and/or " + times_24[2].strftime('%m/%d/%Y %H00 UTC') + " is unsuccessful")
+                            print("Will try to download the most recent datasets from "+times[3].strftime('%m/%d/%Y %H00 UTC')+ " and " + times_24[3].strftime('%m/%d/%Y %H00 UTC'))
+                            
+                            try:
+                                rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_parameter = rtma_data[parameter].squeeze()
+                        
+                                rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                rtma_parameter_24 = rtma_data_24[parameter].squeeze()
+                        
+                                print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                                time = times[3]
+                                
+                                return rtma_parameter - rtma_parameter_24, time
+            
+                            except Exception as c:
+                                        
+                                print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " and/or " + times_24[3].strftime('%m/%d/%Y %H00 UTC') + " is unsuccessful")
+                                print("Will try to download the most recent datasets from "+times[4].strftime('%m/%d/%Y %H00 UTC')+ " and " + times_24[4].strftime('%m/%d/%Y %H00 UTC'))
+                                
+                                try:
+                                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_parameter = rtma_data[parameter].squeeze()
+                            
+                                    rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                    rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                    rtma_parameter_24 = rtma_data_24[parameter].squeeze()
+                            
+                                    print("Data retrieval for " + times[4].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[4].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                                    time = times[4]
+                                    
+                                    return rtma_parameter - rtma_parameter_24, time
+                                          
+                            
+                                except syntaxError as k:
+                                    error = info.syntax_error()
+            
+                                    return error
+
+            if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status == 200:
+                print("Main UCAR THREDDS Server is down. Connected to the second backup UCAR THREDDS Server!")
                 
                 try:
                     rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
@@ -1593,7 +1790,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             
                                     return error
 
-            if main_server_status != 200 and backup_server_status != 200:
+            if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
                 print("Unable to connect to either the main or backup servers. Aborting!")
         
         
@@ -1619,9 +1816,11 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 times.append(new_time)
 
             main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
             main_server_status = main_server_response.status_code
-            backup_server_status = backup_server_response.status_code
+            first_backup_server_status = first_backup_server_response.status_code
+            second_backup_server_status = second_backup_server_response.status_code
             
             if main_server_status == 200:
                 print("Main UCAR THREDDS Server is online. Connecting!")
@@ -1718,8 +1917,102 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             
                                     return None
 
-            if main_server_status != 200 and backup_server_status == 200:
-                print("Main UCAR THREDDS Server is down. Connecting to the backup UCAR THREDDS Server!")
+            if main_server_status != 200 and first_backup_server_status == 200:
+                print("Main UCAR THREDDS Server is down. Connected to the first backup UCAR THREDDS Server!")
+                try:
+                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                    rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+            
+                    rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                    print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                    time = times[0]
+                    
+                    return rtma_rh *100, time
+                    
+                except Exception as e:
+            
+                    print("Relative Humidity Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
+                    
+                    try:
+                        rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                        rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                
+                        rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                        print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                        time = times[1]
+                        
+                        return rtma_rh *100, time
+              
+                    except Exception as a:
+            
+                        print("Relative Humidity data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
+                        
+                        try:
+                            rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                            rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                    
+                            rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                            print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                            time = times[2]
+                            
+                            return rtma_rh *100, time
+            
+                        except Exception as b:
+                                        
+                            print("Relative Humidity data is unavailiable for "+times[2].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
+                            
+                            try:
+                                rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                                rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                        
+                                rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                                print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                                time = times[3]
+                                
+                                return rtma_rh *100, time
+            
+                            except Exception as c:
+                                        
+                                print("Relative Humidity data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[4].strftime('%m/%d/%Y %H00 UTC'))
+                                
+                                try:
+                                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                                    rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                            
+                                    rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                                    print("Data retrieval for " + times[4].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                                    time = times[4]
+                                    
+                                    return rtma_rh *100, time
+                                           
+                            
+                                except Exception as k:
+                                    print("WARNING: Latest dataset is more than 4 hours old.\nQuitting - Please try again later.")
+            
+                                    return None
+
+            if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status == 200:
+                print("Main UCAR THREDDS Server is down. Connected to the second backup UCAR THREDDS Server!")
                 try:
                     rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
@@ -1812,7 +2105,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             
                                     return None
 
-            if main_server_status != 200 and backup_server_status != 200:
+            if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
                 print("Unable to connect to either the main or backup servers. Aborting!")
 
 
@@ -1841,9 +2134,11 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
 
             main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
             main_server_status = main_server_response.status_code
-            backup_server_status = backup_server_response.status_code
+            first_backup_server_status = first_backup_server_response.status_code
+            second_backup_server_status = second_backup_server_response.status_code
 
             if main_server_status == 200:
                 print("Main UCAR THREDDS Server is online. Connecting!")
@@ -1945,8 +2240,109 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             
                                     return None
 
-            if main_server_status != 200 and backup_server_status == 200:
+            if main_server_status != 200 and first_backup_server_status == 200:
                 print("Main UCAR THREDDS Server is down. Connecting to the backup UCAR THREDDS Server!")
+
+                try:
+                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                    rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                    rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                    rtma_wind = rtma_data['Wind_speed_Analysis_height_above_ground'].squeeze()
+            
+                    rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                    print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                    time = times[0]
+                    
+                    return rtma_rh *100, rtma_wind * 2.23694, time
+                    
+                except Exception as e:
+            
+                    print("Relative Humidity Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
+                    
+                    try:
+                        rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                        rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                        rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                        rtma_wind = rtma_data['Wind_speed_Analysis_height_above_ground'].squeeze()
+                
+                        rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                        print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                        time = times[1]
+                        
+                        return rtma_rh *100, rtma_wind, time
+              
+                    except Exception as a:
+            
+                        print("Relative Humidity data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
+                        
+                        try:
+                            rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                            rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                            rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                            rtma_wind = rtma_data['Wind_speed_Analysis_height_above_ground'].squeeze()
+                    
+                            rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                            print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                            time = times[2]
+                            
+                            return rtma_rh *100, rtma_wind, time
+            
+                        except Exception as b:
+                                        
+                            print("Relative Humidity data is unavailiable for "+times[2].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
+                            
+                            try:
+                                rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                                rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                                rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                                rtma_wind = rtma_data['Wind_speed_Analysis_height_above_ground'].squeeze()
+                        
+                                rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                                print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                                time = times[3]
+                                
+                                return rtma_rh *100, rtma_wind, time
+            
+                            except Exception as c:
+                                        
+                                print("Relative Humidity data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[4].strftime('%m/%d/%Y %H00 UTC'))
+                                
+                                try:
+                                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                                    rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                                    rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                                    rtma_wind = rtma_data['Wind_speed_Analysis_height_above_ground'].squeeze()
+                            
+                                    rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                                    print("Data retrieval for " + times[4].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                                    time = times[4]
+                                    
+                                    return rtma_rh *100, rtma_wind, time
+                                           
+                            
+                                except Exception as k:
+                                    print("WARNING: Latest dataset is more than 4 hours old.\nQuitting - Please try again later.")
+            
+                                    return None
+
+
+            if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status == 200:
+                print("Main UCAR THREDDS Server is down. Connected to the second backup UCAR THREDDS Server!")
 
                 try:
                     rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
@@ -1968,7 +2364,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     print("Relative Humidity Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
                     
                     try:
-                        rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
                         rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
@@ -2046,7 +2442,8 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                     return None
 
 
-            if main_server_status != 200 and backup_server_status != 200:
+
+            if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
                 print("Unable to connect to either the main or backup servers. Aborting!")
                                     
 
@@ -2075,9 +2472,11 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 times.append(new_time)
 
             main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
             main_server_status = main_server_response.status_code
-            backup_server_status = backup_server_response.status_code
+            first_backup_server_status = first_backup_server_response.status_code
+            second_backup_server_status = second_backup_server_response.status_code
 
             if main_server_status == 200:
                 print("Main UCAR THREDDS Server is online. Connecting!")
@@ -2179,7 +2578,107 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             
                                     return None
 
-            if main_server_status != 200 and backup_server_status == 200:
+            if main_server_status != 200 and first_backup_server_status == 200:
+                print("Main UCAR THREDDS Server is down. Connecting to the backup UCAR THREDDS Server!")
+
+                try:
+                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                    rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                    rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                    rtma_gust = rtma_data['Wind_speed_gust_Analysis_height_above_ground'].squeeze()
+            
+                    rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                    print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                    time = times[0]
+                    
+                    return rtma_rh *100, rtma_gust * 2.23694, time
+                    
+                except Exception as e:
+            
+                    print("Relative Humidity Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
+                    
+                    try:
+                        rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                        rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                        rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                        rtma_gust = rtma_data['Wind_speed_gust_Analysis_height_above_ground'].squeeze()
+                
+                        rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                        print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                        time = times[1]
+                        
+                        return rtma_rh *100, rtma_gust, time
+              
+                    except Exception as a:
+            
+                        print("Relative Humidity data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
+                        
+                        try:
+                            rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                            rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                            rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                            rtma_gust = rtma_data['Wind_speed_gust_Analysis_height_above_ground'].squeeze()
+                    
+                            rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                            print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                            time = times[2]
+                            
+                            return rtma_rh *100, rtma_gust, time
+            
+                        except Exception as b:
+                                        
+                            print("Relative Humidity data is unavailiable for "+times[2].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
+                            
+                            try:
+                                rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                                rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                                rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                                rtma_gust = rtma_data['Wind_speed_gust_Analysis_height_above_ground'].squeeze()
+                        
+                                rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                                print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                                time = times[3]
+                                
+                                return rtma_rh *100, rtma_gust, time
+            
+                            except Exception as c:
+                                        
+                                print("Relative Humidity data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[4].strftime('%m/%d/%Y %H00 UTC'))
+                                
+                                try:
+                                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                                    rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                                    rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                                    rtma_gust = rtma_data['Wind_speed_gust_Analysis_height_above_ground'].squeeze()
+                            
+                                    rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                                    print("Data retrieval for " + times[4].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                                    time = times[4]
+                                    
+                                    return rtma_rh *100, rtma_gust, time
+                                           
+                            
+                                except Exception as k:
+                                    print("WARNING: Latest dataset is more than 4 hours old.\nQuitting - Please try again later.")
+            
+                                    return None
+
+            if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status == 200:
                 print("Main UCAR THREDDS Server is down. Connecting to the backup UCAR THREDDS Server!")
 
                 try:
@@ -2279,7 +2778,8 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             
                                     return None
 
-            if main_server_status != 200 and backup_server_status != 200:
+
+            if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
                 print("Unable to connect to either the main or backup servers. Aborting!")
         
         
@@ -2310,9 +2810,11 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 times_24.append(old_time)
 
             main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
             main_server_status = main_server_response.status_code
-            backup_server_status = backup_server_response.status_code
+            first_backup_server_status = first_backup_server_response.status_code
+            second_backup_server_status = second_backup_server_response.status_code
 
             if main_server_status == 200:
                 print("Main UCAR THREDDS Server is online. Connecting!")
@@ -2477,6 +2979,139 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     print("Relative Humidity Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ " and/or " +times_24[0].strftime('%m/%d/%Y %H00 UTC')+"\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC') + " and " +times_24[1].strftime('%m/%d/%Y %H00 UTC'))
                     
                     try:
+                        rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                        rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                
+                        rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                
+                        rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                        rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                        rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
+                        rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                
+                        rtma_rh_24 = mpcalc.relative_humidity_from_dewpoint(rtma_temp_24, rtma_dwpt_24)
+                        print("Data retrieval for both " + times[1].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                        time = times[1]
+                        
+                        return (rtma_rh - rtma_rh_24) *100, time 
+                        
+                    except Exception as a:
+            
+                        print("Relative Humidity Data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ " and/or " +times_24[1].strftime('%m/%d/%Y %H00 UTC')+"\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC') + " and " +times_24[2].strftime('%m/%d/%Y %H00 UTC'))
+                        
+                        try:
+                            rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                            rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                    
+                            rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                    
+                            rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                            rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                            rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                            rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
+                            rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                    
+                            rtma_rh_24 = mpcalc.relative_humidity_from_dewpoint(rtma_temp_24, rtma_dwpt_24)
+                            print("Data retrieval for both " + times[2].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                            
+                            time = times[2]
+                            return (rtma_rh - rtma_rh_24) *100, time 
+                            
+                        except Exception as b:
+                                        
+                            print("Relative Humidity Data is unavailiable for "+times[2].strftime('%m/%d/%Y %H00 UTC')+ " and/or " +times_24[2].strftime('%m/%d/%Y %H00 UTC')+"\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC') + " and " +times_24[3].strftime('%m/%d/%Y %H00 UTC'))
+                            
+                            try:
+                                rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                                rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                        
+                                rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                        
+                                rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
+                                rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                        
+                                rtma_rh_24 = mpcalc.relative_humidity_from_dewpoint(rtma_temp_24, rtma_dwpt_24)
+                                print("Data retrieval for both " + times[3].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                                time = times[3]
+                                
+                                return (rtma_rh - rtma_rh_24) *100, time 
+             
+                            except Exception as c:
+                                        
+                                print("Relative Humidity Data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ " and/or " +times_24[3].strftime('%m/%d/%Y %H00 UTC')+"\nWill try to download the most recent dataset from "+times[4].strftime('%m/%d/%Y %H00 UTC') + " and " +times_24[4].strftime('%m/%d/%Y %H00 UTC'))
+                        
+                                try:
+                                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                                    rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                            
+                                    rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+                            
+                                    rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                    rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                    rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
+                                    rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+                            
+                                    rtma_rh_24 = mpcalc.relative_humidity_from_dewpoint(rtma_temp_24, rtma_dwpt_24)
+                                    print("Data retrieval for both " + times[4].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[4].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                                    time = times[4]
+                                    
+                                    return (rtma_rh - rtma_rh_24) *100, time 
+                    
+                                except Exception as k:
+                                    print("WARNING: Latest dataset is more than 4 hours old.\nQuitting - Please try again later.")
+            
+                                    return None
+
+            if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status == 200:
+                print("Main UCAR THREDDS Server is down. Connected to the second backup UCAR THREDDS Server!")
+                
+                try:
+                    rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
+                    rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+            
+                    rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
+            
+                    rtma_cat_24 = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                    rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                    rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
+                    rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
+            
+                    rtma_rh_24 = mpcalc.relative_humidity_from_dewpoint(rtma_temp_24, rtma_dwpt_24)
+                    print("Data retrieval for both " + times[0].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+    
+                    time = times[0]
+                    
+                    return (rtma_rh - rtma_rh_24) *100, time
+                    
+                except Exception as e:
+            
+                    print("Relative Humidity Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ " and/or " +times_24[0].strftime('%m/%d/%Y %H00 UTC')+"\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC') + " and " +times_24[1].strftime('%m/%d/%Y %H00 UTC'))
+                    
+                    try:
                         rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
                         rtma_data = rtma_data.metpy.parse_cf()
@@ -2485,7 +3120,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 
                         rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
                 
-                        rtma_cat_24 = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_cat_24 = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
                         rtma_data_24 = rtma_data_24.metpy.parse_cf()
                         rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
@@ -2580,7 +3215,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             
                                     return None
 
-            if main_server_status != 200 and backup_server_status != 200:
+            if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
                 print("Unable to connect to either the main or backup servers. Aborting!")
 
 
