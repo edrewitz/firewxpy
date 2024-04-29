@@ -14,6 +14,7 @@ import numpy as np
 import data_access as da
 import matplotlib.pyplot as plt
 import imageio
+import os.path, time
 
 from datetime import datetime, timedelta
 from metpy.units import units
@@ -1655,18 +1656,56 @@ class save:
         '''
 
 
-        filenames = []
-        filenames.append(file_path_1)
-        filenames.append(file_path_2)
-        filenames.append(file_path_3)
-        filenames.append(file_path_4)
-        filenames.append(file_path_5)
-        filenames.append(file_path_6)
-        filenames.append(file_path_7)
-        filenames.append(file_path_8)
-
-
         try:
+            file_path_1 = file_path_1
+            file_path_2 = file_path_2
+            file_path_3 = file_path_3
+            file_path_4 = file_path_4
+            file_path_5 = file_path_5
+            file_path_6 = file_path_6
+            file_path_7 = file_path_7
+            file_path_8 = file_path_8
+
+            datetime_str_1 = time.ctime(os.path.getatime(file_path_1))
+            datetime_str_2 = time.ctime(os.path.getatime(file_path_2))
+            datetime_str_3 = time.ctime(os.path.getatime(file_path_3))
+            datetime_str_4 = time.ctime(os.path.getatime(file_path_4))
+            datetime_str_5 = time.ctime(os.path.getatime(file_path_5))
+            datetime_str_6 = time.ctime(os.path.getatime(file_path_6))
+            datetime_str_7 = time.ctime(os.path.getatime(file_path_7))
+            datetime_str_8 = time.ctime(os.path.getatime(file_path_8))
+
+            day_1 = datetime.strptime(datetime_str_1, '%a %b %d %H:%M:%S %Y')
+            day_2 = datetime.strptime(datetime_str_2, '%a %b %d %H:%M:%S %Y')
+            day_3 = datetime.strptime(datetime_str_3, '%a %b %d %H:%M:%S %Y')
+            day_4 = datetime.strptime(datetime_str_4, '%a %b %d %H:%M:%S %Y')
+            day_5 = datetime.strptime(datetime_str_5, '%a %b %d %H:%M:%S %Y')
+            day_6 = datetime.strptime(datetime_str_6, '%a %b %d %H:%M:%S %Y')
+            day_7 = datetime.strptime(datetime_str_7, '%a %b %d %H:%M:%S %Y')
+            day_8 = datetime.strptime(datetime_str_8, '%a %b %d %H:%M:%S %Y')
+        
+            if day_7.day == day_8.day and day_7.hour == day_8.hour:
+                filenames = []
+                filenames.append(file_path_1)
+                filenames.append(file_path_2)
+                filenames.append(file_path_3)
+                filenames.append(file_path_4)
+                filenames.append(file_path_5)
+                filenames.append(file_path_6)
+                filenames.append(file_path_7)
+                filenames.append(file_path_8)
+
+
+            else:
+                filenames = []
+                filenames.append(file_path_1)
+                filenames.append(file_path_2)
+                filenames.append(file_path_3)
+                filenames.append(file_path_4)
+                filenames.append(file_path_5)
+                filenames.append(file_path_6)
+                filenames.append(file_path_7)                
+            
             with imageio.get_writer(GIF_Image_file_path, fps=fps) as writer:
                 for filename in filenames:
                     image = imageio.v2.imread(filename)
@@ -1674,46 +1713,97 @@ class save:
         
         except Exception as a:
             try:
-                with imageio.get_writer(GIF_Image_file_path, fps=fps) as writer:
-                    new_list = []
-                    image_1 = filenames[0]
-                    image_2 = filenames[1]
-                    image_3 = filenames[2]
-                    image_4 = filenames[3]
-                    image_5 = filenames[4]
-                    image_6 = filenames[5]
-                    image_7 = filenames[6]
-                    new_list.append(image_1)
-                    new_list.append(image_2)
-                    new_list.append(image_3)
-                    new_list.append(image_4)
-                    new_list.append(image_5)
-                    new_list.append(image_6)
-                    new_list.append(image_7)
+                file_path_1 = file_path_1
+                file_path_2 = file_path_2
+                file_path_3 = file_path_3
+                file_path_4 = file_path_4
+                file_path_5 = file_path_5
+                file_path_6 = file_path_6
+                file_path_7 = file_path_7
+    
+                datetime_str_1 = time.ctime(os.path.getatime(file_path_1))
+                datetime_str_2 = time.ctime(os.path.getatime(file_path_2))
+                datetime_str_3 = time.ctime(os.path.getatime(file_path_3))
+                datetime_str_4 = time.ctime(os.path.getatime(file_path_4))
+                datetime_str_5 = time.ctime(os.path.getatime(file_path_5))
+                datetime_str_6 = time.ctime(os.path.getatime(file_path_6))
+                datetime_str_7 = time.ctime(os.path.getatime(file_path_7))
+    
+                day_1 = datetime.strptime(datetime_str_1, '%a %b %d %H:%M:%S %Y')
+                day_2 = datetime.strptime(datetime_str_2, '%a %b %d %H:%M:%S %Y')
+                day_3 = datetime.strptime(datetime_str_3, '%a %b %d %H:%M:%S %Y')
+                day_4 = datetime.strptime(datetime_str_4, '%a %b %d %H:%M:%S %Y')
+                day_5 = datetime.strptime(datetime_str_5, '%a %b %d %H:%M:%S %Y')
+                day_6 = datetime.strptime(datetime_str_6, '%a %b %d %H:%M:%S %Y')
+                day_7 = datetime.strptime(datetime_str_7, '%a %b %d %H:%M:%S %Y')
             
-                    for filename in new_list:
+                if day_6.day == day_7.day and day_6.hour == day_7.hour:
+                    filenames = []
+                    filenames.append(file_path_1)
+                    filenames.append(file_path_2)
+                    filenames.append(file_path_3)
+                    filenames.append(file_path_4)
+                    filenames.append(file_path_5)
+                    filenames.append(file_path_6)
+                    filenames.append(file_path_7)
+    
+    
+                else:
+                    filenames = []
+                    filenames.append(file_path_1)
+                    filenames.append(file_path_2)
+                    filenames.append(file_path_3)
+                    filenames.append(file_path_4)
+                    filenames.append(file_path_5)
+                    filenames.append(file_path_6)
+
+                with imageio.get_writer(GIF_Image_file_path, fps=fps) as writer:
+                    for filename in filenames:
                         image = imageio.v2.imread(filename)
                         writer.append_data(image)
-                        
-            
         
             except Exception as b:
-                with imageio.get_writer(GIF_Image_file_path, fps=fps) as writer:
-                    new_list = []
-                    image_1 = filenames[0]
-                    image_2 = filenames[1]
-                    image_3 = filenames[2]
-                    image_4 = filenames[3]
-                    image_5 = filenames[4]
-                    image_6 = filenames[5]
-                    new_list.append(image_1)
-                    new_list.append(image_2)
-                    new_list.append(image_3)
-                    new_list.append(image_4)
-                    new_list.append(image_5)
-                    new_list.append(image_6)
+
+                file_path_1 = file_path_1
+                file_path_2 = file_path_2
+                file_path_3 = file_path_3
+                file_path_4 = file_path_4
+                file_path_5 = file_path_5
+                file_path_6 = file_path_6
+    
+                datetime_str_1 = time.ctime(os.path.getatime(file_path_1))
+                datetime_str_2 = time.ctime(os.path.getatime(file_path_2))
+                datetime_str_3 = time.ctime(os.path.getatime(file_path_3))
+                datetime_str_4 = time.ctime(os.path.getatime(file_path_4))
+                datetime_str_5 = time.ctime(os.path.getatime(file_path_5))
+                datetime_str_6 = time.ctime(os.path.getatime(file_path_6))
+    
+                day_1 = datetime.strptime(datetime_str_1, '%a %b %d %H:%M:%S %Y')
+                day_2 = datetime.strptime(datetime_str_2, '%a %b %d %H:%M:%S %Y')
+                day_3 = datetime.strptime(datetime_str_3, '%a %b %d %H:%M:%S %Y')
+                day_4 = datetime.strptime(datetime_str_4, '%a %b %d %H:%M:%S %Y')
+                day_5 = datetime.strptime(datetime_str_5, '%a %b %d %H:%M:%S %Y')
+                day_6 = datetime.strptime(datetime_str_6, '%a %b %d %H:%M:%S %Y')
             
-                    for filename in new_list:
+                if day_5.day == day_6.day and day_5.hour == day_6.hour:
+                    filenames = []
+                    filenames.append(file_path_1)
+                    filenames.append(file_path_2)
+                    filenames.append(file_path_3)
+                    filenames.append(file_path_4)
+                    filenames.append(file_path_5)
+                    filenames.append(file_path_6)
+              
+                else:
+                    filenames = []
+                    filenames.append(file_path_1)
+                    filenames.append(file_path_2)
+                    filenames.append(file_path_3)
+                    filenames.append(file_path_4)
+                    filenames.append(file_path_5)
+                
+                with imageio.get_writer(GIF_Image_file_path, fps=fps) as writer:
+                    for filename in filenames:
                         image = imageio.v2.imread(filename)
                         writer.append_data(image)        
         
