@@ -399,8 +399,23 @@ class FTP_Downloads:
                     day = utc.day
                     start_hour = 12
 
+                    day_1 = grb_1_start.day
+                    day_2 = grb_2_start.day
+
+
                     grb_1_start = datetime(year, month, day, start_hour)
                     grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+
+                    if day_1 == day_2:
+
+                        print("Either duplicate or old files are being dowloaded.\nThrowing out the old file!")
+
+                        grb_1_vals = None
+                        grb_1_start = None
+                        grb_1_end = None
+
+                    else:
+                        pass
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -428,8 +443,23 @@ class FTP_Downloads:
                     day = utc.day
                     start_hour = 12
 
+                    day_1 = grb_1_start.day
+                    day_2 = grb_2_start.day
+
+
                     grb_1_start = datetime(year, month, day, start_hour)
                     grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+
+                    if day_1 == day_2:
+
+                        print("Either duplicate or old files are being dowloaded.\nThrowing out the old file!")
+
+                        grb_1_vals = None
+                        grb_1_start = None
+                        grb_1_end = None
+
+                    else:
+                        pass
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
