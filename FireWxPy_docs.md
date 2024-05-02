@@ -259,7 +259,7 @@ This function extracts indivdual figures from a list of figures and saves them w
       This function extracts indivdual figures from a list of figures and saves them with a specified file path. 
         *This function is only to be used for the Real Time Mesoscale Analysis Graphics.* 
 
-        Inputs: 1) figure_list (List) - List of figures returned by the plotting function. 
+        `Inputs: 1) figure_list (List) - List of figures returned by the plotting function. 
                 2) file_path_1 (String) - Path to where the first figure is saved. 
                 3) file_path_2 (String) - Path to where the second figure is saved. 
                 4) file_path_3 (String) - Path to where the third figure is saved. 
@@ -268,14 +268,14 @@ This function extracts indivdual figures from a list of figures and saves them w
                 7) file_path_6 (String) - Path to where the sixth figure is saved.
                 8) file_path_7 (String) - Path to where the seventh figure is saved.
 
-        Return: Each figure in the list is saved as its own file to a specified file path
+        Return: Each figure in the list is saved as its own file to a specified file path`
 
    5) Function: `make_RTMA_6hr_timelapse_GIF(GIF_Image_file_path, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, fps)`
 
       This function makes an animated GIF images of the SPC Outlooks and saves the GIF to a specified location.
         *This function is only to be used for the Real Time Mesoscale Analysis Graphics.*
 
-        Inputs: 1) GIF_Image_file_path (String) - The path to where the GIF image saves to plus the filename of the GIF image. 
+        `Inputs: 1) GIF_Image_file_path (String) - The path to where the GIF image saves to plus the filename of the GIF image. 
                 2) file_path_1 (String) - Path to where the first figure is saved. 
                 3) file_path_2 (String) - Path to where the second figure is saved. 
                 4) file_path_3 (String) - Path to where the third figure is saved. 
@@ -285,7 +285,7 @@ This function extracts indivdual figures from a list of figures and saves them w
                 8) file_path_7 (String) - Path to where the seventh figure is saved.
                 9) fps (Integer) - The rate in frames per second the GIF loops. 
 
-        Return: An animated 6hr timelapse GIF image of the RTMA plots. 
+        Return: An animated 6hr timelapse GIF image of the RTMA plots.` 
 
 # FireWxPy_Plots Module
 
