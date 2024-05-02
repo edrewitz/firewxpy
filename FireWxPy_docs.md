@@ -254,7 +254,7 @@ This function extracts indivdual figures from a list of figures and saves them w
 
         Return: An animated GIF of the latest SPC Critical Fire Weather and/or Dry Lightning Outlook
 
-   4) Function: `extract_RTMA_figures_6hr_timelapse(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)`
+4) Function: `extract_RTMA_figures_6hr_timelapse(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)`
   
       This function extracts indivdual figures from a list of figures and saves them with a specified file path. 
         *This function is only to be used for the Real Time Mesoscale Analysis Graphics.* 
@@ -273,7 +273,7 @@ This function extracts indivdual figures from a list of figures and saves them w
 
         Return: Each figure in the list is saved as its own file to a specified file path
 
-   5) Function: `make_RTMA_6hr_timelapse_GIF(GIF_Image_file_path, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, fps)`
+5) Function: `make_RTMA_6hr_timelapse_GIF(GIF_Image_file_path, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, fps)`
 
       This function makes an animated GIF images of the SPC Outlooks and saves the GIF to a specified location.
         *This function is only to be used for the Real Time Mesoscale Analysis Graphics.*
