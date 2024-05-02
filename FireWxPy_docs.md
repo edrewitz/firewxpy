@@ -490,6 +490,125 @@ The Real_Time_Mesoscale_Analysis_Graphics_CONUS` module hosts a variety of diffe
                 18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
                                            Default setting is 0.05.
                                            Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                           Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot.
+   
+
+                19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                            will not display on the map. 
+
+
+            Returns:
+                    1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports.
+
+
+4) Function: `plot_relative_humidity_with_METARs_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth)`
+
+            This function does the following:
+                                            1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                            2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                            3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                            4) Plots the relative humidity data overlayed with the METAR reports. 
+
+            
+
+            Inputs:
+
+                1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+                
+                9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+
+                13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                15) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                           Default setting is 0.05.
+                                           Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                           Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+                19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                            will not display on the map. 
+
+
+            Returns:
+                    1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports.
+
+
+5) Function: `plot_relative_humidity_and_trend_with_METARs_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, subplot_title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth)`
+
+            This function does the following:
+                                            1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                            2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                            3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                            4) Plots the relative humidity data overlayed with the METAR reports. 
+
+            
+
+            Inputs:
+
+                1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+                
+                9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+
+                13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                15) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                           Default setting is 0.05.
+                                           Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
                                            Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
 
                 19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
