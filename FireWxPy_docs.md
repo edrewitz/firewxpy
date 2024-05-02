@@ -199,8 +199,25 @@ Here is an example of where all the different file names are. The filenames are 
 
 The `parser` module hosts functions that parse through the various datasets within the downloaded files and returns organized data arrays to make plotting graphics easier. 
 
+**Classes**
 
+**save**
+The `save` class hosts functions that: 1) extract figures from a figure list and saves them to a specified location, 2) Create animated GIF images from the still images in a specified file location. 
 
+1) Function: `extract_NWS_NDFD_figures(figure_list, file_count, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5)`
+
+This function extracts indivdual figures from a list of figures and saves them with a specified file path. 
+        *This function is only to be used for the National Weather Service NDFD graphics.* 
+
+        Inputs: 1) figure_list (List) - List of figures returned by the plotting function. 
+                2) file_count (Integer) - Count of files returned by the plotting function. 
+                3) file_path_1 (String) - Path to where the first figure is saved. 
+                4) file_path_2 (String) - Path to where the second figure is saved. 
+                5) file_path_3 (String) - Path to where the third figure is saved. 
+                6) file_path_4 (String) - Path to where the fourth figure is saved. 
+                7) file_path_5 (String) - Path to where the fifth figure is saved. 
+
+        Return: Each figure in the list is saved as its own file to a specified file path
 
 
 
