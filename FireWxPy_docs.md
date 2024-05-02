@@ -199,7 +199,7 @@ Here is an example of where all the different file names are. The filenames are 
 
 The `parser` module hosts functions that parse through the various datasets within the downloaded files and returns organized data arrays to make plotting graphics easier. 
 
-**Classes**
+**Classes:**
 
 **save**
 
@@ -221,8 +221,38 @@ This function extracts indivdual figures from a list of figures and saves them w
         Return: Each figure in the list is saved as its own file to a specified file path
 
 
+2) Function: `extract_SPC_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6)'
 
+   This function extracts indivdual figures from a list of figures and saves them with a specified file path. 
+        *This function is only to be used for the SPC Critical Fire Weather Outlook and/or Dry Lightning Outlook Graphics.* 
 
+        Inputs: 1) figure_list (List) - List of figures returned by the plotting function. 
+                2) file_path_1 (String) - Path to where the first figure is saved. 
+                3) file_path_2 (String) - Path to where the second figure is saved. 
+                4) file_path_3 (String) - Path to where the third figure is saved. 
+                5) file_path_4 (String) - Path to where the fourth figure is saved.
+                6) file_path_5 (String) - Path to where the fifth figure is saved.
+                7) file_path_6 (String) - Path to where the sixth figure is saved.
+
+        Return: Each figure in the list is saved as its own file to a specified file path
+
+3) Function: `make_SPC_Outlook_GIF(GIF_Image_file_path, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, file_path_8, fps)`
+
+   This function makes an animated GIF images of the SPC Outlooks and saves the GIF to a specified location.
+       *This function is only to be used for the SPC Critical Fire Weather Outlook and/or Dry Lightning Outlook Graphics.*  
+
+        Inputs: 1) GIF_Image_file_path (String) - The path to where the GIF image saves to plus the filename of the GIF image. 
+                2) file_path_1 (String) - Path to where the first figure is saved. 
+                3) file_path_2 (String) - Path to where the second figure is saved. 
+                4) file_path_3 (String) - Path to where the third figure is saved. 
+                5) file_path_4 (String) - Path to where the fourth figure is saved.
+                6) file_path_5 (String) - Path to where the fifth figure is saved.
+                7) file_path_6 (String) - Path to where the sixth figure is saved.
+                8) file_path_7 (String) - Path to where the seventh figure is saved.
+                9) file_path_8 (String) - Path to where the eigth figure is saved.
+                10) fps (Integer) - The rate in frames per second the GIF loops. 
+
+        Return: An animated GIF of the latest SPC Critical Fire Weather and/or Dry Lightning Outlook.
 
 # FireWxPy_Plots Module
 
