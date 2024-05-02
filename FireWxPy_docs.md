@@ -202,6 +202,7 @@ The `parser` module hosts functions that parse through the various datasets with
 **Classes**
 
 **save**
+
 The `save` class hosts functions that: 1) extract figures from a figure list and saves them to a specified location, 2) Create animated GIF images from the still images in a specified file location. 
 
 1) Function: `extract_NWS_NDFD_figures(figure_list, file_count, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5)`
