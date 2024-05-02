@@ -1817,7 +1817,7 @@ class save:
 
         r'''
         This function extracts indivdual figures from a list of figures and saves them with a specified file path. 
-        *This function is only to be used for the SPC Fire Weather Outlook Graphics.* 
+        *This function is only to be used for the Real Time Mesoscale Analysis Graphics.* 
 
         Inputs: 1) figure_list (List) - List of figures returned by the plotting function. 
                 2) file_path_1 (String) - Path to where the first figure is saved. 
@@ -1941,7 +1941,8 @@ class save:
     def make_RTMA_6hr_timelapse_GIF(GIF_Image_file_path, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, fps):
 
         r'''
-        This function makes an animated GIF images of the SPC Outlooks and saves the GIF to a specified location. 
+        This function makes an animated GIF images of the SPC Outlooks and saves the GIF to a specified location.
+        *This function is only to be used for the Real Time Mesoscale Analysis Graphics.*
 
         Inputs: 1) GIF_Image_file_path (String) - The path to where the GIF image saves to plus the filename of the GIF image. 
                 2) file_path_1 (String) - Path to where the first figure is saved. 
