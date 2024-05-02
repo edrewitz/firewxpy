@@ -1653,6 +1653,9 @@ class save:
                 9) file_path_8 (String) - Path to where the eigth figure is saved.
                 10) fps (Integer) - The rate in frames per second the GIF loops. 
 
+        Return: An animated GIF of the latest SPC Critical Fire Weather and/or Dry Lightning Outlook. 
+                
+
         '''
 
 
