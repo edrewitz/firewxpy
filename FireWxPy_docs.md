@@ -290,6 +290,73 @@ This function extracts indivdual figures from a list of figures and saves them w
 
         Return: An animated 6hr timelapse GIF image of the RTMA plots
 
-# FireWxPy_Plots Module
+# Real_Time_Mesoscale_Analysis_Graphics_CONUS Module
 
-The `FireWxPy_Plots` module hosts a variety of different functions for the user to plot various types of real-time analysis and forecast weather data. 
+The Real_Time_Mesoscale_Analysis_Graphics_CONUS` module hosts a variety of different functions for the user to plot various types of real-time analysis for the Continental US aka "The Lower-48."
+
+**Classes:**
+
+1) `Counties_Perspective`: Uses state and county boundaries as the geographical reference system.
+2) `Predictive_Services_Areas_Perspective`: Uses Geographic Area Coordination Center (GACC) and Predictive Services Areas (PSAs) as the geographical reference system.
+
+**Counties_Perspective**
+
+1) Function: `plot_generic_real_time_mesoanalysis_no_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, color_table_shrink, state_border_color, state_border_line_thickness, county_border_color, county_border_line_thickness, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth)`
+
+            This function does the following:
+                                            1) Downloads the data that corresponds to the parameter the user requests. 
+                                            2) Converts the units of the data (if needed).
+                                            3) Plots the data that corresponds to the parameter the user requests. 
+
+            
+
+            Inputs:
+                1) parameter (String) - The parameter the user chooses to plot. For the full parameter list, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/Best.html
+
+                2) plot_title (String) - The title of the entire figure. 
+
+                3) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                4) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                5) color_table (String) - The color table used for the scale of the data being plotted. See either the FireWxPy and/or matplotlib colortable documentation for colortable options. 
+
+                6) color_table_title (String) - The title along the colorbar on the edge of the figure. 
+
+                7) color_table_start (Integer) - The bottom bound of the color scale reference used to plot the data. 
+
+                8) color_table_stop (Integer) - The top bound of the color scale reference used to plot the data.
+
+                9) color_table_step (Integer) - The increment of the color scale (i.e. every 1 degree vs. every 5 degrees). 
+
+                10) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                11) state_border_color (String) - Color of the state border. 
+
+                12) state_border_line_thickness (Integer or Float) - Thickness of the state border lines. 
+
+                13) county_border_color (String) - Color of the county border. 
+
+                14) county_border_line_thickness (Integer or Float) - Thickness of the county border lines.
+
+                15) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                16) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                17) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                18) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                19) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                20) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                           Default setting is 0.05.
+                                           Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                           Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+                21) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                            will not display on the map. 
+
+
+            Returns:
+                    1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the parameter the user wishes to plot. 
