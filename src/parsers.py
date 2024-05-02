@@ -1954,6 +1954,8 @@ class save:
                 8) file_path_7 (String) - Path to where the seventh figure is saved.
                 9) fps (Integer) - The rate in frames per second the GIF loops. 
 
+        Return: An animated 6hr timelapse GIF image of the RTMA plots. 
+
         '''
 
 
