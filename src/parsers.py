@@ -1653,9 +1653,6 @@ class save:
                 9) file_path_8 (String) - Path to where the eigth figure is saved.
                 10) fps (Integer) - The rate in frames per second the GIF loops. 
 
-        Return: An animated GIF of the latest SPC Critical Fire Weather and/or Dry Lightning Outlook. 
-                
-
         '''
 
 
@@ -1669,14 +1666,14 @@ class save:
             file_path_7 = file_path_7
             file_path_8 = file_path_8
 
-            datetime_str_1 = time.ctime(os.path.getatime(file_path_1))
-            datetime_str_2 = time.ctime(os.path.getatime(file_path_2))
-            datetime_str_3 = time.ctime(os.path.getatime(file_path_3))
-            datetime_str_4 = time.ctime(os.path.getatime(file_path_4))
-            datetime_str_5 = time.ctime(os.path.getatime(file_path_5))
-            datetime_str_6 = time.ctime(os.path.getatime(file_path_6))
-            datetime_str_7 = time.ctime(os.path.getatime(file_path_7))
-            datetime_str_8 = time.ctime(os.path.getatime(file_path_8))
+            datetime_str_1 = time.ctime(os.path.getmtime(file_path_1))
+            datetime_str_2 = time.ctime(os.path.getmtime(file_path_2))
+            datetime_str_3 = time.ctime(os.path.getmtime(file_path_3))
+            datetime_str_4 = time.ctime(os.path.getmtime(file_path_4))
+            datetime_str_5 = time.ctime(os.path.getmtime(file_path_5))
+            datetime_str_6 = time.ctime(os.path.getmtime(file_path_6))
+            datetime_str_7 = time.ctime(os.path.getmtime(file_path_7))
+            datetime_str_8 = time.ctime(os.path.getmtime(file_path_8))
 
             day_1 = datetime.strptime(datetime_str_1, '%a %b %d %H:%M:%S %Y')
             day_2 = datetime.strptime(datetime_str_2, '%a %b %d %H:%M:%S %Y')
@@ -1698,7 +1695,6 @@ class save:
                 filenames.append(file_path_7)
                 filenames.append(file_path_8)
 
-
             else:
                 filenames = []
                 filenames.append(file_path_1)
@@ -1707,7 +1703,7 @@ class save:
                 filenames.append(file_path_4)
                 filenames.append(file_path_5)
                 filenames.append(file_path_6)
-                filenames.append(file_path_7)                
+                filenames.append(file_path_7)  
             
             with imageio.get_writer(GIF_Image_file_path, fps=fps) as writer:
                 for filename in filenames:
@@ -1723,14 +1719,15 @@ class save:
                 file_path_5 = file_path_5
                 file_path_6 = file_path_6
                 file_path_7 = file_path_7
+                
     
-                datetime_str_1 = time.ctime(os.path.getatime(file_path_1))
-                datetime_str_2 = time.ctime(os.path.getatime(file_path_2))
-                datetime_str_3 = time.ctime(os.path.getatime(file_path_3))
-                datetime_str_4 = time.ctime(os.path.getatime(file_path_4))
-                datetime_str_5 = time.ctime(os.path.getatime(file_path_5))
-                datetime_str_6 = time.ctime(os.path.getatime(file_path_6))
-                datetime_str_7 = time.ctime(os.path.getatime(file_path_7))
+                datetime_str_1 = time.ctime(os.path.getmtime(file_path_1))
+                datetime_str_2 = time.ctime(os.path.getmtime(file_path_2))
+                datetime_str_3 = time.ctime(os.path.getmtime(file_path_3))
+                datetime_str_4 = time.ctime(os.path.getmtime(file_path_4))
+                datetime_str_5 = time.ctime(os.path.getmtime(file_path_5))
+                datetime_str_6 = time.ctime(os.path.getmtime(file_path_6))
+                datetime_str_7 = time.ctime(os.path.getmtime(file_path_7))
     
                 day_1 = datetime.strptime(datetime_str_1, '%a %b %d %H:%M:%S %Y')
                 day_2 = datetime.strptime(datetime_str_2, '%a %b %d %H:%M:%S %Y')
@@ -1749,7 +1746,6 @@ class save:
                     filenames.append(file_path_5)
                     filenames.append(file_path_6)
                     filenames.append(file_path_7)
-    
     
                 else:
                     filenames = []
@@ -1774,12 +1770,12 @@ class save:
                 file_path_5 = file_path_5
                 file_path_6 = file_path_6
     
-                datetime_str_1 = time.ctime(os.path.getatime(file_path_1))
-                datetime_str_2 = time.ctime(os.path.getatime(file_path_2))
-                datetime_str_3 = time.ctime(os.path.getatime(file_path_3))
-                datetime_str_4 = time.ctime(os.path.getatime(file_path_4))
-                datetime_str_5 = time.ctime(os.path.getatime(file_path_5))
-                datetime_str_6 = time.ctime(os.path.getatime(file_path_6))
+                datetime_str_1 = time.ctime(os.path.getmtime(file_path_1))
+                datetime_str_2 = time.ctime(os.path.getmtime(file_path_2))
+                datetime_str_3 = time.ctime(os.path.getmtime(file_path_3))
+                datetime_str_4 = time.ctime(os.path.getmtime(file_path_4))
+                datetime_str_5 = time.ctime(os.path.getmtime(file_path_5))
+                datetime_str_6 = time.ctime(os.path.getmtime(file_path_6))
     
                 day_1 = datetime.strptime(datetime_str_1, '%a %b %d %H:%M:%S %Y')
                 day_2 = datetime.strptime(datetime_str_2, '%a %b %d %H:%M:%S %Y')
@@ -1817,7 +1813,7 @@ class save:
 
         r'''
         This function extracts indivdual figures from a list of figures and saves them with a specified file path. 
-        *This function is only to be used for the Real Time Mesoscale Analysis Graphics.* 
+        *This function is only to be used for the SPC Fire Weather Outlook Graphics.* 
 
         Inputs: 1) figure_list (List) - List of figures returned by the plotting function. 
                 2) file_path_1 (String) - Path to where the first figure is saved. 
@@ -1941,8 +1937,7 @@ class save:
     def make_RTMA_6hr_timelapse_GIF(GIF_Image_file_path, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, fps):
 
         r'''
-        This function makes an animated GIF images of the SPC Outlooks and saves the GIF to a specified location.
-        *This function is only to be used for the Real Time Mesoscale Analysis Graphics.*
+        This function makes an animated GIF images of the SPC Outlooks and saves the GIF to a specified location. 
 
         Inputs: 1) GIF_Image_file_path (String) - The path to where the GIF image saves to plus the filename of the GIF image. 
                 2) file_path_1 (String) - Path to where the first figure is saved. 
@@ -1953,8 +1948,6 @@ class save:
                 7) file_path_6 (String) - Path to where the sixth figure is saved.
                 8) file_path_7 (String) - Path to where the seventh figure is saved.
                 9) fps (Integer) - The rate in frames per second the GIF loops. 
-
-        Return: An animated 6hr timelapse GIF image of the RTMA plots. 
 
         '''
 
