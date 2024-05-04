@@ -330,7 +330,7 @@ class Counties_Perspective:
         return figs
 
 
-    def plot_SPC_7_Day_critical_fire_weather_risk_outlook(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, key_x_position, key_y_position, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth):
+    def plot_SPC_7_Day_dry_lightning_outlook(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, key_x_position, key_y_position, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth):
 
         r'''
         This function plots the latest available NOAA/SPC Dry Lightning Outlook. 
