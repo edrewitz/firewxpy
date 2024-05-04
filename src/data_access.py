@@ -271,12 +271,13 @@ class FTP_Downloads:
         if parameter == 'ds.maxrh.bin':
             if forecast_hour == 6:
                 print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                print("There are " + str(count_of_GRIB_files) + " files returned.")
                 
                 return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                 
             else:
                 if local_hour < 5 or local_hour >= 16:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first forecast grid is still returned.")
 
                     year = utc.year
                     month = utc.month
@@ -285,6 +286,7 @@ class FTP_Downloads:
 
                     grb_1_start = datetime(year, month, day, start_hour)
                     grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -294,12 +296,15 @@ class FTP_Downloads:
                     grb_1_vals = None
                     grb_1_start = None
                     grb_1_end = None
+                    count_of_GRIB_files = count_of_GRIB_files - 1
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
 
         if parameter == 'ds.minrh.bin':
             if forecast_hour == 18:
                 print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                print("There are " + str(count_of_GRIB_files) + " files returned.")
                 
                 return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                 
@@ -314,6 +319,7 @@ class FTP_Downloads:
 
                     grb_1_start = datetime(year, month, day, start_hour)
                     grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -323,6 +329,8 @@ class FTP_Downloads:
                     grb_1_vals = None
                     grb_1_start = None
                     grb_1_end = None
+                    count_of_GRIB_files = count_of_GRIB_files - 1
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
 
@@ -343,6 +351,7 @@ class FTP_Downloads:
 
                     grb_1_start = datetime(year, month, day, start_hour)
                     grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -352,12 +361,15 @@ class FTP_Downloads:
                     grb_1_vals = None
                     grb_1_start = None
                     grb_1_end = None
+                    count_of_GRIB_files = count_of_GRIB_files - 1
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
 
         if parameter == 'ds.mint.bin':
             if forecast_hour == 0:
                 print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                print("There are " + str(count_of_GRIB_files) + " files returned.")
                 
                 return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                 
@@ -372,6 +384,7 @@ class FTP_Downloads:
 
                     grb_1_start = datetime(year, month, day, start_hour)
                     grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -381,18 +394,21 @@ class FTP_Downloads:
                     grb_1_vals = None
                     grb_1_start = None
                     grb_1_end = None
+                    count_of_GRIB_files = count_of_GRIB_files - 1
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
 
         if parameter == 'ds.critfireo.bin':
             if forecast_hour == 12:
                 print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                print("There are " + str(count_of_GRIB_files) + " files returned.")
                 
                 return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                 
             else:
                 if local_hour < 13:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 13:00 (1PM)\nThe first maximum temperature grid is still returned.")
+                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 13:00 (1PM)\nThe first forecast grid is still returned.")
 
                     year = utc.year
                     month = utc.month
@@ -413,9 +429,12 @@ class FTP_Downloads:
                         grb_1_vals = None
                         grb_1_start = None
                         grb_1_end = None
+                        count_of_GRIB_files = count_of_GRIB_files - 1
+                        print("There are " + str(count_of_GRIB_files) + " files returned.")
 
                     else:
-                        pass
+                        print("There are " + str(count_of_GRIB_files) + " files returned.")
+                        #pass
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -425,12 +444,15 @@ class FTP_Downloads:
                     grb_1_vals = None
                     grb_1_start = None
                     grb_1_end = None
+                    count_of_GRIB_files = count_of_GRIB_files - 1
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
 
         if parameter == 'ds.dryfireo.bin':
             if forecast_hour == 12:
                 print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                print("There are " + str(count_of_GRIB_files) + " files returned.")
                 
                 return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                 
@@ -457,9 +479,12 @@ class FTP_Downloads:
                         grb_1_vals = None
                         grb_1_start = None
                         grb_1_end = None
+                        count_of_GRIB_files = count_of_GRIB_files - 1
+                        print("There are " + str(count_of_GRIB_files) + " files returned.")
 
                     else:
-                        pass
+                        print("There are " + str(count_of_GRIB_files) + " files returned.")
+                        #pass
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -469,6 +494,8 @@ class FTP_Downloads:
                     grb_1_vals = None
                     grb_1_start = None
                     grb_1_end = None
+                    count_of_GRIB_files = count_of_GRIB_files - 1
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
 
@@ -504,6 +531,7 @@ class FTP_Downloads:
         if parameter == 'ds.maxrh.bin':
             if forecast_hour == 6:
                 print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                print("There are " + str(count_of_GRIB_files) + " files returned.")
                 
                 return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                 
@@ -518,6 +546,7 @@ class FTP_Downloads:
 
                     grb_1_start = datetime(year, month, day, start_hour)
                     grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -527,12 +556,15 @@ class FTP_Downloads:
                     grb_1_vals = None
                     grb_1_start = None
                     grb_1_end = None
+                    count_of_GRIB_files = count_of_GRIB_files - 1
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
 
         if parameter == 'ds.minrh.bin':
             if forecast_hour == 18:
                 print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                print("There are " + str(count_of_GRIB_files) + " files returned.")
                 
                 return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                 
@@ -547,6 +579,7 @@ class FTP_Downloads:
 
                     grb_1_start = datetime(year, month, day, start_hour)
                     grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -556,12 +589,15 @@ class FTP_Downloads:
                     grb_1_vals = None
                     grb_1_start = None
                     grb_1_end = None
+                    count_of_GRIB_files = count_of_GRIB_files - 1
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
 
         if parameter == 'ds.maxt.bin':
             if forecast_hour == 12:
                 print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                print("There are " + str(count_of_GRIB_files) + " files returned.")
                 
                 return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                 
@@ -576,6 +612,7 @@ class FTP_Downloads:
 
                     grb_1_start = datetime(year, month, day, start_hour)
                     grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -585,12 +622,15 @@ class FTP_Downloads:
                     grb_1_vals = None
                     grb_1_start = None
                     grb_1_end = None
+                    count_of_GRIB_files = count_of_GRIB_files - 1
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
 
         if parameter == 'ds.mint.bin':
             if forecast_hour == 0:
                 print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                print("There are " + str(count_of_GRIB_files) + " files returned.")
                 
                 return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                 
@@ -605,6 +645,7 @@ class FTP_Downloads:
 
                     grb_1_start = datetime(year, month, day, start_hour)
                     grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -614,12 +655,15 @@ class FTP_Downloads:
                     grb_1_vals = None
                     grb_1_start = None
                     grb_1_end = None
+                    count_of_GRIB_files = count_of_GRIB_files - 1
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
 
         if parameter == 'ds.critfireo.bin':
             if forecast_hour == 12:
                 print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                print("There are " + str(count_of_GRIB_files) + " files returned.")
                 
                 return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                 
@@ -634,6 +678,7 @@ class FTP_Downloads:
 
                     grb_1_start = datetime(year, month, day, start_hour)
                     grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -643,12 +688,15 @@ class FTP_Downloads:
                     grb_1_vals = None
                     grb_1_start = None
                     grb_1_end = None
+                    count_of_GRIB_files = count_of_GRIB_files - 1
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
 
         if parameter == 'ds.dryfireo.bin':
             if forecast_hour == 12:
                 print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                print("There are " + str(count_of_GRIB_files) + " files returned.")
                 
                 return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                 
@@ -663,6 +711,7 @@ class FTP_Downloads:
 
                     grb_1_start = datetime(year, month, day, start_hour)
                     grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
                     
@@ -672,8 +721,112 @@ class FTP_Downloads:
                     grb_1_vals = None
                     grb_1_start = None
                     grb_1_end = None
+                    count_of_GRIB_files = count_of_GRIB_files - 1
+                    print("There are " + str(count_of_GRIB_files) + " files returned.")
                     
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
+
+    def get_latest_7_Day_gridded_data(directory_name, parameter):
+
+        
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files_short = FTP_Downloads.get_latest_short_term_gridded_data(directory_name, parameter)
+
+        grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, grb_9_vals, grb_9_start, grb_9_end, grb_10_vals, grb_10_start, grb_10_end, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, lats_10, lons_10, count_of_GRIB_files_extended = FTP_Downloads.get_latest_extended_gridded_data(directory_name, parameter)
+
+        count = count_of_GRIB_files_short + count_of_GRIB_files_extended
+
+        print(str(count) + " total files in this download.")
+
+        try:
+            if grb_1_vals.all() != None:
+                test_1 = True
+
+        except Exception as e:
+            test_1 = False
+
+        try:
+            if grb_2_vals.all() != None:
+                test_2 = True
+
+        except Exception as e:
+            test_2 = False
+
+        try:
+            if grb_3_vals.all() != None:
+                test_3 = True
+
+        except Exception as e:
+            test_3 = False
+
+        try:
+            if grb_4_vals.all() != None:
+                test_4 = True
+
+        except Exception as e:
+            test_4 = False
+
+        try:
+            if grb_5_vals.all() != None:
+                test_5 = True
+
+        except Exception as e:
+            test_5 = False
+
+        try:
+            if grb_6_vals.all() != None:
+                test_6 = True
+
+        except Exception as e:
+            test_6 = False
+
+        try:
+            if grb_7_vals.all() != None:
+                test_7 = True
+
+        except Exception as e:
+            test_7 = False
+
+        try:
+            if grb_8_vals.all() != None:
+                test_8 = True
+
+        except Exception as e:
+            test_8 = False
+
+        try:
+            if grb_9_vals.all() != None:
+                test_9 = True
+
+        except Exception as e:
+            test_9 = False
+
+        try:
+            if grb_10_vals.all() != None:
+                test_10 = True
+
+        except Exception as e:
+            test_10 = False
+              
+
+        if count == 7:
+            # 3 files with 1st file included in short term and 4 files last space excluded in extended
+            if test_4 == False and test_5 == False and test_10 == False:
+                return grb_1_vals, grb_2_vals, grb_3_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_1_start, grb_2_start, grb_3_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_1_end, grb_2_end, grb_3_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, count  
+
+            # 3 files with the 1st file missing in the short term and 4 files last space excluded in extended
+            if test_1 == False and test_5 == False and test_10 == False:
+                return grb_2_vals, grb_3_vals, grb_4_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_2_start, grb_3_start, grb_4_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_2_end, grb_3_end, grb_4_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, count
+
+            if test_1 == False and test_4 == False and test_5 == False:
+                return grb_2_vals, grb_3_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_10_vals, grb_2_start, grb_3_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_10_start, grb_2_end, grb_3_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, grb_10_end, lats_2, lons_2, lats_3, lons_3, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, lats_10, lons_10, count
+
+        if count == 6:
+
+            if test_3 == False and test_4 == False and test_5 == False and test_10 == False:
+                return grb_1_vals, grb_2_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_1_start, grb_2_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_1_end, grb_2_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, lats_1, lons_1, lats_2, lons_2, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, count 
+                
+            if test_1 == False and test_4 == False and test_5 == False and test_10 == False:
+                return grb_2_vals, grb_3_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_2_start, grb_3_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_2_end, grb_3_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, lats_2, lons_2, lats_3, lons_3, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, count
 
 
     def get_latest_extended_SPC_gridded_data(directory_name, parameter):
@@ -716,6 +869,7 @@ class FTP_Downloads:
                     grb_1_start = datetime(year, month, day, start_hour)
                     grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
                     
+                    
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, count_of_GRIB_files
                     
                 else:
@@ -754,9 +908,7 @@ class FTP_Downloads:
                     grb_1_start = None
                     grb_1_end = None
                     
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, count_of_GRIB_files
-
-    
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, count_of_GRIB_files  
 
     def get_NWS_NDFD_short_term_grid_data(directory_name, parameter):
         
@@ -1822,7 +1974,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
                 print("Unable to connect to either the main or backup servers. Aborting!")
-        
+
         
         def get_current_rtma_relative_humidity_data(current_time):
         
