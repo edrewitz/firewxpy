@@ -1536,11 +1536,11 @@ class save:
             fig5 = fig5.savefig(file_path_5)
             plt.close(fig5)
 
-    def extract_SPC_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7):
+    def extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7):
 
         r'''
         This function extracts indivdual figures from a list of figures and saves them with a specified file path. 
-        *This function is only to be used for the SPC Fire Weather Outlook Graphics.* 
+        *This function is only to be used for the NWS NDFD plots and/or SPC Fire Weather Outlook Graphics.* 
 
         Inputs: 1) figure_list (List) - List of figures returned by the plotting function. 
                 2) file_path_1 (String) - Path to where the first figure is saved. 
@@ -1575,7 +1575,8 @@ class save:
             plt.close(fig6) 
             fig7 = figure_list[6]
             fig7 = fig7.savefig(file_path_7)
-            plt.close(fig7) 
+            plt.close(fig7)
+            print("Files saved!")
         except Exception as ee:
             try:
                 fig1 = figure_list[0]
@@ -1596,7 +1597,7 @@ class save:
                 fig6 = figure_list[5]
                 fig6 = fig6.savefig(file_path_6)
                 plt.close(fig6) 
-    
+                print("Files saved!")
             except Exception as a:
                 try:
                     fig1 = figure_list[0]
@@ -1614,6 +1615,7 @@ class save:
                     fig5 = figure_list[4]
                     fig5 = fig5.savefig(file_path_5)
                     plt.close(fig5)
+                    print("Files saved!")
                 except Exception as b:    
                     try:
                         fig1 = figure_list[0]
@@ -1628,7 +1630,7 @@ class save:
                         fig4 = figure_list[3]
                         fig4 = fig4.savefig(file_path_4)
                         plt.close(fig4)
-                    
+                        print("Files saved!")
                     except Exception as c:
                         try:     
                             fig1 = figure_list[0]
@@ -1640,7 +1642,7 @@ class save:
                             fig3 = figure_list[2]
                             fig3 = fig3.savefig(file_path_3)
                             plt.close(fig3)
-                
+                            print("Files saved!")
                         except Exception as b:
                             try:
                                 fig1 = figure_list[0]
@@ -1649,23 +1651,24 @@ class save:
                                 fig2 = figure_list[1]
                                 fig2 = fig2.savefig(file_path_2)
                                 plt.close(fig2)
-                
+                                print("Files saved!")
                             except Exception as c:
                                 try:
                                     fig1 = figure_list[0]
                                     fig1 = fig1.savefig(file_path_1)
                                     plt.close(fig1)
-                
+                                    print("Files saved!")
                                 except Exception as d:
                                     pass
 
 
 
-    def make_SPC_Outlook_GIF(GIF_Image_file_path, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, file_path_8, fps):
+    def make_NDFD_Outlook_GIF(GIF_Image_file_path, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, file_path_8, fps):
 
         r'''
-        This function makes an animated GIF images of the SPC Outlooks and saves the GIF to a specified location. 
-
+        This function makes an animated GIF images of the NWS/NDFD plots and/or SPC Outlooks and saves the GIF to a specified location. 
+        *This function is only to be used for the NWS NDFD plots and/or SPC Fire Weather Outlook Graphics.* 
+        
         Inputs: 1) GIF_Image_file_path (String) - The path to where the GIF image saves to plus the filename of the GIF image. 
                 2) file_path_1 (String) - Path to where the first figure is saved. 
                 3) file_path_2 (String) - Path to where the second figure is saved. 
@@ -1837,7 +1840,7 @@ class save:
 
         r'''
         This function extracts indivdual figures from a list of figures and saves them with a specified file path. 
-        *This function is only to be used for the SPC Fire Weather Outlook Graphics.* 
+        *This function is only to be used for the RTMA Graphics.* 
 
         Inputs: 1) figure_list (List) - List of figures returned by the plotting function. 
                 2) file_path_1 (String) - Path to where the first figure is saved. 
