@@ -184,7 +184,7 @@ class Counties_Perspective:
 
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -196,13 +196,13 @@ class Counties_Perspective:
             ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         if show_counties == True:
             ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-        ax1.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax1.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -214,14 +214,14 @@ class Counties_Perspective:
             ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         if show_counties == True:
             ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-        ax2.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax2.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
 
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig3.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
     
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -233,13 +233,13 @@ class Counties_Perspective:
             ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         if show_counties == True:
             ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-        ax3.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax3.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig4.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
@@ -251,13 +251,13 @@ class Counties_Perspective:
             ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         if show_counties == True:
             ax4.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-        ax4.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax4.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig5.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
@@ -269,13 +269,13 @@ class Counties_Perspective:
             ax5.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         if show_counties == True:
             ax5.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-        ax5.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax5.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig6.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
@@ -287,7 +287,7 @@ class Counties_Perspective:
             ax6.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         if show_counties == True:
             ax6.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-        ax6.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax6.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -295,7 +295,7 @@ class Counties_Perspective:
 
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig7.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
@@ -307,7 +307,7 @@ class Counties_Perspective:
                 ax7.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax7.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax7.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax7.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
         
@@ -463,7 +463,7 @@ class Counties_Perspective:
 
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -475,13 +475,13 @@ class Counties_Perspective:
             ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         if show_counties == True:
             ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-        ax1.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax1.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -493,14 +493,14 @@ class Counties_Perspective:
             ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         if show_counties == True:
             ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-        ax2.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax2.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
 
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig3.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
     
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -512,13 +512,13 @@ class Counties_Perspective:
             ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         if show_counties == True:
             ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-        ax3.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax3.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig4.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
@@ -530,13 +530,13 @@ class Counties_Perspective:
             ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         if show_counties == True:
             ax4.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-        ax4.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax4.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig5.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
@@ -548,13 +548,13 @@ class Counties_Perspective:
             ax5.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         if show_counties == True:
             ax5.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-        ax5.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax5.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig6.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
@@ -566,7 +566,7 @@ class Counties_Perspective:
             ax6.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         if show_counties == True:
             ax6.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-        ax6.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax6.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -574,7 +574,7 @@ class Counties_Perspective:
 
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig7.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
@@ -586,7 +586,7 @@ class Counties_Perspective:
                 ax7.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax7.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax7.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax7.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
         
@@ -700,7 +700,7 @@ class Counties_Perspective:
                 
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -712,7 +712,7 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -728,7 +728,7 @@ class Counties_Perspective:
                 
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -740,7 +740,7 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -764,7 +764,7 @@ class Counties_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -776,13 +776,13 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -794,7 +794,7 @@ class Counties_Perspective:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -811,7 +811,7 @@ class Counties_Perspective:
 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -823,7 +823,7 @@ class Counties_Perspective:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax1.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -852,7 +852,7 @@ class Counties_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -864,13 +864,13 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -882,13 +882,13 @@ class Counties_Perspective:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig2.set_facecolor('aliceblue')
-                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -900,7 +900,7 @@ class Counties_Perspective:
                     ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax2.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax2.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -922,7 +922,7 @@ class Counties_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -934,13 +934,13 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -952,7 +952,7 @@ class Counties_Perspective:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -983,7 +983,7 @@ class Counties_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -995,13 +995,13 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1013,14 +1013,14 @@ class Counties_Perspective:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax1.set_title('Critical Fire Wx Forecast (Days 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Critical Fire Wx Forecast (Days 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
     
                 fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig2.set_facecolor('aliceblue')
-                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1032,13 +1032,13 @@ class Counties_Perspective:
                     ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax2.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax2.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig3.set_facecolor('aliceblue')
-                fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig3.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1050,7 +1050,7 @@ class Counties_Perspective:
                     ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax3.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax3.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -1077,7 +1077,7 @@ class Counties_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1089,13 +1089,13 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1107,14 +1107,14 @@ class Counties_Perspective:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
     
                 fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig2.set_facecolor('aliceblue')
-                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1126,7 +1126,7 @@ class Counties_Perspective:
                     ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax2.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax2.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
@@ -1225,7 +1225,7 @@ class Counties_Perspective:
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig.set_facecolor('aliceblue')
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1237,7 +1237,7 @@ class Counties_Perspective:
                 ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -1245,7 +1245,7 @@ class Counties_Perspective:
             
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1257,7 +1257,7 @@ class Counties_Perspective:
                 ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax1.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax1.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -1265,7 +1265,7 @@ class Counties_Perspective:
 
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1277,14 +1277,14 @@ class Counties_Perspective:
                 ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax2.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax2.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig3.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1296,7 +1296,7 @@ class Counties_Perspective:
                 ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax3.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax3.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -1331,7 +1331,7 @@ class Counties_Perspective:
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig.set_facecolor('aliceblue')
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1343,13 +1343,13 @@ class Counties_Perspective:
                 ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
             
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1361,14 +1361,14 @@ class Counties_Perspective:
                 ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax1.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax1.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
 
 
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1380,13 +1380,13 @@ class Counties_Perspective:
                 ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax2.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax2.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig3.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1398,13 +1398,13 @@ class Counties_Perspective:
                 ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax3.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax3.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
 
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig4.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1416,7 +1416,7 @@ class Counties_Perspective:
                 ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax4.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax4.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax4.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
 
@@ -1456,7 +1456,7 @@ class Counties_Perspective:
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig.set_facecolor('aliceblue')
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1468,13 +1468,13 @@ class Counties_Perspective:
                 ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
             
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1486,14 +1486,14 @@ class Counties_Perspective:
                 ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax1.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax1.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
 
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1505,13 +1505,13 @@ class Counties_Perspective:
                 ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax2.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax2.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig3.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1523,13 +1523,13 @@ class Counties_Perspective:
                 ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax3.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax3.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig4.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1541,13 +1541,13 @@ class Counties_Perspective:
                 ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax4.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax4.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax4.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
-            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig5.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1559,7 +1559,7 @@ class Counties_Perspective:
                 ax5.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax5.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax5.set_title('Critical Fire Wx Forecast (Day 8)\nStart: '+ grb_6_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax5.set_title('Critical Fire Wx Forecast (Day 8)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax5.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -1662,7 +1662,7 @@ class Counties_Perspective:
                 
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1674,7 +1674,7 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -1690,7 +1690,7 @@ class Counties_Perspective:
                 
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1702,7 +1702,7 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -1726,7 +1726,7 @@ class Counties_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1738,13 +1738,13 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1756,7 +1756,7 @@ class Counties_Perspective:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -1773,7 +1773,7 @@ class Counties_Perspective:
 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1785,7 +1785,7 @@ class Counties_Perspective:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax1.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -1814,7 +1814,7 @@ class Counties_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1826,13 +1826,13 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1844,13 +1844,13 @@ class Counties_Perspective:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig2.set_facecolor('aliceblue')
-                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1862,7 +1862,7 @@ class Counties_Perspective:
                     ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax2.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax2.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -1884,7 +1884,7 @@ class Counties_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1896,13 +1896,13 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1914,7 +1914,7 @@ class Counties_Perspective:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -1945,7 +1945,7 @@ class Counties_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1957,13 +1957,13 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1975,14 +1975,14 @@ class Counties_Perspective:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax1.set_title('Dry Lightning Forecast (Days 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Dry Lightning Forecast (Days 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
     
                 fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig2.set_facecolor('aliceblue')
-                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -1994,13 +1994,13 @@ class Counties_Perspective:
                     ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax2.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax2.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig3.set_facecolor('aliceblue')
-                fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig3.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2012,7 +2012,7 @@ class Counties_Perspective:
                     ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax3.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax3.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -2039,7 +2039,7 @@ class Counties_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2051,13 +2051,13 @@ class Counties_Perspective:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2069,14 +2069,14 @@ class Counties_Perspective:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
     
                 fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig2.set_facecolor('aliceblue')
-                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2088,7 +2088,7 @@ class Counties_Perspective:
                     ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
                 if show_counties == True:
                     ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-                ax2.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax2.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
@@ -2187,7 +2187,7 @@ class Counties_Perspective:
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig.set_facecolor('aliceblue')
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2199,13 +2199,13 @@ class Counties_Perspective:
                 ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
             
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2217,14 +2217,14 @@ class Counties_Perspective:
                 ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax1.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax1.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
 
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2236,13 +2236,13 @@ class Counties_Perspective:
                 ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax2.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax2.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig3.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2254,7 +2254,7 @@ class Counties_Perspective:
                 ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax3.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax3.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -2289,7 +2289,7 @@ class Counties_Perspective:
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig.set_facecolor('aliceblue')
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2301,13 +2301,13 @@ class Counties_Perspective:
                 ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
             
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2319,14 +2319,14 @@ class Counties_Perspective:
                 ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax1.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax1.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
 
 
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2338,13 +2338,13 @@ class Counties_Perspective:
                 ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax2.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax2.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig3.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2356,13 +2356,13 @@ class Counties_Perspective:
                 ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax3.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax3.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
 
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig4.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2374,7 +2374,7 @@ class Counties_Perspective:
                 ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax4.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax4.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax4.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
 
@@ -2414,7 +2414,7 @@ class Counties_Perspective:
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig.set_facecolor('aliceblue')
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2426,13 +2426,13 @@ class Counties_Perspective:
                 ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
             
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2444,14 +2444,14 @@ class Counties_Perspective:
                 ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax1.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax1.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
 
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2463,13 +2463,13 @@ class Counties_Perspective:
                 ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax2.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax2.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig3.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2481,13 +2481,13 @@ class Counties_Perspective:
                 ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax3.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax3.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig4.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2499,13 +2499,13 @@ class Counties_Perspective:
                 ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax4.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax4.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax4.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
-            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig5.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2517,7 +2517,7 @@ class Counties_Perspective:
                 ax5.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             if show_counties == True:
                 ax5.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
-            ax5.set_title('Dry Lightning Forecast (Day 8)\nStart: '+ grb_6_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax5.set_title('Dry Lightning Forecast (Day 8)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax5.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -2663,7 +2663,7 @@ class Predictive_Services_Areas_Perspective:
 
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2674,13 +2674,13 @@ class Predictive_Services_Areas_Perspective:
         if show_rivers == True:
             ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         ax1.add_feature(PSAs, linewidth=1.5, zorder=4)
-        ax1.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax1.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2691,14 +2691,14 @@ class Predictive_Services_Areas_Perspective:
         if show_rivers == True:
             ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         ax2.add_feature(PSAs, linewidth=1.5, zorder=4)
-        ax2.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax2.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
 
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig3.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
     
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2709,13 +2709,13 @@ class Predictive_Services_Areas_Perspective:
         if show_rivers == True:
             ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         ax3.add_feature(PSAs, linewidth=1.5, zorder=4)
-        ax3.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax3.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig4.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2726,13 +2726,13 @@ class Predictive_Services_Areas_Perspective:
         if show_rivers == True:
             ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         ax4.add_feature(PSAs, linewidth=1.5, zorder=4)
-        ax4.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax4.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig5.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2743,13 +2743,13 @@ class Predictive_Services_Areas_Perspective:
         if show_rivers == True:
             ax5.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         ax5.add_feature(PSAs, linewidth=1.5, zorder=4)
-        ax5.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax5.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig6.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2760,7 +2760,7 @@ class Predictive_Services_Areas_Perspective:
         if show_rivers == True:
             ax6.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         ax6.add_feature(PSAs, linewidth=1.5, zorder=4)
-        ax6.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax6.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -2768,7 +2768,7 @@ class Predictive_Services_Areas_Perspective:
 
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig7.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2779,7 +2779,7 @@ class Predictive_Services_Areas_Perspective:
             if show_rivers == True:
                 ax7.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             ax7.add_feature(PSAs, linewidth=1.5, zorder=4)
-            ax7.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax7.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
         
@@ -2930,7 +2930,7 @@ class Predictive_Services_Areas_Perspective:
 
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2941,13 +2941,13 @@ class Predictive_Services_Areas_Perspective:
         if show_rivers == True:
             ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         ax1.add_feature(PSAs, linewidth=1.5, zorder=4)
-        ax1.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax1.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2958,14 +2958,14 @@ class Predictive_Services_Areas_Perspective:
         if show_rivers == True:
             ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         ax2.add_feature(PSAs, linewidth=1.5, zorder=4)
-        ax2.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax2.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
 
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig3.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
     
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2976,13 +2976,13 @@ class Predictive_Services_Areas_Perspective:
         if show_rivers == True:
             ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         ax3.add_feature(PSAs, linewidth=1.5, zorder=4)
-        ax3.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax3.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig4.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
@@ -2993,13 +2993,13 @@ class Predictive_Services_Areas_Perspective:
         if show_rivers == True:
             ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         ax4.add_feature(PSAs, linewidth=1.5, zorder=4)
-        ax4.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax4.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig5.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3010,13 +3010,13 @@ class Predictive_Services_Areas_Perspective:
         if show_rivers == True:
             ax5.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         ax5.add_feature(PSAs, linewidth=1.5, zorder=4)
-        ax5.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax5.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
         fig6.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3027,7 +3027,7 @@ class Predictive_Services_Areas_Perspective:
         if show_rivers == True:
             ax6.add_feature(cfeature.RIVERS, color='blue', zorder=3)
         ax6.add_feature(PSAs, linewidth=1.5, zorder=4)
-        ax6.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax6.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -3035,7 +3035,7 @@ class Predictive_Services_Areas_Perspective:
 
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig7.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3046,7 +3046,7 @@ class Predictive_Services_Areas_Perspective:
             if show_rivers == True:
                 ax7.add_feature(cfeature.RIVERS, color='blue', zorder=3)
             ax7.add_feature(PSAs, linewidth=1.5, zorder=4)
-            ax7.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax7.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
         
@@ -3156,7 +3156,7 @@ class Predictive_Services_Areas_Perspective:
                 
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3167,7 +3167,7 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -3183,7 +3183,7 @@ class Predictive_Services_Areas_Perspective:
                 
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3194,7 +3194,7 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -3218,7 +3218,7 @@ class Predictive_Services_Areas_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3229,13 +3229,13 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3246,7 +3246,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -3263,7 +3263,7 @@ class Predictive_Services_Areas_Perspective:
 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3274,7 +3274,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax1.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -3303,7 +3303,7 @@ class Predictive_Services_Areas_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3314,13 +3314,13 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3331,13 +3331,13 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig2.set_facecolor('aliceblue')
-                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3348,7 +3348,7 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax2.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax2.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -3370,7 +3370,7 @@ class Predictive_Services_Areas_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3381,13 +3381,13 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3398,7 +3398,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -3429,7 +3429,7 @@ class Predictive_Services_Areas_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3440,13 +3440,13 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3457,14 +3457,14 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax1.set_title('Critical Fire Wx Forecast (Days 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Critical Fire Wx Forecast (Days 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
     
                 fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig2.set_facecolor('aliceblue')
-                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3475,13 +3475,13 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax2.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax2.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig3.set_facecolor('aliceblue')
-                fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig3.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3492,7 +3492,7 @@ class Predictive_Services_Areas_Perspective:
                 ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax3.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax3.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -3519,7 +3519,7 @@ class Predictive_Services_Areas_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3530,13 +3530,13 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3547,14 +3547,14 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
     
     
                 fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig2.set_facecolor('aliceblue')
-                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3565,7 +3565,7 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax2.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax2.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
                 
@@ -3663,7 +3663,7 @@ class Predictive_Services_Areas_Perspective:
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig.set_facecolor('aliceblue')
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3674,7 +3674,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -3682,7 +3682,7 @@ class Predictive_Services_Areas_Perspective:
             
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3693,7 +3693,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax1.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax1.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -3701,7 +3701,7 @@ class Predictive_Services_Areas_Perspective:
 
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3712,14 +3712,14 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax2.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax2.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig3.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3730,7 +3730,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax3.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax3.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -3765,7 +3765,7 @@ class Predictive_Services_Areas_Perspective:
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig.set_facecolor('aliceblue')
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3776,13 +3776,13 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
             
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3793,14 +3793,14 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax1.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax1.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
 
 
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3811,13 +3811,13 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax2.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax2.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig3.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3828,13 +3828,13 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax3.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax3.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
 
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig4.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3845,7 +3845,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax4.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax4.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
 
@@ -3885,7 +3885,7 @@ class Predictive_Services_Areas_Perspective:
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig.set_facecolor('aliceblue')
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3896,13 +3896,13 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
             
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig1.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3913,14 +3913,14 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax1.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax1.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
 
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig2.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3931,13 +3931,13 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax2.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax2.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig3.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3948,13 +3948,13 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax3.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax3.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig4.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3965,13 +3965,13 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax4.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax4.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
-            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig5.text(key_x_position, key_y_position, 'Key:\nElevated - Yellow\nCritical - Orange\nExtreme - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
@@ -3982,7 +3982,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax5.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax5.set_title('Critical Fire Wx Forecast (Day 8)\nStart: '+ grb_6_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax5.set_title('Critical Fire Wx Forecast (Day 8)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax5.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -4084,7 +4084,7 @@ class Predictive_Services_Areas_Perspective:
                 
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4095,7 +4095,7 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -4111,7 +4111,7 @@ class Predictive_Services_Areas_Perspective:
                 
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4122,7 +4122,7 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -4146,7 +4146,7 @@ class Predictive_Services_Areas_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4157,13 +4157,13 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4174,7 +4174,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -4191,7 +4191,7 @@ class Predictive_Services_Areas_Perspective:
 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4202,7 +4202,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax1.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -4231,7 +4231,7 @@ class Predictive_Services_Areas_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4242,13 +4242,13 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4259,13 +4259,13 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig2.set_facecolor('aliceblue')
-                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4276,7 +4276,7 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax2.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax2.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -4298,7 +4298,7 @@ class Predictive_Services_Areas_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4309,13 +4309,13 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4326,7 +4326,7 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -4357,7 +4357,7 @@ class Predictive_Services_Areas_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4368,13 +4368,13 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4385,14 +4385,14 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax1.set_title('Dry Lightning Forecast (Days 2)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Dry Lightning Forecast (Days 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
     
                 fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig2.set_facecolor('aliceblue')
-                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4403,13 +4403,13 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax2.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax2.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs2 = ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig3.set_facecolor('aliceblue')
-                fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig3.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4420,7 +4420,7 @@ class Predictive_Services_Areas_Perspective:
                 ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax3.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax3.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs3 = ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
@@ -4447,7 +4447,7 @@ class Predictive_Services_Areas_Perspective:
     
                 fig = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig.set_facecolor('aliceblue')
-                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4458,13 +4458,13 @@ class Predictive_Services_Areas_Perspective:
                 ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs = ax.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
                 fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig1.set_facecolor('aliceblue')
-                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
                 
                 ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4475,14 +4475,14 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax1.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs1 = ax1.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
     
     
                 fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig2.set_facecolor('aliceblue')
-                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
                 fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
                 ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4493,7 +4493,7 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
                 if show_rivers == True:
                     ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-                ax2.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                ax2.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
                 cs2 = ax2.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
                 
@@ -4590,7 +4590,7 @@ class Predictive_Services_Areas_Perspective:
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig.set_facecolor('aliceblue')
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4601,13 +4601,13 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
             
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4618,14 +4618,14 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax1.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax1.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
 
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4636,13 +4636,13 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax2.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax2.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig3.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4653,7 +4653,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax3.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax3.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
@@ -4688,7 +4688,7 @@ class Predictive_Services_Areas_Perspective:
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig.set_facecolor('aliceblue')
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4699,13 +4699,13 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
             
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4716,14 +4716,14 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax1.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax1.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
 
 
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4734,13 +4734,13 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax2.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax2.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig3.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4751,13 +4751,13 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax3.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax3.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
 
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig4.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4768,7 +4768,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax4.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax4.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(1, 11, 1), cmap='YlOrRd', transform=datacrs)
 
@@ -4808,7 +4808,7 @@ class Predictive_Services_Areas_Perspective:
 
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig.set_facecolor('aliceblue')
-            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4819,13 +4819,13 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
             
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig1.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4836,14 +4836,14 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax1.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax1.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax1.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
 
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig2.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4854,13 +4854,13 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax2.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax2.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax2.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig3.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4871,13 +4871,13 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax3.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax3.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax3.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig4.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4888,13 +4888,13 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax4.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax4.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax4.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
-            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Data Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
             fig5.text(key_x_position, key_y_position, 'Key:\nIsolated - Yellow\nScattered - Red', fontsize=key_fontsize, fontweight='bold')
             
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
@@ -4905,7 +4905,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
                 ax5.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-            ax5.set_title('Dry Lightning Forecast (Day 8)\nStart: '+ grb_6_start.strftime('%m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax5.set_title('Dry Lightning Forecast (Day 8)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
             ax5.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
 
