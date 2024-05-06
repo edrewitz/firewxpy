@@ -190,6 +190,7 @@ class Counties_Perspective:
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -198,7 +199,7 @@ class Counties_Perspective:
             ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
         ax1.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
@@ -208,6 +209,7 @@ class Counties_Perspective:
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax2.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -216,7 +218,7 @@ class Counties_Perspective:
             ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
         ax2.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
 
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
@@ -227,6 +229,7 @@ class Counties_Perspective:
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+        ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax3.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -235,7 +238,7 @@ class Counties_Perspective:
             ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
         ax3.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
@@ -245,6 +248,7 @@ class Counties_Perspective:
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+        ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax4.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax4.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -253,7 +257,7 @@ class Counties_Perspective:
             ax4.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
         ax4.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
@@ -263,6 +267,7 @@ class Counties_Perspective:
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax5.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+        ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax5.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax5.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -271,7 +276,7 @@ class Counties_Perspective:
             ax5.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
         ax5.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
@@ -281,6 +286,7 @@ class Counties_Perspective:
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax6.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+        ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax6.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax6.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -289,7 +295,7 @@ class Counties_Perspective:
             ax6.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
         ax6.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
         if files == 7:
 
@@ -301,6 +307,7 @@ class Counties_Perspective:
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax7.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+            ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax7.add_feature(cfeature.OCEAN, color='blue', zorder=3)
             ax7.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
@@ -309,7 +316,7 @@ class Counties_Perspective:
                 ax7.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax7.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
         
             figs.append(fig1)
             figs.append(fig2)
@@ -469,6 +476,7 @@ class Counties_Perspective:
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -477,7 +485,7 @@ class Counties_Perspective:
             ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
         ax1.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
@@ -487,6 +495,7 @@ class Counties_Perspective:
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax2.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -495,7 +504,7 @@ class Counties_Perspective:
             ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
         ax2.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
 
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
@@ -506,6 +515,7 @@ class Counties_Perspective:
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+        ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax3.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -514,7 +524,7 @@ class Counties_Perspective:
             ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
         ax3.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=3)
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
@@ -524,6 +534,7 @@ class Counties_Perspective:
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+        ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax4.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax4.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -532,7 +543,7 @@ class Counties_Perspective:
             ax4.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
         ax4.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
@@ -542,6 +553,7 @@ class Counties_Perspective:
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax5.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+        ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax5.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax5.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -550,7 +562,7 @@ class Counties_Perspective:
             ax5.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
         ax5.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
@@ -560,6 +572,7 @@ class Counties_Perspective:
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax6.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+        ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax6.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax6.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -568,7 +581,7 @@ class Counties_Perspective:
             ax6.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
         ax6.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
         if files == 7:
 
@@ -580,6 +593,7 @@ class Counties_Perspective:
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax7.add_feature(cfeature.STATES, linewidth=state_linewidth, zorder=5)
+            ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax7.add_feature(cfeature.OCEAN, color='blue', zorder=3)
             ax7.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
@@ -588,7 +602,7 @@ class Counties_Perspective:
                 ax7.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax7.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
         
             figs.append(fig1)
             figs.append(fig2)
@@ -2669,6 +2683,7 @@ class Predictive_Services_Areas_Perspective:
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(GACC, linewidth=2, zorder=5)
+        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -2676,7 +2691,7 @@ class Predictive_Services_Areas_Perspective:
         ax1.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax1.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
@@ -2686,6 +2701,7 @@ class Predictive_Services_Areas_Perspective:
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax2.add_feature(GACC, linewidth=2, zorder=5)
+        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -2693,7 +2709,7 @@ class Predictive_Services_Areas_Perspective:
         ax2.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax2.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
 
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
@@ -2704,6 +2720,7 @@ class Predictive_Services_Areas_Perspective:
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(GACC, linewidth=2, zorder=5)
+        ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax3.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -2711,7 +2728,7 @@ class Predictive_Services_Areas_Perspective:
         ax3.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax3.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
@@ -2721,6 +2738,7 @@ class Predictive_Services_Areas_Perspective:
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(GACC, linewidth=2, zorder=5)
+        ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax4.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax4.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -2728,7 +2746,7 @@ class Predictive_Services_Areas_Perspective:
         ax4.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax4.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
@@ -2738,6 +2756,7 @@ class Predictive_Services_Areas_Perspective:
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax5.add_feature(GACC, linewidth=2, zorder=5)
+        ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax5.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax5.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -2745,7 +2764,7 @@ class Predictive_Services_Areas_Perspective:
         ax5.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax5.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
@@ -2755,6 +2774,7 @@ class Predictive_Services_Areas_Perspective:
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax6.add_feature(GACC, linewidth=2, zorder=5)
+        ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax6.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax6.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -2762,7 +2782,7 @@ class Predictive_Services_Areas_Perspective:
         ax6.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax6.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
         if files == 7:
 
@@ -2774,6 +2794,7 @@ class Predictive_Services_Areas_Perspective:
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax7.add_feature(GACC, linewidth=2, zorder=5)
+            ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax7.add_feature(cfeature.OCEAN, color='blue', zorder=3)
             ax7.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
@@ -2781,7 +2802,7 @@ class Predictive_Services_Areas_Perspective:
             ax7.add_feature(PSAs, linewidth=1.5, zorder=4)
             ax7.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs)
+            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 12, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
         
             figs.append(fig1)
             figs.append(fig2)
@@ -2936,6 +2957,7 @@ class Predictive_Services_Areas_Perspective:
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(GACC, linewidth=2, zorder=5)
+        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -2943,7 +2965,7 @@ class Predictive_Services_Areas_Perspective:
         ax1.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax1.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
@@ -2953,6 +2975,7 @@ class Predictive_Services_Areas_Perspective:
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax2.add_feature(GACC, linewidth=2, zorder=5)
+        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -2960,7 +2983,7 @@ class Predictive_Services_Areas_Perspective:
         ax2.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax2.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
 
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
@@ -2971,6 +2994,7 @@ class Predictive_Services_Areas_Perspective:
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(GACC, linewidth=2, zorder=5)
+        ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax3.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -2978,7 +3002,7 @@ class Predictive_Services_Areas_Perspective:
         ax3.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax3.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
@@ -2988,6 +3012,7 @@ class Predictive_Services_Areas_Perspective:
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(GACC, linewidth=2, zorder=5)
+        ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax4.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax4.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -2995,7 +3020,7 @@ class Predictive_Services_Areas_Perspective:
         ax4.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax4.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
@@ -3005,6 +3030,7 @@ class Predictive_Services_Areas_Perspective:
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax5.add_feature(GACC, linewidth=2, zorder=5)
+        ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax5.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax5.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -3012,7 +3038,7 @@ class Predictive_Services_Areas_Perspective:
         ax5.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax5.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
@@ -3022,6 +3048,7 @@ class Predictive_Services_Areas_Perspective:
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax6.add_feature(GACC, linewidth=2, zorder=5)
+        ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax6.add_feature(cfeature.OCEAN, color='blue', zorder=3)
         ax6.add_feature(cfeature.LAKES, color='blue', zorder=3)
         if show_rivers == True:
@@ -3029,7 +3056,7 @@ class Predictive_Services_Areas_Perspective:
         ax6.add_feature(PSAs, linewidth=1.5, zorder=4)
         ax6.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
 
         if files == 7:
 
@@ -3041,6 +3068,7 @@ class Predictive_Services_Areas_Perspective:
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax7.add_feature(GACC, linewidth=2, zorder=5)
+            ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax7.add_feature(cfeature.OCEAN, color='blue', zorder=3)
             ax7.add_feature(cfeature.LAKES, color='blue', zorder=3)
             if show_rivers == True:
@@ -3048,7 +3076,7 @@ class Predictive_Services_Areas_Perspective:
             ax7.add_feature(PSAs, linewidth=1.5, zorder=4)
             ax7.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs)
+            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 10, 2), cmap='YlOrRd', transform=datacrs, zorder=2)
         
             figs.append(fig1)
             figs.append(fig2)
