@@ -927,6 +927,9 @@ class FTP_Downloads:
                 # 3 files with 1st file included in short term and 4 files last space excluded in extended
                 if test_4 == False and test_5 == False and test_10 == False:
                     return grb_1_vals, grb_2_vals, grb_3_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_1_start, grb_2_start, grb_3_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_1_end, grb_2_end, grb_3_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, count  
+
+                if test_4 == False and test_5 == False and test_3 == False:
+                    return grb_1_vals, grb_2_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_10_vals,  grb_1_start, grb_2_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_10_start, grb_1_end, grb_2_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, grb_10_end, lats_1, lons_1, lats_2, lons_2, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, lats_10, lons_10, count
     
                 # 3 files with the 1st file missing in the short term and 4 files last space excluded in extended
                 if test_1 == False and test_5 == False and test_10 == False:
