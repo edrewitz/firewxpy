@@ -1270,7 +1270,7 @@ class Counties_Perspective:
         ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs2 = ax2.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
-                         transform=diff1.metpy.cartopy_crs, levels=np.arange(-30, 35, 5), cmap=cmap_trend, alpha=1)
+                         transform=diff1.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1, extend='both')
 
         cbar2 = fig1.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
         cbar2.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1340,7 +1340,7 @@ class Counties_Perspective:
         ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs4 = ax4.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
-                         transform=diff2.metpy.cartopy_crs, levels=np.arange(-30, 35, 5), cmap=cmap_trend, alpha=1)
+                         transform=diff2.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1, extend='both')
 
         cbar4 = fig2.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
         cbar4.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1410,7 +1410,7 @@ class Counties_Perspective:
         ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs6 = ax6.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
-                         transform=diff3.metpy.cartopy_crs, levels=np.arange(-30, 35, 5), cmap=cmap_trend, alpha=1)
+                         transform=diff3.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1, extend='both')
 
         cbar6 = fig3.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
         cbar6.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1440,7 +1440,7 @@ class Counties_Perspective:
         ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs7 = ax7.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                         transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap_rh, alpha=1)
+                         transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap_rh, alpha=1, extend='both')
 
         cbar7 = fig4.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
         cbar7.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1481,7 +1481,7 @@ class Counties_Perspective:
         ax8.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs8 = ax8.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
-                         transform=diff4.metpy.cartopy_crs, levels=np.arange(-30, 35, 5), cmap=cmap_trend, alpha=1)
+                         transform=diff4.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1)
 
         cbar8 = fig4.colorbar(cs8, shrink=color_table_shrink, pad=colorbar_pad)
         cbar8.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1511,7 +1511,7 @@ class Counties_Perspective:
         ax9.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs9 = ax9.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                         transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap_rh, alpha=1)
+                         transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap_rh, alpha=1, extend='both')
 
         cbar9 = fig5.colorbar(cs9, shrink=color_table_shrink, pad=colorbar_pad)
         cbar9.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1552,7 +1552,7 @@ class Counties_Perspective:
         ax10.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs10 = ax10.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
-                         transform=diff5.metpy.cartopy_crs, levels=np.arange(-30, 35, 5), cmap=cmap_trend, alpha=1)
+                         transform=diff5.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1, extend='both')
 
         cbar10 = fig5.colorbar(cs10, shrink=color_table_shrink, pad=colorbar_pad)
         cbar10.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1623,7 +1623,7 @@ class Counties_Perspective:
         ax12.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs12 = ax12.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
-                         transform=diff6.metpy.cartopy_crs, levels=np.arange(-30, 35, 5), cmap=cmap_trend, alpha=1)
+                         transform=diff6.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1, extend='both')
 
         cbar12 = fig6.colorbar(cs12, shrink=color_table_shrink, pad=colorbar_pad)
         cbar12.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1694,7 +1694,7 @@ class Counties_Perspective:
         ax14.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs14 = ax14.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
-                         transform=diff7.metpy.cartopy_crs, levels=np.arange(-30, 35, 5), cmap=cmap_trend, alpha=1)
+                         transform=diff7.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1, extend='both')
 
         cbar14 = fig7.colorbar(cs14, shrink=color_table_shrink, pad=colorbar_pad)
         cbar14.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
@@ -2069,7 +2069,7 @@ class Counties_Perspective:
         ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-80, 85, 5), cmap=cmap, alpha=1)
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap=cmap, alpha=1, extend='both')
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -2181,7 +2181,7 @@ class Counties_Perspective:
         ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-40, 41, 1), cmap='seismic', alpha=1)
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=1, extend='both')
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -2293,7 +2293,7 @@ class Counties_Perspective:
         ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap='PuOr_r', alpha=1)
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap='PuOr_r', alpha=1, extend='both')
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -2399,7 +2399,7 @@ class Counties_Perspective:
         ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap='cool_r', alpha=1)
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap='cool_r', alpha=1, extend='min')
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -4025,7 +4025,7 @@ class Predictive_Services_Areas_Perspective:
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-80, 85, 5), cmap=cmap, alpha=1)
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap=cmap, alpha=1, extend='both')
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -4139,7 +4139,7 @@ class Predictive_Services_Areas_Perspective:
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-40, 41, 1), cmap='seismic', alpha=1)
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=1, extend='both')
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -4253,7 +4253,7 @@ class Predictive_Services_Areas_Perspective:
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap='PuOr_r', alpha=1)
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap='PuOr_r', alpha=1, extend='both')
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -4361,7 +4361,7 @@ class Predictive_Services_Areas_Perspective:
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap='cool_r', alpha=1)
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap='cool_r', alpha=1, extend='min')
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
