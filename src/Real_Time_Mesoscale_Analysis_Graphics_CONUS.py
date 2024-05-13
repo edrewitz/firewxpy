@@ -2076,7 +2076,7 @@ class Counties_Perspective:
         cbar.set_label(label="Relative Humidity Change (%)", size=colorbar_label_font_size, fontweight='bold')
 
 
-        plt.title("24-Hour Relative Humidity Change (%)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA 24-Hour Relative Humidity Change (%)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
@@ -2188,7 +2188,7 @@ class Counties_Perspective:
         cbar.set_label(label="Temperature Change (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
 
 
-        plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA 24-Hour Temperature Change (\N{DEGREE SIGN}F)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
@@ -2300,7 +2300,7 @@ class Counties_Perspective:
         cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
 
 
-        plt.title("24-Hour Wind Speed Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA 24-Hour Wind Speed Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
@@ -2406,124 +2406,7 @@ class Counties_Perspective:
         cbar.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
 
 
-        plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\n   Analysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC') + ")", fontsize=title_font_size, fontweight='bold')
-        
-        ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax.transAxes)
-
-        return fig
-
-
-    def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_speed(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
-
-        r'''
-            This function does the following:
-                                            1) Downloads the latest available temperature, dewpoint and wind speed data arrays. 
-                                            2) Uses MetPy to create a relative humidity data array from the temperature and dewpoint data arrays. 
-                                            3) Converts wind speed from m/s to MPH. 
-                                            4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of both relative humidity where RH <= 15% and wind speed >= 25 MPH overlayed on the same plot. 
-            
-
-            Inputs:
-
-                1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
-
-                2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
-
-                3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
-
-                4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
-
-                5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
-
-                6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
-
-                7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
-
-                8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
-
-                9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
-
-                10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
-
-                11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
-
-                12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
-
-                13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
-
-                14) title_font_size (Integer) - The fontsize of the title of the figure. 
-
-                15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                           Default setting is 0.05.
-                                           Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                           Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
-
-                18) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
-                                            will not display on the map. 
-
-
-            Returns:
-                    1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis of both relative humidity where RH <= 15% and wind speed >= 25 MPH overlayed on the same plot. 
-        
-        '''
-        colorbar_label_font_size = colorbar_label_font_size
-
-        colorbar_pad = colorbar_pad
-
-        local_time, utc_time = standard.plot_creation_time()
-
-        rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time)
-
-        rtma_wind, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'Wind_speed_Analysis_height_above_ground')
-
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-        rtma_time = rtma_time.replace(tzinfo=from_zone)
-        rtma_time = rtma_time.astimezone(to_zone)
-        rtma_time_utc = rtma_time.astimezone(from_zone)
-
-        rtma_wind = rtma_wind * 2.23694
-        
-        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
-        datacrs = ccrs.PlateCarree()
-
-        plot_proj = rtma_data.metpy.cartopy_crs
-
-        fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig.set_facecolor('aliceblue')
-
-        ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
-        ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-        else:
-            pass
-        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
-
-        cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
-
-        cs_wind = ax.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
-                         transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 100, 5), cmap='BuPu', alpha=0.5)
-
-
-        cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=colorbar_pad)
-        cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=colorbar_pad)
-        cbar_wind.set_label(label="Wind Speed (MPH)", size=colorbar_label_font_size, fontweight='bold')
-
-
-        plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Speed >= 25 MPH)\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\n   Analysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC') + ")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
@@ -2636,7 +2519,7 @@ class Counties_Perspective:
             pass
             
 
-        plt.title("Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Speed >= " + str(red_flag_warning_wind_speed_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Speed >= " + str(red_flag_warning_wind_speed_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
@@ -2749,7 +2632,7 @@ class Counties_Perspective:
             pass
             
 
-        plt.title("Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
@@ -2934,7 +2817,7 @@ class Counties_Perspective:
         cbar_wind.set_label(label="Sustained Wind Speed (MPH)", size=colorbar_label_font_size, fontweight='bold')   
         
 
-        fig.suptitle("Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Sustained Wind Speed >= " + str(red_flag_warning_wind_speed_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=plot_title_font_size, fontweight='bold')
+        fig.suptitle("RTMA Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Sustained Wind Speed >= " + str(red_flag_warning_wind_speed_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=plot_title_font_size, fontweight='bold')
         
         ax0.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy\n(C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax0.transAxes)
@@ -3119,129 +3002,13 @@ class Counties_Perspective:
         cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')   
         
 
-        fig.suptitle("Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=plot_title_font_size, fontweight='bold')
+        fig.suptitle("RTMA Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=plot_title_font_size, fontweight='bold')
         
         ax0.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy\n(C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax0.transAxes)
 
         return fig     
 
-
-    def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_gusts(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
-
-        r'''
-            This function does the following:
-                                            1) Downloads the latest available temperature, dewpoint and wind gust data arrays. 
-                                            2) Uses MetPy to create a relative humidity data array from the temperature and dewpoint data arrays. 
-                                            3) Converts wind speed from m/s to MPH. 
-                                            3) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of both relative humidity where RH <= 15% and wind gust >= 25 MPH overlayed on the same plot. 
-            
-
-            Inputs:
-
-                1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
-
-                2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
-
-                3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
-
-                4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
-
-                5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
-
-                6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
-
-                7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
-
-                8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
-
-                9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
-
-                10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
-
-                11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
-
-                12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
-
-                13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
-
-                14) title_font_size (Integer) - The fontsize of the title of the figure. 
-
-                15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                           Default setting is 0.05.
-                                           Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                           Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot.
-
-                18) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
-                                            will not display on the map. 
-
-
-            Returns:
-                    1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis of both relative humidity where RH <= 15% and wind gust >= 25 MPH overlayed on the same plot. 
-        
-        '''
-        colorbar_label_font_size = colorbar_label_font_size
-
-        local_time, utc_time = standard.plot_creation_time()
-
-        colorbar_pad = colorbar_pad
-
-        rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time)
-
-        rtma_wind, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'Wind_speed_gust_Analysis_height_above_ground')
-
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-        rtma_time = rtma_time.replace(tzinfo=from_zone)
-        rtma_time = rtma_time.astimezone(to_zone)
-        rtma_time_utc = rtma_time.astimezone(from_zone)
-
-        rtma_wind = rtma_wind * 2.23694
-        
-        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
-        datacrs = ccrs.PlateCarree()
-
-        plot_proj = rtma_data.metpy.cartopy_crs
-
-        fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig.set_facecolor('aliceblue')
-
-        ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
-        ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-        else:
-            pass
-        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
-
-        cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
-
-        cs_wind = ax.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
-                         transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 100, 5), cmap='BuPu', alpha=0.5)
-
-
-        cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=colorbar_pad)
-        cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=colorbar_pad)
-        cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')
-
-
-        plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Gust >= 25 MPH)\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax.transAxes)
-
-        return fig
 
 class Predictive_Services_Areas_Perspective:
 
@@ -4032,7 +3799,7 @@ class Predictive_Services_Areas_Perspective:
         cbar.set_label(label="Relative Humidity Change (%)", size=colorbar_label_font_size, fontweight='bold')
 
 
-        plt.title("24-Hour Relative Humidity Change (%)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA 24-Hour Relative Humidity Change (%)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
@@ -4146,7 +3913,7 @@ class Predictive_Services_Areas_Perspective:
         cbar.set_label(label="Temperature Change (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
 
 
-        plt.title("24-Hour Temperature Change (\N{DEGREE SIGN}F)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA 24-Hour Temperature Change (\N{DEGREE SIGN}F)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
@@ -4260,7 +4027,7 @@ class Predictive_Services_Areas_Perspective:
         cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
 
 
-        plt.title("24-Hour Wind Speed Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA 24-Hour Wind Speed Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
@@ -4368,246 +4135,7 @@ class Predictive_Services_Areas_Perspective:
         cbar.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
 
 
-        plt.title("Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\n   Analysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
-        
-        ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax.transAxes)
-
-        return fig
-
-
-    def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_speed(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
-
-        r'''
-            This function does the following:
-                                            1) Downloads the latest available temperature, dewpoint and wind speed data arrays. 
-                                            2) Uses MetPy to create a relative humidity data array from the temperature and dewpoint data arrays. 
-                                            3) Converts wind speed from m/s to MPH. 
-                                            4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of both relative humidity where RH <= 15% and wind speed >= 25 MPH overlayed on the same plot. 
-            
-
-            Inputs:
-
-                1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
-
-                2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
-
-                3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
-
-                4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
-
-                5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
-
-                6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
-
-                7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
-
-                8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
-
-                9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
-
-                10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
-
-                11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
-
-                12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
-
-                13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
-
-                14) title_font_size (Integer) - The fontsize of the title of the figure. 
-
-                15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                           Default setting is 0.05.
-                                           Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                           Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
-
-                18) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
-                                            will not display on the map. 
-
-
-            Returns:
-                    1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis of both relative humidity where RH <= 15% and wind speed >= 25 MPH overlayed on the same plot. 
-        
-        '''
-
-        colorbar_label_font_size = colorbar_label_font_size
-
-        colorbar_pad = colorbar_pad
-        
-        local_time, utc_time = standard.plot_creation_time()
-
-        rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time)
-
-        rtma_wind, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'Wind_speed_Analysis_height_above_ground')
-
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-        rtma_time = rtma_time.replace(tzinfo=from_zone)
-        rtma_time = rtma_time.astimezone(to_zone)
-        rtma_time_utc = rtma_time.astimezone(from_zone)
-
-        rtma_wind = rtma_wind * 2.23694
-        
-        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
-        datacrs = ccrs.PlateCarree()
-
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
-
-        plot_proj = rtma_data.metpy.cartopy_crs
-
-        fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig.set_facecolor('aliceblue')
-
-        ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
-        ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-        else:
-            pass
-        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
-
-        cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
-
-        cs_wind = ax.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
-                         transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 100, 5), cmap='BuPu', alpha=0.5)
-
-
-        cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=colorbar_pad)
-        cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=colorbar_pad)
-        cbar_wind.set_label(label="Wind Speed (MPH)", size=colorbar_label_font_size, fontweight='bold')
-
-
-        plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Speed >= 25 MPH)\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
-        
-        ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax.transAxes)
-
-        return fig
-
-
-    def plot_red_flag_relative_humidity_overlayed_with_red_flag_wind_gusts(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
-
-        r'''
-            This function does the following:
-                                            1) Downloads the latest available temperature, dewpoint and wind gust data arrays. 
-                                            2) Uses MetPy to create a relative humidity data array from the temperature and dewpoint data arrays. 
-                                            3) Converts wind speed from m/s to MPH. 
-                                            4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of both relative humidity where RH <= 15% and wind gust >= 25 MPH overlayed on the same plot. 
-            
-
-            Inputs:
-
-                1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
-
-                2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
-
-                3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
-
-                4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
-
-                5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
-
-                6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
-
-                7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
-
-                8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
-
-                9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
-
-                10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
-
-                11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
-
-                12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
-
-                13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
-
-                14) title_font_size (Integer) - The fontsize of the title of the figure. 
-
-                15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                           Default setting is 0.05.
-                                           Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                           Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
-
-                18) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
-                                            will not display on the map. 
-
-
-            Returns:
-                    1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis of both relative humidity where RH <= 15% and wind gust >= 25 MPH overlayed on the same plot. 
-        
-        '''
-        colorbar_label_font_size = colorbar_label_font_size
-
-        colorbar_pad = colorbar_pad
-
-        local_time, utc_time = standard.plot_creation_time()
-
-        rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time)
-
-        rtma_wind, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'Wind_speed_gust_Analysis_height_above_ground')
-
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-        rtma_time = rtma_time.replace(tzinfo=from_zone)
-        rtma_time = rtma_time.astimezone(to_zone)
-        rtma_time_utc = rtma_time.astimezone(from_zone)
-
-        rtma_wind = rtma_wind * 2.23694
-        
-        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
-        datacrs = ccrs.PlateCarree()
-
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
-
-        plot_proj = rtma_data.metpy.cartopy_crs
-
-        fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig.set_facecolor('aliceblue')
-
-        ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
-        ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-        else:
-            pass
-        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
-
-        cs_rh = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.5)
-
-        cs_wind = ax.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
-                         transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 100, 5), cmap='BuPu', alpha=0.5)
-
-
-        cbar_rh = fig.colorbar(cs_rh, location='left', shrink=color_table_shrink, pad=colorbar_pad)
-        cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        cbar_wind = fig.colorbar(cs_wind, location='right', shrink=color_table_shrink, pad=colorbar_pad)
-        cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')
-
-
-        plt.title("Red-Flag Warning Conditions (RH <= 15% and Wind Gust >= 25 MPH)\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA Current Frost & Freeze Areas (T <= 32\N{DEGREE SIGN}F)\n   Analysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
@@ -4722,7 +4250,7 @@ class Predictive_Services_Areas_Perspective:
             pass
             
 
-        plt.title("Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Speed >= " + str(red_flag_warning_wind_speed_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Speed >= " + str(red_flag_warning_wind_speed_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
@@ -4837,7 +4365,7 @@ class Predictive_Services_Areas_Perspective:
             pass
             
 
-        plt.title("Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
@@ -5022,7 +4550,7 @@ class Predictive_Services_Areas_Perspective:
         cbar_wind.set_label(label="Sustained Wind Speed (MPH)", size=colorbar_label_font_size, fontweight='bold')   
         
 
-        fig.suptitle("Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Sustained Wind Speed >= " + str(red_flag_warning_wind_speed_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=plot_title_font_size, fontweight='bold')
+        fig.suptitle("RTMA Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Sustained Wind Speed >= " + str(red_flag_warning_wind_speed_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=plot_title_font_size, fontweight='bold')
         
         ax0.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy\n(C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax0.transAxes)
@@ -5207,7 +4735,7 @@ class Predictive_Services_Areas_Perspective:
         cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')   
         
 
-        fig.suptitle("Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=plot_title_font_size, fontweight='bold')
+        fig.suptitle("RTMA Exceptionally Dry & Windy Areas (Shaded)\nRH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=plot_title_font_size, fontweight='bold')
         
         ax0.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy\n(C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax0.transAxes)
@@ -5393,7 +4921,7 @@ class Predictive_Services_Areas_Perspective:
         cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')   
         
 
-        fig.suptitle("Exceptionally Dry & Windy Areas (Shaded)|RH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=plot_title_font_size, fontweight='bold')
+        fig.suptitle("RTMA Exceptionally Dry & Windy Areas (Shaded)|RH <= " + str(red_flag_warning_relative_humidity_threshold) + "% & Wind Gust >= " + str(red_flag_warning_wind_gust_threshold) + " MPH\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=plot_title_font_size, fontweight='bold')
         
         ax0.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy|(C) Eric J. Drewitz 2024|Data Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax0.transAxes)
