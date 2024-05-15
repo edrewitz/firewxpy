@@ -1660,9 +1660,6 @@ class NDFD:
                     else:
                         print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
                         
-                        grb_1_vals = None
-                        grb_1_start = None
-                        grb_1_end = None
 
                         try:
                             if grb_8_vals.all() != None:
@@ -1672,11 +1669,15 @@ class NDFD:
                             test_8 = False                        
 
                         if test_8 == False:
+                            grb_8_vals = None
+                            grb_8_start = None
+                            grb_8_end = None
+                            lats_8, lons_8 = None, None
                             count_of_GRIB_files = count - 1
                             print("There is no 8th GRIB file.")
                             print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
                             
-                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count_of_GRIB_files
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files
 
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
@@ -1710,9 +1711,6 @@ class NDFD:
                     else:
                         print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
                         
-                        grb_1_vals = None
-                        grb_1_start = None
-                        grb_1_end = None
 
                         try:
                             if grb_8_vals.all() != None:
@@ -1722,11 +1720,15 @@ class NDFD:
                             test_8 = False                        
 
                         if test_8 == False:
+                            grb_8_vals = None
+                            grb_8_start = None
+                            grb_8_end = None
+                            lats_8, lons_8 = None, None
                             count_of_GRIB_files = count - 1
                             print("There is no 8th GRIB file.")
                             print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
                             
-                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count_of_GRIB_files
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files
 
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
@@ -1791,9 +1793,6 @@ class NDFD:
                     else:
                         print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
                         
-                        grb_1_vals = None
-                        grb_1_start = None
-                        grb_1_end = None
 
                         try:
                             if grb_8_vals.all() != None:
@@ -1803,11 +1802,14 @@ class NDFD:
                             test_8 = False                        
 
                         if test_8 == False:
+                            grb_8_vals = None
+                            grb_8_start = None
+                            grb_8_end = None
                             count_of_GRIB_files = count - 1
                             print("There is no 8th GRIB file.")
                             print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
                             
-                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count_of_GRIB_files
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files
 
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
@@ -1870,10 +1872,6 @@ class NDFD:
                         
                     else:
                         print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-                        
-                        grb_1_vals = None
-                        grb_1_start = None
-                        grb_1_end = None
 
                         try:
                             if grb_8_vals.all() != None:
@@ -1883,11 +1881,15 @@ class NDFD:
                             test_8 = False                        
 
                         if test_8 == False:
+                            grb_8_vals = None
+                            grb_8_start = None
+                            grb_8_end = None
+                            lats_8, lons_8 = None, None
                             count_of_GRIB_files = count - 1
                             print("There is no 8th GRIB file.")
                             print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
                             
-                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count_of_GRIB_files
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files
 
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
@@ -2081,9 +2083,6 @@ class NDFD:
                     else:
                         print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
                         
-                        grb_1_vals = None
-                        grb_1_start = None
-                        grb_1_end = None
 
                         try:
                             if grb_8_vals.all() != None:
@@ -2093,11 +2092,15 @@ class NDFD:
                             test_8 = False                        
 
                         if test_8 == False:
+                            grb_8_vals = None
+                            grb_8_start = None
+                            grb_8_end = None
+                            lats_8, lons_8 = None, None
                             count_of_GRIB_files = count - 1
                             print("There is no 8th GRIB file.")
                             print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
                             
-                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count_of_GRIB_files
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files
 
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
@@ -2130,10 +2133,7 @@ class NDFD:
                         
                     else:
                         print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-                        
-                        grb_1_vals = None
-                        grb_1_start = None
-                        grb_1_end = None
+
 
                         try:
                             if grb_8_vals.all() != None:
@@ -2143,11 +2143,15 @@ class NDFD:
                             test_8 = False                        
 
                         if test_8 == False:
+                            grb_8_vals = None
+                            grb_8_start = None
+                            grb_8_end = None
+                            lats_8, lons_8 = None, None
                             count_of_GRIB_files = count - 1
                             print("There is no 8th GRIB file.")
                             print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
                             
-                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count_of_GRIB_files
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files
 
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
