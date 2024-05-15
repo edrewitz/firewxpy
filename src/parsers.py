@@ -230,6 +230,148 @@ class NDFD:
             return grb_1_vals_f, grb_2_vals_f, grb_3_vals_f, grb_4_vals_f, grb_5_vals_f
 
 
+    def GRIB_temperature_conversion_7_day(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, sixth_GRIB_file, seventh_GRIB_file, eigth_GRIB_file, count_of_GRIB_files):
+    
+        r'''
+        THIS FUNCTION CONVERTS THE TEMPERATURE VALUES FROM KELVIN TO FAHRENHEIT FOR OUR PLOT
+    
+        RETURNS: TEMPERATURE VALUES IN FAHRENHEIT
+    
+        COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
+        '''
+    
+        frac = 9/5
+
+        if count_of_GRIB_files == 5:
+            grb_1_vals = first_GRIB_file.values
+            grb_2_vals = second_GRIB_file.values
+            grb_3_vals = third_GRIB_file.values
+            grb_4_vals = fourth_GRIB_file.values
+            grb_5_vals = fifth_GRIB_file.values
+            grb_6_vals = None
+            grb_7_vals = None
+            grb_8_vals = None
+            
+            grb_1_vals_k = units('kelvin') * grb_1_vals
+            grb_1_vals_f = grb_1_vals_k.to('degF')
+
+            grb_2_vals_k = units('kelvin') * grb_2_vals
+            grb_2_vals_f = grb_2_vals_k.to('degF')
+
+            grb_3_vals_k = units('kelvin') * grb_3_vals
+            grb_3_vals_f = grb_3_vals_k.to('degF')
+
+            grb_4_vals_k = units('kelvin') * grb_4_vals
+            grb_4_vals_f = grb_4_vals_k.to('degF')
+
+            grb_5_vals_k = units('kelvin') * grb_5_vals
+            grb_5_vals_f = grb_5_vals_k.to('degF')
+
+            grb_6_vals_f = None
+            grb_7_vals_f = None
+            grb_8_vals_f = None
+
+        if count_of_GRIB_files == 6:
+            grb_1_vals = first_GRIB_file.values
+            grb_2_vals = second_GRIB_file.values
+            grb_3_vals = third_GRIB_file.values
+            grb_4_vals = fourth_GRIB_file.values
+            grb_5_vals = fifth_GRIB_file.values
+            grb_6_vals = sixth_GRIB_file.values
+            grb_7_vals = None
+            grb_8_vals = None
+            
+            grb_1_vals_k = units('kelvin') * grb_1_vals
+            grb_1_vals_f = grb_1_vals_k.to('degF')
+
+            grb_2_vals_k = units('kelvin') * grb_2_vals
+            grb_2_vals_f = grb_2_vals_k.to('degF')
+
+            grb_3_vals_k = units('kelvin') * grb_3_vals
+            grb_3_vals_f = grb_3_vals_k.to('degF')
+
+            grb_4_vals_k = units('kelvin') * grb_4_vals
+            grb_4_vals_f = grb_4_vals_k.to('degF')
+
+            grb_5_vals_k = units('kelvin') * grb_5_vals
+            grb_5_vals_f = grb_5_vals_k.to('degF')
+
+            grb_6_vals_k = units('kelvin') * grb_6_vals
+            grb_6_vals_f = grb_6_vals_k.to('degF')
+            
+            grb_7_vals_f = None
+            grb_8_vals_f = None
+
+        if count_of_GRIB_files == 7:
+            grb_1_vals = first_GRIB_file.values
+            grb_2_vals = second_GRIB_file.values
+            grb_3_vals = third_GRIB_file.values
+            grb_4_vals = fourth_GRIB_file.values
+            grb_5_vals = fifth_GRIB_file.values
+            grb_6_vals = sixth_GRIB_file.values
+            grb_7_vals = seventh_GRIB_file.values
+            grb_8_vals = None
+            
+            grb_1_vals_k = units('kelvin') * grb_1_vals
+            grb_1_vals_f = grb_1_vals_k.to('degF')
+
+            grb_2_vals_k = units('kelvin') * grb_2_vals
+            grb_2_vals_f = grb_2_vals_k.to('degF')
+
+            grb_3_vals_k = units('kelvin') * grb_3_vals
+            grb_3_vals_f = grb_3_vals_k.to('degF')
+
+            grb_4_vals_k = units('kelvin') * grb_4_vals
+            grb_4_vals_f = grb_4_vals_k.to('degF')
+
+            grb_5_vals_k = units('kelvin') * grb_5_vals
+            grb_5_vals_f = grb_5_vals_k.to('degF')
+
+            grb_6_vals_k = units('kelvin') * grb_6_vals
+            grb_6_vals_f = grb_6_vals_k.to('degF')
+
+            grb_7_vals_k = units('kelvin') * grb_7_vals
+            grb_7_vals_f = grb_7_vals_k.to('degF')
+
+            grb_8_vals_f = None
+
+        if count_of_GRIB_files == 8:
+            grb_1_vals = first_GRIB_file.values
+            grb_2_vals = second_GRIB_file.values
+            grb_3_vals = third_GRIB_file.values
+            grb_4_vals = fourth_GRIB_file.values
+            grb_5_vals = fifth_GRIB_file.values
+            grb_6_vals = sixth_GRIB_file.values
+            grb_7_vals = seventh_GRIB_file.values
+            grb_8_vals = eigth_GRIB_file.values
+            
+            grb_1_vals_k = units('kelvin') * grb_1_vals
+            grb_1_vals_f = grb_1_vals_k.to('degF')
+
+            grb_2_vals_k = units('kelvin') * grb_2_vals
+            grb_2_vals_f = grb_2_vals_k.to('degF')
+
+            grb_3_vals_k = units('kelvin') * grb_3_vals
+            grb_3_vals_f = grb_3_vals_k.to('degF')
+
+            grb_4_vals_k = units('kelvin') * grb_4_vals
+            grb_4_vals_f = grb_4_vals_k.to('degF')
+
+            grb_5_vals_k = units('kelvin') * grb_5_vals
+            grb_5_vals_f = grb_5_vals_k.to('degF')
+
+            grb_6_vals_k = units('kelvin') * grb_6_vals
+            grb_6_vals_f = grb_6_vals_k.to('degF')
+
+            grb_7_vals_k = units('kelvin') * grb_7_vals
+            grb_7_vals_f = grb_7_vals_k.to('degF')
+
+            grb_8_vals_k = units('kelvin') * grb_8_vals
+            grb_8_vals_f = grb_8_vals_k.to('degF')
+                    
+        return grb_1_vals_f, grb_2_vals_f, grb_3_vals_f, grb_4_vals_f, grb_5_vals_f, grb_6_vals_f, grb_7_vals_f, grb_8_vals_f
+
+
     def GRIB_temperature_conversion(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files):
     
         r'''
@@ -1056,6 +1198,962 @@ class NDFD:
     
     
         return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5
+
+    def parse_short_and_extended_forecast_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter):
+    
+        r'''
+        THIS FUNCTION PARSES THROUGH EACH GRIB FILE AND RETURNS THE VALUES OF THE FILE, THE START AND END TIME FOR THE FORECAST VALIDITY, THE LATITUDE AND LONGITUDE COORDINATES CORRESPONDING TO THE VALUES IN THE FILE. 
+    
+        (C) METEOROLOGIST ERIC J. DREWITZ 2023
+    
+        '''
+    
+        
+        files = count_of_GRIB_files
+        param = parameter
+
+        grid_time_interval = grid_time_interval
+    
+        if param == 'ds.mint.bin' or param == 'ds.maxt.bin':
+            
+            grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals = NDFD.GRIB_temperature_conversion_test1(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files)
+            if files == 1:
+                grb_1_start = first_GRIB_file.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_start = None
+                grb_2_end = None
+                grb_3_start = None
+                grb_3_end = None
+                grb_4_start = None
+                grb_4_end = None
+                grb_5_start = None
+                grb_5_end = None
+                          
+                lats_1, lons_1 = first_GRIB_file.latlons()
+                lats_2, lons_2 = None, None
+                lats_3, lons_3 = None, None
+                lats_4, lons_4 = None, None
+                lats_5, lons_5 = None, None
+        
+            if files == 2:
+                grb_1_start = first_GRIB_file.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_start = second_GRIB_file.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_start = None
+                grb_3_end = None
+                grb_4_start = None
+                grb_4_end = None
+                grb_5_start = None
+                grb_5_end = None
+                          
+                lats_1, lons_1 = first_GRIB_file.latlons()
+                lats_2, lons_2 = second_GRIB_file.latlons()
+                lats_3, lons_3 = None, None
+                lats_4, lons_4 = None, None
+                lats_5, lons_5 = None, None
+        
+            if files == 3:
+                grb_1_start = first_GRIB_file.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_start = second_GRIB_file.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_start = third_GRIB_file.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_start = None
+                grb_4_end = None
+                grb_5_start = None
+                grb_5_end = None
+                          
+                lats_1, lons_1 = first_GRIB_file.latlons()
+                lats_2, lons_2 = second_GRIB_file.latlons()
+                lats_3, lons_3 = third_GRIB_file.latlons()
+                lats_4, lons_4 = None, None
+                lats_5, lons_5 = None, None
+        
+            if files == 4:
+                grb_1_start = first_GRIB_file.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_start = second_GRIB_file.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_start = third_GRIB_file.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_start = fourth_GRIB_file.validDate
+                grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+                grb_5_start = None
+                grb_5_end = None
+                          
+                lats_1, lons_1 = first_GRIB_file.latlons()
+                lats_2, lons_2 = second_GRIB_file.latlons()
+                lats_3, lons_3 = third_GRIB_file.latlons()
+                lats_4, lons_4 = fourth_GRIB_file.latlons()
+                lats_5, lons_5 = None, None
+            
+            
+            if files >= 5:
+                grb_1_start = first_GRIB_file.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_start = second_GRIB_file.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_start = third_GRIB_file.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_start = fourth_GRIB_file.validDate
+                grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+                grb_5_start = fifth_GRIB_file.validDate
+                grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+                          
+                lats_1, lons_1 = first_GRIB_file.latlons()
+                lats_2, lons_2 = second_GRIB_file.latlons()
+                lats_3, lons_3 = third_GRIB_file.latlons()
+                lats_4, lons_4 = fourth_GRIB_file.latlons()
+                lats_5, lons_5 = fifth_GRIB_file.latlons()
+        
+        else:       
+       
+            if files == 1:
+                grb_1_vals = first_GRIB_file.values
+                grb_1_start = first_GRIB_file.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_vals = None
+                grb_2_start = None
+                grb_2_end = None
+                grb_3_vals = None
+                grb_3_start = None
+                grb_3_end = None
+                grb_4_vals = None
+                grb_4_start = None
+                grb_4_end = None
+                grb_5_vals = None
+                grb_5_start = None
+                grb_5_end = None
+                          
+                lats_1, lons_1 = first_GRIB_file.latlons()
+                lats_2, lons_2 = None, None
+                lats_3, lons_3 = None, None
+                lats_4, lons_4 = None, None
+                lats_5, lons_5 = None, None
+        
+            if files == 2:
+                grb_1_vals = first_GRIB_file.values
+                grb_1_start = first_GRIB_file.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_vals = second_GRIB_file.values
+                grb_2_start = second_GRIB_file.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_vals = None
+                grb_3_start = None
+                grb_3_end = None
+                grb_4_vals = None
+                grb_4_start = None
+                grb_4_end = None
+                grb_5_vals = None
+                grb_5_start = None
+                grb_5_end = None
+                          
+                lats_1, lons_1 = first_GRIB_file.latlons()
+                lats_2, lons_2 = second_GRIB_file.latlons()
+                lats_3, lons_3 = None, None
+                lats_4, lons_4 = None, None
+                lats_5, lons_5 = None, None
+        
+            if files == 3:
+                grb_1_vals = first_GRIB_file.values
+                grb_1_start = first_GRIB_file.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_vals = second_GRIB_file.values
+                grb_2_start = second_GRIB_file.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_vals = third_GRIB_file.values
+                grb_3_start = third_GRIB_file.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_vals = None
+                grb_4_start = None
+                grb_4_end = None
+                grb_5_vals = None
+                grb_5_start = None
+                grb_5_end = None
+                          
+                lats_1, lons_1 = first_GRIB_file.latlons()
+                lats_2, lons_2 = second_GRIB_file.latlons()
+                lats_3, lons_3 = third_GRIB_file.latlons()
+                lats_4, lons_4 = None, None
+                lats_5, lons_5 = None, None
+        
+            if files == 4:
+                grb_1_vals = first_GRIB_file.values
+                grb_1_start = first_GRIB_file.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_vals = second_GRIB_file.values
+                grb_2_start = second_GRIB_file.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_vals = third_GRIB_file.values
+                grb_3_start = third_GRIB_file.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_vals = fourth_GRIB_file.values
+                grb_4_start = fourth_GRIB_file.validDate
+                grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+                grb_5_vals = None
+                grb_5_start = None
+                grb_5_end = None
+                          
+                lats_1, lons_1 = first_GRIB_file.latlons()
+                lats_2, lons_2 = second_GRIB_file.latlons()
+                lats_3, lons_3 = third_GRIB_file.latlons()
+                lats_4, lons_4 = fourth_GRIB_file.latlons()
+                lats_5, lons_5 = None, None
+            
+            
+            if files >= 5:
+                grb_1_vals = first_GRIB_file.values
+                grb_1_start = first_GRIB_file.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_vals = second_GRIB_file.values
+                grb_2_start = second_GRIB_file.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_vals = third_GRIB_file.values
+                grb_3_start = third_GRIB_file.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_vals = fourth_GRIB_file.values
+                grb_4_start = fourth_GRIB_file.validDate
+                grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+                grb_5_vals = fifth_GRIB_file.values
+                grb_5_start = fifth_GRIB_file.validDate
+                grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+                          
+                lats_1, lons_1 = first_GRIB_file.latlons()
+                lats_2, lons_2 = second_GRIB_file.latlons()
+                lats_3, lons_3 = third_GRIB_file.latlons()
+                lats_4, lons_4 = fourth_GRIB_file.latlons()
+                lats_5, lons_5 = fifth_GRIB_file.latlons()
+    
+    
+        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5
+
+    def parse_GRIB_files_full_forecast_period(file_path, grid_time_interval):
+
+        GRIB_File_List = pygrib.open(file_path)
+        grid_time_interval = grid_time_interval
+
+        utc = datetime.utcnow()
+        local = datetime.now()
+
+        utc_hour = utc.hour
+        local_hour = local.hour
+
+        if file_path != 'ds.apt.bin' or file_path != 'ds.conhazo.bin' or file_path != 'ds.critfireo.bin' or file_path != 'ds.dryfireo.bin' or file_path != 'ds.iceaccum.bin' or file_path != 'ds.maxrh.bin' or file_path != 'ds.maxt.bin' or file_path != 'ds.minrh.bin' or file_path != 'ds.mint.bin' or file_path != 'ds.phail.bin' or file_path != 'ds.pop12.bin' or file_path != 'ds.ptornado.bin' or file_path != 'ds.ptotsvrtstm.bin' or file_path != 'ds.ptotxsvrtstm.bin' or file_path != 'ds.ptstmwinds.bin' or file_path != 'ds.pxhail.bin' or file_path != 'ds.pxtornado.bin' or file_path != 'ds.pxtstmwinds.bin' or file_path != 'ds.qpf.bin' or file_path != 'ds.rhm.bin' or file_path != 'ds.sky.bin' or file_path != 'ds.snow.bin' or file_path != 'ds.tcwspdabv34c.bin' or file_path != 'ds.tcwspdabv34i.bin' or file_path != 'ds.tcwspdabv50c.bin' or file_path != 'ds.tcwspdabv50i.bin' or file_path != 'ds.tcwspdabv64c.bin' or file_path != 'ds.tcwspdabv64i.bin' or file_path != 'ds.td.bin' or file_path != 'ds.temp.bin' or file_path != 'ds.waveh.bin' or file_path != 'ds.wdir.bin' or file_path != 'ds.wgust.bin' or file_path != 'ds.wspd.bin' or file_path != 'ds.wwa.bin' or file_path != 'ds.wx.bin':
+
+            file_path = os.path.basename(file_path)
+
+        else:
+            file_path = file_path
+
+        count = 0
+        for grb in GRIB_File_List:
+            count = count + 1
+
+        print("There are " +str(count) + " GRIB files in the " + file_path + " download.\n")
+
+        if file_path == 'ds.minrh.bin' or file_path == 'ds.maxrh.bin' or file_path == 'ds.critfireo.bin' or file_path == 'ds.dryfireo.bin':
+    
+            if count == 5: 
+                grb_1 = GRIB_File_List[1]
+                grb_2 = GRIB_File_List[2]
+                grb_3 = GRIB_File_List[3]
+                grb_4 = GRIB_File_List[4]
+                grb_5 = GRIB_File_List[5]
+                grb_6 = None
+                grb_7 = None
+                grb_8 = None
+    
+                grb_1_vals = grb_1.values
+                grb_1_start = grb_1.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_vals = grb_2.values
+                grb_2_start = grb_2.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_vals = grb_3.values
+                grb_3_start = grb_3.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_vals = grb_4.values
+                grb_4_start = grb_4.validDate
+                grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+                grb_5_vals = grb_5.values
+                grb_5_start = grb_5.validDate
+                grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+                grb_6_vals = None
+                grb_6_start = None
+                grb_6_end = None
+                grb_7_vals = None
+                grb_7_start = None
+                grb_7_end = None
+                grb_8_vals = None
+                grb_8_start = None
+                grb_8_end = None
+                
+                          
+                lats_1, lons_1 = grb_1.latlons()
+                lats_2, lons_2 = grb_2.latlons()
+                lats_3, lons_3 = grb_3.latlons()
+                lats_4, lons_4 = grb_4.latlons()
+                lats_5, lons_5 = grb_5.latlons()
+                lats_6, lons_6 = None, None
+                lats_7, lons_7 = None, None
+                lats_8, lons_8 = None, None
+    
+            if count == 6: 
+                grb_1 = GRIB_File_List[1]
+                grb_2 = GRIB_File_List[2]
+                grb_3 = GRIB_File_List[3]
+                grb_4 = GRIB_File_List[4]
+                grb_5 = GRIB_File_List[5]
+                grb_6 = GRIB_File_List[6]
+                grb_7 = None
+                grb_8 = None
+    
+                grb_1_vals = grb_1.values
+                grb_1_start = grb_1.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_vals = grb_2.values
+                grb_2_start = grb_2.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_vals = grb_3.values
+                grb_3_start = grb_3.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_vals = grb_4.values
+                grb_4_start = grb_4.validDate
+                grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+                grb_5_vals = grb_5.values
+                grb_5_start = grb_5.validDate
+                grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+                grb_6_vals = grb_6.values
+                grb_6_start = grb_6.validDate
+                grb_6_end = grb_6_start + timedelta(hours=grid_time_interval)
+                grb_7_vals = None
+                grb_7_start = None
+                grb_7_end = None
+                grb_8_vals = None
+                grb_8_start = None
+                grb_8_end = None
+    
+                lats_1, lons_1 = grb_1.latlons()
+                lats_2, lons_2 = grb_2.latlons()
+                lats_3, lons_3 = grb_3.latlons()
+                lats_4, lons_4 = grb_4.latlons()
+                lats_5, lons_5 = grb_5.latlons()
+                lats_6, lons_6 = grb_6.latlons()
+                lats_7, lons_7 = None, None
+                lats_8, lons_8 = None, None
+    
+            if count == 7: 
+                grb_1 = GRIB_File_List[1]
+                grb_2 = GRIB_File_List[2]
+                grb_3 = GRIB_File_List[3]
+                grb_4 = GRIB_File_List[4]
+                grb_5 = GRIB_File_List[5]
+                grb_6 = GRIB_File_List[6]
+                grb_7 = GRIB_File_List[7]
+                grb_8 = None
+    
+                grb_1_vals = grb_1.values
+                grb_1_start = grb_1.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_vals = grb_2.values
+                grb_2_start = grb_2.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_vals = grb_3.values
+                grb_3_start = grb_3.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_vals = grb_4.values
+                grb_4_start = grb_4.validDate
+                grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+                grb_5_vals = grb_5.values
+                grb_5_start = grb_5.validDate
+                grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+                grb_6_vals = grb_6.values
+                grb_6_start = grb_6.validDate
+                grb_6_end = grb_6_start + timedelta(hours=grid_time_interval)
+                grb_7_vals = grb_7.values
+                grb_7_start = grb_7.validDate
+                grb_7_end = grb_7_start + timedelta(hours=grid_time_interval)
+                grb_8_vals = None
+                grb_8_start = None
+                grb_8_end = None
+    
+                lats_1, lons_1 = grb_1.latlons()
+                lats_2, lons_2 = grb_2.latlons()
+                lats_3, lons_3 = grb_3.latlons()
+                lats_4, lons_4 = grb_4.latlons()
+                lats_5, lons_5 = grb_5.latlons()
+                lats_6, lons_6 = grb_6.latlons()
+                lats_7, lons_7 = grb_7.latlons()
+                lats_8, lons_8 = None, None
+    
+            if count == 8: 
+                grb_1 = GRIB_File_List[1]
+                grb_2 = GRIB_File_List[2]
+                grb_3 = GRIB_File_List[3]
+                grb_4 = GRIB_File_List[4]
+                grb_5 = GRIB_File_List[5]
+                grb_6 = GRIB_File_List[6]
+                grb_7 = GRIB_File_List[7]
+                grb_8 = GRIB_File_List[8]
+    
+                grb_1_vals = grb_1.values
+                grb_1_start = grb_1.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_vals = grb_2.values
+                grb_2_start = grb_2.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_vals = grb_3.values
+                grb_3_start = grb_3.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_vals = grb_4.values
+                grb_4_start = grb_4.validDate
+                grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+                grb_5_vals = grb_5.values
+                grb_5_start = grb_5.validDate
+                grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+                grb_6_vals = grb_6.values
+                grb_6_start = grb_6.validDate
+                grb_6_end = grb_6_start + timedelta(hours=grid_time_interval)
+                grb_7_vals = grb_7.values
+                grb_7_start = grb_7.validDate
+                grb_7_end = grb_7_start + timedelta(hours=grid_time_interval)
+                grb_8_vals = grb_8.values
+                grb_8_start = grb_8.validDate
+                grb_8_end = grb_8_start + timedelta(hours=grid_time_interval)
+    
+                lats_1, lons_1 = grb_1.latlons()
+                lats_2, lons_2 = grb_2.latlons()
+                lats_3, lons_3 = grb_3.latlons()
+                lats_4, lons_4 = grb_4.latlons()
+                lats_5, lons_5 = grb_5.latlons()
+                lats_6, lons_6 = grb_6.latlons()
+                lats_7, lons_7 = grb_7.latlons()
+                lats_8, lons_8 = grb_8.latlons()
+
+
+            forecast_hour = grb_1_start.hour
+    
+            if file_path == 'ds.maxrh.bin':
+                if forecast_hour == 6:
+                    print("The " +file_path+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                    print("\nThere are " + str(count) + " files returned.")
+                    
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                    
+                else:
+                    if local_hour < 5 or local_hour >= 16:
+                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+    
+                        year = utc.year
+                        month = utc.month
+                        day = utc.day
+                        start_hour = 6
+    
+                        grb_1_start = datetime(year, month, day, start_hour)
+                        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                        print("\nThere are " + str(count) + " files returned.")
+                        
+                        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                        
+                    else:
+                        print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
+                        
+                        grb_1_vals = None
+                        grb_1_start = None
+                        grb_1_end = None
+
+                        try:
+                            if grb_8_vals.all() != None:
+                                test_8 = True
+                
+                        except Exception as e:
+                            test_8 = False                        
+
+                        if test_8 == False:
+                            count_of_GRIB_files = count - 1
+                            print("There is no 8th GRIB file.")
+                            print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
+                            
+                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count_of_GRIB_files
+
+                        if test_8 == True:
+                            print("There is an 8th GRIB file.")
+                            print("\nThere are " + str(count) + " files returned.")
+
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+
+
+            if file_path == 'ds.minrh.bin':
+                if forecast_hour == 18:
+                    print("The " +file_path+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                    print("\nThere are " + str(count) + " files returned.")
+                    
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                    
+                else:
+                    if local_hour < 15 or local_hour >= 18:
+                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+    
+                        year = utc.year
+                        month = utc.month
+                        day = utc.day
+                        start_hour = 18
+    
+                        grb_1_start = datetime(year, month, day, start_hour)
+                        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                        print("\nThere are " + str(count) + " files returned.")
+                        
+                        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                        
+                    else:
+                        print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
+                        
+                        grb_1_vals = None
+                        grb_1_start = None
+                        grb_1_end = None
+
+                        try:
+                            if grb_8_vals.all() != None:
+                                test_8 = True
+                
+                        except Exception as e:
+                            test_8 = False                        
+
+                        if test_8 == False:
+                            count_of_GRIB_files = count - 1
+                            print("There is no 8th GRIB file.")
+                            print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
+                            
+                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count_of_GRIB_files
+
+                        if test_8 == True:
+                            print("There is an 8th GRIB file.")
+                            print("\nThere are " + str(count) + " files returned.")
+
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+
+
+            if file_path == 'ds.critfireo.bin':
+                if forecast_hour == 12:
+                    print("The " +file_path+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                    print("\nThere are " + str(count) + " files returned.")
+                    
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                    
+                else:
+                    if local_hour < 13:
+                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+    
+                        year = utc.year
+                        month = utc.month
+                        day = utc.day
+                        start_hour = 12
+                        
+                        day_1 = grb_1_start.day
+                        day_2 = grb_2_start.day
+                        if day_1 == day_2:
+                            print("Either duplicate or old files are being dowloaded.\nThrowing out the old file!")
+                            
+                            try:
+                                if grb_8_vals.all() != None:
+                                    test_8 = True
+                    
+                            except Exception as e:
+                                test_8 = False    
+
+                            if test_8 == False:
+                                grb_8_vals = None
+                                grb_8_start = None
+                                grb_8_end = None
+                                lats_8, lons_8 = None, None
+                                count_of_GRIB_files = count - 2
+                                print("There are " + str(count_of_GRIB_files) + " files returned.")
+                                
+                                return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+
+                            if test_8 == True:
+                                count_of_GRIB_files = count - 1
+                                print("There are " + str(count_of_GRIB_files) + " files returned.")
+                                
+                                return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+    
+                        else:
+                            print("There are " + str(count) + " files returned.")                        
+    
+                            grb_1_start = datetime(year, month, day, start_hour)
+                            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                            print("\nThere are " + str(count) + " files returned.")
+                            
+                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                        
+                    else:
+                        print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
+                        
+                        grb_1_vals = None
+                        grb_1_start = None
+                        grb_1_end = None
+
+                        try:
+                            if grb_8_vals.all() != None:
+                                test_8 = True
+                
+                        except Exception as e:
+                            test_8 = False                        
+
+                        if test_8 == False:
+                            count_of_GRIB_files = count - 1
+                            print("There is no 8th GRIB file.")
+                            print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
+                            
+                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count_of_GRIB_files
+
+                        if test_8 == True:
+                            print("There is an 8th GRIB file.")
+                            print("\nThere are " + str(count) + " files returned.")
+
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+
+            if file_path == 'ds.dryfireo.bin':
+                if forecast_hour == 12:
+                    print("The " +file_path+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                    print("\nThere are " + str(count) + " files returned.")
+                    
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                    
+                else:
+                    if local_hour < 13:
+                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+    
+                        year = utc.year
+                        month = utc.month
+                        day = utc.day
+                        start_hour = 12
+    
+                        day_1 = grb_1_start.day
+                        day_2 = grb_2_start.day
+                        if day_1 == day_2:
+                            print("Either duplicate or old files are being dowloaded.\nThrowing out the old file!")
+                            
+                            try:
+                                if grb_8_vals.all() != None:
+                                    test_8 = True
+                    
+                            except Exception as e:
+                                test_8 = False    
+
+                            if test_8 == False:
+                                grb_8_vals = None
+                                grb_8_start = None
+                                grb_8_end = None
+                                lats_8, lons_8 = None, None
+                                count_of_GRIB_files = count - 2
+                                print("There are " + str(count_of_GRIB_files) + " files returned.")
+                                
+                                return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+
+                            if test_8 == True:
+                                count_of_GRIB_files = count - 1
+                                print("There are " + str(count_of_GRIB_files) + " files returned.")
+                                
+                                return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+    
+                        else:
+                            print("There are " + str(count) + " files returned.")                        
+    
+                            grb_1_start = datetime(year, month, day, start_hour)
+                            grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                            print("\nThere are " + str(count) + " files returned.")
+                            
+                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                        
+                    else:
+                        print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
+                        
+                        grb_1_vals = None
+                        grb_1_start = None
+                        grb_1_end = None
+
+                        try:
+                            if grb_8_vals.all() != None:
+                                test_8 = True
+                
+                        except Exception as e:
+                            test_8 = False                        
+
+                        if test_8 == False:
+                            count_of_GRIB_files = count - 1
+                            print("There is no 8th GRIB file.")
+                            print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
+                            
+                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count_of_GRIB_files
+
+                        if test_8 == True:
+                            print("There is an 8th GRIB file.")
+                            print("\nThere are " + str(count) + " files returned.")
+
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+
+        if file_path == 'ds.mint.bin' or file_path == 'ds.maxt.bin':
+
+            if count == 5: 
+                grb_1 = GRIB_File_List[1]
+                grb_2 = GRIB_File_List[2]
+                grb_3 = GRIB_File_List[3]
+                grb_4 = GRIB_File_List[4]
+                grb_5 = GRIB_File_List[5]
+                grb_6 = None
+                grb_7 = None
+                grb_8 = None
+
+                grb_1_start = grb_1.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_start = grb_2.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_start = grb_3.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_start = grb_4.validDate
+                grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+                grb_5_start = grb_5.validDate
+                grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+                grb_6_start = None
+                grb_6_end = None
+                grb_7_start = None
+                grb_7_end = None
+                grb_8_start = None
+                grb_8_end = None
+                
+                          
+                lats_1, lons_1 = grb_1.latlons()
+                lats_2, lons_2 = grb_2.latlons()
+                lats_3, lons_3 = grb_3.latlons()
+                lats_4, lons_4 = grb_4.latlons()
+                lats_5, lons_5 = grb_5.latlons()
+                lats_6, lons_6 = None, None
+                lats_7, lons_7 = None, None
+                lats_8, lons_8 = None, None
+
+            if count == 6: 
+                grb_1 = GRIB_File_List[1]
+                grb_2 = GRIB_File_List[2]
+                grb_3 = GRIB_File_List[3]
+                grb_4 = GRIB_File_List[4]
+                grb_5 = GRIB_File_List[5]
+                grb_6 = GRIB_File_List[6]
+                grb_7 = None
+                grb_8 = None
+
+                grb_1 = GRIB_File_List[1]
+                grb_2 = GRIB_File_List[2]
+                grb_3 = GRIB_File_List[3]
+                grb_4 = GRIB_File_List[4]
+                grb_5 = GRIB_File_List[5]
+                grb_6 = GRIB_File_List[6]
+                grb_7 = None
+                grb_8 = None
+    
+                grb_1_start = grb_1.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_start = grb_2.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_start = grb_3.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_start = grb_4.validDate
+                grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+                grb_5_start = grb_5.validDate
+                grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+                grb_6_start = grb_6.validDate
+                grb_6_end = grb_6_start + timedelta(hours=grid_time_interval)
+                grb_7_start = None
+                grb_7_end = None
+                grb_8_start = None
+                grb_8_end = None
+    
+                lats_1, lons_1 = grb_1.latlons()
+                lats_2, lons_2 = grb_2.latlons()
+                lats_3, lons_3 = grb_3.latlons()
+                lats_4, lons_4 = grb_4.latlons()
+                lats_5, lons_5 = grb_5.latlons()
+                lats_6, lons_6 = grb_6.latlons()
+                lats_7, lons_7 = None, None
+                lats_8, lons_8 = None, None
+
+            if count == 7: 
+                grb_1 = GRIB_File_List[1]
+                grb_2 = GRIB_File_List[2]
+                grb_3 = GRIB_File_List[3]
+                grb_4 = GRIB_File_List[4]
+                grb_5 = GRIB_File_List[5]
+                grb_6 = GRIB_File_List[6]
+                grb_7 = GRIB_File_List[7]
+                grb_8 = None
+
+                grb_1_start = grb_1.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_start = grb_2.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_start = grb_3.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_start = grb_4.validDate
+                grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+                grb_5_start = grb_5.validDate
+                grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+                grb_6_start = grb_6.validDate
+                grb_6_end = grb_6_start + timedelta(hours=grid_time_interval)
+                grb_7_start = grb_7.validDate
+                grb_7_end = grb_7_start + timedelta(hours=grid_time_interval)
+                grb_8_start = None
+                grb_8_end = None
+    
+                lats_1, lons_1 = grb_1.latlons()
+                lats_2, lons_2 = grb_2.latlons()
+                lats_3, lons_3 = grb_3.latlons()
+                lats_4, lons_4 = grb_4.latlons()
+                lats_5, lons_5 = grb_5.latlons()
+                lats_6, lons_6 = grb_6.latlons()
+                lats_7, lons_7 = grb_7.latlons()
+                lats_8, lons_8 = None, None
+
+            if count == 8: 
+                grb_1 = GRIB_File_List[1]
+                grb_2 = GRIB_File_List[2]
+                grb_3 = GRIB_File_List[3]
+                grb_4 = GRIB_File_List[4]
+                grb_5 = GRIB_File_List[5]
+                grb_6 = GRIB_File_List[6]
+                grb_7 = GRIB_File_List[7]
+                grb_8 = GRIB_File_List[8]
+
+                grb_1_start = grb_1.validDate
+                grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                grb_2_start = grb_2.validDate
+                grb_2_end = grb_2_start + timedelta(hours=grid_time_interval)
+                grb_3_start = grb_3.validDate
+                grb_3_end = grb_3_start + timedelta(hours=grid_time_interval)
+                grb_4_start = grb_4.validDate
+                grb_4_end = grb_4_start + timedelta(hours=grid_time_interval)
+                grb_5_start = grb_5.validDate
+                grb_5_end = grb_5_start + timedelta(hours=grid_time_interval)
+                grb_6_start = grb_6.validDate
+                grb_6_end = grb_6_start + timedelta(hours=grid_time_interval)
+                grb_7_start = grb_7.validDate
+                grb_7_end = grb_7_start + timedelta(hours=grid_time_interval)
+                grb_8_start = grb_8.validDate
+                grb_8_end = grb_8_start + timedelta(hours=grid_time_interval)
+    
+                lats_1, lons_1 = grb_1.latlons()
+                lats_2, lons_2 = grb_2.latlons()
+                lats_3, lons_3 = grb_3.latlons()
+                lats_4, lons_4 = grb_4.latlons()
+                lats_5, lons_5 = grb_5.latlons()
+                lats_6, lons_6 = grb_6.latlons()
+                lats_7, lons_7 = grb_7.latlons()
+                lats_8, lons_8 = grb_8.latlons()
+
+            
+            grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals, grb_6_vals, grb_7_vals, grb_8_vals = NDFD.GRIB_temperature_conversion_7_day(grb_1, grb_2, grb_3, grb_4, grb_5, grb_6, grb_7, grb_8, count)
+
+            forecast_hour = grb_1_start.hour
+
+            if file_path == 'ds.mint.bin':
+                if forecast_hour == 0:
+                    print("The " +file_path+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                    print("\nThere are " + str(count) + " files returned.")
+                    
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                    
+                else:
+                    if local_hour < 5 or local_hour >= 16:
+                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+    
+                        year = utc.year
+                        month = utc.month
+                        day = utc.day
+                        start_hour = 0
+    
+                        grb_1_start = datetime(year, month, day, start_hour)
+                        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                        print("\nThere are " + str(count) + " files returned.")
+                        
+                        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                        
+                    else:
+                        print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
+                        
+                        grb_1_vals = None
+                        grb_1_start = None
+                        grb_1_end = None
+
+                        try:
+                            if grb_8_vals.all() != None:
+                                test_8 = True
+                
+                        except Exception as e:
+                            test_8 = False                        
+
+                        if test_8 == False:
+                            count_of_GRIB_files = count - 1
+                            print("There is no 8th GRIB file.")
+                            print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
+                            
+                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count_of_GRIB_files
+
+                        if test_8 == True:
+                            print("There is an 8th GRIB file.")
+                            print("\nThere are " + str(count) + " files returned.")
+
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count   
+
+
+            if file_path == 'ds.maxt.bin':
+                if forecast_hour == 12:
+                    print("The " +file_path+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
+                    print("\nThere are " + str(count) + " files returned.")
+                    
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                    
+                else:
+                    if local_hour < 15 or local_hour >= 18:
+                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+    
+                        year = utc.year
+                        month = utc.month
+                        day = utc.day
+                        start_hour = 12
+    
+                        grb_1_start = datetime(year, month, day, start_hour)
+                        grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
+                        print("\nThere are " + str(count) + " files returned.")
+                        
+                        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                        
+                    else:
+                        print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
+                        
+                        grb_1_vals = None
+                        grb_1_start = None
+                        grb_1_end = None
+
+                        try:
+                            if grb_8_vals.all() != None:
+                                test_8 = True
+                
+                        except Exception as e:
+                            test_8 = False                        
+
+                        if test_8 == False:
+                            count_of_GRIB_files = count - 1
+                            print("There is no 8th GRIB file.")
+                            print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
+                            
+                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count_of_GRIB_files
+
+                        if test_8 == True:
+                            print("There is an 8th GRIB file.")
+                            print("\nThere are " + str(count) + " files returned.")
+
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
 
 
     def parse_extended_SPC_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, sixth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter):
