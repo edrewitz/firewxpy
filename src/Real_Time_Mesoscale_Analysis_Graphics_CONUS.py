@@ -138,10 +138,10 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=5)
@@ -277,10 +277,10 @@ class Counties_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=state_border_line_thickness, edgecolor=state_border_color, zorder=5)
@@ -405,10 +405,10 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
@@ -646,10 +646,10 @@ class Counties_Perspective:
         ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_0)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
@@ -694,10 +694,10 @@ class Counties_Perspective:
         ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_1)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
@@ -742,10 +742,10 @@ class Counties_Perspective:
         ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_2)
         ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax3.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
@@ -791,10 +791,10 @@ class Counties_Perspective:
         ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_3)
         ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax4.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax4.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
@@ -840,10 +840,10 @@ class Counties_Perspective:
         ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_4)
         ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax5.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax5.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax5.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
@@ -888,10 +888,10 @@ class Counties_Perspective:
         ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_5)
         ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax6.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax6.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax6.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
@@ -936,10 +936,10 @@ class Counties_Perspective:
         ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_6)
         ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax7.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax7.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax7.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
@@ -986,7 +986,7 @@ class Counties_Perspective:
 
 
 
-    def plot_relative_humidity_and_trend_with_METARs_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, subplot_title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
+    def plot_relative_humidity_and_trend_with_METARs_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
 
         r'''
             This function does the following:
@@ -1201,8 +1201,7 @@ class Counties_Perspective:
         
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
-
-        cmap_rh = colormaps.relative_humidity_colormap()
+        
         cmap_trend = colormaps.relative_humidity_change_colormap()
 
         figs = []
@@ -1214,68 +1213,38 @@ class Counties_Perspective:
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
 
-        fig1.suptitle("Real Time Mesoscale Analysis & METAR + Hourly Trend\nValid: " + rtma_time_0.strftime('%H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")\nTrend Valid: "+rtma_time_0.strftime('%H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")" + " - " + rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        fig1.suptitle("METAR RH (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_0.strftime('%H:00 Local') + " (" + metar_time_revised_0_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_0.strftime('%H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")" + " - " + rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
 
-        ax1 = fig1.add_subplot(1, 2, 1, projection=plot_proj_0)
+        ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_8)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
         ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
-        cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                         transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap_rh, alpha=1)
+        cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
+                         transform=diff1.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
 
         cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar1.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+        cbar1.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
 
         # Plots METAR
         stn1 = mpplots.StationPlot(ax1, sfc_data_0['longitude'][sfc_data_mask_0].m, sfc_data_0['latitude'][sfc_data_mask_0].m,
                                  transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
         
         
-        stn1.plot_parameter('NW', sfc_data_0['air_temperature'].to('degF')[sfc_data_mask_0], color='red',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn1.plot_parameter('SW', sfc_data_0['dew_point_temperature'].to('degF')[sfc_data_mask_0], color='darkorange',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn1.plot_symbol('C', sfc_data_0['cloud_coverage'][sfc_data_mask_0], mpplots.sky_cover)
-        
-        stn1.plot_parameter('E', sfc_data_rh_0.to('percent')[sfc_data_mask_0], color='lime',
+        stn1.plot_parameter('C', sfc_data_rh_0.to('percent')[sfc_data_mask_0], color='black',
                             path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn1.plot_barb(sfc_data_0['u'][sfc_data_mask_0], sfc_data_0['v'][sfc_data_mask_0])
-
-        ax1.set_title("Hourly Relative Humidity Analysis & METAR", fontsize=subplot_title_font_size, fontweight='bold')
 
         ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax1.transAxes)
 
-        ax2 = fig1.add_subplot(1, 2, 2, projection=plot_proj_8)
-        ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        if show_rivers == True:
-            ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-        else:
-            pass
-        ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
-
-        cs2 = ax2.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
-                         transform=diff1.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1, extend='both')
-
-        cbar2 = fig1.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar2.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
-
-        ax2.set_title("Hourly Relative Humidity Trend", fontsize=subplot_title_font_size, fontweight='bold')
 
         #################
         # SECOND FIGURE #
@@ -1284,68 +1253,38 @@ class Counties_Perspective:
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
 
-        fig2.suptitle("Real Time Mesoscale Analysis & METAR + Hourly Trend\nValid: " + rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")\nTrend Valid: "+rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")" + " - " + rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        fig2.suptitle("METAR RH (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_1.strftime('%H:00 Local') + " (" + metar_time_revised_1_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")" + " - " + rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
 
-        ax3 = fig2.add_subplot(1, 2, 1, projection=plot_proj_1)
-        ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax3.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax3.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_9)
+        ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax3.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
-        ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
+        ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
-        cs3 = ax3.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                         transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap_rh, alpha=1)
+        cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
+                         transform=diff2.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
 
-        cbar3 = fig2.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar3.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar2.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
 
         # Plots METAR
-        stn2 = mpplots.StationPlot(ax3, sfc_data_1['longitude'][sfc_data_mask_1].m, sfc_data_1['latitude'][sfc_data_mask_1].m,
+        stn2 = mpplots.StationPlot(ax2, sfc_data_1['longitude'][sfc_data_mask_1].m, sfc_data_1['latitude'][sfc_data_mask_1].m,
                                  transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
         
-        
-        stn2.plot_parameter('NW', sfc_data_1['air_temperature'].to('degF')[sfc_data_mask_1], color='red',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn2.plot_parameter('SW', sfc_data_1['dew_point_temperature'].to('degF')[sfc_data_mask_1], color='darkorange',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn2.plot_symbol('C', sfc_data_1['cloud_coverage'][sfc_data_mask_1], mpplots.sky_cover)
-        
-        stn2.plot_parameter('E', sfc_data_rh_1.to('percent')[sfc_data_mask_1], color='lime',
+    
+        stn2.plot_parameter('C', sfc_data_rh_1.to('percent')[sfc_data_mask_1], color='black',
                             path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn2.plot_barb(sfc_data_1['u'][sfc_data_mask_1], sfc_data_1['v'][sfc_data_mask_1])
 
-        ax3.set_title("Hourly Relative Humidity Analysis & METAR", fontsize=subplot_title_font_size, fontweight='bold')
 
-        ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax3.transAxes)
+        ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax2.transAxes)
 
-        ax4 = fig2.add_subplot(1, 2, 2, projection=plot_proj_9)
-        ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax4.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax4.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        if show_rivers == True:
-            ax4.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-        else:
-            pass
-        ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
-
-        cs4 = ax4.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
-                         transform=diff2.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1, extend='both')
-
-        cbar4 = fig2.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar4.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
-
-        ax4.set_title("Hourly Relative Humidity Trend", fontsize=subplot_title_font_size, fontweight='bold')
 
         ################
         # THIRD FIGURE #
@@ -1354,68 +1293,37 @@ class Counties_Perspective:
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
 
-        fig3.suptitle("Real Time Mesoscale Analysis & METAR + Hourly Trend\nValid: " + rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")\nTrend Valid: "+rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")" + " - " + rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        fig3.suptitle("METAR RH (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_2.strftime('%H:00 Local') + " (" + metar_time_revised_2_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")" + " - " + rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
 
-        ax5 = fig3.add_subplot(1, 2, 1, projection=plot_proj_2)
-        ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax5.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax5.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_10)
+        ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax5.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
-        ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
+        ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
-        cs5 = ax5.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                         transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap_rh, alpha=1)
+        cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
+                         transform=diff3.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
 
-        cbar5 = fig3.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar5.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar3.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
 
         # Plots METAR
-        stn3 = mpplots.StationPlot(ax5, sfc_data_2['longitude'][sfc_data_mask_2].m, sfc_data_2['latitude'][sfc_data_mask_2].m,
+        stn3 = mpplots.StationPlot(ax3, sfc_data_2['longitude'][sfc_data_mask_2].m, sfc_data_2['latitude'][sfc_data_mask_2].m,
                                  transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
         
         
-        stn3.plot_parameter('NW', sfc_data_2['air_temperature'].to('degF')[sfc_data_mask_2], color='red',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn3.plot_parameter('SW', sfc_data_2['dew_point_temperature'].to('degF')[sfc_data_mask_2], color='darkorange',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn3.plot_symbol('C', sfc_data_2['cloud_coverage'][sfc_data_mask_2], mpplots.sky_cover)
-        
-        stn3.plot_parameter('E', sfc_data_rh_2.to('percent')[sfc_data_mask_2], color='lime',
+        stn3.plot_parameter('C', sfc_data_rh_2.to('percent')[sfc_data_mask_2], color='black',
                             path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn3.plot_barb(sfc_data_2['u'][sfc_data_mask_2], sfc_data_2['v'][sfc_data_mask_2])
 
-        ax5.set_title("Hourly Relative Humidity Analysis & METAR", fontsize=subplot_title_font_size, fontweight='bold')
-
-        ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax5.transAxes)
-
-        ax6 = fig3.add_subplot(1, 2, 2, projection=plot_proj_10)
-        ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax6.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax6.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        if show_rivers == True:
-            ax6.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-        else:
-            pass
-        ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
-
-        cs6 = ax6.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
-                         transform=diff3.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1, extend='both')
-
-        cbar6 = fig3.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar6.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
-
-        ax6.set_title("Hourly Relative Humidity Trend", fontsize=subplot_title_font_size, fontweight='bold')
+        ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax3.transAxes)
 
 
         #################
@@ -1425,68 +1333,35 @@ class Counties_Perspective:
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
 
-        fig4.suptitle("Real Time Mesoscale Analysis & METAR + Hourly Trend\nValid: " + rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")\nTrend Valid: "+rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")" + " - " + rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        fig4.suptitle("METAR RH (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_3.strftime('%H:00 Local') + " (" + metar_time_revised_3_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")" + " - " + rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
 
-        ax7 = fig4.add_subplot(1, 2, 1, projection=plot_proj_3)
-        ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax7.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax7.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_11)
+        ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax7.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
-        ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
+        ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
-        cs7 = ax7.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                         transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap_rh, alpha=1)
+        cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
+                         transform=diff4.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
 
-        cbar7 = fig4.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar7.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar4.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
 
         # Plots METAR
-        stn4 = mpplots.StationPlot(ax7, sfc_data_3['longitude'][sfc_data_mask_3].m, sfc_data_3['latitude'][sfc_data_mask_3].m,
+        stn4 = mpplots.StationPlot(ax4, sfc_data_3['longitude'][sfc_data_mask_3].m, sfc_data_3['latitude'][sfc_data_mask_3].m,
                                  transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
         
-        
-        stn4.plot_parameter('NW', sfc_data_3['air_temperature'].to('degF')[sfc_data_mask_3], color='red',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn4.plot_parameter('SW', sfc_data_3['dew_point_temperature'].to('degF')[sfc_data_mask_3], color='darkorange',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn4.plot_symbol('C', sfc_data_3['cloud_coverage'][sfc_data_mask_3], mpplots.sky_cover)
-        
-        stn4.plot_parameter('E', sfc_data_rh_3.to('percent')[sfc_data_mask_3], color='lime',
+        stn4.plot_parameter('E', sfc_data_rh_3.to('percent')[sfc_data_mask_3], color='black',
                             path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn4.plot_barb(sfc_data_3['u'][sfc_data_mask_3], sfc_data_3['v'][sfc_data_mask_3])
 
-        ax7.set_title("Hourly Relative Humidity Analysis & METAR", fontsize=subplot_title_font_size, fontweight='bold')
-
-        ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax7.transAxes)
-
-        ax8 = fig4.add_subplot(1, 2, 2, projection=plot_proj_11)
-        ax8.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax8.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax8.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax8.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        if show_rivers == True:
-            ax8.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-        else:
-            pass
-        ax8.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax8.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
-
-        cs8 = ax8.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
-                         transform=diff4.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1, extend='both')
-
-        cbar8 = fig4.colorbar(cs8, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar8.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
-
-        ax8.set_title("Hourly Relative Humidity Trend", fontsize=subplot_title_font_size, fontweight='bold')
+        ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax4.transAxes)
 
 
         ################
@@ -1496,69 +1371,37 @@ class Counties_Perspective:
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
 
-        fig5.suptitle("Real Time Mesoscale Analysis & METAR + Hourly Trend\nValid: " + rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")\nTrend Valid: "+rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")" + " - " + rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        fig5.suptitle("METAR RH (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_4.strftime('%H:00 Local') + " (" + metar_time_revised_4_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")" + " - " + rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
 
-        ax9 = fig5.add_subplot(1, 2, 1, projection=plot_proj_4)
-        ax9.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax9.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax9.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax9.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_12)
+        ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax9.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
-        ax9.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax9.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
+        ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
-        cs9 = ax9.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                         transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap_rh, alpha=1)
+        cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
+                         transform=diff5.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
 
-        cbar9 = fig5.colorbar(cs9, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar9.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar5.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
 
         # Plots METAR
-        stn5 = mpplots.StationPlot(ax9, sfc_data_4['longitude'][sfc_data_mask_4].m, sfc_data_4['latitude'][sfc_data_mask_4].m,
+        stn5 = mpplots.StationPlot(ax5, sfc_data_4['longitude'][sfc_data_mask_4].m, sfc_data_4['latitude'][sfc_data_mask_4].m,
                                  transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
         
         
-        stn5.plot_parameter('NW', sfc_data_4['air_temperature'].to('degF')[sfc_data_mask_4], color='red',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn5.plot_parameter('SW', sfc_data_4['dew_point_temperature'].to('degF')[sfc_data_mask_4], color='darkorange',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn5.plot_symbol('C', sfc_data_4['cloud_coverage'][sfc_data_mask_4], mpplots.sky_cover)
-        
-        stn5.plot_parameter('E', sfc_data_rh_4.to('percent')[sfc_data_mask_4], color='lime',
+        stn5.plot_parameter('E', sfc_data_rh_4.to('percent')[sfc_data_mask_4], color='black',
                             path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn5.plot_barb(sfc_data_4['u'][sfc_data_mask_4], sfc_data_4['v'][sfc_data_mask_4])
 
-        ax9.set_title("Hourly Relative Humidity Analysis & METAR", fontsize=subplot_title_font_size, fontweight='bold')
 
-        ax9.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax9.transAxes)
-
-        ax10 = fig5.add_subplot(1, 2, 2, projection=plot_proj_12)
-        ax10.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax10.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax10.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax10.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        if show_rivers == True:
-            ax10.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-        else:
-            pass
-        ax10.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax10.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
-
-        cs10 = ax10.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
-                         transform=diff5.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1, extend='both')
-
-        cbar10 = fig5.colorbar(cs10, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar10.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
-
-        ax10.set_title("Hourly Relative Humidity Trend", fontsize=subplot_title_font_size, fontweight='bold')
-        
+        ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax5.transAxes)
 
         ################
         # SIXTH FIGURE #
@@ -1567,69 +1410,36 @@ class Counties_Perspective:
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
 
-        fig6.suptitle("Real Time Mesoscale Analysis & METAR + Hourly Trend\nValid: " + rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")\nTrend Valid: "+rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")" + " - " + rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        fig6.suptitle("METAR RH (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_5.strftime('%H:00 Local') + " (" + metar_time_revised_5_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")" + " - " + rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
 
-        ax11 = fig6.add_subplot(1, 2, 1, projection=plot_proj_5)
-        ax11.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax11.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax11.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax11.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_13)
+        ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax11.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
-        ax11.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax11.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
+        ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
-        cs11 = ax11.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                         transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap_rh, alpha=1)
+        cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
+                         transform=diff6.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
 
-        cbar11 = fig6.colorbar(cs11, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar11.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar6.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
 
         # Plots METAR
-        stn6 = mpplots.StationPlot(ax11, sfc_data_5['longitude'][sfc_data_mask_5].m, sfc_data_5['latitude'][sfc_data_mask_5].m,
+        stn6 = mpplots.StationPlot(ax6, sfc_data_5['longitude'][sfc_data_mask_5].m, sfc_data_5['latitude'][sfc_data_mask_5].m,
                                  transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
+
         
-        
-        stn6.plot_parameter('NW', sfc_data_5['air_temperature'].to('degF')[sfc_data_mask_5], color='red',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn6.plot_parameter('SW', sfc_data_5['dew_point_temperature'].to('degF')[sfc_data_mask_5], color='darkorange',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn6.plot_symbol('C', sfc_data_5['cloud_coverage'][sfc_data_mask_5], mpplots.sky_cover)
-        
-        stn6.plot_parameter('E', sfc_data_rh_5.to('percent')[sfc_data_mask_5], color='lime',
+        stn6.plot_parameter('C', sfc_data_rh_5.to('percent')[sfc_data_mask_5], color='black',
                             path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn6.plot_barb(sfc_data_5['u'][sfc_data_mask_5], sfc_data_5['v'][sfc_data_mask_5])
-
-        ax11.set_title("Hourly Relative Humidity Analysis & METAR", fontsize=subplot_title_font_size, fontweight='bold')
-
-        ax11.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax11.transAxes)
-
-        ax12 = fig6.add_subplot(1, 2, 2, projection=plot_proj_13)
-        ax12.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax12.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax12.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax12.add_feature(cfeature.LAKES, color='blue', zorder=3)
-        if show_rivers == True:
-            ax12.add_feature(cfeature.RIVERS, color='blue', zorder=3)
-        else:
-            pass
-        ax12.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax12.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
-
-        cs12 = ax12.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
-                         transform=diff6.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1, extend='both')
-
-        cbar12 = fig6.colorbar(cs12, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar12.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
-
-        ax12.set_title("Hourly Relative Humidity Trend", fontsize=subplot_title_font_size, fontweight='bold')
-        
+        ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax6.transAxes)
 
         ##################
         # SEVENTH FIGURE #
@@ -1638,69 +1448,547 @@ class Counties_Perspective:
         fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig7.set_facecolor('aliceblue')
 
-        fig7.suptitle("Real Time Mesoscale Analysis & METAR + Hourly Trend\nValid: " + rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")\nTrend Valid: "+rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")" + " - " + rtma_time_7.strftime('%H:00 Local') + " (" + rtma_time_utc_7.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        fig7.suptitle("METAR RH (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_6.strftime('%H:00 Local') + " (" + metar_time_revised_6_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")" + " - " + rtma_time_7.strftime('%H:00 Local') + " (" + rtma_time_utc_7.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
 
-        ax13 = fig7.add_subplot(1, 2, 1, projection=plot_proj_6)
-        ax13.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax13.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax13.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax13.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_14)
+        ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax13.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
-        ax13.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax13.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
+        ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
-        cs13 = ax13.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                         transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap_rh, alpha=1)
+        cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
+                         transform=diff7.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
 
-        cbar13 = fig7.colorbar(cs13, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar13.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+        cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar7.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
 
         # Plots METAR
-        stn7 = mpplots.StationPlot(ax13, sfc_data_6['longitude'][sfc_data_mask_6].m, sfc_data_6['latitude'][sfc_data_mask_6].m,
+        stn7 = mpplots.StationPlot(ax7, sfc_data_6['longitude'][sfc_data_mask_6].m, sfc_data_6['latitude'][sfc_data_mask_6].m,
+                                 transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
+        
+        stn7.plot_parameter('C', sfc_data_rh_6.to('percent')[sfc_data_mask_6], color='black',
+                            path_effects=[withStroke(linewidth=1, foreground='black')])
+        
+        ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax7.transAxes)
+
+        figs.append(fig7)
+        figs.append(fig6)
+        figs.append(fig5)
+        figs.append(fig4)
+        figs.append(fig3)
+        figs.append(fig2)
+        figs.append(fig1)
+
+        return figs
+
+
+    def plot_relative_humidity_and_trend_with_METAR_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
+
+        r'''
+            This function does the following:
+                                            1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                            2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                            3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                            4) Plots the relative humidity data overlayed with the METAR reports. 
+
+            
+
+            Inputs:
+
+                1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+                
+                9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+
+                13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                15) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                           Default setting is 0.05.
+                                           Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                           Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+                19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                            will not display on the map. 
+
+
+            Returns:
+                    1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports. 
+        
+        '''
+
+
+        local_time, utc_time = standard.plot_creation_time()
+
+        times = []
+
+        for i in range(0, 10):
+            time = utc_time - timedelta(hours=i)
+            times.append(time)
+
+        t1 = times[0]
+        t2 = times[1]
+        t3 = times[2]
+        t4 = times[3]
+        t5 = times[4]
+        t6 = times[5]
+        t7 = times[6]
+        t8 = times[7]
+        t9 = times[8]
+        t10 = times[9]
+
+        rtma_data_0, rtma_time_0, sfc_data_0, sfc_data_u_kt_0, sfc_data_v_kt_0, sfc_data_rh_0, sfc_data_mask_0, metar_time_revised_0, plot_proj_0 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t1, mask)
+
+        rtma_data_1, rtma_time_1, sfc_data_1, sfc_data_u_kt_1, sfc_data_v_kt_1, sfc_data_rh_1, sfc_data_mask_1, metar_time_revised_1, plot_proj_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t2, mask)
+
+        if rtma_time_0.hour == rtma_time_1.hour:
+
+            rtma_data_1, rtma_time_1, sfc_data_1, sfc_data_u_kt_1, sfc_data_v_kt_1, sfc_data_rh_1, sfc_data_mask_1, metar_time_revised_1, plot_proj_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t3, mask)
+
+            if rtma_time_0.hour == rtma_time_1.hour:
+
+                rtma_data_1, rtma_time_1, sfc_data_1, sfc_data_u_kt_1, sfc_data_v_kt_1, sfc_data_rh_1, sfc_data_mask_1, metar_time_revised_1, plot_proj_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t4, mask)
+
+                rtma_data_2, rtma_time_2, sfc_data_2, sfc_data_u_kt_2, sfc_data_v_kt_2, sfc_data_rh_2, sfc_data_mask_2, metar_time_revised_2, plot_proj_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t5, mask)
+        
+                rtma_data_3, rtma_time_3, sfc_data_3, sfc_data_u_kt_3, sfc_data_v_kt_3, sfc_data_rh_3, sfc_data_mask_3, metar_time_revised_3, plot_proj_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t6, mask)
+        
+                rtma_data_4, rtma_time_4, sfc_data_4, sfc_data_u_kt_4, sfc_data_v_kt_4, sfc_data_rh_4, sfc_data_mask_4, metar_time_revised_4, plot_proj_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t7, mask)
+        
+                rtma_data_5, rtma_time_5, sfc_data_5, sfc_data_u_kt_5, sfc_data_v_kt_5, sfc_data_rh_5, sfc_data_mask_5, metar_time_revised_5, plot_proj_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t8, mask)
+        
+                rtma_data_6, rtma_time_6, sfc_data_6, sfc_data_u_kt_6, sfc_data_v_kt_6, sfc_data_rh_6, sfc_data_mask_6, metar_time_revised_6, plot_proj_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t9, mask)
+
+                rtma_data_7, rtma_time_7, sfc_data_7, sfc_data_u_kt_7, sfc_data_v_kt_7, sfc_data_rh_7, sfc_data_mask_7, metar_time_revised_7, plot_proj_7 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t10, mask)
+
+
+            else:
+
+                rtma_data_1, rtma_time_1, sfc_data_1, sfc_data_u_kt_1, sfc_data_v_kt_1, sfc_data_rh_1, sfc_data_mask_1, metar_time_revised_1, plot_proj_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t3, mask)
+                
+                rtma_data_2, rtma_time_2, sfc_data_2, sfc_data_u_kt_2, sfc_data_v_kt_2, sfc_data_rh_2, sfc_data_mask_2, metar_time_revised_2, plot_proj_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t4, mask)
+        
+                rtma_data_3, rtma_time_3, sfc_data_3, sfc_data_u_kt_3, sfc_data_v_kt_3, sfc_data_rh_3, sfc_data_mask_3, metar_time_revised_3, plot_proj_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t5, mask)
+        
+                rtma_data_4, rtma_time_4, sfc_data_4, sfc_data_u_kt_4, sfc_data_v_kt_4, sfc_data_rh_4, sfc_data_mask_4, metar_time_revised_4, plot_proj_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t6, mask)
+        
+                rtma_data_5, rtma_time_5, sfc_data_5, sfc_data_u_kt_5, sfc_data_v_kt_5, sfc_data_rh_5, sfc_data_mask_5, metar_time_revised_5, plot_proj_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t7, mask)
+        
+                rtma_data_6, rtma_time_6, sfc_data_6, sfc_data_u_kt_6, sfc_data_v_kt_6, sfc_data_rh_6, sfc_data_mask_6, metar_time_revised_6, plot_proj_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t8, mask)
+
+                rtma_data_7, rtma_time_7, sfc_data_7, sfc_data_u_kt_7, sfc_data_v_kt_7, sfc_data_rh_7, sfc_data_mask_7, metar_time_revised_7, plot_proj_7 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t9, mask)
+
+        else:
+
+            rtma_data_1, rtma_time_1, sfc_data_1, sfc_data_u_kt_1, sfc_data_v_kt_1, sfc_data_rh_1, sfc_data_mask_1, metar_time_revised_1, plot_proj_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t2, mask)
+
+            rtma_data_2, rtma_time_2, sfc_data_2, sfc_data_u_kt_2, sfc_data_v_kt_2, sfc_data_rh_2, sfc_data_mask_2, metar_time_revised_2, plot_proj_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t3, mask)
+    
+            rtma_data_3, rtma_time_3, sfc_data_3, sfc_data_u_kt_3, sfc_data_v_kt_3, sfc_data_rh_3, sfc_data_mask_3, metar_time_revised_3, plot_proj_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t4, mask)
+    
+            rtma_data_4, rtma_time_4, sfc_data_4, sfc_data_u_kt_4, sfc_data_v_kt_4, sfc_data_rh_4, sfc_data_mask_4, metar_time_revised_4, plot_proj_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t5, mask)
+    
+            rtma_data_5, rtma_time_5, sfc_data_5, sfc_data_u_kt_5, sfc_data_v_kt_5, sfc_data_rh_5, sfc_data_mask_5, metar_time_revised_5, plot_proj_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t6, mask)
+    
+            rtma_data_6, rtma_time_6, sfc_data_6, sfc_data_u_kt_6, sfc_data_v_kt_6, sfc_data_rh_6, sfc_data_mask_6, metar_time_revised_6, plot_proj_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t7, mask)
+
+            rtma_data_7, rtma_time_7, sfc_data_7, sfc_data_u_kt_7, sfc_data_v_kt_7, sfc_data_rh_7, sfc_data_mask_7, metar_time_revised_7, plot_proj_7 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(t8, mask)
+
+        diff1 = rtma_data_0 - rtma_data_1
+        diff2 = rtma_data_1 - rtma_data_2
+        diff3 = rtma_data_2 - rtma_data_3
+        diff4 = rtma_data_3 - rtma_data_4
+        diff5 = rtma_data_4 - rtma_data_5
+        diff6 = rtma_data_5 - rtma_data_6
+        diff7 = rtma_data_6 - rtma_data_7
+
+        diff8 = sfc_data_rh_0 - sfc_data_rh_1
+        diff9 = sfc_data_rh_1 - sfc_data_rh_2
+        diff10 = sfc_data_rh_2 - sfc_data_rh_3
+        diff11 = sfc_data_rh_3 - sfc_data_rh_4
+        diff12 = sfc_data_rh_4 - sfc_data_rh_5
+        diff13 = sfc_data_rh_5 - sfc_data_rh_6
+        diff14 = sfc_data_rh_6 - sfc_data_rh_7
+        
+
+        plot_proj_8 = diff1.metpy.cartopy_crs
+        plot_proj_9 = diff2.metpy.cartopy_crs
+        plot_proj_10 = diff3.metpy.cartopy_crs
+        plot_proj_11 = diff4.metpy.cartopy_crs
+        plot_proj_12 = diff5.metpy.cartopy_crs
+        plot_proj_13 = diff6.metpy.cartopy_crs
+        plot_proj_14 = diff7.metpy.cartopy_crs
+
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+        
+        rtma_time_0 = rtma_time_0.replace(tzinfo=from_zone)
+        rtma_time_0 = rtma_time_0.astimezone(to_zone)
+        rtma_time_utc_0 = rtma_time_0.astimezone(from_zone)
+        metar_time_revised_0 = metar_time_revised_0.replace(tzinfo=from_zone)
+        metar_time_revised_0 = metar_time_revised_0.astimezone(to_zone)
+        metar_time_revised_0_utc = metar_time_revised_0.astimezone(from_zone)
+
+        rtma_time_1 = rtma_time_1.replace(tzinfo=from_zone)
+        rtma_time_1 = rtma_time_1.astimezone(to_zone)
+        rtma_time_utc_1 = rtma_time_1.astimezone(from_zone)
+        metar_time_revised_1 = metar_time_revised_1.replace(tzinfo=from_zone)
+        metar_time_revised_1 = metar_time_revised_1.astimezone(to_zone)
+        metar_time_revised_1_utc = metar_time_revised_1.astimezone(from_zone)
+
+        rtma_time_2 = rtma_time_2.replace(tzinfo=from_zone)
+        rtma_time_2 = rtma_time_2.astimezone(to_zone)
+        rtma_time_utc_2 = rtma_time_2.astimezone(from_zone)
+        metar_time_revised_2 = metar_time_revised_2.replace(tzinfo=from_zone)
+        metar_time_revised_2 = metar_time_revised_2.astimezone(to_zone)
+        metar_time_revised_2_utc = metar_time_revised_2.astimezone(from_zone)
+
+        rtma_time_3 = rtma_time_3.replace(tzinfo=from_zone)
+        rtma_time_3 = rtma_time_3.astimezone(to_zone)
+        rtma_time_utc_3 = rtma_time_3.astimezone(from_zone)
+        metar_time_revised_3 = metar_time_revised_3.replace(tzinfo=from_zone)
+        metar_time_revised_3 = metar_time_revised_3.astimezone(to_zone)
+        metar_time_revised_3_utc = metar_time_revised_3.astimezone(from_zone)
+
+        rtma_time_4 = rtma_time_4.replace(tzinfo=from_zone)
+        rtma_time_4 = rtma_time_4.astimezone(to_zone)
+        rtma_time_utc_4 = rtma_time_4.astimezone(from_zone)
+        metar_time_revised_4 = metar_time_revised_4.replace(tzinfo=from_zone)
+        metar_time_revised_4 = metar_time_revised_4.astimezone(to_zone)
+        metar_time_revised_4_utc = metar_time_revised_4.astimezone(from_zone)
+
+        rtma_time_5 = rtma_time_5.replace(tzinfo=from_zone)
+        rtma_time_5 = rtma_time_5.astimezone(to_zone)
+        rtma_time_utc_5 = rtma_time_5.astimezone(from_zone)
+        metar_time_revised_5 = metar_time_revised_5.replace(tzinfo=from_zone)
+        metar_time_revised_5 = metar_time_revised_5.astimezone(to_zone)
+        metar_time_revised_5_utc = metar_time_revised_5.astimezone(from_zone)
+
+        rtma_time_6 = rtma_time_6.replace(tzinfo=from_zone)
+        rtma_time_6 = rtma_time_6.astimezone(to_zone)
+        rtma_time_utc_6 = rtma_time_6.astimezone(from_zone)
+        metar_time_revised_6 = metar_time_revised_6.replace(tzinfo=from_zone)
+        metar_time_revised_6 = metar_time_revised_6.astimezone(to_zone)
+        metar_time_revised_6_utc = metar_time_revised_6.astimezone(from_zone)
+
+        rtma_time_7 = rtma_time_7.replace(tzinfo=from_zone)
+        rtma_time_7 = rtma_time_7.astimezone(to_zone)
+        rtma_time_utc_7 = rtma_time_7.astimezone(from_zone)
+        metar_time_revised_7 = metar_time_revised_7.replace(tzinfo=from_zone)
+        metar_time_revised_7 = metar_time_revised_7.astimezone(to_zone)
+        metar_time_revised_7_utc = metar_time_revised_7.astimezone(from_zone)
+        
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+        
+        cmap_trend = colormaps.relative_humidity_change_colormap()
+
+        figs = []
+
+        ################
+        # FIRST FIGURE #
+        ################
+
+        fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig1.set_facecolor('aliceblue')
+
+        fig1.suptitle("Hourly METAR RH Trend (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_0.strftime('%H:00 Local') + " (" + metar_time_revised_0_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_0.strftime('%H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")" + " - " + rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+
+        ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_8)
+        ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+        if show_rivers == True:
+            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+        else:
+            pass
+        ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
+
+        cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
+                         transform=diff1.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+
+        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar1.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+
+        # Plots METAR
+        stn1 = mpplots.StationPlot(ax1, sfc_data_0['longitude'][sfc_data_mask_0].m, sfc_data_0['latitude'][sfc_data_mask_0].m,
                                  transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
         
         
-        stn7.plot_parameter('NW', sfc_data_6['air_temperature'].to('degF')[sfc_data_mask_6], color='red',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn7.plot_parameter('SW', sfc_data_6['dew_point_temperature'].to('degF')[sfc_data_mask_6], color='darkorange',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn7.plot_symbol('C', sfc_data_6['cloud_coverage'][sfc_data_mask_6], mpplots.sky_cover)
-        
-        stn7.plot_parameter('E', sfc_data_rh_6.to('percent')[sfc_data_mask_6], color='lime',
+        stn1.plot_parameter('C', diff8.to('percent')[sfc_data_mask_0], color='black',
                             path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn7.plot_barb(sfc_data_6['u'][sfc_data_mask_6], sfc_data_6['v'][sfc_data_mask_6])
 
-        ax13.set_title("Hourly Relative Humidity Analysis & METAR", fontsize=subplot_title_font_size, fontweight='bold')
+        ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax1.transAxes)
 
-        ax13.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax13.transAxes)
 
-        ax14 = fig7.add_subplot(1, 2, 2, projection=plot_proj_14)
-        ax14.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax14.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax14.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax14.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        #################
+        # SECOND FIGURE #
+        #################
+
+        fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig2.set_facecolor('aliceblue')
+
+        fig2.suptitle("Hourly METAR RH Trend (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_1.strftime('%H:00 Local') + " (" + metar_time_revised_1_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")" + " - " + rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+
+        ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_9)
+        ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax14.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
-        ax14.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
-        ax14.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
+        ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
-        cs14 = ax14.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
-                         transform=diff7.metpy.cartopy_crs, levels=np.arange(-20, 25, 5), cmap=cmap_trend, alpha=1, extend='both')
+        cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
+                         transform=diff2.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
 
-        cbar14 = fig7.colorbar(cs14, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar14.set_label(label="Relative Humidity Trend(%)", size=colorbar_label_font_size, fontweight='bold')
+        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar2.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
 
-        ax14.set_title("Hourly Relative Humidity Trend", fontsize=subplot_title_font_size, fontweight='bold')
+        # Plots METAR
+        stn2 = mpplots.StationPlot(ax2, sfc_data_1['longitude'][sfc_data_mask_1].m, sfc_data_1['latitude'][sfc_data_mask_1].m,
+                                 transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
         
+    
+        stn2.plot_parameter('C', diff9.to('percent')[sfc_data_mask_1], color='black',
+                            path_effects=[withStroke(linewidth=1, foreground='black')])
+
+
+        ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax2.transAxes)
+
+
+        ################
+        # THIRD FIGURE #
+        ################
+
+        fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig3.set_facecolor('aliceblue')
+
+        fig3.suptitle("Hourly METAR RH Trend (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_2.strftime('%H:00 Local') + " (" + metar_time_revised_2_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")" + " - " + rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+
+        ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_10)
+        ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+        if show_rivers == True:
+            ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+        else:
+            pass
+        ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
+
+        cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
+                         transform=diff3.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+
+        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar3.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+
+        # Plots METAR
+        stn3 = mpplots.StationPlot(ax3, sfc_data_2['longitude'][sfc_data_mask_2].m, sfc_data_2['latitude'][sfc_data_mask_2].m,
+                                 transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
+        
+        
+        stn3.plot_parameter('C', diff10.to('percent')[sfc_data_mask_2], color='black',
+                            path_effects=[withStroke(linewidth=1, foreground='black')])
+        
+
+        ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax3.transAxes)
+
+
+        #################
+        # FOURTH FIGURE #
+        #################
+
+        fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig4.set_facecolor('aliceblue')
+
+        fig4.suptitle("Hourly METAR RH Trend (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_3.strftime('%H:00 Local') + " (" + metar_time_revised_3_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")" + " - " + rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+
+        ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_11)
+        ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+        if show_rivers == True:
+            ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+        else:
+            pass
+        ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
+
+        cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
+                         transform=diff4.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+
+        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar4.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+
+        # Plots METAR
+        stn4 = mpplots.StationPlot(ax4, sfc_data_3['longitude'][sfc_data_mask_3].m, sfc_data_3['latitude'][sfc_data_mask_3].m,
+                                 transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
+        
+        stn4.plot_parameter('E', diff11.to('percent')[sfc_data_mask_3], color='black',
+                            path_effects=[withStroke(linewidth=1, foreground='black')])
+
+        ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax4.transAxes)
+
+
+        ################
+        # FIFTH FIGURE #
+        ################
+
+        fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig5.set_facecolor('aliceblue')
+
+        fig5.suptitle("Hourly METAR RH Trend (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_4.strftime('%H:00 Local') + " (" + metar_time_revised_4_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")" + " - " + rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+
+        ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_12)
+        ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+        if show_rivers == True:
+            ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+        else:
+            pass
+        ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
+
+        cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
+                         transform=diff5.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+
+        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar5.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+
+        # Plots METAR
+        stn5 = mpplots.StationPlot(ax5, sfc_data_4['longitude'][sfc_data_mask_4].m, sfc_data_4['latitude'][sfc_data_mask_4].m,
+                                 transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
+        
+        
+        stn5.plot_parameter('E', diff12.to('percent')[sfc_data_mask_4], color='black',
+                            path_effects=[withStroke(linewidth=1, foreground='black')])
+
+
+        ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax5.transAxes)
+
+        ################
+        # SIXTH FIGURE #
+        ################
+
+        fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig6.set_facecolor('aliceblue')
+
+        fig6.suptitle("Hourly METAR RH Trend (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_5.strftime('%H:00 Local') + " (" + metar_time_revised_5_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")" + " - " + rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+
+        ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_13)
+        ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+        if show_rivers == True:
+            ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+        else:
+            pass
+        ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
+
+        cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
+                         transform=diff6.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+
+        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar6.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+
+        # Plots METAR
+        stn6 = mpplots.StationPlot(ax6, sfc_data_5['longitude'][sfc_data_mask_5].m, sfc_data_5['latitude'][sfc_data_mask_5].m,
+                                 transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
+
+        
+        stn6.plot_parameter('C', diff13.to('percent')[sfc_data_mask_5], color='black',
+                            path_effects=[withStroke(linewidth=1, foreground='black')])
+        
+        ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax6.transAxes)
+
+        ##################
+        # SEVENTH FIGURE #
+        ##################
+
+        fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig7.set_facecolor('aliceblue')
+
+        fig7.suptitle("Hourly METAR RH Trend (Numbers) + RTMA Hourly RH Trend (Shaded)\nMETAR Valid: " + metar_time_revised_6.strftime('%H:00 Local') + " (" + metar_time_revised_6_utc.strftime('%H:00 UTC')+")\nRTMA RH Trend Valid: "+rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")" + " - " + rtma_time_7.strftime('%H:00 Local') + " (" + rtma_time_utc_7.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+
+        ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_14)
+        ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+        if show_rivers == True:
+            ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+        else:
+            pass
+        ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
+        ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
+
+        cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
+                         transform=diff7.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+
+        cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar7.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+
+        # Plots METAR
+        stn7 = mpplots.StationPlot(ax7, sfc_data_6['longitude'][sfc_data_mask_6].m, sfc_data_6['latitude'][sfc_data_mask_6].m,
+                                 transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
+        
+        stn7.plot_parameter('C', diff14.to('percent')[sfc_data_mask_6], color='black',
+                            path_effects=[withStroke(linewidth=1, foreground='black')])
+        
+        ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax7.transAxes)
 
         figs.append(fig7)
         figs.append(fig6)
@@ -1803,10 +2091,10 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
@@ -1831,7 +2119,7 @@ class Counties_Perspective:
         
         stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_mask], mpplots.sky_cover)
         
-        stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_mask], color='lime',
+        stn.plot_parameter('C', sfc_data_rh.to('percent')[sfc_data_mask], color='lime',
                             path_effects=[withStroke(linewidth=1, foreground='black')])
         
         stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
@@ -1941,10 +2229,10 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
@@ -2059,10 +2347,10 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
@@ -2082,6 +2370,7 @@ class Counties_Perspective:
        verticalalignment='bottom', transform=ax.transAxes)
 
         return fig
+
 
 
     def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
@@ -2171,10 +2460,10 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='lime', zorder=5)
@@ -2283,10 +2572,10 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
@@ -2389,10 +2678,10 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=5)
@@ -2502,10 +2791,10 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
@@ -2615,10 +2904,10 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
@@ -2756,11 +3045,11 @@ class Counties_Perspective:
         ax0 = fig.add_subplot(gs[0:1, 0:3], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax0.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax0.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax0.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax0.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax0.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
         if show_rivers == True:
-            ax0.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax0.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax0.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
@@ -2778,11 +3067,11 @@ class Counties_Perspective:
         ax1 = fig.add_subplot(gs[0:1, 3:6], projection=plot_proj_2)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax1.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
         if show_rivers == True:
-            ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
@@ -2799,11 +3088,11 @@ class Counties_Perspective:
         ax2 = fig.add_subplot(gs[0:1, 6:9], projection=plot_proj_3)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax2.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
         if show_rivers == True:
-            ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
@@ -2941,11 +3230,11 @@ class Counties_Perspective:
         ax0 = fig.add_subplot(gs[0:1, 0:3], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax0.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax0.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax0.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax0.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax0.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
         if show_rivers == True:
-            ax0.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax0.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax0.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
@@ -2963,11 +3252,11 @@ class Counties_Perspective:
         ax1 = fig.add_subplot(gs[0:1, 3:6], projection=plot_proj_2)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax1.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
         if show_rivers == True:
-            ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
@@ -2984,11 +3273,11 @@ class Counties_Perspective:
         ax2 = fig.add_subplot(gs[0:1, 6:9], projection=plot_proj_3)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax2.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
         if show_rivers == True:
-            ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
@@ -3119,10 +3408,10 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=GACC_Border_Line_Thickness, zorder=5)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness, zorder=4)
@@ -3260,10 +3549,10 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=GACC_Border_Line_Thickness, zorder=5)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(PSAs, linewidth=PSA_Border_Line_Thickness, zorder=4)
@@ -3390,10 +3679,10 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -3524,10 +3813,10 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -3665,10 +3954,10 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -3783,10 +4072,10 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -3897,10 +4186,10 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -4011,10 +4300,10 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -4119,10 +4408,10 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -4234,10 +4523,10 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -4349,10 +4638,10 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -4492,11 +4781,11 @@ class Predictive_Services_Areas_Perspective:
         ax0 = fig.add_subplot(gs[0:1, 0:3], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax0.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax0.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax0.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax0.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax0.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax0.add_feature(PSAs, linewidth=1.5, zorder=4)
         if show_rivers == True:
-            ax0.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax0.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax0.set_aspect(first_subplot_aspect_ratio)
@@ -4513,11 +4802,11 @@ class Predictive_Services_Areas_Perspective:
         ax1 = fig.add_subplot(gs[0:1, 3:6], projection=plot_proj_2)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax1.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax1.add_feature(PSAs, linewidth=1.5, zorder=4)
         if show_rivers == True:
-            ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax1.set_aspect(subsequent_subplot_aspect_ratio)
@@ -4533,11 +4822,11 @@ class Predictive_Services_Areas_Perspective:
         ax2 = fig.add_subplot(gs[0:1, 6:9], projection=plot_proj_3)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax2.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax2.add_feature(PSAs, linewidth=1.5, zorder=4)
         if show_rivers == True:
-            ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax2.set_aspect(subsequent_subplot_aspect_ratio)
@@ -4677,11 +4966,11 @@ class Predictive_Services_Areas_Perspective:
         ax0 = fig.add_subplot(gs[0:1, 0:3], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax0.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax0.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax0.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax0.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax0.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax0.add_feature(PSAs, linewidth=1.5, zorder=4)
         if show_rivers == True:
-            ax0.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax0.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax0.set_aspect(first_subplot_aspect_ratio)
@@ -4698,11 +4987,11 @@ class Predictive_Services_Areas_Perspective:
         ax1 = fig.add_subplot(gs[0:1, 3:6], projection=plot_proj_2)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax1.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax1.add_feature(PSAs, linewidth=1.5, zorder=4)
         if show_rivers == True:
-            ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax1.set_aspect(subsequent_subplot_aspect_ratio)
@@ -4718,11 +5007,11 @@ class Predictive_Services_Areas_Perspective:
         ax2 = fig.add_subplot(gs[0:1, 6:9], projection=plot_proj_3)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax2.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax2.add_feature(PSAs, linewidth=1.5, zorder=4)
         if show_rivers == True:
-            ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax2.set_aspect(subsequent_subplot_aspect_ratio)
@@ -4863,11 +5152,11 @@ class Predictive_Services_Areas_Perspective:
         ax0 = fig.add_subplot(gs[0:2, 0:6], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax0.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax0.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax0.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax0.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax0.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax0.add_feature(PSAs, linewidth=1.5, zorder=4)
         if show_rivers == True:
-            ax0.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax0.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax0.set_aspect(first_subplot_aspect_ratio)
@@ -4884,11 +5173,11 @@ class Predictive_Services_Areas_Perspective:
         ax1 = fig.add_subplot(gs[0:1, 5:12], projection=plot_proj_2)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax1.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax1.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax1.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax1.add_feature(PSAs, linewidth=1.5, zorder=4)
         if show_rivers == True:
-            ax1.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax1.set_aspect(subsequent_subplot_aspect_ratio)
@@ -4904,11 +5193,11 @@ class Predictive_Services_Areas_Perspective:
         ax2 = fig.add_subplot(gs[1:2, 5:12], projection=plot_proj_3)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax2.add_feature(GACC, linewidth=2.5, zorder=5)
-        ax2.add_feature(cfeature.OCEAN, color='blue', zorder=3)
-        ax2.add_feature(cfeature.LAKES, color='blue', zorder=3)
+        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax2.add_feature(PSAs, linewidth=1.5, zorder=4)
         if show_rivers == True:
-            ax2.add_feature(cfeature.RIVERS, color='blue', zorder=3)
+            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
         else:
             pass
         ax2.set_aspect(subsequent_subplot_aspect_ratio)
