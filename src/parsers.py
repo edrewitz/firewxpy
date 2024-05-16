@@ -2891,49 +2891,89 @@ class save:
                         writer.append_data(image)
         
             except Exception as b:
-
-                file_path_1 = file_path_1
-                file_path_2 = file_path_2
-                file_path_3 = file_path_3
-                file_path_4 = file_path_4
-                file_path_5 = file_path_5
-                file_path_6 = file_path_6
-    
-                datetime_str_1 = time.ctime(os.path.getmtime(file_path_1))
-                datetime_str_2 = time.ctime(os.path.getmtime(file_path_2))
-                datetime_str_3 = time.ctime(os.path.getmtime(file_path_3))
-                datetime_str_4 = time.ctime(os.path.getmtime(file_path_4))
-                datetime_str_5 = time.ctime(os.path.getmtime(file_path_5))
-                datetime_str_6 = time.ctime(os.path.getmtime(file_path_6))
-    
-                day_1 = datetime.strptime(datetime_str_1, '%a %b %d %H:%M:%S %Y')
-                day_2 = datetime.strptime(datetime_str_2, '%a %b %d %H:%M:%S %Y')
-                day_3 = datetime.strptime(datetime_str_3, '%a %b %d %H:%M:%S %Y')
-                day_4 = datetime.strptime(datetime_str_4, '%a %b %d %H:%M:%S %Y')
-                day_5 = datetime.strptime(datetime_str_5, '%a %b %d %H:%M:%S %Y')
-                day_6 = datetime.strptime(datetime_str_6, '%a %b %d %H:%M:%S %Y')
-            
-                if day_5.day == day_6.day and day_5.hour == day_6.hour:
-                    filenames = []
-                    filenames.append(file_path_1)
-                    filenames.append(file_path_2)
-                    filenames.append(file_path_3)
-                    filenames.append(file_path_4)
-                    filenames.append(file_path_5)
-                    filenames.append(file_path_6)
-              
-                else:
-                    filenames = []
-                    filenames.append(file_path_1)
-                    filenames.append(file_path_2)
-                    filenames.append(file_path_3)
-                    filenames.append(file_path_4)
-                    filenames.append(file_path_5)
+                try:
+                    file_path_1 = file_path_1
+                    file_path_2 = file_path_2
+                    file_path_3 = file_path_3
+                    file_path_4 = file_path_4
+                    file_path_5 = file_path_5
+                    file_path_6 = file_path_6
+        
+                    datetime_str_1 = time.ctime(os.path.getmtime(file_path_1))
+                    datetime_str_2 = time.ctime(os.path.getmtime(file_path_2))
+                    datetime_str_3 = time.ctime(os.path.getmtime(file_path_3))
+                    datetime_str_4 = time.ctime(os.path.getmtime(file_path_4))
+                    datetime_str_5 = time.ctime(os.path.getmtime(file_path_5))
+                    datetime_str_6 = time.ctime(os.path.getmtime(file_path_6))
+        
+                    day_1 = datetime.strptime(datetime_str_1, '%a %b %d %H:%M:%S %Y')
+                    day_2 = datetime.strptime(datetime_str_2, '%a %b %d %H:%M:%S %Y')
+                    day_3 = datetime.strptime(datetime_str_3, '%a %b %d %H:%M:%S %Y')
+                    day_4 = datetime.strptime(datetime_str_4, '%a %b %d %H:%M:%S %Y')
+                    day_5 = datetime.strptime(datetime_str_5, '%a %b %d %H:%M:%S %Y')
+                    day_6 = datetime.strptime(datetime_str_6, '%a %b %d %H:%M:%S %Y')
                 
-                with imageio.get_writer(GIF_Image_file_path, fps=fps) as writer:
-                    for filename in filenames:
-                        image = imageio.v2.imread(filename)
-                        writer.append_data(image)        
+                    if day_5.day == day_6.day and day_5.hour == day_6.hour:
+                        filenames = []
+                        filenames.append(file_path_1)
+                        filenames.append(file_path_2)
+                        filenames.append(file_path_3)
+                        filenames.append(file_path_4)
+                        filenames.append(file_path_5)
+                        filenames.append(file_path_6)
+                  
+                    else:
+                        filenames = []
+                        filenames.append(file_path_1)
+                        filenames.append(file_path_2)
+                        filenames.append(file_path_3)
+                        filenames.append(file_path_4)
+                        filenames.append(file_path_5)
+                    
+                    with imageio.get_writer(GIF_Image_file_path, fps=fps) as writer:
+                        for filename in filenames:
+                            image = imageio.v2.imread(filename)
+                            writer.append_data(image)
+
+                except Exception as c:
+
+                    file_path_1 = file_path_1
+                    file_path_2 = file_path_2
+                    file_path_3 = file_path_3
+                    file_path_4 = file_path_4
+                    file_path_5 = file_path_5
+        
+                    datetime_str_1 = time.ctime(os.path.getmtime(file_path_1))
+                    datetime_str_2 = time.ctime(os.path.getmtime(file_path_2))
+                    datetime_str_3 = time.ctime(os.path.getmtime(file_path_3))
+                    datetime_str_4 = time.ctime(os.path.getmtime(file_path_4))
+                    datetime_str_5 = time.ctime(os.path.getmtime(file_path_5))
+        
+                    day_1 = datetime.strptime(datetime_str_1, '%a %b %d %H:%M:%S %Y')
+                    day_2 = datetime.strptime(datetime_str_2, '%a %b %d %H:%M:%S %Y')
+                    day_3 = datetime.strptime(datetime_str_3, '%a %b %d %H:%M:%S %Y')
+                    day_4 = datetime.strptime(datetime_str_4, '%a %b %d %H:%M:%S %Y')
+                    day_5 = datetime.strptime(datetime_str_5, '%a %b %d %H:%M:%S %Y')
+                
+                    if day_4.day == day_5.day and day_4.hour == day_5.hour:
+                        filenames = []
+                        filenames.append(file_path_1)
+                        filenames.append(file_path_2)
+                        filenames.append(file_path_3)
+                        filenames.append(file_path_4)
+                        filenames.append(file_path_5)
+                  
+                    else:
+                        filenames = []
+                        filenames.append(file_path_1)
+                        filenames.append(file_path_2)
+                        filenames.append(file_path_3)
+                        filenames.append(file_path_4)
+                    
+                    with imageio.get_writer(GIF_Image_file_path, fps=fps) as writer:
+                        for filename in filenames:
+                            image = imageio.v2.imread(filename)
+                            writer.append_data(image)                  
         
         print("GIF Saved!")        
         
