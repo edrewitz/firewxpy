@@ -51,7 +51,7 @@ class Counties_Perspective:
 
         '''
 
-        def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(directory_name, poor_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(directory_name, poor_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -189,7 +189,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -212,7 +212,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -235,7 +235,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -258,7 +258,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -281,7 +281,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -304,7 +304,7 @@ class Counties_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -329,7 +329,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -350,7 +350,7 @@ class Counties_Perspective:
             return figs
     
     
-        def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(directory_name, low_minimum_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(directory_name, low_minimum_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -489,7 +489,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -512,7 +512,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -535,7 +535,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -558,7 +558,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -581,7 +581,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -604,7 +604,7 @@ class Counties_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -629,7 +629,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -650,7 +650,7 @@ class Counties_Perspective:
             return figs
     
     
-        def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(directory_name, excellent_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(directory_name, excellent_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Excellent Overnight Recovery RH Forecast. 
@@ -787,7 +787,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -810,7 +810,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -833,7 +833,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -856,7 +856,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -879,7 +879,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -902,7 +902,7 @@ class Counties_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -927,7 +927,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -948,7 +948,7 @@ class Counties_Perspective:
             return figs
     
     
-        def plot_NWS_7_Day_maximum_relative_humidity_forecast(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_maximum_relative_humidity_forecast(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Maximum RH Forecast. 
@@ -1084,7 +1084,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -1107,7 +1107,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -1130,7 +1130,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -1153,7 +1153,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -1176,7 +1176,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -1199,7 +1199,7 @@ class Counties_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -1224,7 +1224,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -1246,7 +1246,7 @@ class Counties_Perspective:
         
     
     
-        def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Maximum RH Trend Forecast. 
@@ -1393,7 +1393,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -1416,7 +1416,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -1439,7 +1439,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -1462,7 +1462,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -1485,7 +1485,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -1510,7 +1510,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+                cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -1529,7 +1529,7 @@ class Counties_Perspective:
             return figs
         
     
-        def plot_NWS_7_Day_minimum_relative_humidity_forecast(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_minimum_relative_humidity_forecast(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Minimum RH Forecast. 
@@ -1665,7 +1665,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -1688,7 +1688,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -1711,7 +1711,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -1734,7 +1734,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -1757,7 +1757,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -1780,7 +1780,7 @@ class Counties_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -1805,7 +1805,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -1827,7 +1827,7 @@ class Counties_Perspective:
         
     
     
-        def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Minimum RH Trend Forecast. 
@@ -1974,7 +1974,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -1997,7 +1997,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -2020,7 +2020,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -2043,7 +2043,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -2066,7 +2066,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -2091,7 +2091,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+                cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -2119,7 +2119,7 @@ class Counties_Perspective:
 
         '''
 
-        def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(file_path, poor_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(file_path, poor_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -2255,7 +2255,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -2278,7 +2278,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -2301,7 +2301,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -2324,7 +2324,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -2347,7 +2347,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -2370,7 +2370,7 @@ class Counties_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -2395,7 +2395,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -2416,7 +2416,7 @@ class Counties_Perspective:
             return figs
     
     
-        def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(file_path, low_minimum_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(file_path, low_minimum_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -2553,7 +2553,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -2576,7 +2576,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -2599,7 +2599,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -2622,7 +2622,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -2645,7 +2645,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -2668,7 +2668,7 @@ class Counties_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -2693,7 +2693,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -2714,7 +2714,7 @@ class Counties_Perspective:
             return figs
     
     
-        def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(file_path, excellent_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(file_path, excellent_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Excellent Overnight Recovery RH Forecast. 
@@ -2849,7 +2849,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -2872,7 +2872,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -2895,7 +2895,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -2918,7 +2918,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -2941,7 +2941,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -2964,7 +2964,7 @@ class Counties_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -2989,7 +2989,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -3010,7 +3010,7 @@ class Counties_Perspective:
             return figs
     
     
-        def plot_NWS_7_Day_maximum_relative_humidity_forecast(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_maximum_relative_humidity_forecast(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Maximum RH Forecast. 
@@ -3144,7 +3144,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -3167,7 +3167,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -3190,7 +3190,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -3213,7 +3213,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -3236,7 +3236,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -3259,7 +3259,7 @@ class Counties_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -3284,7 +3284,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -3306,7 +3306,7 @@ class Counties_Perspective:
         
     
     
-        def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Maximum RH Trend Forecast. 
@@ -3451,7 +3451,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -3474,7 +3474,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -3497,7 +3497,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -3520,7 +3520,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -3543,7 +3543,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -3568,7 +3568,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+                cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -3587,7 +3587,7 @@ class Counties_Perspective:
             return figs
         
     
-        def plot_NWS_7_Day_minimum_relative_humidity_forecast(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_minimum_relative_humidity_forecast(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Minimum RH Forecast. 
@@ -3721,7 +3721,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -3744,7 +3744,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -3767,7 +3767,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -3790,7 +3790,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -3813,7 +3813,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -3836,7 +3836,7 @@ class Counties_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -3861,7 +3861,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -3883,7 +3883,7 @@ class Counties_Perspective:
         
     
     
-        def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Minimum RH Trend Forecast. 
@@ -4028,7 +4028,7 @@ class Counties_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -4051,7 +4051,7 @@ class Counties_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -4074,7 +4074,7 @@ class Counties_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -4097,7 +4097,7 @@ class Counties_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -4120,7 +4120,7 @@ class Counties_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -4145,7 +4145,7 @@ class Counties_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+                cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -4183,7 +4183,7 @@ class Predictive_Services_Areas_Perspective:
         '''
 
 
-        def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(directory_name, poor_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(directory_name, poor_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -4324,7 +4324,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -4346,7 +4346,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -4368,7 +4368,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -4390,7 +4390,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -4412,7 +4412,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -4434,7 +4434,7 @@ class Predictive_Services_Areas_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -4458,7 +4458,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -4479,7 +4479,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
     
     
-        def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(directory_name, low_minimum_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(directory_name, low_minimum_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -4621,7 +4621,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -4643,7 +4643,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -4665,7 +4665,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -4687,7 +4687,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -4709,7 +4709,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -4731,7 +4731,7 @@ class Predictive_Services_Areas_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -4755,7 +4755,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -4775,7 +4775,7 @@ class Predictive_Services_Areas_Perspective:
     
             return figs
     
-        def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(directory_name, excellent_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(directory_name, excellent_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Excellent Overnight Recovery RH Forecast. 
@@ -4914,7 +4914,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -4936,7 +4936,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -4958,7 +4958,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -4980,7 +4980,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -5002,7 +5002,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -5024,7 +5024,7 @@ class Predictive_Services_Areas_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -5048,7 +5048,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -5069,7 +5069,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
     
     
-        def plot_NWS_7_Day_maximum_relative_humidity_forecast(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_maximum_relative_humidity_forecast(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Maximum RH Forecast. 
@@ -5207,7 +5207,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -5229,7 +5229,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -5251,7 +5251,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -5273,7 +5273,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -5295,7 +5295,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -5317,7 +5317,7 @@ class Predictive_Services_Areas_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -5341,7 +5341,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -5363,7 +5363,7 @@ class Predictive_Services_Areas_Perspective:
         
     
     
-        def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Maximum RH Trend Forecast. 
@@ -5512,7 +5512,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -5534,7 +5534,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -5556,7 +5556,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -5578,7 +5578,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -5600,7 +5600,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -5624,7 +5624,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+                cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -5643,7 +5643,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
         
     
-        def plot_NWS_7_Day_minimum_relative_humidity_forecast(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_minimum_relative_humidity_forecast(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Minimum RH Forecast. 
@@ -5781,7 +5781,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -5803,7 +5803,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -5825,7 +5825,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -5847,7 +5847,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -5869,7 +5869,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -5891,7 +5891,7 @@ class Predictive_Services_Areas_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -5915,7 +5915,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -5937,7 +5937,7 @@ class Predictive_Services_Areas_Perspective:
         
     
     
-        def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Minimum RH Trend Forecast. 
@@ -6086,7 +6086,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -6108,7 +6108,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -6130,7 +6130,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -6152,7 +6152,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -6174,7 +6174,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -6199,7 +6199,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+                cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -6227,7 +6227,7 @@ class Predictive_Services_Areas_Perspective:
 
         '''
 
-        def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(file_path, poor_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(file_path, poor_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -6367,7 +6367,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -6389,7 +6389,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -6411,7 +6411,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -6433,7 +6433,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -6455,7 +6455,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -6477,7 +6477,7 @@ class Predictive_Services_Areas_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -6501,7 +6501,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -6522,7 +6522,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
     
     
-        def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(file_path, low_minimum_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(file_path, low_minimum_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -6662,7 +6662,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -6684,7 +6684,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -6706,7 +6706,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -6728,7 +6728,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -6750,7 +6750,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -6772,7 +6772,7 @@ class Predictive_Services_Areas_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -6796,7 +6796,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -6816,7 +6816,7 @@ class Predictive_Services_Areas_Perspective:
     
             return figs
     
-        def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(file_path, excellent_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(file_path, excellent_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Excellent Overnight Recovery RH Forecast. 
@@ -6953,7 +6953,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -6975,7 +6975,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -6997,7 +6997,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -7019,7 +7019,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -7041,7 +7041,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -7063,7 +7063,7 @@ class Predictive_Services_Areas_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -7087,7 +7087,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -7108,7 +7108,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
     
     
-        def plot_NWS_7_Day_maximum_relative_humidity_forecast(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_maximum_relative_humidity_forecast(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Maximum RH Forecast. 
@@ -7244,7 +7244,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -7266,7 +7266,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -7288,7 +7288,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -7310,7 +7310,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -7332,7 +7332,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -7354,7 +7354,7 @@ class Predictive_Services_Areas_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -7378,7 +7378,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -7400,7 +7400,7 @@ class Predictive_Services_Areas_Perspective:
         
     
     
-        def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Maximum RH Trend Forecast. 
@@ -7547,7 +7547,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -7569,7 +7569,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -7591,7 +7591,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -7613,7 +7613,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -7635,7 +7635,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+            cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -7659,7 +7659,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontweight='bold')
+                cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -7678,7 +7678,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
         
     
-        def plot_NWS_7_Day_minimum_relative_humidity_forecast(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_7_Day_minimum_relative_humidity_forecast(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Minimum RH Forecast. 
@@ -7814,7 +7814,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -7836,7 +7836,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -7858,7 +7858,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -7880,7 +7880,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -7902,7 +7902,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
@@ -7924,7 +7924,7 @@ class Predictive_Services_Areas_Perspective:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-            cbar6.set_label(label="Relative Humidity (%)", fontweight='bold')
+            cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -7948,7 +7948,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2)
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Relative Humidity (%)", fontweight='bold')
+                cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
@@ -7970,7 +7970,7 @@ class Predictive_Services_Areas_Perspective:
         
     
     
-        def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink):
+        def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Minimum RH Trend Forecast. 
@@ -8117,7 +8117,7 @@ class Predictive_Services_Areas_Perspective:
             cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-            cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
@@ -8139,7 +8139,7 @@ class Predictive_Services_Areas_Perspective:
             cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-            cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
@@ -8161,7 +8161,7 @@ class Predictive_Services_Areas_Perspective:
             cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-            cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
@@ -8183,7 +8183,7 @@ class Predictive_Services_Areas_Perspective:
             cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-            cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
@@ -8205,7 +8205,7 @@ class Predictive_Services_Areas_Perspective:
             cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-            cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+            cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
@@ -8230,7 +8230,7 @@ class Predictive_Services_Areas_Perspective:
                 cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-                cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontweight='bold')
+                cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
                 figs.append(fig2)
