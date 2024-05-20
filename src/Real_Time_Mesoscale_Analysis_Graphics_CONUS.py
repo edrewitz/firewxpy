@@ -138,6 +138,7 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -277,6 +278,7 @@ class Counties_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -405,6 +407,7 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -646,6 +649,7 @@ class Counties_Perspective:
         ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_0)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -694,6 +698,7 @@ class Counties_Perspective:
         ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_1)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -742,6 +747,7 @@ class Counties_Perspective:
         ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_2)
         ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -791,6 +797,7 @@ class Counties_Perspective:
         ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_3)
         ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -840,6 +847,7 @@ class Counties_Perspective:
         ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_4)
         ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -888,6 +896,7 @@ class Counties_Perspective:
         ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_5)
         ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -936,6 +945,7 @@ class Counties_Perspective:
         ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_6)
         ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -1218,6 +1228,7 @@ class Counties_Perspective:
         ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_8)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -1258,6 +1269,7 @@ class Counties_Perspective:
         ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_9)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -1298,6 +1310,7 @@ class Counties_Perspective:
         ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_10)
         ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -1338,6 +1351,7 @@ class Counties_Perspective:
         ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_11)
         ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -1376,6 +1390,7 @@ class Counties_Perspective:
         ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_12)
         ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -1415,6 +1430,7 @@ class Counties_Perspective:
         ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_13)
         ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -1453,6 +1469,7 @@ class Counties_Perspective:
         ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_14)
         ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -1578,6 +1595,7 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -1716,6 +1734,7 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -1834,6 +1853,7 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -1947,6 +1967,7 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -2059,6 +2080,7 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -2165,6 +2187,7 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -2278,6 +2301,7 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -2391,6 +2415,7 @@ class Counties_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -2532,6 +2557,7 @@ class Counties_Perspective:
         ax0 = fig.add_subplot(gs[0:1, 0:3], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax0.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax0.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax0.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax0.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
@@ -2554,6 +2580,7 @@ class Counties_Perspective:
         ax1 = fig.add_subplot(gs[0:1, 3:6], projection=plot_proj_2)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax1.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
@@ -2575,6 +2602,7 @@ class Counties_Perspective:
         ax2 = fig.add_subplot(gs[0:1, 6:9], projection=plot_proj_3)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax2.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
@@ -2717,6 +2745,7 @@ class Counties_Perspective:
         ax0 = fig.add_subplot(gs[0:1, 0:3], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax0.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax0.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax0.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax0.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax0.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
@@ -2739,6 +2768,7 @@ class Counties_Perspective:
         ax1 = fig.add_subplot(gs[0:1, 3:6], projection=plot_proj_2)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax1.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
@@ -2760,6 +2790,7 @@ class Counties_Perspective:
         ax2 = fig.add_subplot(gs[0:1, 6:9], projection=plot_proj_3)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax2.add_feature(cfeature.STATES, linewidth=2, edgecolor='violet', zorder=5)
@@ -2895,6 +2926,7 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=GACC_Border_Line_Thickness, zorder=5)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -3036,6 +3068,7 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=GACC_Border_Line_Thickness, zorder=5)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -3166,6 +3199,7 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -3300,6 +3334,7 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -3441,6 +3476,7 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -3559,6 +3595,7 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -3673,6 +3710,7 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -3787,6 +3825,7 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -3895,6 +3934,7 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -4010,6 +4050,7 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -4125,6 +4166,7 @@ class Predictive_Services_Areas_Perspective:
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
@@ -4268,6 +4310,7 @@ class Predictive_Services_Areas_Perspective:
         ax0 = fig.add_subplot(gs[0:1, 0:3], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax0.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax0.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax0.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax0.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax0.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -4289,6 +4332,7 @@ class Predictive_Services_Areas_Perspective:
         ax1 = fig.add_subplot(gs[0:1, 3:6], projection=plot_proj_2)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax1.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax1.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -4309,6 +4353,7 @@ class Predictive_Services_Areas_Perspective:
         ax2 = fig.add_subplot(gs[0:1, 6:9], projection=plot_proj_3)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax2.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax2.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -4453,6 +4498,7 @@ class Predictive_Services_Areas_Perspective:
         ax0 = fig.add_subplot(gs[0:1, 0:3], projection=plot_proj_1)
         ax0.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax0.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax0.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax0.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax0.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax0.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -4474,6 +4520,7 @@ class Predictive_Services_Areas_Perspective:
         ax1 = fig.add_subplot(gs[0:1, 3:6], projection=plot_proj_2)
         ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax1.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax1.add_feature(PSAs, linewidth=1.5, zorder=4)
@@ -4494,6 +4541,7 @@ class Predictive_Services_Areas_Perspective:
         ax2 = fig.add_subplot(gs[0:1, 6:9], projection=plot_proj_3)
         ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
         ax2.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         ax2.add_feature(PSAs, linewidth=1.5, zorder=4)
