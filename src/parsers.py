@@ -3196,7 +3196,7 @@ class save:
         file_path_5 = file_path_5
         file_path_6 = file_path_6
         file_path_7 = file_path_7
-
+        
         try:
             os.remove(file_path_1)
             print("First File Removed.")
@@ -3238,7 +3238,6 @@ class save:
             print("Seventh File Removed.")
         except Exception as g:
             print("File doesn't exist")
-
 
 
 
