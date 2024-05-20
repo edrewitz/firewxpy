@@ -3197,46 +3197,46 @@ class save:
         file_path_6 = file_path_6
         file_path_7 = file_path_7
 
-        if os.path.exists(file_path_1):
+        try:
             os.remove(file_path_1)
             print("First File Removed.")
-        else:
+        except Exception as a:
             print("File doesn't exist")
 
-        if os.path.exists(file_path_2):
+        try:
             os.remove(file_path_2)
             print("Second File Removed.")
-        else:
+        except Exception as b:
             print("File doesn't exist")
 
-        if os.path.exists(file_path_3):
+        try:
             os.remove(file_path_3)
             print("Third File Removed.")
-        else:
+        except Exception as c:
             print("File doesn't exist")
 
-        if os.path.exists(file_path_4):
+        try:
             os.remove(file_path_4)
             print("Fourth File Removed.")
-        else:
+        except Exception as d:
             print("File doesn't exist")
 
-        if os.path.exists(file_path_5):
+        try:
             os.remove(file_path_5)
             print("Fifth File Removed.")
-        else:
+        except Exception as e:
             print("File doesn't exist")
 
-        if os.path.exists(file_path_6):
+        try:
             os.remove(file_path_6)
             print("Sixth File Removed.")
-        else:
+        except Exception as f:
             print("File doesn't exist")
 
-        if os.path.exists(file_path_7):
+        try:
             os.remove(file_path_7)
             print("Seventh File Removed.")
-        else:
+        except Exception as g:
             print("File doesn't exist")
 
 
