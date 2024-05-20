@@ -15,6 +15,7 @@ import data_access as da
 import matplotlib.pyplot as plt
 import imageio
 import os.path, time
+import os
 
 from datetime import datetime, timedelta
 from metpy.units import units
@@ -3183,4 +3184,61 @@ class save:
                         writer.append_data(image)        
         
         print("GIF Saved!")   
-            
+
+
+    def clear_NDFD_images(file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7):
+
+
+        file_path_1 = file_path_1
+        file_path_2 = file_path_2
+        file_path_3 = file_path_3
+        file_path_4 = file_path_4
+        file_path_5 = file_path_5
+        file_path_6 = file_path_6
+        file_path_7 = file_path_7
+
+        if os.path.exists(file_path_1):
+            os.remove(file_path_1)
+            print("First File Removed.")
+        else:
+            print("File doesn't exist")
+
+        if os.path.exists(file_path_2):
+            os.remove(file_path_2)
+            print("Second File Removed.")
+        else:
+            print("File doesn't exist")
+
+        if os.path.exists(file_path_3):
+            os.remove(file_path_3)
+            print("Third File Removed.")
+        else:
+            print("File doesn't exist")
+
+        if os.path.exists(file_path_4):
+            os.remove(file_path_4)
+            print("Fourth File Removed.")
+        else:
+            print("File doesn't exist")
+
+        if os.path.exists(file_path_5):
+            os.remove(file_path_5)
+            print("Fifth File Removed.")
+        else:
+            print("File doesn't exist")
+
+        if os.path.exists(file_path_6):
+            os.remove(file_path_6)
+            print("Sixth File Removed.")
+        else:
+            print("File doesn't exist")
+
+        if os.path.exists(file_path_7):
+            os.remove(file_path_7)
+            print("Seventh File Removed.")
+        else:
+            print("File doesn't exist")
+
+
+
+
