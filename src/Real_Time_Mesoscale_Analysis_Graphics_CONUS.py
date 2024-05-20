@@ -2179,6 +2179,8 @@ class Counties_Perspective:
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
 
+        cmap = colormaps.cool_temperatures_colormap()
+
         plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
@@ -2198,7 +2200,7 @@ class Counties_Perspective:
         ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap='cool_r', alpha=1, extend='min')
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap=cmap, alpha=1, extend='min')
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -2313,7 +2315,7 @@ class Counties_Perspective:
 
         # Plot the mask
         try:
-            ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap)
+            ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap, zorder=2)
 
         except Exception as e:
             pass
@@ -2427,7 +2429,7 @@ class Counties_Perspective:
 
         # Plot the mask
         try:
-            ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap)
+            ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap, zorder=2)
 
         except Exception as e:
             pass
@@ -2571,7 +2573,7 @@ class Counties_Perspective:
 
         # Plot the mask
         try:
-            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw)
+            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw, zorder=2)
 
         except Exception as e:
             pass
@@ -2759,7 +2761,7 @@ class Counties_Perspective:
 
         # Plot the mask
         try:
-            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw)
+            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw, zorder=2)
 
         except Exception as e:
             pass
@@ -3923,6 +3925,8 @@ class Predictive_Services_Areas_Perspective:
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
 
+        cmap = colormaps.cool_temperatures_colormap()
+
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
 
@@ -3944,7 +3948,7 @@ class Predictive_Services_Areas_Perspective:
         ax.add_feature(PSAs, linewidth=1.5, zorder=4)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap='cool_r', alpha=1, extend='min')
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap=cmap, alpha=1, extend='min')
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -4061,7 +4065,7 @@ class Predictive_Services_Areas_Perspective:
 
         # Plot the mask
         try:
-            ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap)
+            ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap, zorder=2)
 
         except Exception as e:
             pass
@@ -4177,7 +4181,7 @@ class Predictive_Services_Areas_Perspective:
 
         # Plot the mask
         try:
-            ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap)
+            ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap, zorder=2)
 
         except Exception as e:
             pass
@@ -4323,7 +4327,7 @@ class Predictive_Services_Areas_Perspective:
 
         # Plot the mask
         try:
-            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw)
+            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw, zorder=2)
 
         except Exception as e:
             pass
@@ -4511,7 +4515,7 @@ class Predictive_Services_Areas_Perspective:
 
         # Plot the mask
         try:
-            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw)
+            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw, zorder=2)
 
         except Exception as e:
             pass
@@ -4699,7 +4703,7 @@ class Predictive_Services_Areas_Perspective:
 
         # Plot the mask
         try:
-            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw)
+            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw, zorder=2)
 
         except Exception as e:
             pass
