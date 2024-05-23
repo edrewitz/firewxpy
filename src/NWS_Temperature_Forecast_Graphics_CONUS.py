@@ -1928,7 +1928,7 @@ class Counties_Perspective:
 
         '''
 
-        def plot_extreme_heat_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, show_rivers, show_counties, state_linewidth, county_linewidth): 
+        def plot_extreme_heat_forecast(file_path, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, show_rivers, show_counties, state_linewidth, county_linewidth): 
         
             r'''
             THIS FUNCTION PLOTS AREAS WHERE THERE IS EXTREME HEAT IN THE FORECAST. DURING THE WARM SEASON (APRIL - OCTOBER) EXTREME HEAT IS DEFINED AS THE MAXIMUM TEMPERATURE >= 120F AND COLD SEASON (NOVEMBER - MARCH) MAXIMUM TEMPERATURE >= 100F AND IS BASED ON THE NATIONAL WEATHER SERVICE FORECAST
@@ -1985,7 +1985,7 @@ class Counties_Perspective:
     
             temp_scale_warm = np.arange(temp_scale_warm_start, temp_scale_warm_stop_corrected, temp_scale_step)
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxt.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
     
             try:
                 if grb_7_vals.all() != None:
@@ -2272,7 +2272,7 @@ class Counties_Perspective:
             return figs
     
     
-        def plot_frost_freeze_forecast(directory_name, temperature_bottom_bound, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, temp_scale_step, show_rivers, show_counties, state_linewidth, county_linewidth): 
+        def plot_frost_freeze_forecast(file_path, temperature_bottom_bound, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, temp_scale_step, show_rivers, show_counties, state_linewidth, county_linewidth): 
         
             r'''
             THIS FUNCTION PLOTS AREAS WHERE THERE IS EXTREME HEAT IN THE FORECAST. DURING THE WARM SEASON (APRIL - OCTOBER) EXTREME HEAT IS DEFINED AS THE MAXIMUM TEMPERATURE >= 120F AND COLD SEASON (NOVEMBER - MARCH) MAXIMUM TEMPERATURE >= 100F AND IS BASED ON THE NATIONAL WEATHER SERVICE FORECAST
@@ -2318,7 +2318,7 @@ class Counties_Perspective:
     
             cmap = colormaps.cool_temperatures_colormap()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
     
             try:
                 if grb_7_vals.all() != None:
@@ -2549,7 +2549,7 @@ class Counties_Perspective:
             return figs
     
     
-        def plot_maximum_temperature_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, show_rivers, show_counties, state_linewidth, county_linewidth): 
+        def plot_maximum_temperature_forecast(file_path, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, show_rivers, show_counties, state_linewidth, county_linewidth): 
         
             r'''
             THIS FUNCTION PLOTS AREAS WHERE THERE IS EXTREME HEAT IN THE FORECAST. DURING THE WARM SEASON (APRIL - OCTOBER) EXTREME HEAT IS DEFINED AS THE MAXIMUM TEMPERATURE >= 120F AND COLD SEASON (NOVEMBER - MARCH) MAXIMUM TEMPERATURE >= 100F AND IS BASED ON THE NATIONAL WEATHER SERVICE FORECAST
@@ -2606,7 +2606,7 @@ class Counties_Perspective:
     
             temp_scale_warm = np.arange(temp_scale_warm_start, temp_scale_warm_stop_corrected, temp_scale_step)
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxt.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
     
             try:
                 if grb_7_vals.all() != None:
@@ -2892,7 +2892,7 @@ class Counties_Perspective:
     
             return figs
     
-        def plot_minimum_temperature_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, show_rivers, show_counties, state_linewidth, county_linewidth): 
+        def plot_minimum_temperature_forecast(file_path, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, show_rivers, show_counties, state_linewidth, county_linewidth): 
         
             r'''
             THIS FUNCTION PLOTS AREAS WHERE THERE IS EXTREME HEAT IN THE FORECAST. DURING THE WARM SEASON (APRIL - OCTOBER) EXTREME HEAT IS DEFINED AS THE Minimum Temperature >= 120F AND COLD SEASON (NOVEMBER - MARCH) Minimum Temperature >= 100F AND IS BASED ON THE NATIONAL WEATHER SERVICE FORECAST
@@ -2949,7 +2949,7 @@ class Counties_Perspective:
     
             temp_scale_warm = np.arange(temp_scale_warm_start, temp_scale_warm_stop_corrected, temp_scale_step)
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
     
             try:
                 if grb_7_vals.all() != None:
@@ -3236,7 +3236,7 @@ class Counties_Perspective:
             return figs 
     
     
-        def plot_NWS_Nights_2_through_7_minimum_temperature_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
+        def plot_NWS_Nights_2_through_7_minimum_temperature_trends(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Maximum RH Trend Forecast. 
@@ -3300,7 +3300,7 @@ class Counties_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
     
             try:
                 if grb_7_vals.all() != None:
@@ -3517,7 +3517,7 @@ class Counties_Perspective:
             return figs
     
     
-        def plot_NWS_Days_2_through_7_maximum_temperature_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
+        def plot_NWS_Days_2_through_7_maximum_temperature_trends(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_counties, show_rivers, state_linewidth, county_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Maximum RH Trend Forecast. 
@@ -3581,7 +3581,7 @@ class Counties_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxt.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
     
             try:
                 if grb_7_vals.all() != None:
@@ -5693,7 +5693,7 @@ class Predictive_Services_Areas_Perspective:
 
         '''
 
-        def plot_extreme_heat_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth): 
+        def plot_extreme_heat_forecast(file_path, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth): 
         
             r'''
             THIS FUNCTION PLOTS AREAS WHERE THERE IS EXTREME HEAT IN THE FORECAST. DURING THE WARM SEASON (APRIL - OCTOBER) EXTREME HEAT IS DEFINED AS THE MAXIMUM TEMPERATURE >= 120F AND COLD SEASON (NOVEMBER - MARCH) MAXIMUM TEMPERATURE >= 100F AND IS BASED ON THE NATIONAL WEATHER SERVICE FORECAST
@@ -5753,7 +5753,7 @@ class Predictive_Services_Areas_Perspective:
     
             temp_scale_warm = np.arange(temp_scale_warm_start, temp_scale_warm_stop_corrected, temp_scale_step)
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxt.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
     
             try:
                 if grb_7_vals.all() != None:
@@ -6033,7 +6033,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
     
     
-        def plot_frost_freeze_forecast(directory_name, temperature_bottom_bound, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, temp_scale_step, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth): 
+        def plot_frost_freeze_forecast(file_path, temperature_bottom_bound, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, temp_scale_step, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth): 
         
             r'''
             THIS FUNCTION PLOTS AREAS WHERE THERE IS EXTREME HEAT IN THE FORECAST. DURING THE WARM SEASON (APRIL - OCTOBER) EXTREME HEAT IS DEFINED AS THE MAXIMUM TEMPERATURE >= 120F AND COLD SEASON (NOVEMBER - MARCH) MAXIMUM TEMPERATURE >= 100F AND IS BASED ON THE NATIONAL WEATHER SERVICE FORECAST
@@ -6082,7 +6082,7 @@ class Predictive_Services_Areas_Perspective:
     
             cmap = colormaps.cool_temperatures_colormap()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
     
             try:
                 if grb_7_vals.all() != None:
@@ -6306,7 +6306,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
     
     
-        def plot_maximum_temperature_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth): 
+        def plot_maximum_temperature_forecast(file_path, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth): 
         
             r'''
             THIS FUNCTION PLOTS AREAS WHERE THERE IS EXTREME HEAT IN THE FORECAST. DURING THE WARM SEASON (APRIL - OCTOBER) EXTREME HEAT IS DEFINED AS THE MAXIMUM TEMPERATURE >= 120F AND COLD SEASON (NOVEMBER - MARCH) MAXIMUM TEMPERATURE >= 100F AND IS BASED ON THE NATIONAL WEATHER SERVICE FORECAST
@@ -6366,7 +6366,7 @@ class Predictive_Services_Areas_Perspective:
     
             temp_scale_warm = np.arange(temp_scale_warm_start, temp_scale_warm_stop_corrected, temp_scale_step)
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxt.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
     
             try:
                 if grb_7_vals.all() != None:
@@ -6645,7 +6645,7 @@ class Predictive_Services_Areas_Perspective:
     
             return figs
     
-        def plot_minimum_temperature_forecast(directory_name, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth): 
+        def plot_minimum_temperature_forecast(file_path, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, title_fontsize, subplot_title_fontsize, colorbar_fontsize, signature_x_position, signature_y_position, signature_fontsize, start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth): 
         
             r'''
             THIS FUNCTION PLOTS AREAS WHERE THERE IS EXTREME HEAT IN THE FORECAST. DURING THE WARM SEASON (APRIL - OCTOBER) EXTREME HEAT IS DEFINED AS THE Minimum Temperature >= 120F AND COLD SEASON (NOVEMBER - MARCH) Minimum Temperature >= 100F AND IS BASED ON THE NATIONAL WEATHER SERVICE FORECAST
@@ -6705,7 +6705,7 @@ class Predictive_Services_Areas_Perspective:
     
             temp_scale_warm = np.arange(temp_scale_warm_start, temp_scale_warm_stop_corrected, temp_scale_step)
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
     
             try:
                 if grb_7_vals.all() != None:
@@ -6985,7 +6985,7 @@ class Predictive_Services_Areas_Perspective:
             return figs 
     
     
-        def plot_NWS_Nights_2_through_7_minimum_temperature_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, color_table_shrink, colorbar_fontsize):
+        def plot_NWS_Nights_2_through_7_minimum_temperature_trends(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Maximum RH Trend Forecast. 
@@ -7052,7 +7052,7 @@ class Predictive_Services_Areas_Perspective:
             PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
             GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
     
             try:
                 if grb_7_vals.all() != None:
@@ -7263,7 +7263,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
     
     
-        def plot_NWS_Days_2_through_7_maximum_temperature_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, color_table_shrink, colorbar_fontsize):
+        def plot_NWS_Days_2_through_7_maximum_temperature_trends(file_path, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, key_fontsize, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, color_table_shrink, colorbar_fontsize):
     
             r'''
             This function plots the latest available NOAA/NWS Maximum RH Trend Forecast. 
@@ -7330,7 +7330,7 @@ class Predictive_Services_Areas_Perspective:
             PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
             GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxt.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
     
             try:
                 if grb_7_vals.all() != None:
