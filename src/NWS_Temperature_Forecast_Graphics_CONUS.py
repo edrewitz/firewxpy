@@ -1948,7 +1948,6 @@ class Counties_Perspective:
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
             
-            directory_name = directory_name
             start_of_warm_season_month = start_of_warm_season_month
             end_of_warm_season_month = end_of_warm_season_month
             start_of_cool_season_month = start_of_cool_season_month
@@ -2292,7 +2291,6 @@ class Counties_Perspective:
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
             
-            directory_name = directory_name
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
             color_table_shrink = color_table_shrink
@@ -2569,7 +2567,6 @@ class Counties_Perspective:
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
             
-            directory_name = directory_name
             start_of_warm_season_month = start_of_warm_season_month
             end_of_warm_season_month = end_of_warm_season_month
             start_of_cool_season_month = start_of_cool_season_month
@@ -2912,7 +2909,6 @@ class Counties_Perspective:
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
             
-            directory_name = directory_name
             start_of_warm_season_month = start_of_warm_season_month
             end_of_warm_season_month = end_of_warm_season_month
             start_of_cool_season_month = start_of_cool_season_month
@@ -3865,8 +3861,8 @@ class Predictive_Services_Areas_Perspective:
             temp_scale_cool_start = temp_scale_cool_start
             temp_scale_cool_stop = temp_scale_cool_stop
             temp_scale_cool_stop_corrected = temp_scale_cool_stop + temp_scale_step
-            state_linewidth = state_linewidth
-            county_linewidth = county_linewidth
+            gacc_boundary_linewidth = gacc_boundary_linewidth
+            psa_boundary_linewidth = psa_boundary_linewidth
     
             
             from_zone = tz.tzutc()
@@ -3947,7 +3943,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax1.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -3977,7 +3973,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax2.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4007,7 +4003,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax3.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4037,7 +4033,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax4.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4067,7 +4063,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax5.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4097,7 +4093,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax6.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax6.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4129,7 +4125,7 @@ class Predictive_Services_Areas_Perspective:
             
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax7.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+                ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
                 ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4198,8 +4194,8 @@ class Predictive_Services_Areas_Perspective:
             signature_fontsize = signature_fontsize
             temperature_bottom_bound = temperature_bottom_bound
             temp_scale_step = temp_scale_step
-            state_linewidth = state_linewidth
-            county_linewidth = county_linewidth
+            gacc_boundary_linewidth = gacc_boundary_linewidth
+            psa_boundary_linewidth = psa_boundary_linewidth
     
             
             from_zone = tz.tzutc()
@@ -4274,7 +4270,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax1.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4296,7 +4292,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax2.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4318,7 +4314,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax3.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4340,7 +4336,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax4.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4362,7 +4358,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax5.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4384,7 +4380,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax6.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax6.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4408,7 +4404,7 @@ class Predictive_Services_Areas_Perspective:
             
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax7.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+                ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
                 ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4482,8 +4478,8 @@ class Predictive_Services_Areas_Perspective:
             temp_scale_cool_start = temp_scale_cool_start
             temp_scale_cool_stop = temp_scale_cool_stop
             temp_scale_cool_stop_corrected = temp_scale_cool_stop + temp_scale_step
-            state_linewidth = state_linewidth
-            county_linewidth = county_linewidth
+            gacc_boundary_linewidth = gacc_boundary_linewidth
+            psa_boundary_linewidth = psa_boundary_linewidth
     
             cmap = colormaps.temperature_colormap()
             from_zone = tz.tzutc()
@@ -4564,7 +4560,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax1.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4594,7 +4590,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax2.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4624,7 +4620,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax3.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4654,7 +4650,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax4.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4684,7 +4680,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax5.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4714,7 +4710,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax6.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax6.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4746,7 +4742,7 @@ class Predictive_Services_Areas_Perspective:
             
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax7.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+                ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
                 ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4823,8 +4819,8 @@ class Predictive_Services_Areas_Perspective:
             temp_scale_cool_start = temp_scale_cool_start
             temp_scale_cool_stop = temp_scale_cool_stop
             temp_scale_cool_stop_corrected = temp_scale_cool_stop + temp_scale_step
-            state_linewidth = state_linewidth
-            county_linewidth = county_linewidth
+            gacc_boundary_linewidth = gacc_boundary_linewidth
+            psa_boundary_linewidth = psa_boundary_linewidth
     
             cmap = colormaps.temperature_colormap()
             from_zone = tz.tzutc()
@@ -4905,7 +4901,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax1.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4935,7 +4931,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax2.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4965,7 +4961,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax3.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -4995,7 +4991,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax4.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5025,7 +5021,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax5.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5055,7 +5051,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax6.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax6.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5087,7 +5083,7 @@ class Predictive_Services_Areas_Perspective:
             
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax7.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+                ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
                 ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5176,8 +5172,8 @@ class Predictive_Services_Areas_Perspective:
     
     
             local_time, utc_time = standard.plot_creation_time()
-            state_linewidth = state_linewidth
-            county_linewidth = county_linewidth
+            gacc_boundary_linewidth = gacc_boundary_linewidth
+            psa_boundary_linewidth = psa_boundary_linewidth
             contour_step = contour_step
     
             cmap = colormaps.relative_humidity_change_colormap()
@@ -5261,7 +5257,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax1.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5283,7 +5279,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax2.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5305,7 +5301,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax3.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5327,7 +5323,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax4.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5349,7 +5345,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax5.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5373,7 +5369,7 @@ class Predictive_Services_Areas_Perspective:
                 
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax7.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+                ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
                 ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5456,8 +5452,8 @@ class Predictive_Services_Areas_Perspective:
     
     
             local_time, utc_time = standard.plot_creation_time()
-            state_linewidth = state_linewidth
-            county_linewidth = county_linewidth
+            gacc_boundary_linewidth = gacc_boundary_linewidth
+            psa_boundary_linewidth = psa_boundary_linewidth
             contour_step = contour_step
     
             cmap = colormaps.relative_humidity_change_colormap()
@@ -5541,7 +5537,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax1.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5563,7 +5559,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax2.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5585,7 +5581,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax3.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5607,7 +5603,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax4.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5629,7 +5625,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax5.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5653,7 +5649,7 @@ class Predictive_Services_Areas_Perspective:
                 
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax7.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+                ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
                 ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5713,7 +5709,6 @@ class Predictive_Services_Areas_Perspective:
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
             
-            directory_name = directory_name
             start_of_warm_season_month = start_of_warm_season_month
             end_of_warm_season_month = end_of_warm_season_month
             start_of_cool_season_month = start_of_cool_season_month
@@ -5734,8 +5729,8 @@ class Predictive_Services_Areas_Perspective:
             temp_scale_cool_start = temp_scale_cool_start
             temp_scale_cool_stop = temp_scale_cool_stop
             temp_scale_cool_stop_corrected = temp_scale_cool_stop + temp_scale_step
-            state_linewidth = state_linewidth
-            county_linewidth = county_linewidth
+            gacc_boundary_linewidth = gacc_boundary_linewidth
+            psa_boundary_linewidth = psa_boundary_linewidth
     
             
             from_zone = tz.tzutc()
@@ -5814,7 +5809,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax1.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5844,7 +5839,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax2.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5874,7 +5869,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax3.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5904,7 +5899,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax4.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5934,7 +5929,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax5.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5964,7 +5959,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax6.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax6.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -5996,7 +5991,7 @@ class Predictive_Services_Areas_Perspective:
             
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax7.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+                ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
                 ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6053,7 +6048,6 @@ class Predictive_Services_Areas_Perspective:
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
             
-            directory_name = directory_name
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
             color_table_shrink = color_table_shrink
@@ -6065,8 +6059,8 @@ class Predictive_Services_Areas_Perspective:
             signature_fontsize = signature_fontsize
             temperature_bottom_bound = temperature_bottom_bound
             temp_scale_step = temp_scale_step
-            state_linewidth = state_linewidth
-            county_linewidth = county_linewidth
+            gacc_boundary_linewidth = gacc_boundary_linewidth
+            psa_boundary_linewidth = psa_boundary_linewidth
     
             
             from_zone = tz.tzutc()
@@ -6139,7 +6133,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax1.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6161,7 +6155,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax2.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6183,7 +6177,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax3.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6205,7 +6199,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax4.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6227,7 +6221,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax5.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6249,7 +6243,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax6.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax6.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6273,7 +6267,7 @@ class Predictive_Services_Areas_Perspective:
             
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax7.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+                ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
                 ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6326,7 +6320,6 @@ class Predictive_Services_Areas_Perspective:
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
             
-            directory_name = directory_name
             start_of_warm_season_month = start_of_warm_season_month
             end_of_warm_season_month = end_of_warm_season_month
             start_of_cool_season_month = start_of_cool_season_month
@@ -6347,8 +6340,8 @@ class Predictive_Services_Areas_Perspective:
             temp_scale_cool_start = temp_scale_cool_start
             temp_scale_cool_stop = temp_scale_cool_stop
             temp_scale_cool_stop_corrected = temp_scale_cool_stop + temp_scale_step
-            state_linewidth = state_linewidth
-            county_linewidth = county_linewidth
+            gacc_boundary_linewidth = gacc_boundary_linewidth
+            psa_boundary_linewidth = psa_boundary_linewidth
     
             cmap = colormaps.temperature_colormap()
             from_zone = tz.tzutc()
@@ -6427,7 +6420,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax1.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6457,7 +6450,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax2.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6487,7 +6480,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax3.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6517,7 +6510,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax4.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6547,7 +6540,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax5.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6577,7 +6570,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax6.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax6.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6609,7 +6602,7 @@ class Predictive_Services_Areas_Perspective:
             
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax7.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+                ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
                 ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6665,7 +6658,6 @@ class Predictive_Services_Areas_Perspective:
             COPYRIGHT (C) METEOROLOGIST ERIC J. DREWITZ 2023
             '''
             
-            directory_name = directory_name
             start_of_warm_season_month = start_of_warm_season_month
             end_of_warm_season_month = end_of_warm_season_month
             start_of_cool_season_month = start_of_cool_season_month
@@ -6686,8 +6678,8 @@ class Predictive_Services_Areas_Perspective:
             temp_scale_cool_start = temp_scale_cool_start
             temp_scale_cool_stop = temp_scale_cool_stop
             temp_scale_cool_stop_corrected = temp_scale_cool_stop + temp_scale_step
-            state_linewidth = state_linewidth
-            county_linewidth = county_linewidth
+            gacc_boundary_linewidth = gacc_boundary_linewidth
+            psa_boundary_linewidth = psa_boundary_linewidth
     
             cmap = colormaps.temperature_colormap()
             from_zone = tz.tzutc()
@@ -6766,7 +6758,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax1.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6796,7 +6788,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax2.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6826,7 +6818,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax3.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6856,7 +6848,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax4.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6886,7 +6878,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax5.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6916,7 +6908,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax6.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax6.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -6948,7 +6940,7 @@ class Predictive_Services_Areas_Perspective:
             
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax7.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+                ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
                 ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -7037,8 +7029,8 @@ class Predictive_Services_Areas_Perspective:
     
     
             local_time, utc_time = standard.plot_creation_time()
-            state_linewidth = state_linewidth
-            county_linewidth = county_linewidth
+            gacc_boundary_linewidth = gacc_boundary_linewidth
+            psa_boundary_linewidth = psa_boundary_linewidth
             contour_step = contour_step
     
             cmap = colormaps.relative_humidity_change_colormap()
@@ -7120,7 +7112,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax1.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -7142,7 +7134,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax2.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -7164,7 +7156,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax3.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -7186,7 +7178,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax4.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -7208,7 +7200,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax5.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -7232,7 +7224,7 @@ class Predictive_Services_Areas_Perspective:
                 
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax7.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+                ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
                 ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -7315,8 +7307,8 @@ class Predictive_Services_Areas_Perspective:
     
     
             local_time, utc_time = standard.plot_creation_time()
-            state_linewidth = state_linewidth
-            county_linewidth = county_linewidth
+            gacc_boundary_linewidth = gacc_boundary_linewidth
+            psa_boundary_linewidth = psa_boundary_linewidth
             contour_step = contour_step
     
             cmap = colormaps.relative_humidity_change_colormap()
@@ -7398,7 +7390,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax1.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -7420,7 +7412,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax2.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -7442,7 +7434,7 @@ class Predictive_Services_Areas_Perspective:
         
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax3.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -7464,7 +7456,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax4.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -7486,7 +7478,7 @@ class Predictive_Services_Areas_Perspective:
             
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax5.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
             ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
@@ -7510,7 +7502,7 @@ class Predictive_Services_Areas_Perspective:
                 
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-                ax7.add_feature( GACC, linewidth=gacc_boundary_linewidth, zorder=5)
+                ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=5)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
                 ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
