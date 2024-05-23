@@ -1580,7 +1580,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 try:
                     rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_parameter = rtma_data[parameter].squeeze()
     
                     print("Data retrieval for " + current_time.strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -1594,7 +1594,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     try:
                         rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_parameter = rtma_data[parameter].squeeze()
                         time = times[0]
             
@@ -1608,7 +1608,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         try:
                             rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_parameter = rtma_data[parameter].squeeze()
                             time = times[1]
                 
@@ -1623,7 +1623,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             try:
                                 rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_parameter = rtma_data[parameter].squeeze()
                                 time = times[2]
                 
@@ -1637,7 +1637,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 try:
                                     rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_parameter = rtma_data[parameter].squeeze()
                                     time = times[3]
                     
@@ -1655,7 +1655,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 try:
                     rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_parameter = rtma_data[parameter].squeeze()
     
                     print("Data retrieval for " + current_time.strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -1669,7 +1669,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     try:
                         rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_parameter = rtma_data[parameter].squeeze()
                         time = times[0]
             
@@ -1683,7 +1683,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         try:
                             rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_parameter = rtma_data[parameter].squeeze()
                             time = times[1]
                 
@@ -1698,7 +1698,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             try:
                                 rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_parameter = rtma_data[parameter].squeeze()
                                 time = times[2]
                 
@@ -1712,7 +1712,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 try:
                                     rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_parameter = rtma_data[parameter].squeeze()
                                     time = times[3]
                     
@@ -1731,7 +1731,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 try:
                     rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_parameter = rtma_data[parameter].squeeze()
     
                     print("Data retrieval for " + current_time.strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -1745,7 +1745,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     try:
                         rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_parameter = rtma_data[parameter].squeeze()
                         time = times[0]
             
@@ -1759,7 +1759,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         try:
                             rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_parameter = rtma_data[parameter].squeeze()
                             time = times[1]
                 
@@ -1774,7 +1774,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             try:
                                 rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_parameter = rtma_data[parameter].squeeze()
                                 time = times[2]
                 
@@ -1788,7 +1788,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 try:
                                     rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_parameter = rtma_data[parameter].squeeze()
                                     time = times[3]
                     
@@ -1847,12 +1847,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 try:
                     rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_parameter = rtma_data[parameter].squeeze()
             
                     rtma_cat_24 = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                    rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_parameter_24 = rtma_data_24[parameter].squeeze()
             
                     print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -1869,12 +1869,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     try:
                         rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_parameter = rtma_data[parameter].squeeze()
                 
                         rtma_cat_24 = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                        rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_parameter_24 = rtma_data_24[parameter].squeeze()
                 
                         print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -1891,12 +1891,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         try:
                             rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_parameter = rtma_data[parameter].squeeze()
                     
                             rtma_cat_24 = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                            rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_parameter_24 = rtma_data_24[parameter].squeeze()
                     
                             print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -1914,12 +1914,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             try:
                                 rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_parameter = rtma_data[parameter].squeeze()
                         
                                 rtma_cat_24 = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_parameter_24 = rtma_data_24[parameter].squeeze()
                         
                                 print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -1936,12 +1936,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 try:
                                     rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_parameter = rtma_data[parameter].squeeze()
                             
                                     rtma_cat_24 = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                    rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_parameter_24 = rtma_data_24[parameter].squeeze()
                             
                                     print("Data retrieval for " + times[4].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[4].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -1963,12 +1963,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 try:
                     rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_parameter = rtma_data[parameter].squeeze()
             
                     rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                    rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_parameter_24 = rtma_data_24[parameter].squeeze()
             
                     print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -1985,12 +1985,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     try:
                         rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_parameter = rtma_data[parameter].squeeze()
                 
                         rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                        rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_parameter_24 = rtma_data_24[parameter].squeeze()
                 
                         print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -2007,12 +2007,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         try:
                             rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_parameter = rtma_data[parameter].squeeze()
                     
                             rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                            rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_parameter_24 = rtma_data_24[parameter].squeeze()
                     
                             print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -2030,12 +2030,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             try:
                                 rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_parameter = rtma_data[parameter].squeeze()
                         
                                 rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_parameter_24 = rtma_data_24[parameter].squeeze()
                         
                                 print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -2052,12 +2052,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 try:
                                     rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_parameter = rtma_data[parameter].squeeze()
                             
                                     rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                    rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_parameter_24 = rtma_data_24[parameter].squeeze()
                             
                                     print("Data retrieval for " + times[4].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[4].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -2078,12 +2078,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 try:
                     rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_parameter = rtma_data[parameter].squeeze()
             
                     rtma_cat_24 = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                    rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_parameter_24 = rtma_data_24[parameter].squeeze()
             
                     print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -2100,12 +2100,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     try:
                         rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_parameter = rtma_data[parameter].squeeze()
                 
                         rtma_cat_24 = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                        rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_parameter_24 = rtma_data_24[parameter].squeeze()
                 
                         print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -2122,12 +2122,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         try:
                             rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_parameter = rtma_data[parameter].squeeze()
                     
                             rtma_cat_24 = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                            rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_parameter_24 = rtma_data_24[parameter].squeeze()
                     
                             print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -2145,12 +2145,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             try:
                                 rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_parameter = rtma_data[parameter].squeeze()
                         
                                 rtma_cat_24 = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_parameter_24 = rtma_data_24[parameter].squeeze()
                         
                                 print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -2167,12 +2167,12 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 try:
                                     rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_parameter = rtma_data[parameter].squeeze()
                             
                                     rtma_cat_24 = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                    rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_parameter_24 = rtma_data_24[parameter].squeeze()
                             
                                     print("Data retrieval for " + times[4].strftime('%m/%d/%Y %H00 UTC') + " and " + times_24[4].strftime('%m/%d/%Y %H00 UTC') + " is successful")
@@ -2225,7 +2225,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 try:
                     rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                     rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
             
@@ -2243,7 +2243,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     try:
                         rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                         rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                 
@@ -2261,7 +2261,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         try:
                             rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                             rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                     
@@ -2279,7 +2279,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             try:
                                 rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                                 rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                         
@@ -2297,7 +2297,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 try:
                                     rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                                     rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                             
@@ -2319,7 +2319,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 try:
                     rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                     rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
             
@@ -2337,7 +2337,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     try:
                         rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                         rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                 
@@ -2355,7 +2355,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         try:
                             rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                             rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                     
@@ -2373,7 +2373,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             try:
                                 rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                                 rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                         
@@ -2391,7 +2391,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 try:
                                     rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                                     rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                             
@@ -2413,7 +2413,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 try:
                     rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                     rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
             
@@ -2431,7 +2431,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     try:
                         rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                         rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                 
@@ -2449,7 +2449,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         try:
                             rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                             rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                     
@@ -2467,7 +2467,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             try:
                                 rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                                 rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                         
@@ -2485,7 +2485,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 try:
                                     rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                                     rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                             
@@ -3219,7 +3219,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 try:
                     rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                     rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
             
@@ -3227,7 +3227,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             
                     rtma_cat_24 = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                    rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                     rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
             
@@ -3245,7 +3245,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     try:
                         rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                         rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                 
@@ -3253,7 +3253,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 
                         rtma_cat_24 = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                        rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                         rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                 
@@ -3271,7 +3271,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         try:
                             rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                             rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                     
@@ -3279,7 +3279,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     
                             rtma_cat_24 = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                            rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                             rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                     
@@ -3296,7 +3296,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             try:
                                 rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                                 rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                         
@@ -3304,7 +3304,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         
                                 rtma_cat_24 = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                                 rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                         
@@ -3322,7 +3322,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 try:
                                     rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                                     rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                             
@@ -3330,7 +3330,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             
                                     rtma_cat_24 = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                    rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                                     rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                             
@@ -3352,7 +3352,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 try:
                     rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                     rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
             
@@ -3360,7 +3360,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             
                     rtma_cat_24 = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                    rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                     rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
             
@@ -3378,7 +3378,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     try:
                         rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                         rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                 
@@ -3386,7 +3386,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 
                         rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                        rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                         rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                 
@@ -3404,7 +3404,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         try:
                             rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                             rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                     
@@ -3412,7 +3412,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     
                             rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                            rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                             rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                     
@@ -3429,7 +3429,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             try:
                                 rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                                 rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                         
@@ -3437,7 +3437,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         
                                 rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                                 rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                         
@@ -3455,7 +3455,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 try:
                                     rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                                     rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                             
@@ -3463,7 +3463,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             
                                     rtma_cat_24 = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                    rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                                     rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                             
@@ -3485,7 +3485,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 try:
                     rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf()
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                     rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
             
@@ -3493,7 +3493,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             
                     rtma_cat_24 = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                     rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                    rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                     rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                     rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
             
@@ -3511,7 +3511,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     try:
                         rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf()
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                         rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                 
@@ -3519,7 +3519,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 
                         rtma_cat_24 = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                         rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                        rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                         rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                         rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                 
@@ -3537,7 +3537,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         try:
                             rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf()
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                             rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                     
@@ -3545,7 +3545,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                     
                             rtma_cat_24 = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                             rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                            rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                             rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                             rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                     
@@ -3562,7 +3562,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             try:
                                 rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf()
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                                 rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                         
@@ -3570,7 +3570,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                         
                                 rtma_cat_24 = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                 rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                                 rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                                 rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                         
@@ -3588,7 +3588,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                                 try:
                                     rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data = rtma_data.metpy.parse_cf()
+                                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
                                     rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                             
@@ -3596,7 +3596,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                             
                                     rtma_cat_24 = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
                                     rtma_data_24 = rtma_cat_24.datasets['RTMA_CONUS_2p5km_'+times_24[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                    rtma_data_24 = rtma_data_24.metpy.parse_cf()
+                                    rtma_data_24 = rtma_data_24.metpy.parse_cf().metpy.assign_latitude_longitude()
                                     rtma_temp_24 = rtma_data_24['Temperature_Analysis_height_above_ground'].squeeze()
                                     rtma_dwpt_24 = rtma_data_24['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
                             
