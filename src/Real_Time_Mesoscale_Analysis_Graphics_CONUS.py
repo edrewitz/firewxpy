@@ -6679,7 +6679,7 @@ class Predictive_Services_Areas_Perspective:
         plot_proj = rtma_data.metpy.cartopy_crs
 
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
+        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig.set_facecolor('aliceblue')
@@ -6717,7 +6717,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask):
 
         r'''
             This function does the following:
@@ -6777,11 +6777,15 @@ class Predictive_Services_Areas_Perspective:
 
 
         local_time, utc_time = standard.plot_creation_time()
+        
+        cmap = colormaps.relative_humidity_change_colormap()
 
         rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_relative_humidity_24_hour_difference_data(utc_time)
 
         rtma_time_24 = rtma_time - timedelta(hours=24)
 
+        rtma_df = rtma_data.to_dataframe(name='rtma_rh_change')
+        
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
         rtma_time = rtma_time.replace(tzinfo=from_zone)
@@ -6794,29 +6798,39 @@ class Predictive_Services_Areas_Perspective:
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
 
-        plot_proj = rtma_data.metpy.cartopy_crs
-
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
-        cmap = colormaps.relative_humidity_change_colormap()
+        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+
+        plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
+        ax.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+        ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 65, 5), cmap=cmap, alpha=1, extend='both')
+
+        if show_sample_points == True:
+
+            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn.plot_parameter('C', rtma_df['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -6831,7 +6845,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask):
 
         r'''
             This function does the following:
@@ -6889,10 +6903,11 @@ class Predictive_Services_Areas_Perspective:
         
         '''
 
-
+        mask = mask
         local_time, utc_time = standard.plot_creation_time()
 
         rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Temperature_Analysis_height_above_ground')
+
 
         rtma_time_24 = rtma_time - timedelta(hours=24)
 
@@ -6906,32 +6921,45 @@ class Predictive_Services_Areas_Perspective:
         rtma_time_24_utc = rtma_time_24.astimezone(from_zone)
 
         rtma_data = calc.unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(rtma_data)
+
+        rtma_df = rtma_data.to_dataframe()
         
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
 
-        plot_proj = rtma_data.metpy.cartopy_crs
-
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'lime')
+        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+
+        plot_proj = rtma_data.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig.set_facecolor('aliceblue')
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
+        ax.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+        ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=1, extend='both')
+                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=1, extend='both', zorder=2)
+
+        if show_sample_points == True:
+
+            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn.plot_parameter('C', rtma_df['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
 
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -6946,7 +6974,7 @@ class Predictive_Services_Areas_Perspective:
         return fig
 
 
-    def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+    def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask):
 
         r'''
             This function does the following:
@@ -7019,14 +7047,15 @@ class Predictive_Services_Areas_Perspective:
         rtma_time_24 = rtma_time_24.astimezone(to_zone)
         rtma_time_utc = rtma_time.astimezone(from_zone)
         rtma_time_24_utc = rtma_time_24.astimezone(from_zone)
-        
+
         rtma_data = rtma_data * 2.23694
+        rtma_df = rtma_data.to_dataframe()
         
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
 
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
+        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
         plot_proj = rtma_data.metpy.cartopy_crs
 
@@ -7035,19 +7064,29 @@ class Predictive_Services_Areas_Perspective:
 
         ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
         ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(GACC, linewidth=2.5, zorder=5)
+        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
         ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax.add_feature(PSAs, linewidth=1.5, zorder=4)
+        ax.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+        ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
 
         cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap='PuOr_r', alpha=1, extend='both')
 
+        if show_sample_points == True:
+
+            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn.plot_parameter('C', rtma_df['Wind_speed_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
 
         cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
         cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
@@ -7137,7 +7176,7 @@ class Predictive_Services_Areas_Perspective:
         cmap = colormaps.cool_temperatures_colormap()
 
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'red')
+        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
         plot_proj = rtma_data.metpy.cartopy_crs
 
