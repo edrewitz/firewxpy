@@ -2321,7 +2321,7 @@ class Counties_Perspective:
             ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
@@ -2363,7 +2363,7 @@ class Counties_Perspective:
             ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
@@ -2404,7 +2404,7 @@ class Counties_Perspective:
             ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
@@ -2446,7 +2446,7 @@ class Counties_Perspective:
             ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
@@ -2488,7 +2488,7 @@ class Counties_Perspective:
             ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
@@ -2529,7 +2529,7 @@ class Counties_Perspective:
             ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
@@ -2570,7 +2570,7 @@ class Counties_Perspective:
             ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
@@ -2836,7 +2836,7 @@ class Counties_Perspective:
             ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
@@ -2879,7 +2879,7 @@ class Counties_Perspective:
             ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
@@ -2922,7 +2922,7 @@ class Counties_Perspective:
             ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
@@ -2965,7 +2965,7 @@ class Counties_Perspective:
             ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
@@ -3007,7 +3007,7 @@ class Counties_Perspective:
             ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
@@ -3049,7 +3049,7 @@ class Counties_Perspective:
             ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
@@ -3090,7 +3090,7 @@ class Counties_Perspective:
             ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
         else:
             pass
-        ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
         ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
 
         cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
