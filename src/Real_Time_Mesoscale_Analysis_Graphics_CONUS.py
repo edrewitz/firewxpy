@@ -115,7 +115,7 @@ class Counties_Perspective:
         if param == 'Temperature_Analysis_height_above_ground' or param == 'Dewpoint_temperature_Analysis_height_above_ground' or param == 'Temperature_error_height_above_ground' or param == 'Dewpoint_temperature_error_height_above_ground':
             
             data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, param)
-            data = calc.unit_conversion.RTMA_Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(data)
+            data = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(data)
             
 
         else:
@@ -257,7 +257,7 @@ class Counties_Perspective:
         if param == 'Temperature_Analysis_height_above_ground' or param == 'Dewpoint_temperature_Analysis_height_above_ground' or param == 'Temperature_error_height_above_ground' or param == 'Dewpoint_temperature_error_height_above_ground':
             
             rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_proj = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Synced_With_METAR(param, utc_time, mask)
-            rtma_data = calc.unit_conversion.RTMA_Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data)
+            rtma_data = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data)
             
 
         else:
@@ -2109,6 +2109,502 @@ class Counties_Perspective:
         return figs
 
 
+    def plot_temperature_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, temperature_bottom_bound, temperature_top_bound, temperature_step):
+
+        r'''
+            This function does the following:
+                                            1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                            2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                            3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                            4) Plots the relative humidity data overlayed with the METAR reports. 
+
+            
+
+            Inputs:
+
+                1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+                
+                9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+
+                13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                15) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                           Default setting is 0.05.
+                                           Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                           Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+                19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                            will not display on the map. 
+
+
+            Returns:
+                    1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis Temperature overlayed with the latest METAR reports. 
+        
+        '''
+
+        temperature_bottom_bound = temperature_bottom_bound
+        temperature_top_bound = temperature_top_bound
+        temperature_step = temperature_step
+        local_time, utc_time = standard.plot_creation_time()
+
+        times = []
+
+        for i in range(0, 10):
+            time = utc_time - timedelta(hours=i)
+            times.append(time)
+
+        t1 = times[0]
+        t2 = times[1]
+        t3 = times[2]
+        t4 = times[3]
+        t5 = times[4]
+        t6 = times[5]
+        t7 = times[6]
+        t8 = times[7]
+        t9 = times[8]
+        t10 = times[9]
+
+        rtma_data_0, rtma_time_0 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t1, 'Temperature_Analysis_height_above_ground')
+
+        rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t2, 'Temperature_Analysis_height_above_ground')
+
+        if rtma_time_0.hour == rtma_time_1.hour:
+
+            rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, 'Temperature_Analysis_height_above_ground')
+
+            if rtma_time_0.hour == rtma_time_1.hour:
+
+                rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, 'Temperature_Analysis_height_above_ground')
+
+                rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t9, 'Temperature_Analysis_height_above_ground')
+
+            else:
+
+                rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, 'Temperature_Analysis_height_above_ground')
+                
+                rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, 'Temperature_Analysis_height_above_ground')
+
+        else:
+
+            rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t2, 'Temperature_Analysis_height_above_ground')
+
+            rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, 'Temperature_Analysis_height_above_ground')
+    
+            rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, 'Temperature_Analysis_height_above_ground')
+    
+            rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, 'Temperature_Analysis_height_above_ground')
+    
+            rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, 'Temperature_Analysis_height_above_ground')
+    
+            rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, 'Temperature_Analysis_height_above_ground')
+
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+
+        rtma_data_0 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_0)
+        rtma_data_1 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_1)
+        rtma_data_2 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_2)
+        rtma_data_3 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_3)
+        rtma_data_4 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_4)
+        rtma_data_5 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_5)
+        rtma_data_6 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_6)
+
+        plot_proj_0 = rtma_data_0.metpy.cartopy_crs
+        plot_proj_1 = rtma_data_1.metpy.cartopy_crs
+        plot_proj_2 = rtma_data_2.metpy.cartopy_crs
+        plot_proj_3 = rtma_data_3.metpy.cartopy_crs
+        plot_proj_4 = rtma_data_4.metpy.cartopy_crs
+        plot_proj_5 = rtma_data_5.metpy.cartopy_crs
+        plot_proj_6 = rtma_data_6.metpy.cartopy_crs
+
+        rtma_df0 = rtma_data_0.to_dataframe()
+        rtma_df1 = rtma_data_1.to_dataframe()
+        rtma_df2 = rtma_data_2.to_dataframe()
+        rtma_df3 = rtma_data_3.to_dataframe()
+        rtma_df4 = rtma_data_4.to_dataframe()
+        rtma_df5 = rtma_data_5.to_dataframe()
+        rtma_df6 = rtma_data_6.to_dataframe()
+        
+        rtma_time_0 = rtma_time_0.replace(tzinfo=from_zone)
+        rtma_time_0 = rtma_time_0.astimezone(to_zone)
+        rtma_time_utc_0 = rtma_time_0.astimezone(from_zone)
+
+        rtma_time_1 = rtma_time_1.replace(tzinfo=from_zone)
+        rtma_time_1 = rtma_time_1.astimezone(to_zone)
+        rtma_time_utc_1 = rtma_time_1.astimezone(from_zone)
+
+        rtma_time_2 = rtma_time_2.replace(tzinfo=from_zone)
+        rtma_time_2 = rtma_time_2.astimezone(to_zone)
+        rtma_time_utc_2 = rtma_time_2.astimezone(from_zone)
+
+        rtma_time_3 = rtma_time_3.replace(tzinfo=from_zone)
+        rtma_time_3 = rtma_time_3.astimezone(to_zone)
+        rtma_time_utc_3 = rtma_time_3.astimezone(from_zone)
+        
+        rtma_time_4 = rtma_time_4.replace(tzinfo=from_zone)
+        rtma_time_4 = rtma_time_4.astimezone(to_zone)
+        rtma_time_utc_4 = rtma_time_4.astimezone(from_zone)
+
+        rtma_time_5 = rtma_time_5.replace(tzinfo=from_zone)
+        rtma_time_5 = rtma_time_5.astimezone(to_zone)
+        rtma_time_utc_5 = rtma_time_5.astimezone(from_zone)
+
+        rtma_time_6 = rtma_time_6.replace(tzinfo=from_zone)
+        rtma_time_6 = rtma_time_6.astimezone(to_zone)
+        rtma_time_utc_6 = rtma_time_6.astimezone(from_zone)
+        
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        cmap = colormaps.temperature_colormap()
+
+        figs = []
+
+        ################
+        # FIRST FIGURE #
+        ################
+
+        fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig1.set_facecolor('aliceblue')
+
+        ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_0)
+        ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
+
+        cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
+                         transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+
+        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar1.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn1 = mpplots.StationPlot(ax1, rtma_df0['longitude'][::mask], rtma_df0['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn1.plot_parameter('C', rtma_df0['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig1.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_0.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        
+        ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax1.transAxes)
+
+        #################
+        # SECOND FIGURE #
+        #################
+
+        fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig2.set_facecolor('aliceblue')
+
+        ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_1)
+        ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
+
+        cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
+                         transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar2.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn2 = mpplots.StationPlot(ax2, rtma_df1['longitude'][::mask], rtma_df1['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn2.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig2.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_1.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        
+        ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax2.transAxes)
+
+        ################
+        # THIRD FIGURE #
+        ################
+
+        fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig3.set_facecolor('aliceblue')
+
+        ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_2)
+        ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
+
+        cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
+                         transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar3.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn3 = mpplots.StationPlot(ax3, rtma_df2['longitude'][::mask], rtma_df2['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn3.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig3.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_2.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        
+        ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax3.transAxes)
+
+
+        #################
+        # FOURTH FIGURE #
+        #################
+
+        fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig4.set_facecolor('aliceblue')
+
+        ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_3)
+        ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
+
+        cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
+                         transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar4.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn4 = mpplots.StationPlot(ax4, rtma_df3['longitude'][::mask], rtma_df3['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn4.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig4.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_3.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        
+        ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax4.transAxes)
+
+
+        ################
+        # FIFTH FIGURE #
+        ################
+
+        fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig5.set_facecolor('aliceblue')
+
+        ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_4)
+        ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
+
+        cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
+                         transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar5.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn5 = mpplots.StationPlot(ax5, rtma_df4['longitude'][::mask], rtma_df4['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn5.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig5.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_4.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        
+        ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax5.transAxes)
+
+        ################
+        # SIXTH FIGURE #
+        ################
+
+        fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig6.set_facecolor('aliceblue')
+
+        ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_5)
+        ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
+
+        cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
+                         transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar6.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn6 = mpplots.StationPlot(ax6, rtma_df5['longitude'][::mask], rtma_df5['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn6.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig6.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_5.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        
+        ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax6.transAxes)
+
+        ##################
+        # SEVENTH FIGURE #
+        ##################
+
+        fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig7.set_facecolor('aliceblue')
+
+        ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_6)
+        ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
+        ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
+
+        cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
+                         transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+        cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar7.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn7 = mpplots.StationPlot(ax7, rtma_df6['longitude'][::mask], rtma_df6['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn7.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig7.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_6.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        
+        ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax7.transAxes)
+
+        figs.append(fig7)
+        figs.append(fig6)
+        figs.append(fig5)
+        figs.append(fig4)
+        figs.append(fig3)
+        figs.append(fig2)
+        figs.append(fig1)
+
+        return figs
+
+
 
     def plot_temperature_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
 
@@ -2247,6 +2743,15 @@ class Counties_Perspective:
             rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, 'Temperature_Analysis_height_above_ground')
 
             rtma_data_7, rtma_time_7 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, 'Temperature_Analysis_height_above_ground')
+
+        rtma_data_0 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_0)
+        rtma_data_1 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_1)
+        rtma_data_2 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_2)
+        rtma_data_3 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_3)
+        rtma_data_4 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_4)
+        rtma_data_5 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_5)
+        rtma_data_6 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_6)
+        rtma_data_7 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_7)
 
         diff1 = rtma_data_0 - rtma_data_1
         diff2 = rtma_data_1 - rtma_data_2
@@ -3066,7 +3571,6 @@ class Counties_Perspective:
 
         rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Temperature_Analysis_height_above_ground')
 
-
         rtma_time_24 = rtma_time - timedelta(hours=24)
 
         from_zone = tz.tzutc()
@@ -3314,7 +3818,7 @@ class Counties_Perspective:
 
         rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'Temperature_Analysis_height_above_ground')
 
-        rtma_data = calc.unit_conversion.RTMA_Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data)
+        rtma_data = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data)
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -4047,7 +4551,7 @@ class Predictive_Services_Areas_Perspective:
         if param == 'Temperature_Analysis_height_above_ground' or param == 'Dewpoint_temperature_Analysis_height_above_ground' or param == 'Temperature_error_height_above_ground' or param == 'Dewpoint_temperature_error_height_above_ground':
             
             data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, param)
-            data = calc.unit_conversion.RTMA_Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(data)
+            data = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(data)
             
 
         else:
@@ -4191,7 +4695,7 @@ class Predictive_Services_Areas_Perspective:
         if param == 'Temperature_Analysis_height_above_ground' or param == 'Dewpoint_temperature_Analysis_height_above_ground' or param == 'Temperature_error_height_above_ground' or param == 'Dewpoint_temperature_error_height_above_ground':
             
             rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_proj = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Synced_With_METAR(param, utc_time, mask)
-            rtma_data = calc.unit_conversion.RTMA_Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data)
+            rtma_data = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data)
             
 
         else:
@@ -6078,6 +6582,15 @@ class Predictive_Services_Areas_Perspective:
 
             rtma_data_7, rtma_time_7 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, 'Temperature_Analysis_height_above_ground')
 
+        rtma_data_0 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_0)
+        rtma_data_1 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_1)
+        rtma_data_2 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_2)
+        rtma_data_3 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_3)
+        rtma_data_4 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_4)
+        rtma_data_5 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_5)
+        rtma_data_6 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_6)
+        rtma_data_7 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_7)
+
         diff1 = rtma_data_0 - rtma_data_1
         diff2 = rtma_data_1 - rtma_data_2
         diff3 = rtma_data_2 - rtma_data_3
@@ -6436,6 +6949,502 @@ class Predictive_Services_Areas_Perspective:
 
         else:
             pass
+        
+        ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax7.transAxes)
+
+        figs.append(fig7)
+        figs.append(fig6)
+        figs.append(fig5)
+        figs.append(fig4)
+        figs.append(fig3)
+        figs.append(fig2)
+        figs.append(fig1)
+
+        return figs
+
+
+    def plot_temperature_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask, temperature_bottom_bound, temperature_top_bound, temperature_step):
+
+        r'''
+            This function does the following:
+                                            1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                            2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                            3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                            4) Plots the relative humidity data overlayed with the METAR reports. 
+
+            
+
+            Inputs:
+
+                1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+                
+                9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+
+                13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                15) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                           Default setting is 0.05.
+                                           Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                           Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+                19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                            will not display on the map. 
+
+
+            Returns:
+                    1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis Temperature overlayed with the latest METAR reports. 
+        
+        '''
+
+        temperature_bottom_bound = temperature_bottom_bound
+        temperature_top_bound = temperature_top_bound
+        temperature_step = temperature_step
+        local_time, utc_time = standard.plot_creation_time()
+
+        times = []
+
+        for i in range(0, 10):
+            time = utc_time - timedelta(hours=i)
+            times.append(time)
+
+        t1 = times[0]
+        t2 = times[1]
+        t3 = times[2]
+        t4 = times[3]
+        t5 = times[4]
+        t6 = times[5]
+        t7 = times[6]
+        t8 = times[7]
+        t9 = times[8]
+        t10 = times[9]
+
+        rtma_data_0, rtma_time_0 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t1, 'Temperature_Analysis_height_above_ground')
+
+        rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t2, 'Temperature_Analysis_height_above_ground')
+
+        if rtma_time_0.hour == rtma_time_1.hour:
+
+            rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, 'Temperature_Analysis_height_above_ground')
+
+            if rtma_time_0.hour == rtma_time_1.hour:
+
+                rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, 'Temperature_Analysis_height_above_ground')
+
+                rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t9, 'Temperature_Analysis_height_above_ground')
+
+            else:
+
+                rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, 'Temperature_Analysis_height_above_ground')
+                
+                rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, 'Temperature_Analysis_height_above_ground')
+        
+                rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, 'Temperature_Analysis_height_above_ground')
+
+        else:
+
+            rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t2, 'Temperature_Analysis_height_above_ground')
+
+            rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, 'Temperature_Analysis_height_above_ground')
+    
+            rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, 'Temperature_Analysis_height_above_ground')
+    
+            rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, 'Temperature_Analysis_height_above_ground')
+    
+            rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, 'Temperature_Analysis_height_above_ground')
+    
+            rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, 'Temperature_Analysis_height_above_ground')
+
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+
+        rtma_data_0 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_0)
+        rtma_data_1 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_1)
+        rtma_data_2 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_2)
+        rtma_data_3 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_3)
+        rtma_data_4 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_4)
+        rtma_data_5 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_5)
+        rtma_data_6 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_6)
+
+        plot_proj_0 = rtma_data_0.metpy.cartopy_crs
+        plot_proj_1 = rtma_data_1.metpy.cartopy_crs
+        plot_proj_2 = rtma_data_2.metpy.cartopy_crs
+        plot_proj_3 = rtma_data_3.metpy.cartopy_crs
+        plot_proj_4 = rtma_data_4.metpy.cartopy_crs
+        plot_proj_5 = rtma_data_5.metpy.cartopy_crs
+        plot_proj_6 = rtma_data_6.metpy.cartopy_crs
+
+        rtma_df0 = rtma_data_0.to_dataframe()
+        rtma_df1 = rtma_data_1.to_dataframe()
+        rtma_df2 = rtma_data_2.to_dataframe()
+        rtma_df3 = rtma_data_3.to_dataframe()
+        rtma_df4 = rtma_data_4.to_dataframe()
+        rtma_df5 = rtma_data_5.to_dataframe()
+        rtma_df6 = rtma_data_6.to_dataframe()
+        
+        rtma_time_0 = rtma_time_0.replace(tzinfo=from_zone)
+        rtma_time_0 = rtma_time_0.astimezone(to_zone)
+        rtma_time_utc_0 = rtma_time_0.astimezone(from_zone)
+
+        rtma_time_1 = rtma_time_1.replace(tzinfo=from_zone)
+        rtma_time_1 = rtma_time_1.astimezone(to_zone)
+        rtma_time_utc_1 = rtma_time_1.astimezone(from_zone)
+
+        rtma_time_2 = rtma_time_2.replace(tzinfo=from_zone)
+        rtma_time_2 = rtma_time_2.astimezone(to_zone)
+        rtma_time_utc_2 = rtma_time_2.astimezone(from_zone)
+
+        rtma_time_3 = rtma_time_3.replace(tzinfo=from_zone)
+        rtma_time_3 = rtma_time_3.astimezone(to_zone)
+        rtma_time_utc_3 = rtma_time_3.astimezone(from_zone)
+        
+        rtma_time_4 = rtma_time_4.replace(tzinfo=from_zone)
+        rtma_time_4 = rtma_time_4.astimezone(to_zone)
+        rtma_time_utc_4 = rtma_time_4.astimezone(from_zone)
+
+        rtma_time_5 = rtma_time_5.replace(tzinfo=from_zone)
+        rtma_time_5 = rtma_time_5.astimezone(to_zone)
+        rtma_time_utc_5 = rtma_time_5.astimezone(from_zone)
+
+        rtma_time_6 = rtma_time_6.replace(tzinfo=from_zone)
+        rtma_time_6 = rtma_time_6.astimezone(to_zone)
+        rtma_time_utc_6 = rtma_time_6.astimezone(from_zone)
+        
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        cmap = colormaps.temperature_colormap()
+
+        figs = []
+
+        ################
+        # FIRST FIGURE #
+        ################
+
+        fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig1.set_facecolor('aliceblue')
+
+        ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_0)
+        ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+        ax1.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+
+        cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
+                         transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+
+        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar1.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn1 = mpplots.StationPlot(ax1, rtma_df0['longitude'][::mask], rtma_df0['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn1.plot_parameter('C', rtma_df0['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig1.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_0.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        
+        ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax1.transAxes)
+
+        #################
+        # SECOND FIGURE #
+        #################
+
+        fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig2.set_facecolor('aliceblue')
+
+        ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_1)
+        ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+        ax2.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+
+        cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
+                         transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar2.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn2 = mpplots.StationPlot(ax2, rtma_df1['longitude'][::mask], rtma_df1['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn2.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig2.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_1.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        
+        ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax2.transAxes)
+
+        ################
+        # THIRD FIGURE #
+        ################
+
+        fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig3.set_facecolor('aliceblue')
+
+        ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_2)
+        ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+        ax3.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+
+        cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
+                         transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar3.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn3 = mpplots.StationPlot(ax3, rtma_df2['longitude'][::mask], rtma_df2['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn3.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig3.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_2.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        
+        ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax3.transAxes)
+
+
+        #################
+        # FOURTH FIGURE #
+        #################
+
+        fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig4.set_facecolor('aliceblue')
+
+        ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_3)
+        ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+        ax4.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+
+        cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
+                         transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar4.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn4 = mpplots.StationPlot(ax4, rtma_df3['longitude'][::mask], rtma_df3['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn4.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig4.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_3.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        
+        ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax4.transAxes)
+
+
+        ################
+        # FIFTH FIGURE #
+        ################
+
+        fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig5.set_facecolor('aliceblue')
+
+        ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_4)
+        ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+        ax5.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+
+        cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
+                         transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar5.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn5 = mpplots.StationPlot(ax5, rtma_df4['longitude'][::mask], rtma_df4['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn5.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig5.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_4.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        
+        ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax5.transAxes)
+
+        ################
+        # SIXTH FIGURE #
+        ################
+
+        fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig6.set_facecolor('aliceblue')
+
+        ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_5)
+        ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax6.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+        ax6.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+
+        cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
+                         transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar6.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn6 = mpplots.StationPlot(ax6, rtma_df5['longitude'][::mask], rtma_df5['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn6.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig6.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_5.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        
+        ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax6.transAxes)
+
+        ##################
+        # SEVENTH FIGURE #
+        ##################
+
+        fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
+        fig7.set_facecolor('aliceblue')
+
+        ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_6)
+        ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+        ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+        ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
+        ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+        if show_rivers == True:
+            ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+        ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+        ax7.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+
+        cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
+                         transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+
+        cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
+        cbar7.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+        if show_sample_points == True:
+
+            stn7 = mpplots.StationPlot(ax7, rtma_df6['longitude'][::mask], rtma_df6['latitude'][::mask],
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+    
+            stn7.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+
+        else:
+            pass
+
+        fig7.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_6.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
         
         ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax7.transAxes)
@@ -7168,7 +8177,7 @@ class Predictive_Services_Areas_Perspective:
         rtma_time = rtma_time.astimezone(to_zone)
         rtma_time_utc = rtma_time.astimezone(from_zone)
 
-        rtma_data = calc.unit_conversion.RTMA_Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data)
+        rtma_data = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data)
         
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
