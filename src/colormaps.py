@@ -1,24 +1,3 @@
-'''
-This file hosts functions that call custom colormaps which are used for plotting. 
-
-This file hosts colormaps for:
-                            1) Temperature
-                            2) Relative Humidity
-                            3) Relative Humidity Change
-                            4) Areas of high relative humidity
-                            5) Areas of low relative humidity
-                            6) The temperature parameter for National Weather Service Red Flag Warnings in Alaska
-                            7) The wind speed parameter for National Weather Service Red Flag Warnings nationally. 
-                            8) The red shading for areas that meet the weather criteria for National Weather Service Red Flag Warnings. 
-
-This file was written by Meteorologist Eric J. Drewitz 
-
-            (C) Meteorologist Eric J. Drewitz 
-                        USDA/USFS
-
-
-'''
-
 import matplotlib.colors
 
 
@@ -28,6 +7,12 @@ def temperature_colormap():
     return temperature_colormap
 
 
+def wind_speed_change_colormap():
+    wind_speed_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("wind speed", ["darkgreen", "green", "white", "white", "red", "darkred"])
+
+    return wind_speed_change_colormap
+
+
 def relative_humidity_colormap():
     relative_humidity_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("relative humidity", ["saddlebrown", "darkorange", "gold", "lightgoldenrodyellow", "yellowgreen", "lawngreen", "springgreen", "lime"])
     
@@ -35,7 +20,7 @@ def relative_humidity_colormap():
 
 
 def relative_humidity_change_colormap():
-    relative_humidity_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("relative humidity", ["saddlebrown", "peru", "orange", "gold", "white", "yellowgreen", "lawngreen", "springgreen", "lime"])
+    relative_humidity_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("relative humidity", ["saddlebrown", "peru", "orange", "gold", "white", "white", "yellowgreen", "lawngreen", "springgreen", "lime"])
     
     return relative_humidity_change_colormap
 
