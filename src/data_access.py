@@ -240,885 +240,6 @@ class FTP_Downloads:
 
     '''
 
-    def get_latest_short_term_gridded_data(directory_name, parameter):
-
-
-        directory_name = directory_name
-        parameter = parameter
-
-        grbs = FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
-        
-        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(grbs, parameter)
-
-        if parameter == 'ds.maxrh.bin' or parameter == 'ds.minrh.bin' or parameter == 'ds.maxt.bin' or parameter == 'ds.mint.bin':
-
-            grid_time_interval = 12
-
-        if parameter == 'ds.critfireo.bin' or parameter == 'ds.dryfireo.bin':
-
-            grid_time_interval = 24
-
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter)
-
-        utc = datetime.utcnow()
-        local = datetime.now()
-
-        utc_hour = utc.hour
-        local_hour = local.hour
-
-        forecast_hour = grb_1_start.hour
-
-        if parameter == 'ds.maxrh.bin':
-            if forecast_hour == 6:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                print("There are " + str(count_of_GRIB_files) + " files returned.")
-                count = count_of_GRIB_files
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files, count
-                
-            else:
-                if local_hour < 5 or local_hour >= 16:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first forecast grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 6
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-                    count = count_of_GRIB_files
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files, count
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-                    
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    count_of_GRIB_files = count_of_GRIB_files - 1
-                    count = count_of_GRIB_files + 1
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files, count
-
-        if parameter == 'ds.minrh.bin':
-            if forecast_hour == 18:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                print("There are " + str(count_of_GRIB_files) + " files returned.")
-                count = count_of_GRIB_files
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files, count
-                
-            else:
-                if local_hour < 15 or local_hour >= 18:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 15:00 (3PM)\nThe first maximum temperature grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 18
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    count = count_of_GRIB_files
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files, count
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    count_of_GRIB_files = count_of_GRIB_files - 1
-                    count = count_of_GRIB_files + 1
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files, count
-
-        if parameter == 'ds.maxt.bin':
-            if forecast_hour == 12:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                count = count_of_GRIB_files
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files, count
-                
-            else:
-                if local_hour < 15 or local_hour >= 18:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 15:00 (3PM)\nThe first maximum temperature grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 12
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-                    count = count_of_GRIB_files
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files, count
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    count_of_GRIB_files = count_of_GRIB_files - 1
-                    count = count_of_GRIB_files + 1
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files, count
-
-        if parameter == 'ds.mint.bin':
-            if forecast_hour == 0:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                print("There are " + str(count_of_GRIB_files) + " files returned.")
-                count = count_of_GRIB_files
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files, count
-                
-            else:
-                if local_hour < 5 or local_hour >= 16:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 0
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    count = count_of_GRIB_files
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files, count
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    count_of_GRIB_files = count_of_GRIB_files - 1
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    count = count_of_GRIB_files + 1
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files, count
-
-        if parameter == 'ds.critfireo.bin':
-            if forecast_hour == 12:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                print("There are " + str(count_of_GRIB_files) + " files returned.")
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                
-            else:
-                if local_hour < 13:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 13:00 (1PM)\nThe first forecast grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 12
-
-                    day_1 = grb_1_start.day
-                    day_2 = grb_2_start.day
-
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-
-                    if day_1 == day_2:
-
-                        print("Either duplicate or old files are being dowloaded.\nThrowing out the old file!")
-
-                        grb_1_vals = None
-                        grb_1_start = None
-                        grb_1_end = None
-                        count_of_GRIB_files = count_of_GRIB_files - 1
-                        print("There are " + str(count_of_GRIB_files) + " files returned.")
-
-                    else:
-                        print("There are " + str(count_of_GRIB_files) + " files returned.")
-                        #pass
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    count_of_GRIB_files = count_of_GRIB_files - 1
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-
-        if parameter == 'ds.dryfireo.bin':
-            if forecast_hour == 12:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                print("There are " + str(count_of_GRIB_files) + " files returned.")
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                
-            else:
-                if local_hour < 13:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 13:00 (1PM)\nThe first maximum temperature grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 12
-
-                    day_1 = grb_1_start.day
-                    day_2 = grb_2_start.day
-
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-
-                    if day_1 == day_2:
-
-                        print("Either duplicate or old files are being dowloaded.\nThrowing out the old file!")
-
-                        grb_1_vals = None
-                        grb_1_start = None
-                        grb_1_end = None
-                        count_of_GRIB_files = count_of_GRIB_files - 1
-                        print("There are " + str(count_of_GRIB_files) + " files returned.")
-
-                    else:
-                        print("There are " + str(count_of_GRIB_files) + " files returned.")
-                        #pass
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    count_of_GRIB_files = count_of_GRIB_files - 1
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-
-
-    def get_latest_extended_gridded_data(directory_name, parameter):
-
-
-        directory_name = directory_name
-        parameter = parameter
-
-        grbs = FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, parameter)
-        
-        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(grbs, parameter)
-
-        if parameter == 'ds.maxrh.bin' or parameter == 'ds.minrh.bin' or parameter == 'ds.maxt.bin' or parameter == 'ds.mint.bin':
-
-            grid_time_interval = 12
-
-        if parameter == 'ds.critfireo.bin' or parameter == 'ds.dryfireo.bin':
-
-            grid_time_interval = 24
-
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter)
-
-        utc = datetime.utcnow()
-        local = datetime.now()
-
-        utc_hour = utc.hour
-        local_hour = local.hour
-
-        forecast_hour = grb_1_start.hour
-
-        if parameter == 'ds.maxrh.bin':
-            if forecast_hour == 6:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                print("There are " + str(count_of_GRIB_files) + " files returned.")
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                
-            else:
-                if local_hour < 5 or local_hour >= 16:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 6
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-                    
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    count_of_GRIB_files = count_of_GRIB_files - 1
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-
-        if parameter == 'ds.minrh.bin':
-            if forecast_hour == 18:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                print("There are " + str(count_of_GRIB_files) + " files returned.")
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                
-            else:
-                if local_hour < 15 or local_hour >= 18:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 15:00 (3PM)\nThe first maximum temperature grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 18
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    count_of_GRIB_files = count_of_GRIB_files - 1
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-
-        if parameter == 'ds.maxt.bin':
-            if forecast_hour == 12:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                print("There are " + str(count_of_GRIB_files) + " files returned.")
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                
-            else:
-                if local_hour < 15 or local_hour >= 18:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 15:00 (3PM)\nThe first maximum temperature grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 12
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    count_of_GRIB_files = count_of_GRIB_files - 1
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-
-        if parameter == 'ds.mint.bin':
-            if forecast_hour == 0:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                print("There are " + str(count_of_GRIB_files) + " files returned.")
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                
-            else:
-                if local_hour < 5 or local_hour >= 16:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 0
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    count_of_GRIB_files = count_of_GRIB_files - 1
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-
-        if parameter == 'ds.critfireo.bin':
-            if forecast_hour == 12:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                print("There are " + str(count_of_GRIB_files) + " files returned.")
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                
-            else:
-                if local_hour < 13:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 13:00 (1PM)\nThe first maximum temperature grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 12
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    count_of_GRIB_files = count_of_GRIB_files - 1
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-
-        if parameter == 'ds.dryfireo.bin':
-            if forecast_hour == 12:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                print("There are " + str(count_of_GRIB_files) + " files returned.")
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                
-            else:
-                if local_hour < 13:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 13:00 (1PM)\nThe first maximum temperature grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 12
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    count_of_GRIB_files = count_of_GRIB_files - 1
-                    print("There are " + str(count_of_GRIB_files) + " files returned.")
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files
-
-    def get_latest_7_Day_gridded_data(directory_name, parameter):
-
-        parameter == parameter
-
-        if parameter == 'ds.critfireo.bin' or parameter == 'ds.dryfireo.bin':
-        
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files_short = FTP_Downloads.get_latest_short_term_gridded_data(directory_name, parameter)
-    
-            grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, grb_9_vals, grb_9_start, grb_9_end, grb_10_vals, grb_10_start, grb_10_end, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, lats_10, lons_10, count_of_GRIB_files_extended = FTP_Downloads.get_latest_extended_gridded_data(directory_name, parameter)
-    
-            count = count_of_GRIB_files_short + count_of_GRIB_files_extended
-    
-            print(str(count) + " total files in this download.")
-    
-            try:
-                if grb_1_vals.all() != None:
-                    test_1 = True
-    
-            except Exception as e:
-                test_1 = False
-    
-            try:
-                if grb_2_vals.all() != None:
-                    test_2 = True
-    
-            except Exception as e:
-                test_2 = False
-    
-            try:
-                if grb_3_vals.all() != None:
-                    test_3 = True
-    
-            except Exception as e:
-                test_3 = False
-    
-            try:
-                if grb_4_vals.all() != None:
-                    test_4 = True
-    
-            except Exception as e:
-                test_4 = False
-    
-            try:
-                if grb_5_vals.all() != None:
-                    test_5 = True
-    
-            except Exception as e:
-                test_5 = False
-    
-            try:
-                if grb_6_vals.all() != None:
-                    test_6 = True
-    
-            except Exception as e:
-                test_6 = False
-    
-            try:
-                if grb_7_vals.all() != None:
-                    test_7 = True
-    
-            except Exception as e:
-                test_7 = False
-    
-            try:
-                if grb_8_vals.all() != None:
-                    test_8 = True
-    
-            except Exception as e:
-                test_8 = False
-    
-            try:
-                if grb_9_vals.all() != None:
-                    test_9 = True
-    
-            except Exception as e:
-                test_9 = False
-    
-            try:
-                if grb_10_vals.all() != None:
-                    test_10 = True
-    
-            except Exception as e:
-                test_10 = False
-                  
-    
-            if count == 7:
-                # 3 files with 1st file included in short term and 4 files last space excluded in extended
-                if test_4 == False and test_5 == False and test_10 == False:
-                    return grb_1_vals, grb_2_vals, grb_3_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_1_start, grb_2_start, grb_3_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_1_end, grb_2_end, grb_3_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, count  
-    
-                # 3 files with the 1st file missing in the short term and 4 files last space excluded in extended
-                if test_1 == False and test_5 == False and test_10 == False:
-                    return grb_2_vals, grb_3_vals, grb_4_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_2_start, grb_3_start, grb_4_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_2_end, grb_3_end, grb_4_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, count
-    
-                if test_1 == False and test_4 == False and test_5 == False:
-                    return grb_2_vals, grb_3_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_10_vals, grb_2_start, grb_3_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_10_start, grb_2_end, grb_3_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, grb_10_end, lats_2, lons_2, lats_3, lons_3, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, lats_10, lons_10, count
-    
-            if count == 6:
-    
-                if test_3 == False and test_4 == False and test_5 == False and test_10 == False:
-                    return grb_1_vals, grb_2_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_1_start, grb_2_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_1_end, grb_2_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, lats_1, lons_1, lats_2, lons_2, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, count 
-                    
-                if test_1 == False and test_4 == False and test_5 == False and test_10 == False:
-                    return grb_2_vals, grb_3_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_2_start, grb_3_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_2_end, grb_3_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, lats_2, lons_2, lats_3, lons_3, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, count
-
-        else:     
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, count_of_GRIB_files_short, count_files = FTP_Downloads.get_latest_short_term_gridded_data(directory_name, parameter)
-    
-            grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, grb_9_vals, grb_9_start, grb_9_end, grb_10_vals, grb_10_start, grb_10_end, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, lats_10, lons_10, count_of_GRIB_files_extended = FTP_Downloads.get_latest_extended_gridded_data(directory_name, parameter)
-    
-            count = count_of_GRIB_files_short + count_of_GRIB_files_extended
-    
-            print(str(count) + " total files in this download.")
-    
-            try:
-                if grb_1_vals.all() != None:
-                    test_1 = True
-    
-            except Exception as e:
-                test_1 = False
-    
-            try:
-                if grb_2_vals.all() != None:
-                    test_2 = True
-    
-            except Exception as e:
-                test_2 = False
-    
-            try:
-                if grb_3_vals.all() != None:
-                    test_3 = True
-    
-            except Exception as e:
-                test_3 = False
-    
-            try:
-                if grb_4_vals.all() != None:
-                    test_4 = True
-    
-            except Exception as e:
-                test_4 = False
-    
-            try:
-                if grb_5_vals.all() != None:
-                    test_5 = True
-    
-            except Exception as e:
-                test_5 = False
-    
-            try:
-                if grb_6_vals.all() != None:
-                    test_6 = True
-    
-            except Exception as e:
-                test_6 = False
-    
-            try:
-                if grb_7_vals.all() != None:
-                    test_7 = True
-    
-            except Exception as e:
-                test_7 = False
-    
-            try:
-                if grb_8_vals.all() != None:
-                    test_8 = True
-    
-            except Exception as e:
-                test_8 = False
-    
-            try:
-                if grb_9_vals.all() != None:
-                    test_9 = True
-    
-            except Exception as e:
-                test_9 = False
-    
-            try:
-                if grb_10_vals.all() != None:
-                    test_10 = True
-    
-            except Exception as e:
-                test_10 = False
-                  
-    
-            if count == 7:
-                # 3 files with 1st file included in short term and 4 files last space excluded in extended
-                if test_4 == False and test_5 == False and test_10 == False:
-                    return grb_1_vals, grb_2_vals, grb_3_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_1_start, grb_2_start, grb_3_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_1_end, grb_2_end, grb_3_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, count  
-
-                if test_4 == False and test_5 == False and test_3 == False:
-                    return grb_1_vals, grb_2_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_10_vals,  grb_1_start, grb_2_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_10_start, grb_1_end, grb_2_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, grb_10_end, lats_1, lons_1, lats_2, lons_2, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, lats_10, lons_10, count
-    
-                # 3 files with the 1st file missing in the short term and 4 files last space excluded in extended
-                if test_1 == False and test_5 == False and test_10 == False:
-                    return grb_2_vals, grb_3_vals, grb_4_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_2_start, grb_3_start, grb_4_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_2_end, grb_3_end, grb_4_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, count
-    
-                if test_1 == False and test_4 == False and test_5 == False:
-                    return grb_2_vals, grb_3_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_10_vals, grb_2_start, grb_3_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_10_start, grb_2_end, grb_3_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, grb_10_end, lats_2, lons_2, lats_3, lons_3, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, lats_10, lons_10, count
-    
-            if count == 6:
-    
-                if test_3 == False and test_4 == False and test_5 == False and test_10 == False:
-                    return grb_1_vals, grb_2_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_1_start, grb_2_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_1_end, grb_2_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, lats_1, lons_1, lats_2, lons_2, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, count 
-                    
-                if test_1 == False and test_4 == False and test_5 == False and test_10 == False:
-                    return grb_2_vals, grb_3_vals, grb_6_vals, grb_7_vals, grb_8_vals, grb_9_vals, grb_2_start, grb_3_start, grb_6_start, grb_7_start, grb_8_start, grb_9_start, grb_2_end, grb_3_end, grb_6_end, grb_7_end, grb_8_end, grb_9_end, lats_2, lons_2, lats_3, lons_3, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, count
-
-
-    def get_latest_extended_SPC_gridded_data(directory_name, parameter):
-
-
-        directory_name = directory_name
-        parameter = parameter
-
-        grbs = FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, parameter)
-        
-        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, sixth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_extended_GRIB_files(grbs, parameter)
-
-        grid_time_interval = 24
-
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6 = parsers.NDFD.parse_extended_SPC_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, sixth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter)
-
-        utc = datetime.utcnow()
-        local = datetime.now()
-
-        utc_hour = utc.hour
-        local_hour = local.hour
-
-        forecast_hour = grb_1_start.hour
-
-        if parameter == 'ds.critfireo.bin':
-            if forecast_hour == 12:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, count_of_GRIB_files
-                
-            else:
-                if local_hour < 13:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 13:00 (1PM)\nThe first maximum temperature grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 12
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-                    
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, count_of_GRIB_files
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, count_of_GRIB_files
-
-        if parameter == 'ds.dryfireo.bin':
-            if forecast_hour == 12:
-                print("The " +parameter+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
-                
-                return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, count_of_GRIB_files
-                
-            else:
-                if local_hour < 13:
-                    print("The " +parameter+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 13:00 (1PM)\nThe first maximum temperature grid is still returned.")
-
-                    year = utc.year
-                    month = utc.month
-                    day = utc.day
-                    start_hour = 12
-
-                    grb_1_start = datetime(year, month, day, start_hour)
-                    grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, count_of_GRIB_files
-                    
-                else:
-                    print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-
-                    grb_1_vals = None
-                    grb_1_start = None
-                    grb_1_end = None
-                    
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, count_of_GRIB_files  
-
-    def get_NWS_NDFD_short_term_grid_data(directory_name, parameter):
-        
-        '''
-                 This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
-                 This function is specifically for downloading the National Weather Service SHORT-TERM (Days 1-3) Forecast grids. 
-        
-                 Inputs:
-                     1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
-                                                  The directory determines the domain the forecast data is valid for. 
-                                                  Here is the full directory list: 
-                                                                            ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
-                                                                            CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
-                                                                            CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
-                                                                            CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
-                                                                            CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
-                                                                            CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
-                                                                            EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
-                                                                            GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
-                                                                            HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
-                                                                            MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
-                                                                            NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
-                                                                            NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
-                                                                            NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
-                                                                            NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
-                                                                            NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
-                                                                            OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
-                                                                            PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
-                                                                            PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
-                                                                            PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
-                                                                            SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
-                                                                            SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
-                                                                            SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
-                                                                            SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
-                                                                            UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
-        
-        
-                    2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                                            Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                                            https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-        
-                Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the short-term forecast period (Days 1-3). 
-                         This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
-                 
-        '''
-    
-        ###################################################
-        # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
-        ###################################################
-    
-        ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
-        ftp = FTP('tgftp.nws.noaa.gov')
-        ftp.login()
-    
-        ### SEARCHES FOR THE CORRECT DIRECTORY ###
-        try:
-            dirName = directory_name + 'VP.001-003/'
-            param = parameter
-            files = ftp.cwd(dirName)
-    
-            ### SEARCHES FOR THE CORRECT PARAMETER ###
-            try:
-                ################################
-                # DOWNLOADS THE NWS NDFD GRIDS #
-                ################################
-                
-                with open(param, 'wb') as fp:
-                    ftp.retrbinary('RETR ' + param, fp.write)    
-                
-                ftp.close()
-                
-                #########################
-                # DATA ARRAYS PARAMETER #
-                #########################
-                
-                ds = xr.load_dataset(param, engine='cfgrib')
-                grbs = pygrib.open(param)
-                grbs.seek(0)
-                return grbs
-    
-            ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
-    
-            except Exception as a:
-                param_error = info.parameter_name_error()
-                return param_error
-    
-        ### ERROR MESSAGE WHEN THERE IS AN INVALID DIRECTORY NAME ###
-            
-        except Exception as e:
-            dir_error = info.directory_name_error()
-            return dir_error
-
 
     def get_NWS_NDFD_7_Day_grid_data(directory_name, parameter):
         
@@ -1217,321 +338,6 @@ class FTP_Downloads:
             return dir_error
 
 
-    def get_NWS_NDFD_short_term_grid_data_to_xarray(directory_name, parameter):
-        
-        r'''
-         This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest and returns the data arrays in an xarray data array. 
-         This function is specifically for downloading the National Weather Service SHORT-TERM (Days 1-3) Forecast grids. 
-
-         Inputs:
-             1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
-                                          The directory determines the domain the forecast data is valid for. 
-                                          Here is the full directory list: 
-                                                                    ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
-                                                                    CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
-                                                                    CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
-                                                                    CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
-                                                                    CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
-                                                                    CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
-                                                                    EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
-                                                                    GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
-                                                                    HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
-                                                                    MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
-                                                                    NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
-                                                                    NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
-                                                                    NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
-                                                                    NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
-                                                                    NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
-                                                                    OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
-                                                                    PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
-                                                                    PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
-                                                                    PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
-                                                                    SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
-                                                                    SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
-                                                                    SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
-                                                                    SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
-                                                                    UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
-
-
-            2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                                    Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                                    https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-
-        Returns: This function returns the National Weather Service NDFD gridded forecast data in an xarray data array for the short-term forecast period (Days 1-3). 
-                 This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
-         
-        '''
-    
-        ###################################################
-        # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
-        ###################################################
-    
-        ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
-        ftp = FTP('tgftp.nws.noaa.gov')
-        ftp.login()
-    
-        ### SEARCHES FOR THE CORRECT DIRECTORY ###
-        try:
-            dirName = directory_name + 'VP.001-003/'
-            param = parameter
-            files = ftp.cwd(dirName)
-    
-            ### SEARCHES FOR THE CORRECT PARAMETER ###
-            try:
-                ################################
-                # DOWNLOADS THE NWS NDFD GRIDS #
-                ################################
-                
-                with open(param, 'wb') as fp:
-                    ftp.retrbinary('RETR ' + param, fp.write)    
-                
-                ftp.close()
-                
-                #########################
-                # DATA ARRAYS PARAMETER #
-                #########################
-                
-                ds = xr.load_dataset(param, engine='cfgrib')
-                ds = ds.metpy.parse_cf()
-                return ds
-    
-            ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
-    
-            except Exception as a:
-                param_error = info.parameter_name_error()
-                return param_error
-    
-        ### ERROR MESSAGE WHEN THERE IS AN INVALID DIRECTORY NAME ###
-            
-        except Exception as e:
-            dir_error = info.directory_name_error()
-            return dir_error
-    
-    
-    def get_NWS_NDFD_extended_grid_data(directory_name, parameter):
-        
-        r'''
-         This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
-         This function is specifically for downloading the National Weather Service EXTENDED (Days 4-7) Forecast grids. 
-
-         Inputs:
-             1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
-                                          The directory determines the domain the forecast data is valid for. 
-                                          Here is the full directory list: 
-                                                                    ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
-                                                                    CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
-                                                                    CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
-                                                                    CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
-                                                                    CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
-                                                                    CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
-                                                                    EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
-                                                                    GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
-                                                                    HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
-                                                                    MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
-                                                                    NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
-                                                                    NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
-                                                                    NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
-                                                                    NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
-                                                                    NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
-                                                                    OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
-                                                                    PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
-                                                                    PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
-                                                                    PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
-                                                                    SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
-                                                                    SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
-                                                                    SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
-                                                                    SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
-                                                                    UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
-
-
-            2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                                    Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                                    https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-
-        Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the extended forecast period (Days 4-7). 
-                 This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
-        '''
-    
-        ###################################################
-        # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
-        ###################################################
-    
-        ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
-        ftp = FTP('tgftp.nws.noaa.gov')
-        ftp.login()
-    
-        ### SEARCHES FOR THE CORRECT DIRECTORY ###
-        try:
-            dirName = directory_name + 'VP.004-007/'
-            param = parameter
-            files = ftp.cwd(dirName)
-    
-            ### SEARCHES FOR THE CORRECT PARAMETER ###
-            try:
-                ################################
-                # DOWNLOADS THE NWS NDFD GRIDS #
-                ################################
-                
-                with open(param, 'wb') as fp:
-                    ftp.retrbinary('RETR ' + param, fp.write)    
-                
-                ftp.close()
-                
-                #########################
-                # DATA ARRAYS PARAMETER #
-                #########################
-                
-                ds = xr.load_dataset(param, engine='cfgrib')
-                grbs = pygrib.open(param)
-                grbs.seek(0)
-                return grbs
-    
-            ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
-    
-            except Exception as a:
-                param_error = info.parameter_name_error()
-                return param_error
-    
-        ### ERROR MESSAGE WHEN THERE IS AN INVALID DIRECTORY NAME ###
-            
-        except Exception as e:
-            dir_error = info.directory_name_error()
-            return dir_error
-
-    def get_first_half_of_data(directory_name, parameter):
-
-        r'''
-        This function is a background function that is utilized in the get_full_7_day_grid_data function. 
-        The National Weather Service hosts their short-term and extended forecast grids in different places. 
-        In order to download all of the short-term and extended forecast data, we need to break it up into two parts and this function is part one. 
-
-        This function goes farther than the functions that download the short-term and extended grids respectively as in order to complete this task, this function parses through the data using the FireWxPy Parsers Module to extract the following information:
-        1) The values of the parameter the user is plotting. 
-        2) The start time of the forecast validity corresponding to each value. 
-        3) The end time of the forecast validity corresponding to each value. 
-
-        Example: The National Weather Service Maximum Relative Humidity Grids are valid for 12 hours (06z through 18z). 
-                 Thus the first period (Night 1) is 06z tonight through 18z tomorrow. 
-                 The second period (Night 2) is 06z tomorrow night through 18z the next day and so on with the same temporal increments. 
-
-         Inputs:
-             1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
-                                          The directory determines the domain the forecast data is valid for. 
-                                          Here is the full directory list: 
-                                                                    ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
-                                                                    CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
-                                                                    CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
-                                                                    CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
-                                                                    CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
-                                                                    CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
-                                                                    EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
-                                                                    GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
-                                                                    HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
-                                                                    MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
-                                                                    NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
-                                                                    NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
-                                                                    NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
-                                                                    NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
-                                                                    NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
-                                                                    OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
-                                                                    PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
-                                                                    PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
-                                                                    PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
-                                                                    SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
-                                                                    SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
-                                                                    SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
-                                                                    SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
-                                                                    UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
-
-
-            2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                                    Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                                    https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-
-
-        Returns: 1) The values of the forecast parameter within the GRIB2 file for each corresponding time period. 
-                 2) The start time of each forecast period. 
-                 3) The end time of each forecast period. 
-
-        '''
-        
-        short_term_data = FTP_Downloads.get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
-        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(short_term_data, parameter)
-        grid_time_interval = 12  
-        
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter)
-    
-        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5
-
-    def get_full_7_day_grid_data(directory_name, parameter):
-
-        r'''
-        This function allows the user to download and extract the National Weather Service NDFD short-term and extended forecast data all at once. 
-        The National Weather Service hosts their short-term and extended forecast grids in different places. 
-        In order to download all of the short-term and extended forecast data, we need to break it up into two parts and this function is part two. 
-        This function calls the previous function: get_first_half_of_data(directory_name, parameter) to get all the forecast values, forecast start and end times. 
-        The next step is this function repeats the same process as the aforementioned function, except this function extracts all those values for the extended forecast grids. 
-        The final result is this function combines all the data from the first download with the data of the second download so the user can retrieve this data all at once. 
-
-        This function goes farther than the functions that download the short-term and extended grids respectively as in order to complete this task, this function parses through the data using the FireWxPy Parsers Module to extract the following information:
-        1) The values of the parameter the user is plotting. 
-        2) The start time of the forecast validity corresponding to each value. 
-        3) The end time of the forecast validity corresponding to each value. 
-
-        Example: The National Weather Service Maximum Relative Humidity Grids are valid for 12 hours (06z through 18z). 
-                 Thus the first period (Night 1) is 06z tonight through 18z tomorrow. 
-                 The second period (Night 2) is 06z tomorrow night through 18z the next day and so on with the same temporal increments. 
-
-         Inputs:
-             1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
-                                          The directory determines the domain the forecast data is valid for. 
-                                          Here is the full directory list: 
-                                                                    ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
-                                                                    CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
-                                                                    CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
-                                                                    CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
-                                                                    CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
-                                                                    CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
-                                                                    EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
-                                                                    GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
-                                                                    HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
-                                                                    MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
-                                                                    NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
-                                                                    NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
-                                                                    NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
-                                                                    NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
-                                                                    NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
-                                                                    OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
-                                                                    PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
-                                                                    PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
-                                                                    PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
-                                                                    SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
-                                                                    SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
-                                                                    SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
-                                                                    SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
-                                                                    UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
-
-
-            2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                                    Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                                    https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-
-
-        Returns: 1) The values of the forecast parameter within the GRIB2 file for each corresponding time period for all 7 days. 
-                 2) The start time of each forecast period for all 7 days. 
-                 3) The end time of each forecast period for all 7 days. 
-
-        '''
-        
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5 = FTP_Downloads.get_first_half_of_data(directory_name, parameter)
-        extended_data = FTP_Downloads.get_NWS_NDFD_extended_grid_data(directory_name, parameter)
-        first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files = parsers.NDFD.sort_GRIB_files(extended_data, parameter)
-        grid_time_interval = 12  
-        
-        grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, grb_9_vals, grb_9_start, grb_9_end, grb_10_vals, grb_10_start, grb_10_end, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, lats_10, lons_10 = parsers.NDFD.parse_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter)
-    
-        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, grb_9_vals, grb_9_start, grb_9_end, grb_10_vals, grb_10_start, grb_10_end, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, lats_9, lons_9, lats_10, lons_10 
-        
 
 class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
@@ -1805,7 +611,91 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
                 print("Unable to connect to either the main or backup servers. Aborting!")
+
+        def get_rtma_data_past_6hrs(parameter):
+
+
+            parameter = parameter
+            local_time, utc_time = standard.plot_creation_time()
+            times = []
         
+            for i in range(0, 10):
+                time = utc_time - timedelta(hours=i)
+                times.append(time)
+        
+            t1 = times[0]
+            t2 = times[1]
+            t3 = times[2]
+            t4 = times[3]
+            t5 = times[4]
+            t6 = times[5]
+            t7 = times[6]
+            t8 = times[7]
+            t9 = times[8]
+            t10 = times[9]
+
+            rtma_data_0, rtma_time_0 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t1, parameter)
+    
+            rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t2, parameter)
+    
+            if rtma_time_0.hour == rtma_time_1.hour:
+    
+                rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, parameter)
+    
+                if rtma_time_0.hour == rtma_time_1.hour:
+    
+                    rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, parameter)
+    
+                    rtma_data_2, rtma_time_2 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, parameter)
+            
+                    rtma_data_3, rtma_time_3 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, parameter)
+            
+                    rtma_data_4, rtma_time_4 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, parameter)
+            
+                    rtma_data_5, rtma_time_5 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, parameter)
+            
+                    rtma_data_6, rtma_time_6 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t9, parameter)
+    
+                    rtma_data_7, rtma_time_7 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t10, parameter)
+    
+    
+                else:
+    
+                    rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, parameter)
+                    
+                    rtma_data_2, rtma_time_2 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, parameter)
+            
+                    rtma_data_3, rtma_time_3 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, parameter)
+            
+                    rtma_data_4, rtma_time_4 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, parameter)
+            
+                    rtma_data_5, rtma_time_5 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, parameter)
+            
+                    rtma_data_6, rtma_time_6 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, parameter)
+    
+                    rtma_data_7, rtma_time_7 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t9, parameter)
+    
+            else:
+    
+                rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t2, parameter)
+    
+                rtma_data_2, rtma_time_2 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, parameter)
+        
+                rtma_data_3, rtma_time_3 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, parameter)
+        
+                rtma_data_4, rtma_time_4 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, parameter)
+        
+                rtma_data_5, rtma_time_5 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, parameter)
+        
+                rtma_data_6, rtma_time_6 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, parameter)
+    
+                rtma_data_7, rtma_time_7 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, parameter)
+            
+            rtma_data, rtma_times = parsers.save.append_data_RTMA_6hr_timelapse(rtma_data_0, rtma_data_1, rtma_data_2, rtma_data_3, rtma_data_4, rtma_data_5, rtma_data_6, rtma_data_7, rtma_time_0, rtma_time_1, rtma_time_2, rtma_time_3, rtma_time_4, rtma_time_5, rtma_time_6, rtma_time_7)
+
+            return rtma_data, rtma_times
+        
+
         
         def get_rtma_data_24_hour_difference(current_time, parameter):
         
@@ -2189,6 +1079,90 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
                 print("Unable to connect to either the main or backup servers. Aborting!")
+
+
+        def get_rtma_relative_humidity_data_past_6hrs():
+
+
+            
+            local_time, utc_time = standard.plot_creation_time()
+            times = []
+        
+            for i in range(0, 10):
+                time = utc_time - timedelta(hours=i)
+                times.append(time)
+        
+            t1 = times[0]
+            t2 = times[1]
+            t3 = times[2]
+            t4 = times[3]
+            t5 = times[4]
+            t6 = times[5]
+            t7 = times[6]
+            t8 = times[7]
+            t9 = times[8]
+            t10 = times[9]
+
+            rtma_data_0, rtma_time_0 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t1)
+    
+            rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t2)
+    
+            if rtma_time_0.hour == rtma_time_1.hour:
+    
+                rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t3)
+    
+                if rtma_time_0.hour == rtma_time_1.hour:
+    
+                    rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t4)
+    
+                    rtma_data_2, rtma_time_2 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t5)
+            
+                    rtma_data_3, rtma_time_3 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t6)
+            
+                    rtma_data_4, rtma_time_4 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t7)
+            
+                    rtma_data_5, rtma_time_5 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t8)
+            
+                    rtma_data_6, rtma_time_6 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t9)
+    
+                    rtma_data_7, rtma_time_7 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t10)
+    
+    
+                else:
+    
+                    rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t3)
+                    
+                    rtma_data_2, rtma_time_2 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t4)
+            
+                    rtma_data_3, rtma_time_3 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t5)
+            
+                    rtma_data_4, rtma_time_4 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t6)
+            
+                    rtma_data_5, rtma_time_5 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t7)
+            
+                    rtma_data_6, rtma_time_6 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t8)
+    
+                    rtma_data_7, rtma_time_7 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t9)
+    
+            else:
+    
+                rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t2)
+    
+                rtma_data_2, rtma_time_2 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t3)
+        
+                rtma_data_3, rtma_time_3 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t4)
+        
+                rtma_data_4, rtma_time_4 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t5)
+        
+                rtma_data_5, rtma_time_5 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t6)
+        
+                rtma_data_6, rtma_time_6 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t7)
+    
+                rtma_data_7, rtma_time_7 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t8)
+            
+            rtma_data, rtma_times = parsers.save.append_data_RTMA_6hr_timelapse(rtma_data_0, rtma_data_1, rtma_data_2, rtma_data_3, rtma_data_4, rtma_data_5, rtma_data_6, rtma_data_7, rtma_time_0, rtma_time_1, rtma_time_2, rtma_time_3, rtma_time_4, rtma_time_5, rtma_time_6, rtma_time_7)
+
+            return rtma_data, rtma_times
 
         
         def get_current_rtma_relative_humidity_data(current_time):
@@ -5020,7 +3994,7 @@ class NOMADS_OPENDAP_Downloads:
     THIS CLASS RETRIEVES DATA FROM THE NOMADS OPENDAP
 
     '''
-
+    
 
     class RTMA_Alaska:
 
