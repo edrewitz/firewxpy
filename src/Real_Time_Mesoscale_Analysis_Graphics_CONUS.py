@@ -3201,7 +3201,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=1, extend='both')
     
             if show_sample_points == True:
     
@@ -6633,7 +6633,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=1, extend='both')
     
             if show_sample_points == True:
     
@@ -11012,7 +11012,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=1, extend='both')
     
             if show_sample_points == True:
     
@@ -14669,7 +14669,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-30, 31, 1), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=1, extend='both')
     
             if show_sample_points == True:
     
