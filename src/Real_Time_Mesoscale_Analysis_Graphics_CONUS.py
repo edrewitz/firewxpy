@@ -1792,7 +1792,7 @@ class Counties_Perspective:
             ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
@@ -1803,7 +1803,7 @@ class Counties_Perspective:
                 stn1 = mpplots.StationPlot(ax1, rtma_df0['longitude'][::mask], rtma_df0['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn1.plot_parameter('C', rtma_df0['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn1.plot_parameter('C', rtma_df0['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -1834,7 +1834,7 @@ class Counties_Perspective:
             ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -1844,7 +1844,7 @@ class Counties_Perspective:
                 stn2 = mpplots.StationPlot(ax2, rtma_df1['longitude'][::mask], rtma_df1['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn2.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn2.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -1875,7 +1875,7 @@ class Counties_Perspective:
             ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -1885,7 +1885,7 @@ class Counties_Perspective:
                 stn3 = mpplots.StationPlot(ax3, rtma_df2['longitude'][::mask], rtma_df2['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn3.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn3.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -1917,7 +1917,7 @@ class Counties_Perspective:
             ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -1927,7 +1927,7 @@ class Counties_Perspective:
                 stn4 = mpplots.StationPlot(ax4, rtma_df3['longitude'][::mask], rtma_df3['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn4.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn4.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -1959,7 +1959,7 @@ class Counties_Perspective:
             ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -1969,7 +1969,7 @@ class Counties_Perspective:
                 stn5 = mpplots.StationPlot(ax5, rtma_df4['longitude'][::mask], rtma_df4['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn5.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn5.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -2000,7 +2000,7 @@ class Counties_Perspective:
             ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -2010,7 +2010,7 @@ class Counties_Perspective:
                 stn6 = mpplots.StationPlot(ax6, rtma_df5['longitude'][::mask], rtma_df5['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn6.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn6.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -2041,7 +2041,7 @@ class Counties_Perspective:
             ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -2051,7 +2051,7 @@ class Counties_Perspective:
                 stn7 = mpplots.StationPlot(ax7, rtma_df6['longitude'][::mask], rtma_df6['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn7.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn7.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -2950,7 +2950,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 61, 1), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=1, extend='both')
     
             if show_sample_points == True:
     
@@ -5157,7 +5157,8 @@ class Counties_Perspective:
                         1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis Temperature overlayed with the latest METAR reports. 
             
             '''
-    
+            state_border_linewidth = state_border_linewidth
+            county_border_linewidth = county_border_linewidth
             temperature_bottom_bound = temperature_bottom_bound
             temperature_top_bound = temperature_top_bound
             temperature_step = temperature_step
@@ -6380,7 +6381,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 61, 1), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=1, extend='both')
     
             if show_sample_points == True:
     
@@ -10105,7 +10106,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
@@ -10116,7 +10117,7 @@ class Predictive_Services_Areas_Perspective:
                 stn1 = mpplots.StationPlot(ax1, rtma_df0['longitude'][::mask], rtma_df0['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn1.plot_parameter('C', rtma_df0['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn1.plot_parameter('C', rtma_df0['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -10147,7 +10148,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -10157,7 +10158,7 @@ class Predictive_Services_Areas_Perspective:
                 stn2 = mpplots.StationPlot(ax2, rtma_df1['longitude'][::mask], rtma_df1['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn2.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn2.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -10188,7 +10189,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -10198,7 +10199,7 @@ class Predictive_Services_Areas_Perspective:
                 stn3 = mpplots.StationPlot(ax3, rtma_df2['longitude'][::mask], rtma_df2['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn3.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn3.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -10230,7 +10231,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -10240,7 +10241,7 @@ class Predictive_Services_Areas_Perspective:
                 stn4 = mpplots.StationPlot(ax4, rtma_df3['longitude'][::mask], rtma_df3['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn4.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn4.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -10272,7 +10273,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -10282,7 +10283,7 @@ class Predictive_Services_Areas_Perspective:
                 stn5 = mpplots.StationPlot(ax5, rtma_df4['longitude'][::mask], rtma_df4['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn5.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn5.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -10313,7 +10314,7 @@ class Predictive_Services_Areas_Perspective:
             ax6.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -10323,7 +10324,7 @@ class Predictive_Services_Areas_Perspective:
                 stn6 = mpplots.StationPlot(ax6, rtma_df5['longitude'][::mask], rtma_df5['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn6.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn6.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -10354,7 +10355,7 @@ class Predictive_Services_Areas_Perspective:
             ax7.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -10364,7 +10365,7 @@ class Predictive_Services_Areas_Perspective:
                 stn7 = mpplots.StationPlot(ax7, rtma_df6['longitude'][::mask], rtma_df6['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn7.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn7.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -10754,7 +10755,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 61, 1), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=1, extend='both')
     
             if show_sample_points == True:
     
@@ -12368,8 +12369,8 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax1.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax1.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax1.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
                              transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
@@ -12410,8 +12411,8 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax2.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax2.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax2.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
                              transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
@@ -12451,8 +12452,8 @@ class Predictive_Services_Areas_Perspective:
                 ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax3.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax3.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax3.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
                              transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
@@ -12493,8 +12494,8 @@ class Predictive_Services_Areas_Perspective:
                 ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax4.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax4.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax4.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
                              transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
@@ -12535,8 +12536,8 @@ class Predictive_Services_Areas_Perspective:
                 ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax5.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax5.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax5.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
                              transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
@@ -12576,8 +12577,8 @@ class Predictive_Services_Areas_Perspective:
                 ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax6.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax6.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax6.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
                              transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
@@ -12617,8 +12618,8 @@ class Predictive_Services_Areas_Perspective:
                 ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax7.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax7.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax7.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
                              transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
@@ -12825,8 +12826,8 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax1.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax1.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax1.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
                              transform=diff1.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
@@ -12868,8 +12869,8 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax2.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax2.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax2.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
                              transform=diff2.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
@@ -12911,8 +12912,8 @@ class Predictive_Services_Areas_Perspective:
                 ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax3.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax3.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax3.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
                              transform=diff3.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
@@ -12954,8 +12955,8 @@ class Predictive_Services_Areas_Perspective:
                 ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax4.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax4.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax4.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
                              transform=diff4.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
@@ -12996,8 +12997,8 @@ class Predictive_Services_Areas_Perspective:
                 ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax5.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax5.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax5.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
                              transform=diff5.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
@@ -13038,8 +13039,8 @@ class Predictive_Services_Areas_Perspective:
                 ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax6.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax6.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax6.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
                              transform=diff6.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
@@ -13079,8 +13080,8 @@ class Predictive_Services_Areas_Perspective:
                 ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='red', zorder=6)
-            ax7.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax7.add_feature(cfeature.STATES, linewidth=gacc_border_linewidth, zorder=6)
+            ax7.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
                              transform=diff7.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
@@ -13279,11 +13280,11 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax1.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax1.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
@@ -13294,7 +13295,7 @@ class Predictive_Services_Areas_Perspective:
                 stn1 = mpplots.StationPlot(ax1, rtma_df0['longitude'][::mask], rtma_df0['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn1.plot_parameter('C', rtma_df0['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn1.plot_parameter('C', rtma_df0['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -13321,11 +13322,11 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax2.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax2.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13335,7 +13336,7 @@ class Predictive_Services_Areas_Perspective:
                 stn2 = mpplots.StationPlot(ax2, rtma_df1['longitude'][::mask], rtma_df1['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn2.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn2.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -13362,11 +13363,11 @@ class Predictive_Services_Areas_Perspective:
                 ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax3.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax3.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13376,7 +13377,7 @@ class Predictive_Services_Areas_Perspective:
                 stn3 = mpplots.StationPlot(ax3, rtma_df2['longitude'][::mask], rtma_df2['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn3.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn3.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -13404,11 +13405,11 @@ class Predictive_Services_Areas_Perspective:
                 ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax4.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax4.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13418,7 +13419,7 @@ class Predictive_Services_Areas_Perspective:
                 stn4 = mpplots.StationPlot(ax4, rtma_df3['longitude'][::mask], rtma_df3['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn4.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn4.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -13446,11 +13447,11 @@ class Predictive_Services_Areas_Perspective:
                 ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax5.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax5.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13460,7 +13461,7 @@ class Predictive_Services_Areas_Perspective:
                 stn5 = mpplots.StationPlot(ax5, rtma_df4['longitude'][::mask], rtma_df4['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn5.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn5.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -13487,11 +13488,11 @@ class Predictive_Services_Areas_Perspective:
                 ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax6.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax6.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax6.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax6.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13501,7 +13502,7 @@ class Predictive_Services_Areas_Perspective:
                 stn6 = mpplots.StationPlot(ax6, rtma_df5['longitude'][::mask], rtma_df5['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn6.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn6.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -13528,11 +13529,11 @@ class Predictive_Services_Areas_Perspective:
                 ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax7.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax7.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax7.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13542,7 +13543,7 @@ class Predictive_Services_Areas_Perspective:
                 stn7 = mpplots.StationPlot(ax7, rtma_df6['longitude'][::mask], rtma_df6['latitude'][::mask],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-                stn7.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn7.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
             else:
                 pass
@@ -13744,8 +13745,8 @@ class Predictive_Services_Areas_Perspective:
                 ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax1.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax1.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax1.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax1.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
                              transform=diff1.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
@@ -13787,8 +13788,8 @@ class Predictive_Services_Areas_Perspective:
                 ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax2.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax2.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax2.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax2.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
                              transform=diff2.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
@@ -13830,8 +13831,8 @@ class Predictive_Services_Areas_Perspective:
                 ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax3.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax3.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax3.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax3.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
                              transform=diff3.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
@@ -13873,8 +13874,8 @@ class Predictive_Services_Areas_Perspective:
                 ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax4.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax4.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax4.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax4.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
                              transform=diff4.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
@@ -13915,8 +13916,8 @@ class Predictive_Services_Areas_Perspective:
                 ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax5.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax5.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax5.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax5.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
                              transform=diff5.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
@@ -13957,8 +13958,8 @@ class Predictive_Services_Areas_Perspective:
                 ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax6.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax6.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax6.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax6.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
                              transform=diff6.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
@@ -13998,8 +13999,8 @@ class Predictive_Services_Areas_Perspective:
                 ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
-            ax7.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
-            ax7.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+            ax7.add_feature(GACC, linewidth=gacc_border_linewidth, zorder=6)
+            ax7.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
                              transform=diff7.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
@@ -14410,7 +14411,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-60, 61, 1), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=1, extend='both')
     
             if show_sample_points == True:
     
