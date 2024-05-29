@@ -3425,4 +3425,47 @@ class save:
             print("File doesn't exist")
 
 
+    def append_data_RTMA_6hr_timelapse(rtma_data_1, rtma_data_2, rtma_data_3, rtma_data_4, rtma_data_5, rtma_data_6, rtma_data_7, rtma_data_8, rtma_time_1, rtma_time_2, rtma_time_3, rtma_time_4, rtma_time_5, rtma_time_6, rtma_time_7, rtma_time_8):
 
+
+        rtma_data_1 = rtma_data_1
+        rtma_data_2 = rtma_data_2 
+        rtma_data_3 = rtma_data_3 
+        rtma_data_4 = rtma_data_4
+        rtma_data_5 = rtma_data_5 
+        rtma_data_6 = rtma_data_6 
+        rtma_data_7 = rtma_data_7 
+        rtma_time_1 = rtma_time_1
+        rtma_time_2 = rtma_time_2
+        rtma_time_3 = rtma_time_3
+        rtma_time_4 = rtma_time_4
+        rtma_time_5 = rtma_time_5 
+        rtma_time_6 = rtma_time_6
+        rtma_time_7 = rtma_time_7
+        rtma_time_8 = rtma_time_8
+
+        data = []
+        data.append(rtma_data_1)
+        data.append(rtma_data_2)
+        data.append(rtma_data_3)
+        data.append(rtma_data_4)
+        data.append(rtma_data_5)
+        data.append(rtma_data_6)
+        data.append(rtma_data_7)
+        data.append(rtma_data_8)
+
+        times = []
+        times.append(rtma_time_1)
+        times.append(rtma_time_2)
+        times.append(rtma_time_3)
+        times.append(rtma_time_4)
+        times.append(rtma_time_5)
+        times.append(rtma_time_6)
+        times.append(rtma_time_7)
+        times.append(rtma_time_8)
+
+        return data, times
+
+
+
+        
