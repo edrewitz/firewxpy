@@ -119,7 +119,7 @@ class Counties_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -418,7 +418,7 @@ class Counties_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -717,7 +717,7 @@ class Counties_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -1014,7 +1014,7 @@ class Counties_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -1312,7 +1312,7 @@ class Counties_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -1390,7 +1390,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
             cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -1413,7 +1413,7 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
             cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -1436,7 +1436,7 @@ class Counties_Perspective:
                 ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
             cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -1459,7 +1459,7 @@ class Counties_Perspective:
                 ax4.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
             cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -1482,7 +1482,7 @@ class Counties_Perspective:
                 ax5.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
             cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -1507,7 +1507,7 @@ class Counties_Perspective:
                     ax7.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
-                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
                 cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -1595,7 +1595,7 @@ class Counties_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -1893,7 +1893,7 @@ class Counties_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -1971,7 +1971,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
             cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -1994,7 +1994,7 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
             cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -2017,7 +2017,7 @@ class Counties_Perspective:
                 ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
             cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -2040,7 +2040,7 @@ class Counties_Perspective:
                 ax4.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
             cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -2063,7 +2063,7 @@ class Counties_Perspective:
                 ax5.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
             cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -2088,7 +2088,7 @@ class Counties_Perspective:
                     ax7.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
-                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
                 cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -2185,7 +2185,7 @@ class Counties_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -2482,7 +2482,7 @@ class Counties_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -2779,7 +2779,7 @@ class Counties_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -3074,7 +3074,7 @@ class Counties_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -3370,7 +3370,7 @@ class Counties_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -3448,7 +3448,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
             cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -3471,7 +3471,7 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
             cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -3494,7 +3494,7 @@ class Counties_Perspective:
                 ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
             cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -3517,7 +3517,7 @@ class Counties_Perspective:
                 ax4.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
             cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -3540,7 +3540,7 @@ class Counties_Perspective:
                 ax5.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
             cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -3565,7 +3565,7 @@ class Counties_Perspective:
                     ax7.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
-                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
                 cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -3651,7 +3651,7 @@ class Counties_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -3947,7 +3947,7 @@ class Counties_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -4025,7 +4025,7 @@ class Counties_Perspective:
                 ax1.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
             cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -4048,7 +4048,7 @@ class Counties_Perspective:
                 ax2.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
             cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -4071,7 +4071,7 @@ class Counties_Perspective:
                 ax3.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
             cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -4094,7 +4094,7 @@ class Counties_Perspective:
                 ax4.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
             cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -4117,7 +4117,7 @@ class Counties_Perspective:
                 ax5.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
             ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
             cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -4142,7 +4142,7 @@ class Counties_Perspective:
                     ax7.add_feature(USCOUNTIES, linewidth=county_linewidth, zorder=4)
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
-                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
                 cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -4255,7 +4255,7 @@ class Predictive_Services_Areas_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -4551,7 +4551,7 @@ class Predictive_Services_Areas_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -4845,7 +4845,7 @@ class Predictive_Services_Areas_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -5138,7 +5138,7 @@ class Predictive_Services_Areas_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -5432,7 +5432,7 @@ class Predictive_Services_Areas_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -5509,7 +5509,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=1, zorder=4)
             ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
             cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -5531,7 +5531,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=1, zorder=4)
             ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
             cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -5553,7 +5553,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=1, zorder=4)
             ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
             cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -5575,7 +5575,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=1, zorder=4)
             ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
             cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -5597,7 +5597,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=1, zorder=4)
             ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
             cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -5621,7 +5621,7 @@ class Predictive_Services_Areas_Perspective:
                 ax7.add_feature(PSAs, linewidth=1, zorder=4)
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
-                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
                 cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -5712,7 +5712,7 @@ class Predictive_Services_Areas_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -6006,7 +6006,7 @@ class Predictive_Services_Areas_Perspective:
     
             da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -6083,7 +6083,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=1, zorder=4)
             ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
             cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -6105,7 +6105,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=1, zorder=4)
             ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
             cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -6127,7 +6127,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=1, zorder=4)
             ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
             cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -6149,7 +6149,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=1, zorder=4)
             ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
             cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -6171,7 +6171,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=1, zorder=4)
             ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
             cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -6196,7 +6196,7 @@ class Predictive_Services_Areas_Perspective:
                 ax7.add_feature(PSAs, linewidth=1, zorder=4)
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
-                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
                 cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -6297,7 +6297,7 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -6592,7 +6592,7 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
     
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -6884,7 +6884,7 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -7175,7 +7175,7 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -7467,7 +7467,7 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -7544,7 +7544,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=1, zorder=4)
             ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
             cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -7566,7 +7566,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=1, zorder=4)
             ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
             cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -7588,7 +7588,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=1, zorder=4)
             ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
             cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -7610,7 +7610,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=1, zorder=4)
             ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
             cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -7632,7 +7632,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=1, zorder=4)
             ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
             cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -7656,7 +7656,7 @@ class Predictive_Services_Areas_Perspective:
                 ax7.add_feature(PSAs, linewidth=1, zorder=4)
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
-                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
                 cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -7745,7 +7745,7 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
             
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -8037,7 +8037,7 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False)
     
             try:
                 if grb_7_vals.all() != None:
@@ -8114,7 +8114,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=1, zorder=4)
             ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
             cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -8136,7 +8136,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=1, zorder=4)
             ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
             cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -8158,7 +8158,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=1, zorder=4)
             ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
             cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -8180,7 +8180,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=1, zorder=4)
             ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
             cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -8202,7 +8202,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=1, zorder=4)
             ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
             cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -8227,7 +8227,7 @@ class Predictive_Services_Areas_Perspective:
                 ax7.add_feature(PSAs, linewidth=1, zorder=4)
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
-                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-60, 60 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+                cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
     
                 cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
                 cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
