@@ -1,1 +1,1 @@
-import FireWxPy
+import firewxpy
