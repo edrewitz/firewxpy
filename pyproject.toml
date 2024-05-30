@@ -18,7 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: Atmospheric Science",
-    "Intended Audience :: Science/Research",
+    "Intended Audience :: Fire Weather Operations",
     "Operating System :: OS Independent",
     "License :: OSI Approved :: MIT License",
 ]
