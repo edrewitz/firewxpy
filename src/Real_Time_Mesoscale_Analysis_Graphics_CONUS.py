@@ -333,7 +333,7 @@ class Counties_Perspective:
             return fig
             
     
-        def plot_relative_humidity(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_relative_humidity(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -393,7 +393,7 @@ class Counties_Perspective:
                         1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports. 
             
             '''
-    
+
             mask = mask
             local_time, utc_time = standard.plot_creation_time()
     
@@ -430,7 +430,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
             cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -452,7 +452,7 @@ class Counties_Perspective:
     
             return fig
     
-        def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
+        def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -512,7 +512,7 @@ class Counties_Perspective:
                         1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports. 
             
             '''
-    
+            
     
             local_time, utc_time = standard.plot_creation_time()
     
@@ -549,7 +549,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
             cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -580,7 +580,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_relative_humidity_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_relative_humidity_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -640,7 +640,6 @@ class Counties_Perspective:
                         1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports. 
             
             '''
-    
     
             local_time, utc_time = standard.plot_creation_time()
     
@@ -786,7 +785,7 @@ class Counties_Perspective:
             ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
@@ -828,7 +827,7 @@ class Counties_Perspective:
             ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -869,7 +868,7 @@ class Counties_Perspective:
             ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -911,7 +910,7 @@ class Counties_Perspective:
             ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -953,7 +952,7 @@ class Counties_Perspective:
             ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -994,7 +993,7 @@ class Counties_Perspective:
             ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1035,7 +1034,7 @@ class Counties_Perspective:
             ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1066,7 +1065,7 @@ class Counties_Perspective:
             return figs
         
     
-        def plot_relative_humidity_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_relative_humidity_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -1293,7 +1292,7 @@ class Counties_Perspective:
             ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
-                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
             cbar1.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1336,7 +1335,7 @@ class Counties_Perspective:
             ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
-                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1379,7 +1378,7 @@ class Counties_Perspective:
             ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
-                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1422,7 +1421,7 @@ class Counties_Perspective:
             ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
-                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1464,7 +1463,7 @@ class Counties_Perspective:
             ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
-                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1506,7 +1505,7 @@ class Counties_Perspective:
             ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
-                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1547,7 +1546,7 @@ class Counties_Perspective:
             ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
-                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -1576,7 +1575,7 @@ class Counties_Perspective:
             return figs
     
     
-        def plot_temperature_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, temperature_bottom_bound, temperature_top_bound, temperature_step):
+        def plot_temperature_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, temperature_bottom_bound, temperature_top_bound, temperature_step, alpha):
     
             r'''
                 This function does the following:
@@ -1792,7 +1791,7 @@ class Counties_Perspective:
             ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
@@ -1834,7 +1833,7 @@ class Counties_Perspective:
             ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -1875,7 +1874,7 @@ class Counties_Perspective:
             ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -1917,7 +1916,7 @@ class Counties_Perspective:
             ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -1959,7 +1958,7 @@ class Counties_Perspective:
             ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -2000,7 +1999,7 @@ class Counties_Perspective:
             ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -2041,7 +2040,7 @@ class Counties_Perspective:
             ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -2073,7 +2072,7 @@ class Counties_Perspective:
     
     
     
-        def plot_temperature_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_temperature_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -2307,7 +2306,7 @@ class Counties_Perspective:
             ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
-                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
             cbar1.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -2350,7 +2349,7 @@ class Counties_Perspective:
             ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
-                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -2393,7 +2392,7 @@ class Counties_Perspective:
             ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
-                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -2436,7 +2435,7 @@ class Counties_Perspective:
             ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
-                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -2478,7 +2477,7 @@ class Counties_Perspective:
             ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
-                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -2520,7 +2519,7 @@ class Counties_Perspective:
             ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
-                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -2561,7 +2560,7 @@ class Counties_Perspective:
             ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
-                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -2591,7 +2590,7 @@ class Counties_Perspective:
     
         
     
-        def plot_red_flag_relative_humidity_with_METARs(red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
+        def plot_red_flag_relative_humidity_with_METARs(red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -2691,7 +2690,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold_numpy, 1), cmap=cmap, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold_numpy, 1), cmap=cmap, alpha=alpha)
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
             cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -2722,7 +2721,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
+        def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -2830,10 +2829,10 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
     
             cs_low = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=alpha)
     
             cs_high = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(high_relative_humidity_threshold_scale, 101, 1), cmap=cmap_high, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(high_relative_humidity_threshold_scale, 101, 1), cmap=cmap_high, alpha=alpha)
     
             cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
             cbar_low.set_label(label="Low Relative Humidity (RH <=" + str(low_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
@@ -2850,7 +2849,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -2950,7 +2949,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=alpha, extend='both')
     
             if show_sample_points == True:
     
@@ -2975,7 +2974,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -3032,7 +3031,7 @@ class Counties_Perspective:
                         1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the 24-Hour difference with respect to temperature (degrees Fahrenheit)
             
             '''
-    
+
             mask = mask
             local_time, utc_time = standard.plot_creation_time()
     
@@ -3075,7 +3074,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=1, extend='both', zorder=2)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=alpha, extend='both', zorder=2)
     
             if show_sample_points == True:
     
@@ -3100,7 +3099,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -3201,7 +3200,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=alpha, extend='both')
     
             if show_sample_points == True:
     
@@ -3225,7 +3224,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
+        def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -3319,7 +3318,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap=cmap, alpha=1, extend='min')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap=cmap, alpha=alpha, extend='min')
     
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -3562,7 +3561,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, state_border_linewidth, county_border_linewidth):
+        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -3714,7 +3713,7 @@ class Counties_Perspective:
             ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh, 
-                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=1)
+                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=alpha)
     
             cbar_rh = fig.colorbar(cs_rh, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -3736,7 +3735,7 @@ class Counties_Perspective:
             ax2.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
-                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=1)
+                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=alpha)
     
             cbar_wind = fig.colorbar(cs_wind, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_wind.set_label(label="Sustained Wind Speed (MPH)", size=colorbar_label_font_size, fontweight='bold')   
@@ -3750,7 +3749,7 @@ class Counties_Perspective:
             return fig        
     
     
-        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, state_border_linewidth, county_border_linewidth):
+        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -3902,7 +3901,7 @@ class Counties_Perspective:
             ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh, 
-                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=1)
+                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=alpha)
     
             cbar_rh = fig.colorbar(cs_rh, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -3924,7 +3923,7 @@ class Counties_Perspective:
             ax2.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
-                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=1)
+                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=alpha)
     
             cbar_wind = fig.colorbar(cs_wind, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')   
@@ -3946,7 +3945,7 @@ class Counties_Perspective:
 
         '''
 
-        def plot_relative_humidity(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_relative_humidity(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -4044,7 +4043,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
             cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -4066,7 +4065,7 @@ class Counties_Perspective:
     
             return fig
     
-        def plot_relative_humidity_with_METARs(rtma_data, rtma_time, metar_sfc_data, metar_sfc_data_u_kt, metar_sfc_data_v_kt, metar_sfc_data_rh, metar_sfc_data_mask, metar_time_revised, plot_projection, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
+        def plot_relative_humidity_with_METARs(rtma_data, rtma_time, metar_sfc_data, metar_sfc_data_u_kt, metar_sfc_data_v_kt, metar_sfc_data_rh, metar_sfc_data_mask, metar_time_revised, plot_projection, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -4171,7 +4170,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
             cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -4202,7 +4201,7 @@ class Counties_Perspective:
             return fig
         
     
-        def plot_relative_humidity_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_relative_humidity_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -4360,7 +4359,7 @@ class Counties_Perspective:
             ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
@@ -4402,7 +4401,7 @@ class Counties_Perspective:
             ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -4443,7 +4442,7 @@ class Counties_Perspective:
             ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -4485,7 +4484,7 @@ class Counties_Perspective:
             ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -4527,7 +4526,7 @@ class Counties_Perspective:
             ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -4568,7 +4567,7 @@ class Counties_Perspective:
             ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -4609,7 +4608,7 @@ class Counties_Perspective:
             ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -4640,7 +4639,7 @@ class Counties_Perspective:
             return figs
         
     
-        def plot_relative_humidity_trend_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_relative_humidity_trend_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -4814,7 +4813,7 @@ class Counties_Perspective:
             ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
-                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
             cbar1.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -4857,7 +4856,7 @@ class Counties_Perspective:
             ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
-                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -4900,7 +4899,7 @@ class Counties_Perspective:
             ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
-                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -4943,7 +4942,7 @@ class Counties_Perspective:
             ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
-                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -4985,7 +4984,7 @@ class Counties_Perspective:
             ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
-                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -5027,7 +5026,7 @@ class Counties_Perspective:
             ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
-                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -5068,7 +5067,7 @@ class Counties_Perspective:
             ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
-                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -5097,7 +5096,7 @@ class Counties_Perspective:
             return figs
     
     
-        def plot_temperature_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, temperature_bottom_bound, temperature_top_bound, temperature_step):
+        def plot_temperature_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, temperature_bottom_bound, temperature_top_bound, temperature_step, alpha):
     
             r'''
                 This function does the following:
@@ -5266,7 +5265,7 @@ class Counties_Perspective:
             ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=2)
     
             cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
@@ -5308,7 +5307,7 @@ class Counties_Perspective:
             ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=2)
     
             cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -5349,7 +5348,7 @@ class Counties_Perspective:
             ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=2)
     
             cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -5391,7 +5390,7 @@ class Counties_Perspective:
             ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=2)
     
             cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -5433,7 +5432,7 @@ class Counties_Perspective:
             ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=2)
     
             cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -5474,7 +5473,7 @@ class Counties_Perspective:
             ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=2)
     
             cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -5515,7 +5514,7 @@ class Counties_Perspective:
             ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=2)
     
             cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -5547,7 +5546,7 @@ class Counties_Perspective:
     
     
     
-        def plot_temperature_trend_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_temperature_trend_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -5728,7 +5727,7 @@ class Counties_Perspective:
             ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
-                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
             cbar1.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -5771,7 +5770,7 @@ class Counties_Perspective:
             ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
-                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -5814,7 +5813,7 @@ class Counties_Perspective:
             ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
-                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -5857,7 +5856,7 @@ class Counties_Perspective:
             ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
-                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -5899,7 +5898,7 @@ class Counties_Perspective:
             ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
-                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -5941,7 +5940,7 @@ class Counties_Perspective:
             ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
-                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -5982,7 +5981,7 @@ class Counties_Perspective:
             ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
-                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -6011,7 +6010,7 @@ class Counties_Perspective:
             return figs
     
         
-        def plot_red_flag_relative_humidity_with_METARs(rtma_data, rtma_time, metar_sfc_data, metar_sfc_data_u_kt, metar_sfc_data_v_kt, metar_sfc_data_rh, metar_sfc_data_mask, metar_time_revised, plot_projection, red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
+        def plot_red_flag_relative_humidity_with_METARs(rtma_data, rtma_time, metar_sfc_data, metar_sfc_data_u_kt, metar_sfc_data_v_kt, metar_sfc_data_rh, metar_sfc_data_mask, metar_time_revised, plot_projection, red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -6119,7 +6118,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold_numpy, 1), cmap=cmap, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold_numpy, 1), cmap=cmap, alpha=alpha)
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
             cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -6151,7 +6150,7 @@ class Counties_Perspective:
 
     
     
-        def plot_low_and_high_relative_humidity(rtma_data, rtma_time, low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
+        def plot_low_and_high_relative_humidity(rtma_data, rtma_time, low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -6260,10 +6259,10 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
     
             cs_low = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=alpha)
     
             cs_high = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(high_relative_humidity_threshold_scale, 101, 1), cmap=cmap_high, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(high_relative_humidity_threshold_scale, 101, 1), cmap=cmap_high, alpha=alpha)
     
             cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
             cbar_low.set_label(label="Low Relative Humidity (RH <=" + str(low_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
@@ -6280,7 +6279,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_24_hour_relative_humidity_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_24_hour_relative_humidity_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -6381,7 +6380,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=alpha, extend='both')
     
             if show_sample_points == True:
     
@@ -6406,7 +6405,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_24_hour_temperature_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_24_hour_temperature_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -6507,7 +6506,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=1, extend='both', zorder=2)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=alpha, extend='both', zorder=2)
     
             if show_sample_points == True:
     
@@ -6532,7 +6531,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_24_hour_wind_speed_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_24_hour_wind_speed_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -6634,7 +6633,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=alpha, extend='both')
     
             if show_sample_points == True:
     
@@ -6658,7 +6657,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_current_frost_freeze_areas(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth):
+        def plot_current_frost_freeze_areas(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -6753,7 +6752,7 @@ class Counties_Perspective:
             ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=4)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap=cmap, alpha=1, extend='min')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap=cmap, alpha=alpha, extend='min')
     
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -7000,7 +6999,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(rtma_rh, rtma_wind, rtma_time, red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, state_border_linewidth, county_border_linewidth):
+        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(rtma_rh, rtma_wind, rtma_time, red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -7154,7 +7153,7 @@ class Counties_Perspective:
             ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh, 
-                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=1)
+                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=alpha)
     
             cbar_rh = fig.colorbar(cs_rh, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -7176,7 +7175,7 @@ class Counties_Perspective:
             ax2.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
-                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=1)
+                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=alpha)
     
             cbar_wind = fig.colorbar(cs_wind, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_wind.set_label(label="Sustained Wind Speed (MPH)", size=colorbar_label_font_size, fontweight='bold')   
@@ -7190,7 +7189,7 @@ class Counties_Perspective:
             return fig        
     
     
-        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(rtma_rh, rtma_wind, rtma_time, red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, state_border_linewidth, county_border_linewidth):
+        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(rtma_rh, rtma_wind, rtma_time, red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -7344,7 +7343,7 @@ class Counties_Perspective:
             ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh, 
-                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=1)
+                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=alpha)
     
             cbar_rh = fig.colorbar(cs_rh, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -7366,7 +7365,7 @@ class Counties_Perspective:
             ax2.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
-                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=1)
+                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=alpha)
     
             cbar_wind = fig.colorbar(cs_wind, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')   
@@ -7685,7 +7684,7 @@ class Predictive_Services_Areas_Perspective:
     
     
     
-        def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+        def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, alpha):
     
             r'''
                 This function does the following:
@@ -7784,7 +7783,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=1.5, zorder=4)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
             cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -7815,7 +7814,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_relative_humidity_with_METARs_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth):
+        def plot_relative_humidity_with_METARs_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -8029,7 +8028,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=4)
     
             cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
             cbar1.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8078,7 +8077,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=4)
     
             cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8127,7 +8126,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=4)
     
             cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8177,7 +8176,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=4)
     
             cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8227,7 +8226,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=4)
     
             cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8276,7 +8275,7 @@ class Predictive_Services_Areas_Perspective:
             ax6.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=4)
     
             cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8325,7 +8324,7 @@ class Predictive_Services_Areas_Perspective:
             ax7.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=4)
     
             cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8364,7 +8363,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
     
     
-        def plot_relative_humidity_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_relative_humidity_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -8573,7 +8572,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
@@ -8615,7 +8614,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8656,7 +8655,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8698,7 +8697,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8740,7 +8739,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8781,7 +8780,7 @@ class Predictive_Services_Areas_Perspective:
             ax6.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8822,7 +8821,7 @@ class Predictive_Services_Areas_Perspective:
             ax7.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8853,7 +8852,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
         
     
-        def plot_relative_humidity_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_relative_humidity_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -9083,7 +9082,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
-                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
             cbar1.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -9126,7 +9125,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
-                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -9169,7 +9168,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
-                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -9212,7 +9211,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
-                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -9254,7 +9253,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
-                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -9296,7 +9295,7 @@ class Predictive_Services_Areas_Perspective:
             ax6.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
-                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -9337,7 +9336,7 @@ class Predictive_Services_Areas_Perspective:
             ax7.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
-                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -9367,7 +9366,7 @@ class Predictive_Services_Areas_Perspective:
     
     
     
-        def plot_temperature_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_temperature_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -9604,7 +9603,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
-                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
             cbar1.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -9647,7 +9646,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
-                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -9690,7 +9689,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
-                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -9733,7 +9732,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
-                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -9775,7 +9774,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
-                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -9817,7 +9816,7 @@ class Predictive_Services_Areas_Perspective:
             ax6.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
-                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -9858,7 +9857,7 @@ class Predictive_Services_Areas_Perspective:
             ax7.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
-                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -9887,7 +9886,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
     
     
-        def plot_temperature_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask, temperature_bottom_bound, temperature_top_bound, temperature_step):
+        def plot_temperature_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask, temperature_bottom_bound, temperature_top_bound, temperature_step, alpha):
     
             r'''
                 This function does the following:
@@ -10106,7 +10105,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
@@ -10148,7 +10147,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -10189,7 +10188,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -10231,7 +10230,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -10273,7 +10272,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -10314,7 +10313,7 @@ class Predictive_Services_Areas_Perspective:
             ax6.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -10355,7 +10354,7 @@ class Predictive_Services_Areas_Perspective:
             ax7.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -10386,7 +10385,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
     
     
-        def plot_red_flag_relative_humidity_with_METARs(red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+        def plot_red_flag_relative_humidity_with_METARs(red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, alpha):
     
             r'''
                 This function does the following:
@@ -10490,7 +10489,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=1.5, zorder=4)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold_numpy, 1), cmap=cmap, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold_numpy, 1), cmap=cmap, alpha=alpha)
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
             cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -10521,7 +10520,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+        def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, alpha):
     
             r'''
             This function does the following:
@@ -10632,10 +10631,10 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=1.5, zorder=4)
     
             cs_low = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=alpha)
     
             cs_high = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(high_relative_humidity_threshold_scale, 101, 1), cmap=cmap_high, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(high_relative_humidity_threshold_scale, 101, 1), cmap=cmap_high, alpha=alpha)
     
             cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
             cbar_low.set_label(label="Low Relative Humidity (RH <="+ str(low_relative_humidity_threshold)+"%)", size=colorbar_label_font_size, fontweight='bold')
@@ -10652,7 +10651,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -10755,7 +10754,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=alpha, extend='both')
     
             if show_sample_points == True:
     
@@ -10780,7 +10779,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -10884,7 +10883,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=1, extend='both', zorder=2)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=alpha, extend='both', zorder=2)
     
             if show_sample_points == True:
     
@@ -10909,7 +10908,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -11013,7 +11012,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=alpha, extend='both')
     
             if show_sample_points == True:
     
@@ -11037,7 +11036,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
             
     
-        def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers):
+        def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, alpha):
     
             r'''
                 This function does the following:
@@ -11133,7 +11132,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=1.5, zorder=4)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap=cmap, alpha=1, extend='min')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap=cmap, alpha=alpha, extend='min')
     
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -11148,7 +11147,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_dry_and_windy_areas_based_on_sustained_winds(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size, show_rivers):
+        def plot_dry_and_windy_areas_based_on_sustained_winds(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size, show_rivers, alpha):
     
             r'''
                 This function does the following:
@@ -11264,7 +11263,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_dry_and_windy_areas_based_on_wind_gusts(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size, show_rivers):
+        def plot_dry_and_windy_areas_based_on_wind_gusts(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_font_size, signature_font_size, show_rivers, alpha):
     
             r'''
                 This function does the following:
@@ -11380,7 +11379,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers):
+        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, alpha):
     
             r'''
                 This function does the following:
@@ -11533,7 +11532,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh, 
-                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=1)
+                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=alpha)
     
             cbar_rh = fig.colorbar(cs_rh, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -11554,7 +11553,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
-                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=1)
+                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=alpha)
     
             cbar_wind = fig.colorbar(cs_wind, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_wind.set_label(label="Sustained Wind Speed (MPH)", size=colorbar_label_font_size, fontweight='bold')   
@@ -11568,7 +11567,7 @@ class Predictive_Services_Areas_Perspective:
             return fig 
     
     
-        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers):
+        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, alpha):
     
             r'''
                 This function does the following:
@@ -11721,7 +11720,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh, 
-                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=1)
+                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=alpha)
     
             cbar_rh = fig.colorbar(cs_rh, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -11742,7 +11741,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
-                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=1)
+                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=alpha)
     
             cbar_wind = fig.colorbar(cs_wind, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')   
@@ -11755,7 +11754,7 @@ class Predictive_Services_Areas_Perspective:
     
             return fig
     
-        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel_compact_view(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_1_title_font_size, subplot_2_and_3_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers):
+        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel_compact_view(red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_1_title_font_size, subplot_2_and_3_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size, first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, alpha):
     
             r'''
                 This function does the following:
@@ -11908,7 +11907,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_2_and_3_title_font_size, fontweight='bold')
     
             cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh, 
-                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=1)
+                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=alpha)
     
             cbar_rh = fig.colorbar(cs_rh, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -11928,7 +11927,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.set_title("Wind Gust", fontsize=subplot_2_and_3_title_font_size, fontweight='bold')
     
             cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
-                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 10), cmap=cmap_wind, alpha=1)
+                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 10), cmap=cmap_wind, alpha=alpha)
     
             cbar_wind = fig.colorbar(cs_wind, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')   
@@ -11950,7 +11949,7 @@ class Predictive_Services_Areas_Perspective:
 
         '''
 
-        def plot_relative_humidity(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_relative_humidity(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -12051,7 +12050,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
             cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -12073,7 +12072,7 @@ class Predictive_Services_Areas_Perspective:
     
             return fig
     
-        def plot_relative_humidity_with_METARs(rtma_data, rtma_time, metar_sfc_data, metar_sfc_data_u_kt, metar_sfc_data_v_kt, metar_sfc_data_rh, metar_sfc_data_mask, metar_time_revised, plot_projection, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth):
+        def plot_relative_humidity_with_METARs(rtma_data, rtma_time, metar_sfc_data, metar_sfc_data_u_kt, metar_sfc_data_v_kt, metar_sfc_data_rh, metar_sfc_data_mask, metar_time_revised, plot_projection, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -12181,7 +12180,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=4)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
             cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -12212,7 +12211,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
         
     
-        def plot_relative_humidity_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_relative_humidity_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -12373,7 +12372,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
@@ -12415,7 +12414,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -12456,7 +12455,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -12498,7 +12497,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -12540,7 +12539,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -12581,7 +12580,7 @@ class Predictive_Services_Areas_Perspective:
             ax6.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -12622,7 +12621,7 @@ class Predictive_Services_Areas_Perspective:
             ax7.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=1)
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -12653,7 +12652,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
         
     
-        def plot_relative_humidity_trend_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_relative_humidity_trend_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -12830,7 +12829,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
-                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
             cbar1.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -12873,7 +12872,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
-                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -12916,7 +12915,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
-                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -12959,7 +12958,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
-                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -13001,7 +13000,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
-                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -13043,7 +13042,7 @@ class Predictive_Services_Areas_Perspective:
             ax6.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
-                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -13084,7 +13083,7 @@ class Predictive_Services_Areas_Perspective:
             ax7.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
-                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=1, extend='both')
+                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -13113,7 +13112,7 @@ class Predictive_Services_Areas_Perspective:
             return figs
     
     
-        def plot_temperature_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask, temperature_bottom_bound, temperature_top_bound, temperature_step):
+        def plot_temperature_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask, temperature_bottom_bound, temperature_top_bound, temperature_step, alpha):
     
             r'''
                 This function does the following:
@@ -13284,7 +13283,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
@@ -13326,7 +13325,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13367,7 +13366,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13409,7 +13408,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13451,7 +13450,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13492,7 +13491,7 @@ class Predictive_Services_Areas_Perspective:
             ax6.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13533,7 +13532,7 @@ class Predictive_Services_Areas_Perspective:
             ax7.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=0.6, extend='both')
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13565,7 +13564,7 @@ class Predictive_Services_Areas_Perspective:
     
     
     
-        def plot_temperature_trend_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_temperature_trend_6hr_timelapse(rtma_data_list, rtma_time_list, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -13749,7 +13748,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
-                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
             cbar1.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13792,7 +13791,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
-                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
             cbar2.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13835,7 +13834,7 @@ class Predictive_Services_Areas_Perspective:
             ax3.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
-                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
             cbar3.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13878,7 +13877,7 @@ class Predictive_Services_Areas_Perspective:
             ax4.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
-                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
             cbar4.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13920,7 +13919,7 @@ class Predictive_Services_Areas_Perspective:
             ax5.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
-                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
             cbar5.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -13962,7 +13961,7 @@ class Predictive_Services_Areas_Perspective:
             ax6.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
-                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
             cbar6.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -14003,7 +14002,7 @@ class Predictive_Services_Areas_Perspective:
             ax7.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
-                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=1, extend='both')
+                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
             cbar7.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
@@ -14033,7 +14032,7 @@ class Predictive_Services_Areas_Perspective:
     
         
     
-        def plot_red_flag_relative_humidity_with_METARs(rtma_data, rtma_time, metar_sfc_data, metar_sfc_data_u_kt, metar_sfc_data_v_kt, metar_sfc_data_rh, metar_sfc_data_mask, metar_time_revised, plot_projection, red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth):
+        def plot_red_flag_relative_humidity_with_METARs(rtma_data, rtma_time, metar_sfc_data, metar_sfc_data_u_kt, metar_sfc_data_v_kt, metar_sfc_data_rh, metar_sfc_data_mask, metar_time_revised, plot_projection, red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -14144,7 +14143,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=4)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold_numpy, 1), cmap=cmap, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold_numpy, 1), cmap=cmap, alpha=alpha)
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
             cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -14175,7 +14174,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_low_and_high_relative_humidity(rtma_data, rtma_time, low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth):
+        def plot_low_and_high_relative_humidity(rtma_data, rtma_time, low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -14287,10 +14286,10 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=4)
     
             cs_low = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=alpha)
     
             cs_high = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(high_relative_humidity_threshold_scale, 101, 1), cmap=cmap_high, alpha=1)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(high_relative_humidity_threshold_scale, 101, 1), cmap=cmap_high, alpha=alpha)
     
             cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
             cbar_low.set_label(label="Low Relative Humidity (RH <=" + str(low_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
@@ -14307,7 +14306,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_24_hour_relative_humidity_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_24_hour_relative_humidity_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -14411,7 +14410,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=alpha, extend='both')
     
             if show_sample_points == True:
     
@@ -14436,7 +14435,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_24_hour_temperature_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_24_hour_temperature_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -14540,7 +14539,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=1, extend='both', zorder=2)
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=alpha, extend='both', zorder=2)
     
             if show_sample_points == True:
     
@@ -14565,7 +14564,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_24_hour_wind_speed_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask):
+        def plot_24_hour_wind_speed_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -14670,7 +14669,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=5)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=1, extend='both')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=alpha, extend='both')
     
             if show_sample_points == True:
     
@@ -14694,7 +14693,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_current_frost_freeze_areas(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth):
+        def plot_current_frost_freeze_areas(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -14792,7 +14791,7 @@ class Predictive_Services_Areas_Perspective:
             ax.add_feature(PSAs, linewidth=psa_border_linewidth, zorder=4)
     
             cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap=cmap, alpha=1, extend='min')
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-10, 33, 1), cmap=cmap, alpha=alpha, extend='min')
     
     
             cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
@@ -15043,7 +15042,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(rtma_rh, rtma_wind, rtma_time, red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, gacc_border_linewidth, psa_border_linewidth):
+        def plot_dry_and_windy_areas_based_on_sustained_winds_3_panel(rtma_rh, rtma_wind, rtma_time, red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_speed_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, gacc_border_linewidth, psa_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -15199,7 +15198,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh, 
-                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=1)
+                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=alpha)
     
             cbar_rh = fig.colorbar(cs_rh, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -15221,7 +15220,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.set_title("Sustained Wind Speed", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
-                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=1)
+                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=alpha)
     
             cbar_wind = fig.colorbar(cs_wind, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_wind.set_label(label="Sustained Wind Speed (MPH)", size=colorbar_label_font_size, fontweight='bold')   
@@ -15235,7 +15234,7 @@ class Predictive_Services_Areas_Perspective:
             return fig        
     
     
-        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(rtma_rh, rtma_wind, rtma_time, red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, gacc_border_linewidth, psa_border_linewidth):
+        def plot_dry_and_windy_areas_based_on_wind_gusts_3_panel(rtma_rh, rtma_wind, rtma_time, red_flag_warning_relative_humidity_threshold, red_flag_warning_wind_gust_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, plot_title_font_size, subplot_title_font_size, colorbar_shrink, colorbar_pad, colorbar_label_font_size, signature_x_position, signature_y_position, signature_font_size,  first_subplot_aspect_ratio, subsequent_subplot_aspect_ratio, show_rivers, gacc_border_linewidth, psa_border_linewidth, alpha):
     
             r'''
                 This function does the following:
@@ -15391,7 +15390,7 @@ class Predictive_Services_Areas_Perspective:
             ax1.set_title("Low Relative Humidity Areas", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_rh = ax1.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh, 
-                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=1)
+                             transform=rtma_rh.metpy.cartopy_crs, levels=np.arange(0, 16, 1), cmap=cmap_rh, alpha=alpha)
     
             cbar_rh = fig.colorbar(cs_rh, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_rh.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
@@ -15413,7 +15412,7 @@ class Predictive_Services_Areas_Perspective:
             ax2.set_title("Wind Gust", fontsize=subplot_title_font_size, fontweight='bold')
     
             cs_wind = ax2.contourf(rtma_wind.metpy.x, rtma_wind.metpy.y, rtma_wind, 
-                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=1)
+                             transform=rtma_wind.metpy.cartopy_crs, levels=np.arange(25, 75, 5), cmap=cmap_wind, alpha=alpha)
     
             cbar_wind = fig.colorbar(cs_wind, shrink=colorbar_shrink, location='bottom', pad=colorbar_pad)
             cbar_wind.set_label(label="Wind Gust (MPH)", size=colorbar_label_font_size, fontweight='bold')   
