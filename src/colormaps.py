@@ -79,4 +79,14 @@ def relative_humidity_change_filtered_colormap():
     
     return relative_humidity_change_filtered_colormap    
 
+def cloud_cover_colormap():
+    cloud_cover_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("cloud cover", ["deepskyblue", "lightslategrey"])
+    
+    return cloud_cover_colormap   
+
+def cloud_cover_change_colormap():
+    cloud_cover_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("cloud cover change", ["deepskyblue", "white", "lightslategrey"])
+    
+    return cloud_cover_change_colormap
+
 
