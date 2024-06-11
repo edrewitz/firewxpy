@@ -1685,7 +1685,7 @@ class NDFD:
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
                             print("\nThere are " + str(count) + " files returned.")
-
+                            count = count - 1
                             return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
 
 
@@ -1736,7 +1736,7 @@ class NDFD:
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
                             print("\nThere are " + str(count) + " files returned.")
-
+                            count = count - 1
                             return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
 
 
@@ -2289,8 +2289,8 @@ class NDFD:
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
                             print("\nThere are " + str(count) + " files returned.")
-
-                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count   
+                            count = count - 1
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
 
 
             if file_path == 'ds.maxt.bin':
@@ -2340,7 +2340,7 @@ class NDFD:
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
                             print("\nThere are " + str(count) + " files returned.")
-
+                            count = count - 1
                             return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
 
 
@@ -2745,6 +2745,141 @@ class checks:
             new_metar_time1 = datetime(new_metar_time.year, new_metar_time.month, new_metar_time.day, new_metar_time.hour, minute)
 
         return new_metar_time1
+
+
+    def parse_NWS_GRIB_data_array(data_array, parameter, file_count, convert_to_pandas_dataframe):
+
+
+        ds = data_array
+        parameter = parameter
+        file_count = file_count
+        convert_to_pandas_dataframe = convert_to_pandas_dataframe
+        
+        try:
+            count = 0
+            for i in data_array['time']:
+                count = count + 1
+
+        except Exception as e:
+            count = 0
+
+        vals = []
+        if count == 2:
+            vals_00 = ds[parameter][1, 0, :, :]
+            vals_01 = ds[parameter][1, 1, :, :]
+            if file_count <= 6:
+                vals_02 = ds[parameter][0, 2, :, :]
+                vals_03 = ds[parameter][0, 3, :, :]
+            if file_count >= 7:
+                vals_02 = ds[parameter][1, 2, :, :]
+                vals_03 = ds[parameter][1, 3, :, :]
+            vals_04 = ds[parameter][0, 4, :, :]
+            vals_05 = ds[parameter][0, 5, :, :]
+            if file_count >= 7:
+                vals_06 = ds[parameter][0, 6, :, :]
+
+            if file_count < 8:
+                vals.append(vals_00)
+            vals.append(vals_01)
+            vals.append(vals_02)
+            vals.append(vals_03)
+            vals.append(vals_04)
+            vals.append(vals_05)
+            if file_count >= 7:
+                vals.append(vals_06)
+            
+            if file_count == 8:
+                vals_07 = ds[parameter][0, 7, :, :]
+                vals.append(vals_07)
+
+
+        if count == 1:
+            vals_00 = ds[parameter][0, 0, :, :]
+            vals_01 = ds[parameter][0, 1, :, :]
+            vals_02 = ds[parameter][0, 2, :, :]
+            vals_03 = ds[parameter][0, 3, :, :]
+            vals_04 = ds[parameter][0, 4, :, :]
+            vals_05 = ds[parameter][0, 5, :, :]
+            if file_count >= 7:
+                vals_06 = ds[parameter][0, 6, :, :]
+
+            if file_count < 8:
+                vals.append(vals_00)
+            vals.append(vals_01)
+            vals.append(vals_02)
+            vals.append(vals_03)
+            vals.append(vals_04)
+            vals.append(vals_05)
+            if file_count >= 7:
+                vals.append(vals_06)
+            
+            if file_count == 8:
+                vals_07 = ds[parameter][0, 7, :, :]
+                vals.append(vals_07)
+
+        if count == 0:
+            vals_00 = ds[parameter][0, :, :]
+            vals_01 = ds[parameter][1, :, :]
+            vals_02 = ds[parameter][2, :, :]
+            vals_03 = ds[parameter][3, :, :]
+            vals_04 = ds[parameter][4, :, :]
+            vals_05 = ds[parameter][5, :, :]
+            if file_count >= 7:
+                vals_06 = ds[parameter][6, :, :]
+
+            if file_count < 8:
+                vals.append(vals_00)
+            vals.append(vals_01)
+            vals.append(vals_02)
+            vals.append(vals_03)
+            vals.append(vals_04)
+            vals.append(vals_05)
+            if file_count >= 7:
+                vals.append(vals_06)
+            
+            if file_count == 8:
+                vals_07 = ds[parameter][7, :, :]
+                vals.append(vals_07)
+
+        if convert_to_pandas_dataframe == False:
+            return vals
+
+        if convert_to_pandas_dataframe == True:
+            vals_df = []
+            ds0 = vals[0]
+            ds1 = vals[1]
+            ds2 = vals[2]
+            ds3 = vals[3]
+            ds4 = vals[4]
+            ds5 = vals[5]
+            if file_count >= 7:
+                ds6 = vals[6]
+
+            df0 = ds0.to_dataframe()
+            df1 = ds1.to_dataframe()
+            df2 = ds2.to_dataframe()
+            df3 = ds3.to_dataframe()
+            df4 = ds4.to_dataframe()
+            df5 = ds5.to_dataframe()
+            if file_count >= 7:
+                df6 = ds6.to_dataframe()
+
+            if file_count < 8:
+                vals_df.append(df0)
+            vals_df.append(df1)
+            vals_df.append(df2)
+            vals_df.append(df3)
+            vals_df.append(df4)
+            vals_df.append(df5)
+            if file_count >= 7:
+                vals_df.append(df6)
+            
+            if file_count == 8:
+                ds7 = vals[7]
+                df7 = ds7.to_dataframe()
+                vals_df.append(df7)
+   
+            return vals_df
 
 class save:
 
