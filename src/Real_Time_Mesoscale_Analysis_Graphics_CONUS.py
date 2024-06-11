@@ -451,6 +451,127 @@ class Counties_Perspective:
            verticalalignment='bottom', transform=ax.transAxes)
     
             return fig
+
+
+        def plot_total_cloud_cover(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, contour_step, show_sample_points, sample_point_fontsize, mask, alpha):
+    
+            r'''
+                This function does the following:
+                                                1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                                2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                                3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Plots the relative humidity data overlayed with the METAR reports. 
+    
+                
+    
+                Inputs:
+    
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+    
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+    
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+    
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+    
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+    
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+    
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+    
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+                    
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+    
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+    
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+    
+                    12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+    
+                    13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+    
+                    14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+    
+                    15) title_font_size (Integer) - The fontsize of the title of the figure. 
+    
+                    16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+    
+                    17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+    
+                    18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+    
+                    19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                                will not display on the map. 
+    
+    
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports. 
+            
+            '''
+
+            mask = mask
+            local_time, utc_time = standard.plot_creation_time()
+            contour_step = contour_step
+    
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'Total_cloud_cover_Analysis_entire_atmosphere_single_layer')
+    
+            from_zone = tz.tzutc()
+            to_zone = tz.tzlocal()
+            rtma_time = rtma_time.replace(tzinfo=from_zone)
+            rtma_time = rtma_time.astimezone(to_zone)
+            rtma_time_utc = rtma_time.astimezone(from_zone)
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+    
+            plot_proj = rtma_data.metpy.cartopy_crs
+            rtma_df = rtma_data.to_dataframe()
+    
+            cmap = colormaps.cloud_cover_colormap()
+    
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, alpha=alpha)
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Total Cloud Cover (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            plt.title("Real Time Mesoscale Analysis Total Cloud Cover\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+    
+            return fig
     
         def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, mask, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
     
@@ -2721,7 +2842,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, alpha):
+        def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
     
             r'''
                 This function does the following:
@@ -2787,6 +2908,9 @@ class Counties_Perspective:
             colorbar_label_font_size = colorbar_label_font_size
     
             colorbar_pad = colorbar_pad
+            show_sample_points = show_sample_points
+            sample_point_fontsize = sample_point_fontsize
+            mask = mask
     
             low_relative_humidity_threshold = low_relative_humidity_threshold
             low_relative_humidity_threshold_scale = low_relative_humidity_threshold + 1
@@ -2797,6 +2921,10 @@ class Counties_Perspective:
             local_time, utc_time = standard.plot_creation_time()
     
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time)
+
+            rtma_df = rtma_data.to_dataframe(name='rtma_rh')
+            mask_low = (rtma_df['rtma_rh'] <= low_relative_humidity_threshold)
+            mask_high = (rtma_df['rtma_rh'] >= high_relative_humidity_threshold)
     
             from_zone = tz.tzutc()
             to_zone = tz.tzlocal()
@@ -2819,8 +2947,8 @@ class Counties_Perspective:
             ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
             ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
-            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
             if show_rivers == True:
                 ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
             else:
@@ -2830,12 +2958,33 @@ class Counties_Perspective:
     
             cs_low = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=alpha)
+
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][mask_low][::mask], rtma_df['latitude'][mask_low][::mask],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn.plot_parameter('C', rtma_df['rtma_rh'][mask_low][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
     
             cs_high = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                              transform=rtma_data.metpy.cartopy_crs, levels=np.arange(high_relative_humidity_threshold_scale, 101, 1), cmap=cmap_high, alpha=alpha)
+
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][mask_high][::mask], rtma_df['latitude'][mask_high][::mask],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn.plot_parameter('C', rtma_df['rtma_rh'][mask_high][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
     
             cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
             cbar_low.set_label(label="Low Relative Humidity (RH <=" + str(low_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
+
     
             cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
             cbar_high.set_label(label="High Relative Humidity (RH >= " + str(high_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
@@ -3217,6 +3366,131 @@ class Counties_Perspective:
     
     
             plt.title("RTMA 24-Hour Wind Speed Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+    
+            return fig
+
+
+        def plot_24_hour_total_cloud_cover_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
+    
+            r'''
+                This function does the following:
+                                                1) Downloads the temperature data arrays for the current time and the data arrays for 24 hours ago from the data arrays for the current time.
+                                                2) Converts the temperature values from Kelvin to Fahrenheit. 
+                                                3) Subtracts the temperature data array from 24 hours ago from the temperature data array of the current time (Current Temperature - Temperature from 24 hours ago).
+                                                4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of the difference between the current temperature data array from the temperature data array from 24 hours ago.
+                
+    
+                Inputs:
+    
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+    
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+    
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+    
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+    
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+    
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+    
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+    
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+    
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+    
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+    
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+    
+                    12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+    
+                    13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+    
+                    14) title_font_size (Integer) - The fontsize of the title of the figure. 
+    
+                    15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+    
+                    16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+    
+                    17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+    
+                    18) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                                will not display on the map. 
+    
+    
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the 24-Hour difference with respect to temperature (degrees Fahrenheit)
+            
+            '''
+
+            mask = mask
+            local_time, utc_time = standard.plot_creation_time()
+    
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Total_cloud_cover_Analysis_entire_atmosphere_single_layer')
+    
+            rtma_time_24 = rtma_time - timedelta(hours=24)
+    
+            from_zone = tz.tzutc()
+            to_zone = tz.tzlocal()
+            rtma_time = rtma_time.replace(tzinfo=from_zone)
+            rtma_time = rtma_time.astimezone(to_zone)
+            rtma_time_24 = rtma_time_24.replace(tzinfo=from_zone)
+            rtma_time_24 = rtma_time_24.astimezone(to_zone)
+            rtma_time_utc = rtma_time.astimezone(from_zone)
+            rtma_time_24_utc = rtma_time_24.astimezone(from_zone)
+    
+            rtma_df = rtma_data.to_dataframe()
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+            
+            cmap = colormaps.cloud_cover_change_colormap()
+    
+            plot_proj = rtma_data.metpy.cartopy_crs
+    
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 51, 1), cmap=cmap, alpha=alpha, extend='both', zorder=2)
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Total Cloud Cover Change (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Total Cloud Cover Change\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
             
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
@@ -6650,6 +6924,252 @@ class Counties_Perspective:
     
     
             plt.title("RTMA 24-Hour Wind Speed Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+    
+            return fig
+
+        def plot_24_hour_total_cloud_cover_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
+    
+            r'''
+                This function does the following:
+                                                1) Downloads the temperature data arrays for the current time and the data arrays for 24 hours ago from the data arrays for the current time.
+                                                2) Converts the temperature values from Kelvin to Fahrenheit. 
+                                                3) Subtracts the temperature data array from 24 hours ago from the temperature data array of the current time (Current Temperature - Temperature from 24 hours ago).
+                                                4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of the difference between the current temperature data array from the temperature data array from 24 hours ago.
+                
+    
+                Inputs:
+    
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+    
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+    
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+    
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+    
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+    
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+    
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+    
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+    
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+    
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+    
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+    
+                    12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+    
+                    13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+    
+                    14) title_font_size (Integer) - The fontsize of the title of the figure. 
+    
+                    15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+    
+                    16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+    
+                    17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+    
+                    18) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                                will not display on the map. 
+    
+    
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the 24-Hour difference with respect to temperature (degrees Fahrenheit)
+            
+            '''
+
+            mask = mask
+            local_time, utc_time = standard.plot_creation_time()
+            rtma_data = rtma_data
+            rtma_time = rtma_time
+    
+            rtma_time_24 = rtma_time - timedelta(hours=24)
+    
+            from_zone = tz.tzutc()
+            to_zone = tz.tzlocal()
+            rtma_time = rtma_time.replace(tzinfo=from_zone)
+            rtma_time = rtma_time.astimezone(to_zone)
+            rtma_time_24 = rtma_time_24.replace(tzinfo=from_zone)
+            rtma_time_24 = rtma_time_24.astimezone(to_zone)
+            rtma_time_utc = rtma_time.astimezone(from_zone)
+            rtma_time_24_utc = rtma_time_24.astimezone(from_zone)
+    
+            rtma_df = rtma_data.to_dataframe()
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+            
+            cmap = colormaps.cloud_cover_change_colormap()
+    
+            plot_proj = rtma_data.metpy.cartopy_crs
+    
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 51, 1), cmap=cmap, alpha=alpha, extend='both', zorder=2)
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Total Cloud Cover Change (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Total Cloud Cover Change\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+    
+            return fig
+        
+
+        def plot_total_cloud_cover(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, contour_step, show_sample_points, sample_point_fontsize, mask, alpha):
+    
+            r'''
+                This function does the following:
+                                                1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                                2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                                3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Plots the relative humidity data overlayed with the METAR reports. 
+    
+                
+    
+                Inputs:
+    
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+    
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+    
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+    
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+    
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+    
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+    
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+    
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+                    
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+    
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+    
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+    
+                    12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+    
+                    13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+    
+                    14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+    
+                    15) title_font_size (Integer) - The fontsize of the title of the figure. 
+    
+                    16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+    
+                    17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+    
+                    18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+    
+                    19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                                will not display on the map. 
+    
+    
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports. 
+            
+            '''
+
+            mask = mask
+            local_time, utc_time = standard.plot_creation_time()
+            contour_step = contour_step
+
+            rtma_data = rtma_data
+            rtma_time = rtma_time
+    
+            from_zone = tz.tzutc()
+            to_zone = tz.tzlocal()
+            rtma_time = rtma_time.replace(tzinfo=from_zone)
+            rtma_time = rtma_time.astimezone(to_zone)
+            rtma_time_utc = rtma_time.astimezone(from_zone)
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+    
+            plot_proj = rtma_data.metpy.cartopy_crs
+            rtma_df = rtma_data.to_dataframe()
+    
+            cmap = colormaps.cloud_cover_colormap()
+    
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, alpha=alpha)
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Total Cloud Cover (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            plt.title("Real Time Mesoscale Analysis Total Cloud Cover\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
             
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
@@ -11034,6 +11554,258 @@ class Predictive_Services_Areas_Perspective:
            verticalalignment='bottom', transform=ax.transAxes)
     
             return fig
+
+
+        def plot_24_hour_total_cloud_cover_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
+    
+            r'''
+                This function does the following:
+                                                1) Downloads the temperature data arrays for the current time and the data arrays for 24 hours ago from the data arrays for the current time.
+                                                2) Converts the temperature values from Kelvin to Fahrenheit. 
+                                                3) Subtracts the temperature data array from 24 hours ago from the temperature data array of the current time (Current Temperature - Temperature from 24 hours ago).
+                                                4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of the difference between the current temperature data array from the temperature data array from 24 hours ago.
+                
+    
+                Inputs:
+    
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+    
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+    
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+    
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+    
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+    
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+    
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+    
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+    
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+    
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+    
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+    
+                    12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+    
+                    13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+    
+                    14) title_font_size (Integer) - The fontsize of the title of the figure. 
+    
+                    15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+    
+                    16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+    
+                    17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+    
+                    18) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                                will not display on the map. 
+    
+    
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the 24-Hour difference with respect to temperature (degrees Fahrenheit)
+            
+            '''
+
+            mask = mask
+            local_time, utc_time = standard.plot_creation_time()
+    
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Total_cloud_cover_Analysis_entire_atmosphere_single_layer')
+    
+            rtma_time_24 = rtma_time - timedelta(hours=24)
+    
+            from_zone = tz.tzutc()
+            to_zone = tz.tzlocal()
+            rtma_time = rtma_time.replace(tzinfo=from_zone)
+            rtma_time = rtma_time.astimezone(to_zone)
+            rtma_time_24 = rtma_time_24.replace(tzinfo=from_zone)
+            rtma_time_24 = rtma_time_24.astimezone(to_zone)
+            rtma_time_utc = rtma_time.astimezone(from_zone)
+            rtma_time_24_utc = rtma_time_24.astimezone(from_zone)
+    
+            rtma_df = rtma_data.to_dataframe()
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+            
+            cmap = colormaps.cloud_cover_change_colormap()
+    
+            plot_proj = rtma_data.metpy.cartopy_crs
+    
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            ax.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+            ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 51, 1), cmap=cmap, alpha=alpha, extend='both', zorder=2)
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Total Cloud Cover Change (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Total Cloud Cover Change\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+    
+            return fig
+
+
+        def plot_total_cloud_cover(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, contour_step, show_sample_points, sample_point_fontsize, mask, alpha):
+    
+            r'''
+                This function does the following:
+                                                1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                                2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                                3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Plots the relative humidity data overlayed with the METAR reports. 
+    
+                
+    
+                Inputs:
+    
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+    
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+    
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+    
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+    
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+    
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+    
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+    
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+                    
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+    
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+    
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+    
+                    12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+    
+                    13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+    
+                    14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+    
+                    15) title_font_size (Integer) - The fontsize of the title of the figure. 
+    
+                    16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+    
+                    17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+    
+                    18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+    
+                    19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                                will not display on the map. 
+    
+    
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports. 
+            
+            '''
+
+            mask = mask
+            local_time, utc_time = standard.plot_creation_time()
+            contour_step = contour_step
+    
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'Total_cloud_cover_Analysis_entire_atmosphere_single_layer')
+    
+            from_zone = tz.tzutc()
+            to_zone = tz.tzlocal()
+            rtma_time = rtma_time.replace(tzinfo=from_zone)
+            rtma_time = rtma_time.astimezone(to_zone)
+            rtma_time_utc = rtma_time.astimezone(from_zone)
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+    
+            plot_proj = rtma_data.metpy.cartopy_crs
+            rtma_df = rtma_data.to_dataframe()
+    
+            cmap = colormaps.cloud_cover_colormap()
+    
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            ax.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+            ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, alpha=alpha)
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Total Cloud Cover (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            plt.title("Real Time Mesoscale Analysis Total Cloud Cover\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+    
+            return fig
             
     
         def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table_shrink, signature_x_position, signature_y_position, title_font_size, signature_font_size, colorbar_label_font_size, colorbar_pad, show_rivers, alpha):
@@ -14686,6 +15458,260 @@ class Predictive_Services_Areas_Perspective:
     
     
             plt.title("RTMA 24-Hour Wind Speed Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+    
+            return fig
+
+
+        def plot_24_hour_total_cloud_cover_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
+    
+            r'''
+                This function does the following:
+                                                1) Downloads the temperature data arrays for the current time and the data arrays for 24 hours ago from the data arrays for the current time.
+                                                2) Converts the temperature values from Kelvin to Fahrenheit. 
+                                                3) Subtracts the temperature data array from 24 hours ago from the temperature data array of the current time (Current Temperature - Temperature from 24 hours ago).
+                                                4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of the difference between the current temperature data array from the temperature data array from 24 hours ago.
+                
+    
+                Inputs:
+    
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+    
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+    
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+    
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+    
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+    
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+    
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+    
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+    
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+    
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+    
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+    
+                    12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+    
+                    13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+    
+                    14) title_font_size (Integer) - The fontsize of the title of the figure. 
+    
+                    15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+    
+                    16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+    
+                    17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+    
+                    18) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                                will not display on the map. 
+    
+    
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the 24-Hour difference with respect to temperature (degrees Fahrenheit)
+            
+            '''
+
+            mask = mask
+            local_time, utc_time = standard.plot_creation_time()
+    
+            rtma_data = rtma_data
+            rtma_time = rtma_time
+    
+            rtma_time_24 = rtma_time - timedelta(hours=24)
+    
+            from_zone = tz.tzutc()
+            to_zone = tz.tzlocal()
+            rtma_time = rtma_time.replace(tzinfo=from_zone)
+            rtma_time = rtma_time.astimezone(to_zone)
+            rtma_time_24 = rtma_time_24.replace(tzinfo=from_zone)
+            rtma_time_24 = rtma_time_24.astimezone(to_zone)
+            rtma_time_utc = rtma_time.astimezone(from_zone)
+            rtma_time_24_utc = rtma_time_24.astimezone(from_zone)
+    
+            rtma_df = rtma_data.to_dataframe()
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+            
+            cmap = colormaps.cloud_cover_change_colormap()
+    
+            plot_proj = rtma_data.metpy.cartopy_crs
+    
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            ax.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+            ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 51, 1), cmap=cmap, alpha=alpha, extend='both', zorder=2)
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Total Cloud Cover Change (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Total Cloud Cover Change\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+    
+            return fig
+
+
+        def plot_total_cloud_cover(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, contour_step, show_sample_points, sample_point_fontsize, mask, alpha):
+    
+            r'''
+                This function does the following:
+                                                1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                                2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                                3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                                4) Plots the relative humidity data overlayed with the METAR reports. 
+    
+                
+    
+                Inputs:
+    
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+    
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+    
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+    
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+    
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+    
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+    
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+    
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+                    
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+    
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+    
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+    
+                    12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+    
+                    13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+    
+                    14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+    
+                    15) title_font_size (Integer) - The fontsize of the title of the figure. 
+    
+                    16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+    
+                    17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+    
+                    18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+    
+                    19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                                will not display on the map. 
+    
+    
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports. 
+            
+            '''
+
+            mask = mask
+            local_time, utc_time = standard.plot_creation_time()
+            contour_step = contour_step
+    
+            rtma_data = rtma_data
+            rtma_time = rtma_time
+    
+            from_zone = tz.tzutc()
+            to_zone = tz.tzlocal()
+            rtma_time = rtma_time.replace(tzinfo=from_zone)
+            rtma_time = rtma_time.astimezone(to_zone)
+            rtma_time_utc = rtma_time.astimezone(from_zone)
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+    
+            plot_proj = rtma_data.metpy.cartopy_crs
+            rtma_df = rtma_data.to_dataframe()
+    
+            cmap = colormaps.cloud_cover_colormap()
+    
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            ax.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+            ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, alpha=alpha)
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Total Cloud Cover (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            plt.title("Real Time Mesoscale Analysis Total Cloud Cover\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
             
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
