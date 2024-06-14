@@ -89,4 +89,8 @@ def cloud_cover_change_colormap():
     
     return cloud_cover_change_colormap
 
+def colorblind_mode_divergent_colormap():
+    colorblind_mode_divergent_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("colorblind mode divergent", ["indigo", "darkviolet", "white", "white", "orange", "darkorange"])
+    
+    return colorblind_mode_divergent_colormap
 
