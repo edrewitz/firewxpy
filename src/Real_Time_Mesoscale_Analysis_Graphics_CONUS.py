@@ -26,6 +26,7 @@ import calc
 import colormaps
 import pandas as pd
 import matplotlib.gridspec as gridspec
+import math
 
 from matplotlib.patheffects import withStroke
 from metpy.plots import USCOUNTIES
@@ -33,6 +34,7 @@ from datetime import datetime, timedelta
 from metpy.plots import colortables
 from NWS_Generic_Forecast_Graphics import standard
 from dateutil import tz
+
 
 class Counties_Perspective:
 
@@ -3248,7 +3250,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
+        def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha, colorblind):
     
             r'''
                 This function does the following:
@@ -3308,6 +3310,8 @@ class Counties_Perspective:
     
     
             local_time, utc_time = standard.plot_creation_time()
+
+            colorblind = colorblind
     
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Wind_speed_Analysis_height_above_ground')
     
@@ -3328,7 +3332,10 @@ class Counties_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            cmap = colormaps.wind_speed_change_colormap()
+            if colorblind == False:
+                cmap = colormaps.wind_speed_change_colormap()
+            if colorblind == True:
+                cmap = colormaps.colorblind_mode_divergent_colormap()
     
             plot_proj = rtma_data.metpy.cartopy_crs
     
@@ -3366,6 +3373,192 @@ class Counties_Perspective:
     
     
             plt.title("RTMA 24-Hour Wind Speed Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+    
+            return fig
+
+
+        def plot_24_hour_wind_speed_and_direction_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, mask, shaded_alpha, barb_quiver_alpha, barbs_or_quivers, minshaft, headlength, headwidth, colorblind):
+    
+            r'''
+                This function does the following:
+                                                1) Downloads the wind speed data arrays for the current time and the data arrays for 24 hours ago from the data arrays for the current time.
+                                                2) Converts wind speed values from m/s to MPH. 
+                                                3) Subtracts the wind speed data array from 24 hours ago from the wind speed data array of the current time (Current Wind Speed - Wind Speed from 24 hours ago).
+                                                4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of the difference between the current wind speed data array from the wind speed data array from 24 hours ago.
+                
+    
+                Inputs:
+    
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+    
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+    
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+    
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+    
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+    
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+    
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+    
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+    
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+    
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+    
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+    
+                    12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+    
+                    13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+    
+                    14) title_font_size (Integer) - The fontsize of the title of the figure. 
+    
+                    15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+    
+                    16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+    
+                    17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+    
+                    18) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                                will not display on the map. 
+    
+    
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the 24-Hour difference with respect to wind speed (MPH). 
+            
+            '''
+    
+    
+            local_time, utc_time = standard.plot_creation_time()
+            shaded_alpha = shaded_alpha
+            barb_quiver_alpha = barb_quiver_alpha
+            barbs_or_quivers = barbs_or_quivers
+            western_bound = western_bound
+            eastern_bound = eastern_bound
+            southern_bound = southern_bound
+            northern_bound = northern_bound
+            minshaft = minshaft 
+            headlength = headlength 
+            headwidth = headwidth
+            colorblind = colorblind
+    
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Wind_speed_Analysis_height_above_ground')
+
+            rtma_time_24 = rtma_time - timedelta(hours=24)
+
+            u, u_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'u-component_of_wind_Analysis_height_above_ground')
+
+            u_24, u_24_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(rtma_time_24, 'u-component_of_wind_Analysis_height_above_ground')
+
+
+            v, v_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'v-component_of_wind_Analysis_height_above_ground')
+
+            v_24, v_24_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(rtma_time_24, 'v-component_of_wind_Analysis_height_above_ground')
+
+            u = u * 2.23694
+            v = v * 2.23694
+            u_24 = u_24 * 2.23694
+            v_24 = v_24 * 2.23694
+
+            df_u = u.to_dataframe()
+            df_u24 = u_24.to_dataframe()
+            df_v = v.to_dataframe()
+            df_v24 = v_24.to_dataframe()
+
+            df_u['wind'] = df_u['u-component_of_wind_Analysis_height_above_ground'] 
+            df_v['wind'] = df_v['v-component_of_wind_Analysis_height_above_ground'] 
+            df_u24['wind'] = df_u24['u-component_of_wind_Analysis_height_above_ground'] 
+            df_v24['wind'] = df_v24['v-component_of_wind_Analysis_height_above_ground'] 
+
+            from_zone = tz.tzutc()
+            to_zone = tz.tzlocal()
+            rtma_time = rtma_time.replace(tzinfo=from_zone)
+            rtma_time = rtma_time.astimezone(to_zone)
+            rtma_time_24 = rtma_time_24.replace(tzinfo=from_zone)
+            rtma_time_24 = rtma_time_24.astimezone(to_zone)
+            rtma_time_utc = rtma_time.astimezone(from_zone)
+            rtma_time_24_utc = rtma_time_24.astimezone(from_zone)
+    
+            rtma_data = rtma_data * 2.23694
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+            
+            if colorblind == False:
+                cmap = colormaps.wind_speed_change_colormap()
+            if colorblind == True:
+                cmap = colormaps.colorblind_mode_divergent_colormap()
+    
+            plot_proj = rtma_data.metpy.cartopy_crs
+    
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=shaded_alpha, extend='both')
+
+            if barbs_or_quivers == 'barbs' or barbs_or_quivers == 'Barbs' or barbs_or_quivers == 'BARBS':
+
+                stn = mpplots.StationPlot(ax, df_u['longitude'][::mask], df_u['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), zorder=4, clip_on=True)
+                stn1 = mpplots.StationPlot(ax, df_u24['longitude'][::mask], df_u24['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), zorder=4, clip_on=True)
+                if colorblind == False:
+                    stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v['v-component_of_wind_Analysis_height_above_ground'][::mask], color='black', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+        
+                    stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v24['v-component_of_wind_Analysis_height_above_ground'][::mask], color='blue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+
+                if colorblind == True:
+
+                    stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v['v-component_of_wind_Analysis_height_above_ground'][::mask], color='crimson', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+        
+                    stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v24['v-component_of_wind_Analysis_height_above_ground'][::mask], color='dodgerblue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+
+            if barbs_or_quivers == 'quivers' or barbs_or_quivers == 'Quivers' or barbs_or_quivers == 'QUIVERS':
+
+                if colorblind == False:
+                
+                    ax.quiver(df_u['longitude'][::mask], df_u['latitude'][::mask], df_u['wind'][::mask], df_v['wind'][::mask], color='black', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+    
+                    ax.quiver(df_u24['longitude'][::mask], df_u24['latitude'][::mask], df_u24['wind'][::mask], df_v24['wind'][::mask], color='blue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+
+                if colorblind == True:
+
+                    ax.quiver(df_u['longitude'][::mask], df_u['latitude'][::mask], df_u['wind'][::mask], df_v['wind'][::mask], color='crimson', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+    
+                    ax.quiver(df_u24['longitude'][::mask], df_u24['latitude'][::mask], df_u24['wind'][::mask], df_v24['wind'][::mask], color='dodgerblue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+
+            
+            ax.legend(loc=(1, 0.875))
+            
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Wind Speed & Direction Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
             
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
@@ -6805,7 +6998,7 @@ class Counties_Perspective:
             return fig
     
     
-        def plot_24_hour_wind_speed_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
+        def plot_24_hour_wind_speed_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha, colorblind):
     
             r'''
                 This function does the following:
@@ -6868,6 +7061,7 @@ class Counties_Perspective:
     
             rtma_data = rtma_data
             rtma_time = rtma_time
+            colorblind = colorblind
     
             rtma_time_24 = rtma_time - timedelta(hours=24)
     
@@ -6886,7 +7080,10 @@ class Counties_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            cmap = colormaps.wind_speed_change_colormap()
+            if colorblind == False:
+                cmap = colormaps.wind_speed_change_colormap()
+            if colorblind == True:
+                cmap = colormaps.colorblind_mode_divergent_colormap()
     
             plot_proj = rtma_data.metpy.cartopy_crs
     
@@ -7052,6 +7249,193 @@ class Counties_Perspective:
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
     
+            return fig
+
+
+        def plot_24_hour_wind_speed_and_direction_change(rtma_data, rtma_time, u, u_time, u_24, u_24_time, v, v_time, v_24, v_24_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, state_border_linewidth, county_border_linewidth, mask, shaded_alpha, barb_quiver_alpha, barbs_or_quivers, minshaft, headlength, headwidth, colorblind):
+        
+            r'''
+                This function does the following:
+                                                1) Downloads the wind speed data arrays for the current time and the data arrays for 24 hours ago from the data arrays for the current time.
+                                                2) Converts wind speed values from m/s to MPH. 
+                                                3) Subtracts the wind speed data array from 24 hours ago from the wind speed data array of the current time (Current Wind Speed - Wind Speed from 24 hours ago).
+                                                4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of the difference between the current wind speed data array from the wind speed data array from 24 hours ago.
+                
+        
+                Inputs:
+        
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+        
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+        
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+        
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+        
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+        
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+        
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+        
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+        
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+        
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+        
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+        
+                    12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+        
+                    13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+        
+                    14) title_font_size (Integer) - The fontsize of the title of the figure. 
+        
+                    15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+        
+                    16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+        
+                    17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+        
+                    18) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                                will not display on the map. 
+        
+        
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the 24-Hour difference with respect to wind speed (MPH). 
+            
+            '''
+        
+        
+            local_time, utc_time = standard.plot_creation_time()
+            shaded_alpha = shaded_alpha
+            colorblind = colorblind
+            barb_quiver_alpha = barb_quiver_alpha
+            barbs_or_quivers = barbs_or_quivers
+            western_bound = western_bound
+            eastern_bound = eastern_bound
+            southern_bound = southern_bound
+            northern_bound = northern_bound
+            rtma_data = rtma_data
+            rtma_time = rtma_time
+            u = u 
+            u_time = u_time 
+            u_24 = u_24
+            u_24_time = u_24_time
+            v = v
+            v_time = v_time
+            v_24 = v_24
+            v_24_time = v_24_time
+            minshaft = minshaft
+            headlength = headlength
+            headwidth = headwidth
+        
+            rtma_time_24 = rtma_time - timedelta(hours=24)
+        
+        
+            u = u * 2.23694
+            v = v * 2.23694
+            u_24 = u_24 * 2.23694
+            v_24 = v_24 * 2.23694
+        
+            df_u = u.to_dataframe()
+            df_u24 = u_24.to_dataframe()
+            df_v = v.to_dataframe()
+            df_v24 = v_24.to_dataframe()
+        
+            df_u['wind'] = df_u['u-component_of_wind_Analysis_height_above_ground'] 
+            df_v['wind'] = df_v['v-component_of_wind_Analysis_height_above_ground'] 
+            df_u24['wind'] = df_u24['u-component_of_wind_Analysis_height_above_ground'] 
+            df_v24['wind'] = df_v24['v-component_of_wind_Analysis_height_above_ground'] 
+        
+        
+        
+            from_zone = tz.tzutc()
+            to_zone = tz.tzlocal()
+            rtma_time = rtma_time.replace(tzinfo=from_zone)
+            rtma_time = rtma_time.astimezone(to_zone)
+            rtma_time_24 = rtma_time_24.replace(tzinfo=from_zone)
+            rtma_time_24 = rtma_time_24.astimezone(to_zone)
+            rtma_time_utc = rtma_time.astimezone(from_zone)
+            rtma_time_24_utc = rtma_time_24.astimezone(from_zone)
+        
+            rtma_data = rtma_data * 2.23694
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+        
+            if colorblind == False:
+                cmap = colormaps.wind_speed_change_colormap()
+            if colorblind == True:
+                cmap = colormaps.colorblind_mode_divergent_colormap()
+        
+            plot_proj = rtma_data.metpy.cartopy_crs
+        
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+        
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=5)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=5)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, zorder=5)
+        
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=shaded_alpha, extend='both')
+        
+            if barbs_or_quivers == 'barbs' or barbs_or_quivers == 'Barbs' or barbs_or_quivers == 'BARBS':
+
+                stn = mpplots.StationPlot(ax, df_u['longitude'][::mask], df_u['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), zorder=4, clip_on=True)
+                stn1 = mpplots.StationPlot(ax, df_u24['longitude'][::mask], df_u24['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), zorder=4, clip_on=True)
+                if colorblind == False:
+                    stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v['v-component_of_wind_Analysis_height_above_ground'][::mask], color='black', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+        
+                    stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v24['v-component_of_wind_Analysis_height_above_ground'][::mask], color='blue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+
+                if colorblind == True:
+
+                    stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v['v-component_of_wind_Analysis_height_above_ground'][::mask], color='crimson', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+        
+                    stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v24['v-component_of_wind_Analysis_height_above_ground'][::mask], color='dodgerblue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+
+            if barbs_or_quivers == 'quivers' or barbs_or_quivers == 'Quivers' or barbs_or_quivers == 'QUIVERS':
+
+                if colorblind == False:
+                
+                    ax.quiver(df_u['longitude'][::mask], df_u['latitude'][::mask], df_u['wind'][::mask], df_v['wind'][::mask], color='black', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+    
+                    ax.quiver(df_u24['longitude'][::mask], df_u24['latitude'][::mask], df_u24['wind'][::mask], df_v24['wind'][::mask], color='blue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+
+                if colorblind == True:
+
+                    ax.quiver(df_u['longitude'][::mask], df_u['latitude'][::mask], df_u['wind'][::mask], df_v['wind'][::mask], color='crimson', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+    
+                    ax.quiver(df_u24['longitude'][::mask], df_u24['latitude'][::mask], df_u24['wind'][::mask], df_v24['wind'][::mask], color='dodgerblue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+            
+            ax.legend(loc=(1, 0.875))
+            
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
+        
+        
+            plt.title("RTMA 24-Hour Wind Speed & Direction Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+        
             return fig
         
 
@@ -11428,7 +11812,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
+        def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, show_sample_points, sample_point_fontsize, mask, alpha, colorblind):
     
             r'''
                 This function does the following:
@@ -11492,6 +11876,8 @@ class Predictive_Services_Areas_Perspective:
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Wind_speed_Analysis_height_above_ground')
     
             rtma_time_24 = rtma_time - timedelta(hours=24)
+
+            colorblind = colorblind
     
             from_zone = tz.tzutc()
             to_zone = tz.tzlocal()
@@ -11508,7 +11894,10 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            cmap = colormaps.wind_speed_change_colormap()
+            if colorblind == False:
+                cmap = colormaps.wind_speed_change_colormap()
+            if colorblind == True:
+                cmap = colormaps.colorblind_mode_divergent_colormap()
     
             PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
             GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
@@ -11677,6 +12066,195 @@ class Predictive_Services_Areas_Perspective:
     
     
             plt.title("RTMA 24-Hour Total Cloud Cover Change\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+    
+            return fig
+
+
+        def plot_24_hour_wind_speed_and_direction_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, mask, shaded_alpha, barb_quiver_alpha, barbs_or_quivers, minshaft, headlength, headwidth, colorblind):
+    
+            r'''
+                This function does the following:
+                                                1) Downloads the wind speed data arrays for the current time and the data arrays for 24 hours ago from the data arrays for the current time.
+                                                2) Converts wind speed values from m/s to MPH. 
+                                                3) Subtracts the wind speed data array from 24 hours ago from the wind speed data array of the current time (Current Wind Speed - Wind Speed from 24 hours ago).
+                                                4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of the difference between the current wind speed data array from the wind speed data array from 24 hours ago.
+                
+    
+                Inputs:
+    
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+    
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+    
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+    
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+    
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+    
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+    
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+    
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+    
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+    
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+    
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+    
+                    12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+    
+                    13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+    
+                    14) title_font_size (Integer) - The fontsize of the title of the figure. 
+    
+                    15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+    
+                    16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+    
+                    17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+    
+                    18) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                                will not display on the map. 
+    
+    
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the 24-Hour difference with respect to wind speed (MPH). 
+            
+            '''
+    
+    
+            local_time, utc_time = standard.plot_creation_time()
+            shaded_alpha = shaded_alpha
+            barb_quiver_alpha = barb_quiver_alpha
+            barbs_or_quivers = barbs_or_quivers
+            western_bound = western_bound
+            eastern_bound = eastern_bound
+            southern_bound = southern_bound
+            northern_bound = northern_bound
+            minshaft = minshaft 
+            headlength = headlength 
+            headwidth = headwidth
+            colorblind = colorblind
+    
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Wind_speed_Analysis_height_above_ground')
+
+            rtma_time_24 = rtma_time - timedelta(hours=24)
+
+            u, u_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'u-component_of_wind_Analysis_height_above_ground')
+
+            u_24, u_24_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(rtma_time_24, 'u-component_of_wind_Analysis_height_above_ground')
+
+
+            v, v_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'v-component_of_wind_Analysis_height_above_ground')
+
+            v_24, v_24_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(rtma_time_24, 'v-component_of_wind_Analysis_height_above_ground')
+
+            u = u * 2.23694
+            v = v * 2.23694
+            u_24 = u_24 * 2.23694
+            v_24 = v_24 * 2.23694
+
+            df_u = u.to_dataframe()
+            df_u24 = u_24.to_dataframe()
+            df_v = v.to_dataframe()
+            df_v24 = v_24.to_dataframe()
+
+            df_u['wind'] = df_u['u-component_of_wind_Analysis_height_above_ground'] 
+            df_v['wind'] = df_v['v-component_of_wind_Analysis_height_above_ground'] 
+            df_u24['wind'] = df_u24['u-component_of_wind_Analysis_height_above_ground'] 
+            df_v24['wind'] = df_v24['v-component_of_wind_Analysis_height_above_ground'] 
+
+            from_zone = tz.tzutc()
+            to_zone = tz.tzlocal()
+            rtma_time = rtma_time.replace(tzinfo=from_zone)
+            rtma_time = rtma_time.astimezone(to_zone)
+            rtma_time_24 = rtma_time_24.replace(tzinfo=from_zone)
+            rtma_time_24 = rtma_time_24.astimezone(to_zone)
+            rtma_time_utc = rtma_time.astimezone(from_zone)
+            rtma_time_24_utc = rtma_time_24.astimezone(from_zone)
+    
+            rtma_data = rtma_data * 2.23694
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+            
+            if colorblind == False:
+                cmap = colormaps.wind_speed_change_colormap()
+            if colorblind == True:
+                cmap = colormaps.colorblind_mode_divergent_colormap()
+    
+            plot_proj = rtma_data.metpy.cartopy_crs
+    
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            ax.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+            ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=shaded_alpha, extend='both')
+
+            if barbs_or_quivers == 'barbs' or barbs_or_quivers == 'Barbs' or barbs_or_quivers == 'BARBS':
+
+                stn = mpplots.StationPlot(ax, df_u['longitude'][::mask], df_u['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), zorder=4, clip_on=True)
+                stn1 = mpplots.StationPlot(ax, df_u24['longitude'][::mask], df_u24['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), zorder=4, clip_on=True)
+                if colorblind == False:
+                    stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v['v-component_of_wind_Analysis_height_above_ground'][::mask], color='black', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+        
+                    stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v24['v-component_of_wind_Analysis_height_above_ground'][::mask], color='blue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+
+                if colorblind == True:
+
+                    stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v['v-component_of_wind_Analysis_height_above_ground'][::mask], color='crimson', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+        
+                    stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v24['v-component_of_wind_Analysis_height_above_ground'][::mask], color='dodgerblue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+
+            if barbs_or_quivers == 'quivers' or barbs_or_quivers == 'Quivers' or barbs_or_quivers == 'QUIVERS':
+
+                if colorblind == False:
+                
+                    ax.quiver(df_u['longitude'][::mask], df_u['latitude'][::mask], df_u['wind'][::mask], df_v['wind'][::mask], color='black', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+    
+                    ax.quiver(df_u24['longitude'][::mask], df_u24['latitude'][::mask], df_u24['wind'][::mask], df_v24['wind'][::mask], color='blue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+
+                if colorblind == True:
+
+                    ax.quiver(df_u['longitude'][::mask], df_u['latitude'][::mask], df_u['wind'][::mask], df_v['wind'][::mask], color='crimson', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+    
+                    ax.quiver(df_u24['longitude'][::mask], df_u24['latitude'][::mask], df_u24['wind'][::mask], df_v24['wind'][::mask], color='dodgerblue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+
+            
+            ax.legend(loc=(1, 0.875))
+            
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Wind Speed & Direction Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
             
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
@@ -15336,7 +15914,7 @@ class Predictive_Services_Areas_Perspective:
             return fig
     
     
-        def plot_24_hour_wind_speed_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha):
+        def plot_24_hour_wind_speed_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_border_linewidth, psa_border_linewidth, show_sample_points, sample_point_fontsize, mask, alpha, colorblind):
     
             r'''
                 This function does the following:
@@ -15399,6 +15977,7 @@ class Predictive_Services_Areas_Perspective:
     
             rtma_data = rtma_data
             rtma_time = rtma_time
+            colorblind = colorblind
     
             rtma_time_24 = rtma_time - timedelta(hours=24)
     
@@ -15417,7 +15996,10 @@ class Predictive_Services_Areas_Perspective:
             mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
             datacrs = ccrs.PlateCarree()
 
-            cmap = colormaps.wind_speed_change_colormap()
+            if colorblind == False:
+                cmap = colormaps.wind_speed_change_colormap()
+            if colorblind == True:
+                cmap = colormaps.colorblind_mode_divergent_colormap()
 
             PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
             GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
@@ -15587,6 +16169,194 @@ class Predictive_Services_Areas_Perspective:
     
     
             plt.title("RTMA 24-Hour Total Cloud Cover Change\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+    
+            return fig
+
+
+        def plot_24_hour_wind_speed_and_direction_change(rtma_data, rtma_time, u, u_time, u_24, u_24_time, v, v_time, v_24, v_24_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel, second_standard_parallel, title_font_size, signature_font_size, color_table_shrink, colorbar_label_font_size, colorbar_pad, show_rivers, gacc_boundary_linewidth, psa_boundary_linewidth, mask, shaded_alpha, barb_quiver_alpha, barbs_or_quivers, minshaft, headlength, headwidth, colorblind):
+    
+            r'''
+                This function does the following:
+                                                1) Downloads the wind speed data arrays for the current time and the data arrays for 24 hours ago from the data arrays for the current time.
+                                                2) Converts wind speed values from m/s to MPH. 
+                                                3) Subtracts the wind speed data array from 24 hours ago from the wind speed data array of the current time (Current Wind Speed - Wind Speed from 24 hours ago).
+                                                4) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis of the difference between the current wind speed data array from the wind speed data array from 24 hours ago.
+                
+    
+                Inputs:
+    
+                    1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+    
+                    2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+    
+                    3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+    
+                    4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+    
+                    5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+    
+                    6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+    
+                    7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+    
+                    8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+    
+                    9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+    
+                    10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+    
+                    11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+    
+                    12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+    
+                    13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+    
+                    14) title_font_size (Integer) - The fontsize of the title of the figure. 
+    
+                    15) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+    
+                    16) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+    
+                    17) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                               Default setting is 0.05.
+                                               Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                               Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+    
+                    18) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                                will not display on the map. 
+    
+    
+                Returns:
+                        1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis for the 24-Hour difference with respect to wind speed (MPH). 
+            
+            '''
+    
+    
+            local_time, utc_time = standard.plot_creation_time()
+            shaded_alpha = shaded_alpha
+            barb_quiver_alpha = barb_quiver_alpha
+            barbs_or_quivers = barbs_or_quivers
+            western_bound = western_bound
+            eastern_bound = eastern_bound
+            southern_bound = southern_bound
+            northern_bound = northern_bound
+            minshaft = minshaft 
+            headlength = headlength 
+            headwidth = headwidth
+            colorblind = colorblind
+            rtma_data = rtma_data
+            rtma_time = rtma_time
+            u = u 
+            u_time = u_time
+            u_24 = u_24 
+            u_24_time = u_24_time 
+            v = v 
+            v_time = v_time 
+            v_24 = v_24
+            v_24_time = v_24_time
+
+            rtma_time_24 = rtma_time - timedelta(hours=24)
+
+            u = u * 2.23694
+            v = v * 2.23694
+            u_24 = u_24 * 2.23694
+            v_24 = v_24 * 2.23694
+
+            df_u = u.to_dataframe()
+            df_u24 = u_24.to_dataframe()
+            df_v = v.to_dataframe()
+            df_v24 = v_24.to_dataframe()
+
+            df_u['wind'] = df_u['u-component_of_wind_Analysis_height_above_ground'] 
+            df_v['wind'] = df_v['v-component_of_wind_Analysis_height_above_ground'] 
+            df_u24['wind'] = df_u24['u-component_of_wind_Analysis_height_above_ground'] 
+            df_v24['wind'] = df_v24['v-component_of_wind_Analysis_height_above_ground'] 
+
+            from_zone = tz.tzutc()
+            to_zone = tz.tzlocal()
+            rtma_time = rtma_time.replace(tzinfo=from_zone)
+            rtma_time = rtma_time.astimezone(to_zone)
+            rtma_time_24 = rtma_time_24.replace(tzinfo=from_zone)
+            rtma_time_24 = rtma_time_24.astimezone(to_zone)
+            rtma_time_utc = rtma_time.astimezone(from_zone)
+            rtma_time_24_utc = rtma_time_24.astimezone(from_zone)
+    
+            rtma_data = rtma_data * 2.23694
+            
+            mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+            datacrs = ccrs.PlateCarree()
+
+            PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+            GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+            
+            if colorblind == False:
+                cmap = colormaps.wind_speed_change_colormap()
+            if colorblind == True:
+                cmap = colormaps.colorblind_mode_divergent_colormap()
+    
+            plot_proj = rtma_data.metpy.cartopy_crs
+    
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            ax.add_feature(GACC, linewidth=gacc_boundary_linewidth, zorder=6)
+            ax.add_feature(PSAs, linewidth=psa_boundary_linewidth, zorder=5)
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=shaded_alpha, extend='both')
+
+            if barbs_or_quivers == 'barbs' or barbs_or_quivers == 'Barbs' or barbs_or_quivers == 'BARBS':
+
+                stn = mpplots.StationPlot(ax, df_u['longitude'][::mask], df_u['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), zorder=4, clip_on=True)
+                stn1 = mpplots.StationPlot(ax, df_u24['longitude'][::mask], df_u24['latitude'][::mask],
+                                                 transform=ccrs.PlateCarree(), zorder=4, clip_on=True)
+                if colorblind == False:
+                    stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v['v-component_of_wind_Analysis_height_above_ground'][::mask], color='black', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+        
+                    stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v24['v-component_of_wind_Analysis_height_above_ground'][::mask], color='blue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+
+                if colorblind == True:
+
+                    stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v['v-component_of_wind_Analysis_height_above_ground'][::mask], color='crimson', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+        
+                    stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v24['v-component_of_wind_Analysis_height_above_ground'][::mask], color='dodgerblue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+
+            if barbs_or_quivers == 'quivers' or barbs_or_quivers == 'Quivers' or barbs_or_quivers == 'QUIVERS':
+
+                if colorblind == False:
+                
+                    ax.quiver(df_u['longitude'][::mask], df_u['latitude'][::mask], df_u['wind'][::mask], df_v['wind'][::mask], color='black', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+    
+                    ax.quiver(df_u24['longitude'][::mask], df_u24['latitude'][::mask], df_u24['wind'][::mask], df_v24['wind'][::mask], color='blue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+
+                if colorblind == True:
+
+                    ax.quiver(df_u['longitude'][::mask], df_u['latitude'][::mask], df_u['wind'][::mask], df_v['wind'][::mask], color='crimson', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+    
+                    ax.quiver(df_u24['longitude'][::mask], df_u24['latitude'][::mask], df_u24['wind'][::mask], df_v24['wind'][::mask], color='dodgerblue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+
+            
+            ax.legend(loc=(1, 0.875))
+            
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Wind Speed & Direction Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
             
             ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
            verticalalignment='bottom', transform=ax.transAxes)
