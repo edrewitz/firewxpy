@@ -2772,7 +2772,7 @@ class checks:
                 vals_03 = ds[parameter][0, 3, :, :]
             if file_count >= 7:
                 vals_02 = ds[parameter][1, 2, :, :]
-                vals_03 = ds[parameter][1, 3, :, :]
+                vals_03 = ds[parameter][0, 3, :, :]
             vals_04 = ds[parameter][0, 4, :, :]
             vals_05 = ds[parameter][0, 5, :, :]
             if file_count >= 7:
