@@ -372,16 +372,27 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         
             times = []
         
-            for i in range(1,5):
+            for i in range(0,5):
                 new_time = current_time - timedelta(hours=i)
                 times.append(new_time)
 
-            main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            main_server_status = main_server_response.status_code
-            first_backup_server_status = first_backup_server_response.status_code
-            second_backup_server_status = second_backup_server_response.status_code
+            try:
+                main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
+                main_server_status = main_server_response.status_code
+            except Exception as a:
+                pass
+                
+            try:
+                first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
+                first_backup_server_status = first_backup_server_response.status_code
+            except Exception as b:
+                pass
+             
+            try:
+                second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+                second_backup_server_status = second_backup_server_response.status_code
+            except Exception as c:
+                pass
 
             if main_server_status == 200:
                 print("Main UCAR THREDDS Server is online. Connecting!")
@@ -725,13 +736,25 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 old_time = new_time - timedelta(hours=24)
                 times.append(new_time)
                 times_24.append(old_time)
-
-            main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            main_server_status = main_server_response.status_code
-            first_backup_server_status = first_backup_server_response.status_code
-            second_backup_server_status = second_backup_server_response.status_code
+                
+                
+            try:
+                main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
+                main_server_status = main_server_response.status_code
+            except Exception as a:
+                pass
+            
+            try:
+                first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
+                first_backup_server_status = first_backup_server_response.status_code
+            except Exception as b:
+                pass
+            
+            try:
+                second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+                second_backup_server_status = second_backup_server_response.status_code
+            except Exception as c:
+                pass
             
             if main_server_status == 200:
                 print("Main UCAR THREDDS Server is online. Connecting!")
@@ -1162,25 +1185,9 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
     
                 rtma_data_7, rtma_time_7 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t8)
             
-            rtma_data, rtma_time = parsers.save.append_data_RTMA_6hr_timelapse(rtma_data_0, rtma_data_1, rtma_data_2, rtma_data_3, rtma_data_4, rtma_data_5, rtma_data_6, rtma_data_7, rtma_time_0, rtma_time_1, rtma_time_2, rtma_time_3, rtma_time_4, rtma_time_5, rtma_time_6, rtma_time_7)
+            rtma_data, rtma_times = parsers.save.append_data_RTMA_6hr_timelapse(rtma_data_0, rtma_data_1, rtma_data_2, rtma_data_3, rtma_data_4, rtma_data_5, rtma_data_6, rtma_data_7, rtma_time_0, rtma_time_1, rtma_time_2, rtma_time_3, rtma_time_4, rtma_time_5, rtma_time_6, rtma_time_7)
 
-            return rtma_data, rtma_time
-
-        def get_24_hour_wind_speed_and_direction_comparison(current_time):
-            rtma_data, rtma_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(current_time, 'Wind_speed_Analysis_height_above_ground')
-
-            rtma_time_24 = rtma_time - timedelta(hours=24)
-
-            u, u_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(current_time, 'u-component_of_wind_Analysis_height_above_ground')
-    
-            u_24, u_24_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(rtma_time_24, 'u-component_of_wind_Analysis_height_above_ground')
-    
-    
-            v, v_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(current_time, 'v-component_of_wind_Analysis_height_above_ground')
-    
-            v_24, v_24_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(rtma_time_24, 'v-component_of_wind_Analysis_height_above_ground')
-
-            return rtma_data, rtma_time, u, u_time, u_24, u_24_time, v, v_time, v_24, v_24_time
+            return rtma_data, rtma_times
 
         
         def get_current_rtma_relative_humidity_data(current_time):
@@ -1204,12 +1211,23 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 new_time = current_time - timedelta(hours=i)
                 times.append(new_time)
 
-            main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            main_server_status = main_server_response.status_code
-            first_backup_server_status = first_backup_server_response.status_code
-            second_backup_server_status = second_backup_server_response.status_code
+            try:
+                main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
+                main_server_status = main_server_response.status_code
+            except Exception as a:
+                pass
+                
+            try:
+                first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
+                first_backup_server_status = first_backup_server_response.status_code
+            except Exception as b:
+                pass
+            
+            try:
+                second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+                second_backup_server_status = second_backup_server_response.status_code
+            except Exception as c:
+                pass
             
             if main_server_status == 200:
                 print("Main UCAR THREDDS Server is online. Connecting!")
@@ -1521,13 +1539,23 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 new_time = current_time - timedelta(hours=i)
                 times.append(new_time)
 
-
-            main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            main_server_status = main_server_response.status_code
-            first_backup_server_status = first_backup_server_response.status_code
-            second_backup_server_status = second_backup_server_response.status_code
+            try:
+                main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
+                main_server_status = main_server_response.status_code
+            except Exception as a:
+                pass
+                
+            try:
+                first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
+                first_backup_server_status = first_backup_server_response.status_code
+            except Exception as b:
+                pass
+                
+            try:
+                second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+                second_backup_server_status = second_backup_server_response.status_code
+            except Exception as c:
+                pass
 
             if main_server_status == 200:
                 print("Main UCAR THREDDS Server is online. Connecting!")
@@ -1860,12 +1888,23 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 new_time = current_time - timedelta(hours=i)
                 times.append(new_time)
 
-            main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            main_server_status = main_server_response.status_code
-            first_backup_server_status = first_backup_server_response.status_code
-            second_backup_server_status = second_backup_server_response.status_code
+            try:
+                main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
+                main_server_status = main_server_response.status_code
+            except Exception as a:
+                pass
+                
+            try:
+                first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
+                first_backup_server_status = first_backup_server_response.status_code
+            except Exception as b:
+                pass
+                
+            try:
+                second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+                second_backup_server_status = second_backup_server_response.status_code
+            except Exception as c:
+                pass
 
             if main_server_status == 200:
                 print("Main UCAR THREDDS Server is online. Connecting!")
@@ -2197,13 +2236,24 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 old_time = new_time - timedelta(hours=24)
                 times.append(new_time)
                 times_24.append(old_time)
-
-            main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            main_server_status = main_server_response.status_code
-            first_backup_server_status = first_backup_server_response.status_code
-            second_backup_server_status = second_backup_server_response.status_code
+                
+            try:
+                main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
+                main_server_status = main_server_response.status_code
+            except Exception as a:
+                pass
+            
+            try:
+                first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
+                first_backup_server_status = first_backup_server_response.status_code
+            except Exception as b:
+                pass
+            
+            try:
+                second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+                second_backup_server_status = second_backup_server_response.status_code
+            except Exception as c:
+                pass
 
             if main_server_status == 200:
                 print("Main UCAR THREDDS Server is online. Connecting!")
