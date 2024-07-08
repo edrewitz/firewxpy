@@ -122,6 +122,16 @@ class unit_conversion:
 
         return current_temperature_or_dewpoint_dataset * 1.8
 
+
+    def longitude_correction(longitude):
+
+        long_diff = longitude - 180
+
+        new_coords = (180 - long_diff) * -1
+
+        return new_coords
+        
+
 class Thermodynamics:
 
     def saturation_vapor_pressure(temperature):
@@ -145,3 +155,137 @@ class Thermodynamics:
         e = Thermodynamics.saturation_vapor_pressure(dewpoint)
         e_s = Thermodynamics.saturation_vapor_pressure(temperature)
         return (e / e_s) * 100
+
+
+class scaling:
+
+    def get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, barbs):
+
+        western_bound_init = -122
+        eastern_bound_init = -114
+        southern_bound_init = 32
+        northern_bound_init = 41
+
+        wb_init = abs(western_bound_init)
+        eb_init = abs(eastern_bound_init)
+        nb_init = abs(northern_bound_init)
+        sb_init = abs(southern_bound_init)
+
+        L1_init = wb_init - eb_init
+        L2_init = nb_init - sb_init
+
+        A_init = L1_init * L2_init
+
+        wb = abs(western_bound)
+        eb = abs(eastern_bound)
+        nb = abs(northern_bound)
+        sb = abs(southern_bound)
+
+        L1 = wb - eb
+        L2 = nb - sb
+
+        A = L1 * L2
+
+        if barbs == False:
+            decimate_init = 30
+
+        if barbs == True:
+            decimate_init = 40
+
+        decimate = (A * decimate_init) / A_init
+
+        decimate = int(round(decimate, -1))
+
+        if A > A_init:
+            decimate = int(round((decimate / 2), 0))
+            if decimate > 100:
+                decimate = 100
+        else:
+            decimate = decimate
+
+        return decimate
+
+
+    def get_thredds_decimation(western_bound, eastern_bound, southern_bound, northern_bound, barbs):
+
+        western_bound_init = -122
+        eastern_bound_init = -114
+        southern_bound_init = 32
+        northern_bound_init = 40
+
+        wb_init = abs(western_bound_init)
+        eb_init = abs(eastern_bound_init)
+        nb_init = abs(northern_bound_init)
+        sb_init = abs(southern_bound_init)
+
+        L1_init = wb_init - eb_init
+        L2_init = nb_init - sb_init
+
+        A_init = L1_init * L2_init
+
+        wb = abs(western_bound)
+        eb = abs(eastern_bound)
+        nb = abs(northern_bound)
+        sb = abs(southern_bound)
+
+        L1 = wb - eb
+        L2 = nb - sb
+
+        A = L1 * L2
+
+        decimate_init = 1800
+
+        decimate = (A * decimate_init) / A_init
+
+        decimate = int(round(decimate, -2))
+
+        west = 124
+        east = 67
+        south = 25
+        north = 49
+
+        Lwe_conus = west - east
+        Lns_conus = north - south
+        A_conus = Lwe_conus * Lns_conus
+
+        if A > A_init:
+            decimate = (int(round((decimate / 2), 0))) + 200
+            if barbs == True:
+                decimate = decimate + 800
+            if barbs == None:
+                Anew = A_init *2.5
+                if A > Anew:
+                    decimate = decimate + 800
+                else:
+                    decimate = decimate + 500
+                if A >= A_conus:
+                    decimate = decimate * 2
+                else:
+                    decimate = decimate
+            else:
+                if A >= A_conus:
+                    decimate = decimate * 2
+                else:
+                    decimate = decimate
+        elif A < A_init:
+            decimate = int(round((decimate / 2), 0))
+            if barbs == None:
+                Alow = A_init/2
+                if A < Alow:
+                    decimate = decimate -500
+
+        else:
+            decimate = decimate
+
+        return decimate
+
+
+        
+        
+
+
+
+
+
+
+        
