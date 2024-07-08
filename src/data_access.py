@@ -26,6 +26,8 @@ import requests
 import calc
 import numpy as np
 import pickle
+import netCDF4
+import time as t
 
 from ftplib import FTP
 from siphon.catalog import TDSCatalog
@@ -309,6 +311,12 @@ class FTP_Downloads:
                 with open(param, 'wb') as fp:
                     ftp.retrbinary('RETR ' + param, fp.write)
 
+                grbs_short = pygrib.open(param)
+                grbs_short.seek(0)
+                count_short = 0
+                for grb in grbs_short:
+                    count_short = count_short + 1
+
                 dirName_extended = directory_name + 'VP.004-007/'
                 param = parameter
                 files = ftp.cwd(dirName_extended)
@@ -317,15 +325,20 @@ class FTP_Downloads:
                     ftp.retrbinary('RETR ' + param, fp.write)
                 
                 ftp.close()
+
                 
                 #########################
                 # DATA ARRAYS PARAMETER #
                 #########################
                 grbs = pygrib.open(param)
                 grbs.seek(0)
+                count = 0
+                for grb in grbs:
+                    count = count + 1
+                count_extended = count - count_short
                 ds = xr.load_dataset(param, engine='cfgrib')
                 ds = ds.metpy.parse_cf()
-                return grbs, ds
+                return grbs, ds, count_short, count_extended
     
             ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
     
@@ -338,7 +351,6 @@ class FTP_Downloads:
         except Exception as e:
             dir_error = info.directory_name_error()
             return dir_error
-
 
 
 class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
@@ -648,26 +660,37 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             t10 = times[9]
 
             rtma_data_0, rtma_time_0 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t1, parameter)
+
+            t.sleep(15)
     
             rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t2, parameter)
-    
+
+            t.sleep(15)
+            
             if rtma_time_0.hour == rtma_time_1.hour:
     
                 rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, parameter)
+                t.sleep(15)
     
                 if rtma_time_0.hour == rtma_time_1.hour:
     
                     rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, parameter)
-    
+                    t.sleep(15)
+                    
                     rtma_data_2, rtma_time_2 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, parameter)
+                    t.sleep(15)
             
                     rtma_data_3, rtma_time_3 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, parameter)
+                    t.sleep(15)
             
                     rtma_data_4, rtma_time_4 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, parameter)
+                    t.sleep(15)
             
                     rtma_data_5, rtma_time_5 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, parameter)
+                    t.sleep(15)
             
                     rtma_data_6, rtma_time_6 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t9, parameter)
+                    t.sleep(15)
     
                     rtma_data_7, rtma_time_7 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t10, parameter)
     
@@ -675,32 +698,46 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
                 else:
     
                     rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, parameter)
+                    t.sleep(15)
                     
                     rtma_data_2, rtma_time_2 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, parameter)
+                    t.sleep(15)
             
                     rtma_data_3, rtma_time_3 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, parameter)
+                    t.sleep(15)
             
                     rtma_data_4, rtma_time_4 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, parameter)
+                    t.sleep(15)
             
                     rtma_data_5, rtma_time_5 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, parameter)
+                    t.sleep(15)
             
                     rtma_data_6, rtma_time_6 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, parameter)
+                    t.sleep(15)
     
                     rtma_data_7, rtma_time_7 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t9, parameter)
+                    t.sleep(15)
     
             else:
+                t.sleep(15)
     
                 rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t2, parameter)
+                t.sleep(15)
     
                 rtma_data_2, rtma_time_2 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, parameter)
+                t.sleep(15)
         
                 rtma_data_3, rtma_time_3 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, parameter)
+                t.sleep(15)
         
                 rtma_data_4, rtma_time_4 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, parameter)
+                t.sleep(15)
         
                 rtma_data_5, rtma_time_5 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, parameter)
+                t.sleep(15)
         
                 rtma_data_6, rtma_time_6 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, parameter)
+                t.sleep(15)
     
                 rtma_data_7, rtma_time_7 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, parameter)
             
@@ -1129,59 +1166,100 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             t10 = times[9]
 
             rtma_data_0, rtma_time_0 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t1)
+
+            t.sleep(15)
     
             rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t2)
+
+            t.sleep(15)
     
             if rtma_time_0.hour == rtma_time_1.hour:
     
                 rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t3)
+
+                t.sleep(15)
     
                 if rtma_time_0.hour == rtma_time_1.hour:
     
                     rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t4)
+
+                    t.sleep(15)
     
                     rtma_data_2, rtma_time_2 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t5)
+
+                    t.sleep(15)
             
                     rtma_data_3, rtma_time_3 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t6)
+
+                    t.sleep(15)
             
                     rtma_data_4, rtma_time_4 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t7)
+
+                    t.sleep(15)
             
                     rtma_data_5, rtma_time_5 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t8)
+
+                    t.sleep(15)
             
                     rtma_data_6, rtma_time_6 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t9)
+
+                    t.sleep(15)
     
                     rtma_data_7, rtma_time_7 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t10)
-    
     
                 else:
     
                     rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t3)
+
+                    t.sleep(15)
                     
                     rtma_data_2, rtma_time_2 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t4)
+
+                    t.sleep(15)
             
                     rtma_data_3, rtma_time_3 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t5)
+
+                    t.sleep(15)
             
                     rtma_data_4, rtma_time_4 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t6)
+
+                    t.sleep(15)
             
                     rtma_data_5, rtma_time_5 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t7)
+
+                    t.sleep(15)
             
                     rtma_data_6, rtma_time_6 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t8)
+
+                    t.sleep(15)
     
                     rtma_data_7, rtma_time_7 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t9)
     
             else:
     
                 rtma_data_1, rtma_time_1 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t2)
+
+                t.sleep(15)
     
                 rtma_data_2, rtma_time_2 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t3)
+
+                t.sleep(15)
         
                 rtma_data_3, rtma_time_3 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t4)
+
+                t.sleep(15)
         
                 rtma_data_4, rtma_time_4 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t5)
+
+                t.sleep(15)
         
                 rtma_data_5, rtma_time_5 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t6)
+
+                t.sleep(15)
         
                 rtma_data_6, rtma_time_6 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t7)
+
+                t.sleep(15)
     
                 rtma_data_7, rtma_time_7 = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t8)
             
@@ -2681,7 +2759,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
         
             times = []
         
-            for i in range(1,5):
+            for i in range(0,5):
                 new_time = current_time - timedelta(hours=i)
                 times.append(new_time)
         
@@ -3802,7 +3880,62 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             print("METAR Data successfully retrieved for " + metar_time.strftime('%m/%d/%Y %H00 UTC'))
             return sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time
 
+        def get_METAR_Data_CONUS(current_time):
 
+            r'''
+
+            This function downloads and returns the latest METAR data. 
+            This function also uses MetPy to calculate the relative humidity dataset from the temperature and dewpoint datasets. 
+            This function is only used for METAR observations in Hawaii. 
+            
+            Inputs: 1) current_time (Datetime) - Current date and time in UTC. 
+
+            Returns: 1) sfc_data - The entire METAR dataset. 
+                     2) sfc_data_u_kt - The u-component (west-east) of the wind velocity in knots. 
+                     3) sfc_data_v_kt - The v-component (north-south) of the wind velocity in knots. 
+                     4) sfc_data_rh - The relative humidity in the METAR dataset. 
+                     5) metar_time - The time of the METAR report. 
+
+            '''
+            metar_time = current_time
+            
+            # Pings server for airport data
+            airports_df = pd.read_csv(get_test_data('airport-codes.csv'))
+            
+            # Queries our airport types (airport sizes)
+            airports_df = airports_df[(airports_df['type'] == 'large_airport') | (airports_df['type'] == 'medium_airport') | (airports_df['type'] == 'small_airport')]
+            
+            # Accesses the METAR data
+            try:
+                metar_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.xml')
+            
+            except Exception as e:
+                metar_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.xml')
+                
+            # Opens METAR file
+            metar_file = metar_cat.datasets.filter_time_nearest(metar_time).remote_open()
+            
+            # Decodes bytes into strings
+            metar_text = StringIO(metar_file.read().decode('latin-1'))
+            
+            # Parses through data
+            sfc_data = parse_metar_file(metar_text, year=metar_time.year, month=metar_time.month)
+            sfc_units = sfc_data.units
+            
+            # Creates dataframe
+            sfc_data = sfc_data[sfc_data['station_id'].isin(airports_df['ident'])]
+            
+            sfc_data = pandas_dataframe_to_unit_arrays(sfc_data, sfc_units)
+            
+            sfc_data['u'], sfc_data['v'] = mpcalc.wind_components(sfc_data['wind_speed'], sfc_data['wind_direction'])
+            
+            sfc_data_u_kt = sfc_data['u'].to('kts')
+            sfc_data_v_kt = sfc_data['v'].to('kts')
+            
+            sfc_data_rh = mpcalc.relative_humidity_from_dewpoint(sfc_data['air_temperature'], sfc_data['dew_point_temperature'])
+
+            print("METAR Data successfully retrieved for " + metar_time.strftime('%m/%d/%Y %H00 UTC'))
+            return sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, metar_time
         
 
 
@@ -4055,6 +4188,29 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             return lon_vals, lat_vals, time, relative_humidity_to_plot, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, metar_time_revised
 
+
+        def RTMA_Dataset_Synced_With_METAR(current_time):
+
+            r'''
+            THIS FUNCTION RETURNS THE LATEST RTMA RELATIVE HUMIDITY DATASET WITH THE LATEST METAR DATASET AND SYNCS UP BOTH DATASETS TO BE REPRESENTATIVE OF THE SAME TIME SINCE THE METAR DATA IS AVAILIABLE MUCH QUICKER THAN THE RTMA DATA. THIS ALLOWS USERS TO OVERLAY METAR DATA ONTO RTMA DATA AND HAVE THE TIMES BETWEEN BOTH DATASETS MATCH. 
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+            '''
+
+            current_time = current_time
+
+            metar_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.latest_metar_time(current_time)
+
+            ds, time = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(current_time)
+
+            
+            new_metar_time = parsers.checks.check_RTMA_vs_METAR_Times(time, metar_time)
+
+
+            sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, metar_time_revised = UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.get_METAR_Data_CONUS(new_metar_time)
+
+            return ds, time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, metar_time_revised
+
             
 class NOMADS_OPENDAP_Downloads:
 
@@ -4062,7 +4218,304 @@ class NOMADS_OPENDAP_Downloads:
     THIS CLASS RETRIEVES DATA FROM THE NOMADS OPENDAP
 
     '''
+
+    class RTMA_CONUS:
+
+        def get_RTMA_dataset(current_time):
+
+            r'''
+
+            THIS FUNCTION RETRIEVES THE RTMA DATA FOR A SINGLE PARAMETER
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+            '''
+            #param = parameter
+            
+            times = []
+            for i in range(0, 5):
+                time = pd.to_datetime(current_time - timedelta(hours=i))
+                times.append(time)
+
+            url_0 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[0].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[0].strftime('%H')+'z'
+            url_1 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[1].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[1].strftime('%H')+'z'
+            url_2 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[2].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[2].strftime('%H')+'z'
+            url_3 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[3].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[3].strftime('%H')+'z'
+            url_4 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[4].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[4].strftime('%H')+'z'
+
+            try:
+                ds = xr.open_dataset(url_0, engine='netcdf4')
+                print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
+                strtime = times[0]
+                return ds, strtime
+                
+            except Exception as a:
+                try:
+                    print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
+                    ds = xr.open_dataset(url_1, engine='netcdf4')
+                    print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
+                    strtime = times[1]
+                    return ds, strtime
+                    
+                except Exception as b:
+                        try:
+                            print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
+                            ds = xr.open_dataset(url_2, engine='netcdf4')
+                            print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
+                            strtime = times[2]
+                            return ds, strtime
+                            
+                        except Exception as c:
+                            try:
+                                print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
+                                ds = xr.open_dataset(url_3, engine='netcdf4')
+                                print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
+                                strtime = times[3]
+                                return ds, strtime
+                            except Exception as d:
     
+                                try:
+                                    print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    ds = xr.open_dataset(url_4, engine='netcdf4')
+                                    print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    strtime = times[4]
+                                    return ds, strtime
+                                    
+                                except Exception as e:
+                                    print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
+
+                
+            except Exception as f:
+                error = info.invalid_parameter_NOMADS_RTMA_Alaska()
+                print(error)
+
+
+        def get_RTMA_24_hour_comparison_datasets(current_time):
+
+            r'''
+
+            THIS FUNCTION RETRIEVES THE RTMA DATA FOR A SINGLE PARAMETER
+
+            (C) METEOROLOGIST ERIC J. DREWITZ 2024
+
+            '''
+            #param = parameter
+            
+            times = []
+            new_times = []
+            for i in range(0, 5):
+                time = pd.to_datetime(current_time - timedelta(hours=i))
+                times.append(time)
+
+            for t in times:
+                new_time = t - timedelta(hours=24)
+                new_times.append(new_time)
+
+            url_0 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[0].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[0].strftime('%H')+'z'
+            url_1 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[1].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[1].strftime('%H')+'z'
+            url_2 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[2].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[2].strftime('%H')+'z'
+            url_3 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[3].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[3].strftime('%H')+'z'
+            url_4 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[4].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[4].strftime('%H')+'z'
+
+            url_5 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[0].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[0].strftime('%H')+'z'
+            url_6 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[1].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[1].strftime('%H')+'z'
+            url_7 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[2].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[2].strftime('%H')+'z'
+            url_8 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[3].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[3].strftime('%H')+'z'
+            url_9 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[4].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[4].strftime('%H')+'z'
+
+            try:
+                ds = xr.open_dataset(url_0, engine='netcdf4')
+                print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
+                ds_24 = xr.open_dataset(url_5, engine='netcdf4')
+                print("Data was successfully retrieved for " + new_times[0].strftime('%m/%d/%Y %HZ'))
+                strtime = times[0]
+                strtime_24 = new_times[0]
+                return ds, ds_24, strtime, strtime_24
+                
+            except Exception as a:
+                try:
+                    print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
+                    ds = xr.open_dataset(url_1, engine='netcdf4')
+                    print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
+                    ds_24 = xr.open_dataset(url_6, engine='netcdf4')
+                    print("Data was successfully retrieved for " + new_times[1].strftime('%m/%d/%Y %HZ'))
+                    strtime = times[1]
+                    strtime_24 = new_times[1]
+                    return ds, ds_24, strtime, strtime_24
+                    
+                except Exception as b:
+                        try:
+                            print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
+                            ds = xr.open_dataset(url_2, engine='netcdf4')
+                            print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
+                            ds_24 = xr.open_dataset(url_7, engine='netcdf4')
+                            print("Data was successfully retrieved for " + new_times[2].strftime('%m/%d/%Y %HZ'))
+                            strtime = times[2]
+                            strtime_24 = new_times[2]
+                            return ds, ds_24, strtime, strtime_24
+                            
+                        except Exception as c:
+                            try:
+                                print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
+                                ds = xr.open_dataset(url_3, engine='netcdf4')
+                                print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
+                                ds_24 = xr.open_dataset(url_8, engine='netcdf4')
+                                print("Data was successfully retrieved for " + new_times[3].strftime('%m/%d/%Y %HZ'))
+                                strtime = times[3]
+                                strtime_24 = new_times[3]
+                                return ds, ds_24, strtime, strtime_24
+                                
+                            except Exception as d:
+    
+                                try:
+                                    print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    ds = xr.open_dataset(url_4, engine='netcdf4')
+                                    print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    ds_24 = xr.open_dataset(url_9, engine='netcdf4')
+                                    print("Data was successfully retrieved for " + new_times[4].strftime('%m/%d/%Y %HZ'))
+                                    strtime = times[4]
+                                    strtime_24 = new_times[4]
+                                    return ds, ds_24, strtime, strtime_24
+                                    
+                                except Exception as e:
+                                    print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
+
+                
+            except Exception as f:
+                error = info.invalid_parameter_NOMADS_RTMA_Alaska()
+                print(error)
+
+
+        def get_rtma_data_past_6hrs():
+
+
+            
+            local_time, utc_time = standard.plot_creation_time()
+            times = []
+        
+            for i in range(0, 10):
+                time = utc_time - timedelta(hours=i)
+                times.append(time)
+        
+            t1 = times[0]
+            t2 = times[1]
+            t3 = times[2]
+            t4 = times[3]
+            t5 = times[4]
+            t6 = times[5]
+            t7 = times[6]
+            t8 = times[7]
+            t9 = times[8]
+            t10 = times[9]
+
+            ds_0, rtma_time_0 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t1)
+
+            t.sleep(15)
+    
+            ds_1, rtma_time_1 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t2)
+
+            t.sleep(15)
+    
+            if rtma_time_0.hour == rtma_time_1.hour:
+    
+                ds_1, rtma_time_1 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t3)
+
+                t.sleep(15)
+    
+                if rtma_time_0.hour == rtma_time_1.hour:
+    
+                    ds_1, rtma_time_1 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t4)
+
+                    t.sleep(15)
+    
+                    ds_2, rtma_time_2 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t5)
+
+                    tsleep(15)
+            
+                    ds_3, rtma_time_3 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t6)
+
+                    t.sleep(15)
+            
+                    ds_4, rtma_time_4 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t7)
+
+                    t.sleep(15)
+            
+                    ds_5, rtma_time_5 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t8)
+
+                    t.sleep(15)
+            
+                    ds_6, rtma_time_6 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t9)
+
+                    t.sleep(15)
+    
+                    ds_7, rtma_time_7 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t10)
+
+                    t.sleep(15)
+    
+    
+                else:
+    
+                    ds_1, rtma_time_1 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t3)
+
+                    t.sleep(15)
+                    
+                    ds_2, rtma_time_2 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t4)
+
+                    t.sleep(15)
+            
+                    ds_3, rtma_time_3 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t5)
+
+                    t.sleep(15)
+            
+                    ds_4, rtma_time_4 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t6)
+
+                    t.sleep(15)
+            
+                    ds_5, rtma_time_5 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t7)
+
+                    t.sleep(15)
+            
+                    ds_6, rtma_time_6 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t8)
+
+                    t.sleep(15)
+    
+                    ds_7, rtma_time_7 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t9)
+
+                    t.sleep(15)
+    
+            else:
+    
+                ds_1, rtma_time_1 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t2)
+
+                t.sleep(15)
+    
+                ds_2, rtma_time_2 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t3)
+
+                t.sleep(15)
+        
+                ds_3, rtma_time_3 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t4)
+
+                t.sleep(15)
+        
+                ds_4, rtma_time_4 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t5)
+
+                t.sleep(15)
+        
+                ds_5, rtma_time_5 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t6)
+
+                t.sleep(15)
+        
+                ds_6, rtma_time_6 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t7)
+
+                t.sleep(15)
+    
+                ds_7, rtma_time_7 = NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(t8)
+            
+            ds_list, rtma_times = parsers.save.append_data_RTMA_6hr_timelapse(ds_0, ds_1, ds_2, ds_3, ds_4, ds_5, ds_6, ds_7, rtma_time_0, rtma_time_1, rtma_time_2, rtma_time_3, rtma_time_4, rtma_time_5, rtma_time_6, rtma_time_7)
+
+            return ds_list, rtma_times        
+
+            
 
     class RTMA_Alaska:
 
