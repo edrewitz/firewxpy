@@ -1431,11 +1431,13 @@ class NDFD:
     
         return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5
 
-    def parse_GRIB_files_full_forecast_period(file_path, grid_time_interval, convert_temperature):
+    def parse_GRIB_files_full_forecast_period(file_path, grid_time_interval, convert_temperature, count_short, count_extended):
 
         GRIB_File_List = pygrib.open(file_path)
         grid_time_interval = grid_time_interval
         convert_temperature = convert_temperature
+        count_short = count_short
+        count_extended = count_extended
 
         utc = datetime.utcnow()
         local = datetime.now()
@@ -1642,12 +1644,14 @@ class NDFD:
                 if forecast_hour == 6:
                     print("The " +file_path+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
                     print("\nThere are " + str(count) + " files returned.")
+                    print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                    discard = False
                     
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard
                     
                 else:
                     if local_hour < 4 or local_hour >= 16:
-                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 04:00 (4AM)\nThe first maximum temperature grid is still returned.")
     
                         year = utc.year
                         month = utc.month
@@ -1657,13 +1661,17 @@ class NDFD:
                         grb_1_start = datetime(year, month, day, start_hour)
                         grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
                         print("\nThere are " + str(count) + " files returned.")
+                        print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                        discard = False
                         
-                        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard
                         
                     else:
                         print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-                        
 
+                        
+                        discard = True
+                        
                         try:
                             if grb_8_vals.all() != None:
                                 test_8 = True
@@ -1677,43 +1685,52 @@ class NDFD:
                             grb_8_end = None
                             lats_8, lons_8 = None, None
                             count_of_GRIB_files = count - 1
+                            count_short = count_short - 1
                             print("There is no 8th GRIB file.")
                             print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
                             
-                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files, count_short, count_extended, discard
 
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
-                            print("\nThere are " + str(count) + " files returned.")
                             count = count - 1
-                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+                            count_short = count_short - 1
+                            print("\nThere are " + str(count) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count, count_short, count_extended, discard
 
 
             if file_path == 'ds.minrh.bin':
                 if forecast_hour == 18:
                     print("The " +file_path+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
                     print("\nThere are " + str(count) + " files returned.")
+                    print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                    discard = False
                     
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard
                     
                 else:
                     if local_hour < 15 or local_hour >= 18:
-                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 15:00 (3PM)\nThe first maximum temperature grid is still returned.")
     
                         year = utc.year
                         month = utc.month
                         day = utc.day
                         start_hour = 18
-    
+
                         grb_1_start = datetime(year, month, day, start_hour)
                         grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
                         print("\nThere are " + str(count) + " files returned.")
+                        print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                        discard = False
                         
-                        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard
                         
                     else:
                         print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-                        
+
+                        discard = True
 
                         try:
                             if grb_8_vals.all() != None:
@@ -1728,39 +1745,45 @@ class NDFD:
                             grb_8_end = None
                             lats_8, lons_8 = None, None
                             count_of_GRIB_files = count - 1
+                            count_short = count_short - 1
                             print("There is no 8th GRIB file.")
                             print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
                             
-                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files, count_short, count_extended, discard
 
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
-                            print("\nThere are " + str(count) + " files returned.")
                             count = count - 1
-                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+                            count_short = count_short - 1
+                            print("\nThere are " + str(count) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count, count_short, count_extended, discard
 
 
             if file_path == 'ds.critfireo.bin':
                 if forecast_hour == 12:
                     print("The " +file_path+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
                     print("\nThere are " + str(count) + " files returned.")
+                    print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                    discard = False
                     
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard
                     
                 else:
                     if local_hour < 13:
-                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 13:00 (1PM)\nThe first maximum temperature grid is still returned.")
     
                         year = utc.year
                         month = utc.month
                         day = utc.day
                         start_hour = 12
-                        
+                        discard = False
                         day_1 = grb_1_start.day
                         day_2 = grb_2_start.day
                         if day_1 == day_2:
                             print("Either duplicate or old files are being dowloaded.\nThrowing out the old file!")
-                            
+                            discard = True
                             try:
                                 if grb_8_vals.all() != None:
                                     test_8 = True
@@ -1775,27 +1798,29 @@ class NDFD:
                                 lats_8, lons_8 = None, None
                                 count_of_GRIB_files = count - 2
                                 print("There are " + str(count_of_GRIB_files) + " files returned.")
+                                print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
                                 
-                                return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+                                return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count, count_short, count_extended, discard
 
                             if test_8 == True:
                                 count_of_GRIB_files = count - 1
                                 print("There are " + str(count_of_GRIB_files) + " files returned.")
+                                print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
                                 
-                                return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+                                return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count, count_short, count_extended, discard
     
-                        else:
-                            print("There are " + str(count) + " files returned.")                        
-    
+                        else:                   
                             grb_1_start = datetime(year, month, day, start_hour)
                             grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
                             print("\nThere are " + str(count) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
                             
-                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard
                         
                     else:
                         print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
-                        
+
+                        discard = True
 
                         try:
                             if grb_8_vals.all() != None:
@@ -1809,37 +1834,46 @@ class NDFD:
                             grb_8_start = None
                             grb_8_end = None
                             count_of_GRIB_files = count - 1
+                            count_short = count_short - 1
                             print("There is no 8th GRIB file.")
                             print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
                             
-                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files, count_short, count_extended, discard
 
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
+                            count_short = count_short - 1
                             print("\nThere are " + str(count) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
 
-                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count, count_short, count_extended, discard
 
             if file_path == 'ds.dryfireo.bin':
                 if forecast_hour == 12:
                     print("The " +file_path+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
                     print("\nThere are " + str(count) + " files returned.")
+                    print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                    discard = False
                     
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard
                     
                 else:
                     if local_hour < 13:
-                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 13:00 (1PM)\nThe first maximum temperature grid is still returned.")
     
                         year = utc.year
                         month = utc.month
                         day = utc.day
                         start_hour = 12
+                        discard = False
     
                         day_1 = grb_1_start.day
                         day_2 = grb_2_start.day
                         if day_1 == day_2:
                             print("Either duplicate or old files are being dowloaded.\nThrowing out the old file!")
+
+                            discard = True
                             
                             try:
                                 if grb_8_vals.all() != None:
@@ -1854,27 +1888,31 @@ class NDFD:
                                 grb_8_end = None
                                 lats_8, lons_8 = None, None
                                 count_of_GRIB_files = count - 2
+                                count_short = count_short - 1
                                 print("There are " + str(count_of_GRIB_files) + " files returned.")
+                                print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
                                 
-                                return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+                                return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count, count_short, count_extended, discard
 
                             if test_8 == True:
                                 count_of_GRIB_files = count - 1
                                 print("There are " + str(count_of_GRIB_files) + " files returned.")
+                                print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
                                 
-                                return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+                                return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count, count_short, count_extended, discard
     
-                        else:
-                            print("There are " + str(count) + " files returned.")                        
-    
+                        else:                 
                             grb_1_start = datetime(year, month, day, start_hour)
                             grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
                             print("\nThere are " + str(count) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
                             
-                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                            return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard
                         
                     else:
                         print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
+
+                        discard = True
 
                         try:
                             if grb_8_vals.all() != None:
@@ -1889,16 +1927,20 @@ class NDFD:
                             grb_8_end = None
                             lats_8, lons_8 = None, None
                             count_of_GRIB_files = count - 1
+                            count_short = count_short - 1
                             print("There is no 8th GRIB file.")
                             print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
                             
-                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files, count_short, count_extended, discard
 
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
+                            count_short = count_short - 1
                             print("\nThere are " + str(count) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
 
-                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count, count_short, count_extended, discard
 
         if file_path == 'ds.mint.bin' or file_path == 'ds.maxt.bin':
 
@@ -2246,12 +2288,14 @@ class NDFD:
                 if forecast_hour == 0:
                     print("The " +file_path+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
                     print("\nThere are " + str(count) + " files returned.")
+                    print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                    discard = False
                     
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard
                     
                 else:
                     if local_hour < 4 or local_hour >= 16:
-                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 04:00 (4AM)\nThe first maximum temperature grid is still returned.")
     
                         year = utc.year
                         month = utc.month
@@ -2261,11 +2305,15 @@ class NDFD:
                         grb_1_start = datetime(year, month, day, start_hour)
                         grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
                         print("\nThere are " + str(count) + " files returned.")
+                        print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                        discard = False
                         
-                        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard
                         
                     else:
                         print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
+
+                        discard = True
                         
 
                         try:
@@ -2281,28 +2329,35 @@ class NDFD:
                             grb_8_end = None
                             lats_8, lons_8 = None, None
                             count_of_GRIB_files = count - 1
+                            count_short = count_short - 1
                             print("There is no 8th GRIB file.")
                             print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
                             
-                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files, count_short, count_extended, discard
 
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
-                            print("\nThere are " + str(count) + " files returned.")
                             count = count - 1
-                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+                            count_short = count_short - 1
+                            print("\nThere are " + str(count) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                            
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count, count_short, count_extended, discard
 
 
             if file_path == 'ds.maxt.bin':
                 if forecast_hour == 12:
                     print("The " +file_path+ " forecast period begins at " + grb_1_start.strftime('%m/%d/%Y %HZ'))
                     print("\nThere are " + str(count) + " files returned.")
+                    print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                    discard = False
                     
-                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                    return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard
                     
                 else:
                     if local_hour < 15 or local_hour >= 18:
-                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 05:00 (5AM)\nThe first maximum temperature grid is still returned.")
+                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 15:00 (3PM)\nThe first maximum temperature grid is still returned.")
     
                         year = utc.year
                         month = utc.month
@@ -2312,12 +2367,15 @@ class NDFD:
                         grb_1_start = datetime(year, month, day, start_hour)
                         grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
                         print("\nThere are " + str(count) + " files returned.")
+                        print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                        discard = False
                         
-                        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count
+                        return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard
                         
                     else:
                         print("The first forecast grid from " + grb_1_start.strftime('%m/%d/%Y %HZ') + " is old and not valid anymore. The second forecast grid starting at " +grb_2_start.strftime('%m/%d/%Y %HZ') + " is the first forecast grid returned in this dataset.")
 
+                        discard = True
 
                         try:
                             if grb_8_vals.all() != None:
@@ -2332,16 +2390,21 @@ class NDFD:
                             grb_8_end = None
                             lats_8, lons_8 = None, None
                             count_of_GRIB_files = count - 1
+                            count_short = count_short - 1
                             print("There is no 8th GRIB file.")
                             print("\nThere are " + str(count_of_GRIB_files) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
                             
-                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count_of_GRIB_files, count_short, count_extended, discard
 
                         if test_8 == True:
                             print("There is an 8th GRIB file.")
-                            print("\nThere are " + str(count) + " files returned.")
                             count = count - 1
-                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count
+                            count_short = count_short - 1
+                            print("\nThere are " + str(count) + " files returned.")
+                            print("\n"+str(count_short)+" short-term files.\n"+str(count_extended)+" extended files.")
+                            
+                            return grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, grb_8_vals, grb_8_start, grb_8_end, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, lats_8, lons_8, count, count_short, count_extended, discard
 
 
     def parse_extended_SPC_GRIB_files(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, sixth_GRIB_file, count_of_GRIB_files, grid_time_interval, parameter):
@@ -2747,13 +2810,16 @@ class checks:
         return new_metar_time1
 
 
-    def parse_NWS_GRIB_data_array(data_array, parameter, file_count, convert_to_pandas_dataframe):
+    def parse_NWS_GRIB_data_array(data_array, parameter, file_count, convert_to_pandas_dataframe, count_short, count_extended, discard):
 
 
         ds = data_array
         parameter = parameter
         file_count = file_count
+        count_short = count_short 
+        count_extended = count_extended
         convert_to_pandas_dataframe = convert_to_pandas_dataframe
+        discard = discard
         
         try:
             count = 0
@@ -2763,83 +2829,135 @@ class checks:
         except Exception as e:
             count = 0
 
+
         vals = []
         if count == 2:
-            vals_00 = ds[parameter][1, 0, :, :]
-            vals_01 = ds[parameter][1, 1, :, :]
-            if file_count <= 6:
-                vals_02 = ds[parameter][0, 2, :, :]
-                vals_03 = ds[parameter][0, 3, :, :]
-            if file_count >= 7:
-                vals_02 = ds[parameter][1, 2, :, :]
-                vals_03 = ds[parameter][0, 3, :, :]
-            vals_04 = ds[parameter][0, 4, :, :]
-            vals_05 = ds[parameter][0, 5, :, :]
-            if file_count >= 7:
-                vals_06 = ds[parameter][0, 6, :, :]
+            if discard == False:
+                vals_00 = ds[parameter][1, 0, :, :]
+                vals_01 = ds[parameter][1, 1, :, :]
+                if count_short == 2:
+                    vals_02 = ds[parameter][0, 2, :, :]
+                    vals_03 = ds[parameter][0, 3, :, :]
+                    vals_04 = ds[parameter][0, 4, :, :]                    
+                if count_short == 3:
+                    vals_02 = ds[parameter][1, 2, :, :]
+                    vals_03 = ds[parameter][0, 3, :, :]
+                    vals_04 = ds[parameter][0, 4, :, :]
+                if count_short == 4:
+                    vals_02 = ds[parameter][1, 2, :, :]
+                    vals_03 = ds[parameter][1, 3, :, :]
+                    vals_04 = ds[parameter][0, 4, :, :]
+                if count_short == 5:
+                    vals_02 = ds[parameter][1, 2, :, :]
+                    vals_03 = ds[parameter][1, 3, :, :]
+                    vals_04 = ds[parameter][1, 4, :, :]
+                vals_05 = ds[parameter][0, 5, :, :]
+                if file_count >= 7:
+                    vals_06 = ds[parameter][0, 6, :, :]
 
-            if file_count < 8:
-                vals.append(vals_00)
+            if discard == True:
+                vals_00 = ds[parameter][1, 1, :, :]
+                vals_01 = ds[parameter][1, 2, :, :]
+                if count_short == 2:
+                    vals_02 = ds[parameter][0, 3, :, :]
+                    vals_03 = ds[parameter][0, 4, :, :]
+                    vals_04 = ds[parameter][0, 5, :, :]                    
+                if count_short == 3:
+                    vals_02 = ds[parameter][1, 3, :, :]
+                    vals_03 = ds[parameter][0, 4, :, :]
+                    vals_04 = ds[parameter][0, 5, :, :]
+                if count_short == 4:
+                    vals_02 = ds[parameter][1, 3, :, :]
+                    vals_03 = ds[parameter][1, 4, :, :]
+                    vals_04 = ds[parameter][0, 5, :, :]
+                if count_short == 5:
+                    vals_02 = ds[parameter][1, 3, :, :]
+                    vals_03 = ds[parameter][1, 4, :, :]
+                    vals_04 = ds[parameter][1, 5, :, :]
+                vals_05 = ds[parameter][0, 6, :, :]
+                if file_count >= 7:
+                    vals_06 = ds[parameter][0, 7, :, :]
+
+            vals.append(vals_00)
             vals.append(vals_01)
             vals.append(vals_02)
             vals.append(vals_03)
             vals.append(vals_04)
             vals.append(vals_05)
             if file_count >= 7:
-                vals.append(vals_06)
-            
-            if file_count == 8:
-                vals_07 = ds[parameter][0, 7, :, :]
-                vals.append(vals_07)
-
+                vals.append(vals_06)                
+                if file_count == 8:
+                    vals_07 = ds[parameter][0, 7, :, :]
+                    vals.append(vals_07)
+  
 
         if count == 1:
-            vals_00 = ds[parameter][0, 0, :, :]
-            vals_01 = ds[parameter][0, 1, :, :]
-            vals_02 = ds[parameter][0, 2, :, :]
-            vals_03 = ds[parameter][0, 3, :, :]
-            vals_04 = ds[parameter][0, 4, :, :]
-            vals_05 = ds[parameter][0, 5, :, :]
-            if file_count >= 7:
-                vals_06 = ds[parameter][0, 6, :, :]
+            if discard == False:
+                vals_00 = ds[parameter][0, 0, :, :]
+                vals_01 = ds[parameter][0, 1, :, :]
+                vals_02 = ds[parameter][0, 2, :, :]
+                vals_03 = ds[parameter][0, 3, :, :]
+                vals_04 = ds[parameter][0, 4, :, :]
+                vals_05 = ds[parameter][0, 5, :, :]
+                if file_count >= 7:
+                    vals_06 = ds[parameter][0, 6, :, :]
+            if discard == True:
+                vals_00 = ds[parameter][0, 1, :, :]
+                vals_01 = ds[parameter][0, 2, :, :]
+                vals_02 = ds[parameter][0, 3, :, :]
+                vals_03 = ds[parameter][0, 4, :, :]
+                vals_04 = ds[parameter][0, 5, :, :]
+                vals_05 = ds[parameter][0, 6, :, :]
+                if file_count >= 7:
+                    vals_06 = ds[parameter][0, 7, :, :]
 
-            if file_count < 8:
-                vals.append(vals_00)
+            vals.append(vals_00)
             vals.append(vals_01)
             vals.append(vals_02)
             vals.append(vals_03)
             vals.append(vals_04)
             vals.append(vals_05)
             if file_count >= 7:
-                vals.append(vals_06)
+                vals.append(vals_06)                
+                if file_count == 8:
+                    vals_07 = ds[parameter][0, 7, :, :]
+                    vals.append(vals_07)
             
-            if file_count == 8:
-                vals_07 = ds[parameter][0, 7, :, :]
-                vals.append(vals_07)
 
         if count == 0:
-            vals_00 = ds[parameter][0, :, :]
-            vals_01 = ds[parameter][1, :, :]
-            vals_02 = ds[parameter][2, :, :]
-            vals_03 = ds[parameter][3, :, :]
-            vals_04 = ds[parameter][4, :, :]
-            vals_05 = ds[parameter][5, :, :]
-            if file_count >= 7:
-                vals_06 = ds[parameter][6, :, :]
+            if discard == False:
+                vals_00 = ds[parameter][0, :, :]
+                vals_01 = ds[parameter][1, :, :]
+                vals_02 = ds[parameter][2, :, :]
+                vals_03 = ds[parameter][3, :, :]
+                vals_04 = ds[parameter][4, :, :]
+                vals_05 = ds[parameter][5, :, :]
+                if file_count >= 7:
+                    vals_06 = ds[parameter][6, :, :]
 
-            if file_count < 8:
-                vals.append(vals_00)
+            if discard == True:
+                vals_00 = ds[parameter][1, :, :]
+                vals_01 = ds[parameter][2, :, :]
+                vals_02 = ds[parameter][3, :, :]
+                vals_03 = ds[parameter][4, :, :]
+                vals_04 = ds[parameter][5, :, :]
+                vals_05 = ds[parameter][6, :, :]
+                if file_count >= 7:
+                    vals_06 = ds[parameter][7, :, :]
+
+
+            vals.append(vals_00)
             vals.append(vals_01)
             vals.append(vals_02)
             vals.append(vals_03)
             vals.append(vals_04)
             vals.append(vals_05)
             if file_count >= 7:
-                vals.append(vals_06)
-            
-            if file_count == 8:
-                vals_07 = ds[parameter][7, :, :]
-                vals.append(vals_07)
+                vals.append(vals_06)                
+                if file_count == 8:
+                    vals_07 = ds[parameter][7, :, :]
+                    vals.append(vals_07)
+
 
         if convert_to_pandas_dataframe == False:
             return vals
