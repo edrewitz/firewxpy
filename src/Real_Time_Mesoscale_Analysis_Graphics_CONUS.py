@@ -171,7 +171,7 @@ class data_download_included_in_function:
         return fig
 
 
-    def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, mask, signature_x_position, signature_y_position, color_table_shrink=0.7, state_border_color='black', county_border_color='black', title_font_size=12, signature_font_size=10, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, state_border_linewidth=2, county_border_linewidth=1):
+    def plot_generic_real_time_mesoanalysis_with_METARs(parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, decimate, signature_x_position, signature_y_position, color_table_shrink=0.7, state_border_color='black', county_border_color='black', title_font_size=12, signature_font_size=10, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, state_border_linewidth=2, county_border_linewidth=1):
 
         r'''
             This function does the following:
@@ -219,7 +219,7 @@ class data_download_included_in_function:
 
                 18) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                19) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                19) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
           
                 19) state_border_color (String) - Color of the state border. 
 
@@ -260,17 +260,17 @@ class data_download_included_in_function:
 
         if param == 'Wind_speed_gust_Analysis_height_above_ground' or param == 'Wind_speed_Analysis_height_above_ground' or param == 'Wind_speed_error_height_above_ground' or param == 'Wind_speed_gust_error_height_above_ground' or param == 'u-component_of_wind_Analysis_height_above_ground' or param == 'v-component_of_wind_Analysis_height_above_ground':
 
-           rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_proj = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Synced_With_METAR(param, utc_time, mask)
+           rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_decimate, metar_time_revised, plot_proj = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Synced_With_METAR(param, utc_time, decimate)
            rtma_data = rtma_data * 2.23694
 
         if param == 'Temperature_Analysis_height_above_ground' or param == 'Dewpoint_temperature_Analysis_height_above_ground' or param == 'Temperature_error_height_above_ground' or param == 'Dewpoint_temperature_error_height_above_ground':
             
-            rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_proj = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Synced_With_METAR(param, utc_time, mask)
+            rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_decimate, metar_time_revised, plot_proj = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Synced_With_METAR(param, utc_time, decimate)
             rtma_data = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data)
             
 
         else:
-           rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_proj = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Synced_With_METAR(param, utc_time, mask)
+           rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_decimate, metar_time_revised, plot_proj = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Synced_With_METAR(param, utc_time, decimate)
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -304,22 +304,22 @@ class data_download_included_in_function:
         cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
 
         # Plots METAR
-        stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
+        stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_decimate].m, sfc_data['latitude'][sfc_data_decimate].m,
                                  transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
         
         
-        stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_mask], color='red',
+        stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_decimate], color='red',
                           path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_mask], color='blue',
+        stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_decimate], color='blue',
                           path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_mask], mpplots.sky_cover)
+        stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_decimate], mpplots.sky_cover)
         
-        stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_mask], color='lime',
+        stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_decimate], color='lime',
                             path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
+        stn.plot_barb(sfc_data['u'][sfc_data_decimate], sfc_data['v'][sfc_data_decimate])
 
         plt.title(plot_title + "\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %H:00 Local'), fontsize=title_font_size, fontweight='bold')
         
@@ -329,7 +329,7 @@ class data_download_included_in_function:
         return fig
         
 
-    def plot_relative_humidity(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_relative_humidity(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -364,7 +364,7 @@ class data_download_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -390,10 +390,25 @@ class data_download_included_in_function:
         
         '''
 
-        mask = mask
+        decimate = decimate
         local_time, utc_time = standard.plot_creation_time()
 
-        rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time)
+        try:
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time1)
+            NOMADS = False
+        except Exception as e:
+            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            temp = ds['tmp2m']
+            dwpt = ds['dpt2m']
+            temp = temp - 273.15
+            dwpt = dwpt - 273.15
+            
+            rtma_data = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
+            
+            lat = ds['lat']
+            lon = ds['lon']
+            
+            NOMADS = True
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -406,68 +421,112 @@ class data_download_included_in_function:
 
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
-
-        plot_proj = rtma_data.metpy.cartopy_crs
-        rtma_df = rtma_data.to_dataframe(name='rtma_rh')
 
         cmap = colormaps.relative_humidity_colormap()
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig.set_facecolor('aliceblue')
 
-        ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
-        ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
+        if NOMADS == False:
 
-        if show_gacc_borders == True:
-            ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
+            plot_proj = rtma_data.metpy.cartopy_crs
+            rtma_df = rtma_data.to_dataframe(name='rtma_rh')
 
-        cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
-
-        cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
     
-            stn.plot_parameter('C', rtma_df['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        plt.title("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-        ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax.transAxes)
+                stn.plot_parameter('C', rtma_df['rtma_rh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            plt.title("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+        if NOMADS == True:
+
+            ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+    
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+
+            cs = ax.contourf(lon, lat, rtma_data[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+
+    
+            plt.title("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
 
         return fig
 
 
-    def plot_total_cloud_cover(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, contour_step, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_total_cloud_cover(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, contour_step, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -502,7 +561,7 @@ class data_download_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -528,11 +587,19 @@ class data_download_included_in_function:
         
         '''
 
-        mask = mask
+        decimate = decimate
         local_time, utc_time = standard.plot_creation_time()
         contour_step = contour_step
 
-        rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'Total_cloud_cover_Analysis_entire_atmosphere_single_layer')
+        try:
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'Total_cloud_cover_Analysis_entire_atmosphere_single_layer')
+            NOMADS = False
+        except Exception as e:
+            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            cloud_cover = ds['tcdcclm']
+            lon = cloud_cover['lon']
+            lat = cloud_cover['lat']
+            NOMADS = True
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -546,65 +613,106 @@ class data_download_included_in_function:
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
-        plot_proj = rtma_data.metpy.cartopy_crs
-        rtma_df = rtma_data.to_dataframe()
-
         cmap = colormaps.cloud_cover_colormap()
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig.set_facecolor('aliceblue')
 
-        ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
-        ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
+        if NOMADS == False:
+            plot_proj = rtma_data.metpy.cartopy_crs
+            rtma_df = rtma_data.to_dataframe()
 
-        cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, alpha=alpha)
-
-        cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar.set_label(label="Total Cloud Cover (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
     
-            stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        plt.title("Real Time Mesoscale Analysis Total Cloud Cover\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, alpha=alpha)
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Total Cloud Cover (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-        ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax.transAxes)
+                stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            plt.title("Real Time Mesoscale Analysis Total Cloud Cover\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+        if NOMADS == True:
+
+            ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs = ax.contourf(lon, lat, cloud_cover[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, alpha=alpha)
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Total Cloud Cover (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            plt.title("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
 
         return fig
 
-    def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_relative_humidity_with_METARs(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, thredds_decimate=80000, nomads_decimate=5, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, metar_fontsize=8):
 
         r'''
             This function does the following:
@@ -639,7 +747,7 @@ class data_download_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -667,8 +775,25 @@ class data_download_included_in_function:
         
 
         local_time, utc_time = standard.plot_creation_time()
+        nomads_decimate = nomads_decimate
 
-        rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_proj = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(utc_time, mask)
+        try:
+            rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_decimate, metar_time_revised, plot_proj = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(utc_time, thredds_decimate)
+            NOMADS = False
+        except Exception as e:
+            ds, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, metar_time_revised = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Dataset_Synced_With_METAR(utc_time)
+            temp = ds['tmp2m']
+            dwpt = ds['dpt2m']
+            temp = temp - 273.15
+            dwpt = dwpt - 273.15
+            
+            rtma_data = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
+            
+            lat = ds['lat']
+            lon = ds['lon']
+            
+            NOMADS = True
+            
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -687,69 +812,358 @@ class data_download_included_in_function:
 
         cmap = colormaps.relative_humidity_colormap()
 
-        fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig.set_facecolor('aliceblue')
+        if NOMADS == False:
 
-        ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
-        ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
-
-        cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        # Plots METAR
-        stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
-                                 transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
-        
-        
-        stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_mask], color='red',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_mask], color='darkorange',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_mask], mpplots.sky_cover)
-        
-        stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_mask], color='lime',
-                            path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
-
-        plt.title("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %H:00 Local')+" ("+metar_time_revised_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax.transAxes)
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            # Plots METAR
+            stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_decimate].m, sfc_data['latitude'][sfc_data_decimate].m,
+                                     transform=ccrs.PlateCarree(), fontsize=metar_fontsize, zorder=10, clip_on=True)
+            
+            
+            stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_decimate], color='red',
+                              path_effects=[withStroke(linewidth=1, foreground='black')])
+            
+            stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_decimate], color='darkorange',
+                              path_effects=[withStroke(linewidth=1, foreground='black')])
+            
+            stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_decimate], mpplots.sky_cover)
+            
+            stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_decimate], color='lime',
+                                path_effects=[withStroke(linewidth=1, foreground='black')])
+            
+            stn.plot_barb(sfc_data['u'][sfc_data_decimate], sfc_data['v'][sfc_data_decimate])
+    
+            plt.title("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %H:00 Local')+" ("+metar_time_revised_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+       
+        if NOMADS == True:
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=datacrs)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs = ax.contourf(lon, lat, rtma_data[0, :, :], 
+                             transform=datacrs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            # Plots METAR
+            stn = mpplots.StationPlot(ax, sfc_data['longitude'][::nomads_decimate].m, sfc_data['latitude'][::nomads_decimate].m,
+                                     transform=ccrs.PlateCarree(), fontsize=metar_fontsize, zorder=10, clip_on=True)
+            
+            
+            stn.plot_parameter('NW', sfc_data['air_temperature'][::nomads_decimate].to('degF'), color='red',
+                              path_effects=[withStroke(linewidth=1, foreground='black')])
+            
+            stn.plot_parameter('SW', sfc_data['dew_point_temperature'][::nomads_decimate].to('degF'), color='darkorange',
+                              path_effects=[withStroke(linewidth=1, foreground='black')])
+            
+            stn.plot_symbol('C', sfc_data['cloud_coverage'][::nomads_decimate], mpplots.sky_cover)
+            
+            stn.plot_parameter('E', sfc_data_rh.to('percent')[::nomads_decimate], color='lime',
+                                path_effects=[withStroke(linewidth=1, foreground='black')])
+            
+            stn.plot_barb(sfc_data['u'][::nomads_decimate], sfc_data['v'][::nomads_decimate])
+    
+            plt.title("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %H:00 Local')+" ("+metar_time_revised_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
 
         return fig
 
 
-    def plot_relative_humidity_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_red_flag_relative_humidity_with_METARs(red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, thredds_decimate=80000, nomads_decimate=10, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, metar_fontsize=8):
+
+        r'''
+            This function does the following:
+                                            1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                            2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                            3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                            4) Plots the relative humidity data filtered RH <= red_flag_warning_relative_humidity_threshold (%) overlayed with the latest METAR reports. 
+
+            
+
+            Inputs:
+
+                1) red_flag_warning_relative_humidity_threshold (Integer) - The National Weather Service Red Flag Warning threshold for relative humidity. 
+
+                1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+                2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+                3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+                4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+                5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+                6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+                7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+                8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+                
+                9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+                10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+                11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+
+                13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+                14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+                15) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+                16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+                17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+                18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                           Default setting is 0.05.
+                                           Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                           Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+                19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                            will not display on the map. 
+
+
+            Returns:
+                    1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity data filtered RH <= red_flag_warning_relative_humidity_threshold (%) overlayed with the latest METAR reports. 
+        
+        '''
+
+        red_flag_warning_relative_humidity_threshold = red_flag_warning_relative_humidity_threshold
+        red_flag_warning_relative_humidity_threshold_numpy = red_flag_warning_relative_humidity_threshold + 1
+        local_time, utc_time = standard.plot_creation_time()
+        nomads_decimate = nomads_decimate
+
+        try:
+            rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_decimate, metar_time_revised, plot_proj = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(utc_time, thredds_decimate)
+            NOMADS = False
+        except Exception as e:
+            ds, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, metar_time_revised = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Dataset_Synced_With_METAR(utc_time)
+            temp = ds['tmp2m']
+            dwpt = ds['dpt2m']
+            temp = temp - 273.15
+            dwpt = dwpt - 273.15
+            
+            rtma_data = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
+            
+            lat = ds['lat']
+            lon = ds['lon']
+            
+            NOMADS = True
+            
+
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+        rtma_time = rtma_time.replace(tzinfo=from_zone)
+        rtma_time = rtma_time.astimezone(to_zone)
+        rtma_time_utc = rtma_time.astimezone(from_zone)
+        metar_time_revised = metar_time_revised.replace(tzinfo=from_zone)
+        metar_time_revised = metar_time_revised.astimezone(to_zone)
+        metar_time_revised_utc = metar_time_revised.astimezone(from_zone)
+        
+        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
+        datacrs = ccrs.PlateCarree()
+
+        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+
+        cmap = colormaps.low_relative_humidity_colormap()
+
+        if NOMADS == False:
+
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold + 1, 1), cmap=cmap, alpha=alpha) 
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            # Plots METAR
+            stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_decimate].m, sfc_data['latitude'][sfc_data_decimate].m,
+                                     transform=ccrs.PlateCarree(), fontsize=metar_fontsize, zorder=10, clip_on=True)
+            
+            
+            stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_decimate], color='red',
+                              path_effects=[withStroke(linewidth=1, foreground='black')])
+            
+            stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_decimate], color='darkorange',
+                              path_effects=[withStroke(linewidth=1, foreground='black')])
+            
+            stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_decimate], mpplots.sky_cover)
+            
+            stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_decimate], color='lime',
+                                path_effects=[withStroke(linewidth=1, foreground='black')])
+            
+            stn.plot_barb(sfc_data['u'][sfc_data_decimate], sfc_data['v'][sfc_data_decimate])
+    
+            plt.title("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %H:00 Local')+" ("+metar_time_revised_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+       
+        if NOMADS == True:
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=datacrs)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs = ax.contourf(lon, lat, rtma_data[0, :, :], 
+                             transform=datacrs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold + 1, 1), cmap=cmap, alpha=alpha)
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            # Plots METAR
+            stn = mpplots.StationPlot(ax, sfc_data['longitude'][::nomads_decimate].m, sfc_data['latitude'][::nomads_decimate].m,
+                                     transform=ccrs.PlateCarree(), fontsize=metar_fontsize, zorder=10, clip_on=True)
+            
+            
+            stn.plot_parameter('NW', sfc_data['air_temperature'][::nomads_decimate].to('degF'), color='red',
+                              path_effects=[withStroke(linewidth=1, foreground='black')])
+            
+            stn.plot_parameter('SW', sfc_data['dew_point_temperature'][::nomads_decimate].to('degF'), color='darkorange',
+                              path_effects=[withStroke(linewidth=1, foreground='black')])
+            
+            stn.plot_symbol('C', sfc_data['cloud_coverage'][::nomads_decimate], mpplots.sky_cover)
+            
+            stn.plot_parameter('E', sfc_data_rh.to('percent')[::nomads_decimate], color='lime',
+                                path_effects=[withStroke(linewidth=1, foreground='black')])
+            
+            stn.plot_barb(sfc_data['u'][::nomads_decimate], sfc_data['v'][::nomads_decimate])
+    
+            plt.title("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %H:00 Local')+" ("+metar_time_revised_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+        return fig
+
+
+    def plot_relative_humidity_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, decimate='default'):
 
         r'''
             This function does the following:
@@ -784,7 +1198,7 @@ class data_download_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -809,94 +1223,112 @@ class data_download_included_in_function:
                     1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports. 
         
         '''
-
+        if decimate == 'default':
+            decimate = calc.scaling.get_thredds_decimation(western_bound, eastern_bound, southern_bound, northern_bound, None)
+        else:
+            decimate = decimate
+        
         local_time, utc_time = standard.plot_creation_time()
 
-        times = []
+        try:
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_relative_humidity_data_past_6hrs()
 
-        for i in range(0, 10):
-            time = utc_time - timedelta(hours=i)
-            times.append(time)
+            rtma_data_0 = rtma_data[0]
+            rtma_data_1 = rtma_data[1]
+            rtma_data_2 = rtma_data[2]
+            rtma_data_3 = rtma_data[3]
+            rtma_data_4 = rtma_data[4]
+            rtma_data_5 = rtma_data[5]
+            rtma_data_6 = rtma_data[6]
 
-        t1 = times[0]
-        t2 = times[1]
-        t3 = times[2]
-        t4 = times[3]
-        t5 = times[4]
-        t6 = times[5]
-        t7 = times[6]
-        t8 = times[7]
-        t9 = times[8]
-        t10 = times[9]
+            rtma_time_0 = rtma_time[0]
+            rtma_time_1 = rtma_time[1]
+            rtma_time_2 = rtma_time[2]
+            rtma_time_3 = rtma_time[3]
+            rtma_time_4 = rtma_time[4]
+            rtma_time_5 = rtma_time[5]
+            rtma_time_6 = rtma_time[6]
 
-        rtma_data_0, rtma_time_0 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t1)
+            NOMADS = False
 
-        rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t2)
+        except Exception as e:
+            ds_list, rtma_times = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_rtma_data_past_6hrs()
+            ds_0 = ds_list[0]
+            ds_1 = ds_list[1]
+            ds_2 = ds_list[2]
+            ds_3 = ds_list[3]
+            ds_4 = ds_list[4]
+            ds_5 = ds_list[5]
+            ds_6 = ds_list[6]
 
-        if rtma_time_0.hour == rtma_time_1.hour:
+            rtma_time_0 = rtma_times[0]
+            rtma_time_1 = rtma_times[1]
+            rtma_time_2 = rtma_times[2]
+            rtma_time_3 = rtma_times[3]
+            rtma_time_4 = rtma_times[4]
+            rtma_time_5 = rtma_times[5]
+            rtma_time_6 = rtma_times[6]
 
-            rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t3)
+            temp_0 = ds_0['tmp2m']
+            temp_1 = ds_1['tmp2m']
+            temp_2 = ds_2['tmp2m']
+            temp_3 = ds_3['tmp2m']
+            temp_4 = ds_4['tmp2m']
+            temp_5 = ds_5['tmp2m']
+            temp_6 = ds_6['tmp2m']
 
-            if rtma_time_0.hour == rtma_time_1.hour:
+            dwpt_0 = ds_0['dpt2m']
+            dwpt_1 = ds_1['dpt2m']
+            dwpt_2 = ds_2['dpt2m']
+            dwpt_3 = ds_3['dpt2m']
+            dwpt_4 = ds_4['dpt2m']
+            dwpt_5 = ds_5['dpt2m']
+            dwpt_6 = ds_6['dpt2m']
 
-                rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t4)
+            temp_0 = temp_0 - 273.15
+            temp_1 = temp_1 - 273.15
+            temp_2 = temp_2 - 273.15
+            temp_3 = temp_3 - 273.15
+            temp_4 = temp_4 - 273.15
+            temp_5 = temp_5 - 273.15
+            temp_6 = temp_6 - 273.15
 
-                rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t5)
-        
-                rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t6)
-        
-                rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t7)
-        
-                rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t8)
-        
-                rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t9)
+            dwpt_0 = dwpt_0 - 273.15
+            dwpt_1 = dwpt_1 - 273.15
+            dwpt_2 = dwpt_2 - 273.15
+            dwpt_3 = dwpt_3 - 273.15
+            dwpt_4 = dwpt_4 - 273.15
+            dwpt_5 = dwpt_5 - 273.15
+            dwpt_6 = dwpt_6 - 273.15
 
-            else:
+            rh_0 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_0, dwpt_0)
+            rh_1 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_1, dwpt_1)
+            rh_2 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_2, dwpt_2)
+            rh_3 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_3, dwpt_3)
+            rh_4 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_4, dwpt_4)
+            rh_5 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_5, dwpt_5)
+            rh_6 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_6, dwpt_6)
 
-                rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t3)
-                
-                rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t4)
-        
-                rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t5)
-        
-                rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t6)
-        
-                rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t7)
-        
-                rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t8)
+            lat_0 = rh_0['lat']
+            lon_0 = rh_0['lon']
+            lat_1 = rh_1['lat']
+            lon_1 = rh_1['lon']
+            lat_2 = rh_2['lat']
+            lon_2 = rh_2['lon']
+            lat_3 = rh_3['lat']
+            lon_3 = rh_3['lon']
+            lat_4 = rh_4['lat']
+            lon_4 = rh_4['lon']
+            lat_5 = rh_5['lat']
+            lon_5 = rh_5['lon']
+            lat_6 = rh_6['lat']
+            lon_6 = rh_6['lon']
 
-        else:
-
-            rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t2)
-
-            rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t3)
-    
-            rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t4)
-    
-            rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t5)
-    
-            rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t6)
-    
-            rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t7)
+            NOMADS = True
+            
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
-
-        plot_proj_0 = rtma_data_0.metpy.cartopy_crs
-        plot_proj_1 = rtma_data_1.metpy.cartopy_crs
-        plot_proj_2 = rtma_data_2.metpy.cartopy_crs
-        plot_proj_3 = rtma_data_3.metpy.cartopy_crs
-        plot_proj_4 = rtma_data_4.metpy.cartopy_crs
-        plot_proj_5 = rtma_data_5.metpy.cartopy_crs
-        plot_proj_6 = rtma_data_6.metpy.cartopy_crs
-
-        rtma_df0 = rtma_data_0.to_dataframe(name='rtma_rh')
-        rtma_df1 = rtma_data_1.to_dataframe(name='rtma_rh')
-        rtma_df2 = rtma_data_2.to_dataframe(name='rtma_rh')
-        rtma_df3 = rtma_data_3.to_dataframe(name='rtma_rh')
-        rtma_df4 = rtma_data_4.to_dataframe(name='rtma_rh')
-        rtma_df5 = rtma_data_5.to_dataframe(name='rtma_rh')
-        rtma_df6 = rtma_data_6.to_dataframe(name='rtma_rh')
         
         rtma_time_0 = rtma_time_0.replace(tzinfo=from_zone)
         rtma_time_0 = rtma_time_0.astimezone(to_zone)
@@ -940,389 +1372,697 @@ class data_download_included_in_function:
         # FIRST FIGURE #
         ################
 
-        fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig1.set_facecolor('aliceblue')
+        if NOMADS == False:
 
-        ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_0)
-        ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax1.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                         transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
-
-
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar1.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn1 = mpplots.StationPlot(ax1, rtma_df0['longitude'][::mask], rtma_df0['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            plot_proj_0 = rtma_data_0.metpy.cartopy_crs
+            plot_proj_1 = rtma_data_1.metpy.cartopy_crs
+            plot_proj_2 = rtma_data_2.metpy.cartopy_crs
+            plot_proj_3 = rtma_data_3.metpy.cartopy_crs
+            plot_proj_4 = rtma_data_4.metpy.cartopy_crs
+            plot_proj_5 = rtma_data_5.metpy.cartopy_crs
+            plot_proj_6 = rtma_data_6.metpy.cartopy_crs
     
-            stn1.plot_parameter('C', rtma_df0['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            rtma_df0 = rtma_data_0.to_dataframe(name='rtma_rh')
+            rtma_df1 = rtma_data_1.to_dataframe(name='rtma_rh')
+            rtma_df2 = rtma_data_2.to_dataframe(name='rtma_rh')
+            rtma_df3 = rtma_data_3.to_dataframe(name='rtma_rh')
+            rtma_df4 = rtma_data_4.to_dataframe(name='rtma_rh')
+            rtma_df5 = rtma_data_5.to_dataframe(name='rtma_rh')
+            rtma_df6 = rtma_data_6.to_dataframe(name='rtma_rh')
 
-        else:
-            pass
-
-        fig1.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_0.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax1.transAxes)
-
-        #################
-        # SECOND FIGURE #
-        #################
-
-        fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig2.set_facecolor('aliceblue')
-
-        ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_1)
-        ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                         transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
-
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar2.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn2 = mpplots.StationPlot(ax2, rtma_df1['longitude'][::mask], rtma_df1['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig1.set_facecolor('aliceblue')
+            
+            ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_0)
+            ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax1.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
     
-            stn2.plot_parameter('C', rtma_df1['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        fig2.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_1.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax2.transAxes)
-
-        ################
-        # THIRD FIGURE #
-        ################
-
-        fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig3.set_facecolor('aliceblue')
-
-        ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_2)
-        ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax3.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax3.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                         transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
-
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar3.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn3 = mpplots.StationPlot(ax3, rtma_df2['longitude'][::mask], rtma_df2['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
     
-            stn3.plot_parameter('C', rtma_df2['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        fig3.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_2.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax3.transAxes)
-
-
-        #################
-        # FOURTH FIGURE #
-        #################
-
-        fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig4.set_facecolor('aliceblue')
-
-        ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_3)
-        ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                         transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
-
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar4.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn4 = mpplots.StationPlot(ax4, rtma_df3['longitude'][::mask], rtma_df3['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn4.plot_parameter('C', rtma_df3['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        fig4.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_3.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax4.transAxes)
-
-
-        ################
-        # FIFTH FIGURE #
-        ################
-
-        fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig5.set_facecolor('aliceblue')
-
-        ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_4)
-        ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                         transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
-
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar5.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn5 = mpplots.StationPlot(ax5, rtma_df4['longitude'][::mask], rtma_df4['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar1.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
     
-            stn5.plot_parameter('C', rtma_df4['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        fig5.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_4.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax5.transAxes)
-
-        ################
-        # SIXTH FIGURE #
-        ################
-
-        fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig6.set_facecolor('aliceblue')
-
-        ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_5)
-        ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax6.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax6.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                         transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
-
-        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar6.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn6 = mpplots.StationPlot(ax6, rtma_df5['longitude'][::mask], rtma_df5['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            if show_sample_points == True:
     
-            stn6.plot_parameter('C', rtma_df5['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        fig6.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_5.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+                stn1 = mpplots.StationPlot(ax1, rtma_df0['longitude'][::decimate], rtma_df0['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-        ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax6.transAxes)
-
-        ##################
-        # SEVENTH FIGURE #
-        ##################
-
-        fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig7.set_facecolor('aliceblue')
-
-        ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_6)
-        ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax7.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax7.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                         transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
-
-        cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar7.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn7 = mpplots.StationPlot(ax7, rtma_df6['longitude'][::mask], rtma_df6['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                stn1.plot_parameter('C', rtma_df0['rtma_rh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
-            stn7.plot_parameter('C', rtma_df6['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        fig7.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_6.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            else:
+                pass
+    
+            fig1.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_0.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax1.transAxes)
+    
+            #################
+            # SECOND FIGURE #
+            #################
+    
+            fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig2.set_facecolor('aliceblue')
+    
+            ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_1)
+            ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar2.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn2 = mpplots.StationPlot(ax2, rtma_df1['longitude'][::decimate], rtma_df1['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-        ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax7.transAxes)
+                stn2.plot_parameter('C', rtma_df1['rtma_rh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            fig2.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_1.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax2.transAxes)
+    
+            ################
+            # THIRD FIGURE #
+            ################
+    
+            fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig3.set_facecolor('aliceblue')
+    
+            ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_2)
+            ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax3.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax3.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar3.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn3 = mpplots.StationPlot(ax3, rtma_df2['longitude'][::decimate], rtma_df2['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn3.plot_parameter('C', rtma_df2['rtma_rh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            fig3.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_2.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax3.transAxes)
+    
+    
+            #################
+            # FOURTH FIGURE #
+            #################
+    
+            fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig4.set_facecolor('aliceblue')
+    
+            ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_3)
+            ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar4.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn4 = mpplots.StationPlot(ax4, rtma_df3['longitude'][::decimate], rtma_df3['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn4.plot_parameter('C', rtma_df3['rtma_rh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            fig4.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_3.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax4.transAxes)
+    
+    
+            ################
+            # FIFTH FIGURE #
+            ################
+    
+            fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig5.set_facecolor('aliceblue')
+    
+            ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_4)
+            ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar5.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn5 = mpplots.StationPlot(ax5, rtma_df4['longitude'][::decimate], rtma_df4['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn5.plot_parameter('C', rtma_df4['rtma_rh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            fig5.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_4.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax5.transAxes)
+    
+            ################
+            # SIXTH FIGURE #
+            ################
+    
+            fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig6.set_facecolor('aliceblue')
+    
+            ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_5)
+            ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax6.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax6.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar6.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn6 = mpplots.StationPlot(ax6, rtma_df5['longitude'][::decimate], rtma_df5['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn6.plot_parameter('C', rtma_df5['rtma_rh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            fig6.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_5.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax6.transAxes)
+    
+            ##################
+            # SEVENTH FIGURE #
+            ##################
+    
+            fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig7.set_facecolor('aliceblue')
+    
+            ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_6)
+            ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax7.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax7.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar7.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn7 = mpplots.StationPlot(ax7, rtma_df6['longitude'][::decimate], rtma_df6['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn7.plot_parameter('C', rtma_df6['rtma_rh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            fig7.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_6.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax7.transAxes)
+
+        if NOMADS == True:
+
+            fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig1.set_facecolor('aliceblue')
+
+            ax1 = fig1.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax1.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs1 = ax1.contourf(lon_0, lat_0, rh_0[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar1.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig1.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_0.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax1.transAxes)
+
+            fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig2.set_facecolor('aliceblue')
+
+            ax2 = fig2.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs2 = ax2.contourf(lon_1, lat_1, rh_1[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar2.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig2.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_1.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax2.transAxes)
+
+
+            fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig3.set_facecolor('aliceblue')
+
+            ax3 = fig3.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax3.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax3.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs3 = ax3.contourf(lon_2, lat_2, rh_2[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar3.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig3.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_2.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax3.transAxes)
+
+            fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig4.set_facecolor('aliceblue')
+
+            ax4 = fig4.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs4 = ax4.contourf(lon_3, lat_3, rh_3[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar4.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig4.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_3.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax4.transAxes)
+
+            fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig5.set_facecolor('aliceblue')
+
+            ax5 = fig5.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs5 = ax5.contourf(lon_4, lat_4, rh_4[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar5.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig5.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_4.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax5.transAxes)
+
+            fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig6.set_facecolor('aliceblue')
+
+            ax6 = fig6.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax6.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax6.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs6 = ax6.contourf(lon_5, lat_5, rh_5[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar6.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig6.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_5.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax6.transAxes)
+
+            fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig7.set_facecolor('aliceblue')
+
+            ax7 = fig7.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax7.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax7.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs7 = ax7.contourf(lon_6, lat_6, rh_6[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(0, 105, 5), cmap=cmap, alpha=alpha)
+    
+            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar7.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig7.suptitle("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time_6.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax7.transAxes)
 
         figs.append(fig7)
         figs.append(fig6)
@@ -1335,7 +2075,7 @@ class data_download_included_in_function:
         return figs
     
 
-    def plot_relative_humidity_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_relative_humidity_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, decimate='default'):
 
         r'''
             This function does the following:
@@ -1370,7 +2110,7 @@ class data_download_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -1395,107 +2135,127 @@ class data_download_included_in_function:
                     1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports. 
         
         '''
-
+        if decimate == 'default':
+            decimate = calc.scaling.get_thredds_decimation(western_bound, eastern_bound, southern_bound, northern_bound, None)
+        else:
+            decimate = decimate
 
         local_time, utc_time = standard.plot_creation_time()
 
-        times = []
+        try:
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_relative_humidity_data_past_6hrs()
 
-        for i in range(0, 10):
-            time = utc_time - timedelta(hours=i)
-            times.append(time)
+            rtma_data_0 = rtma_data[0]
+            rtma_data_1 = rtma_data[1]
+            rtma_data_2 = rtma_data[2]
+            rtma_data_3 = rtma_data[3]
+            rtma_data_4 = rtma_data[4]
+            rtma_data_5 = rtma_data[5]
+            rtma_data_6 = rtma_data[6]
+            rtma_data_7 = rtma_data[7]
 
-        t1 = times[0]
-        t2 = times[1]
-        t3 = times[2]
-        t4 = times[3]
-        t5 = times[4]
-        t6 = times[5]
-        t7 = times[6]
-        t8 = times[7]
-        t9 = times[8]
-        t10 = times[9]
+            rtma_time_0 = rtma_time[0]
+            rtma_time_1 = rtma_time[1]
+            rtma_time_2 = rtma_time[2]
+            rtma_time_3 = rtma_time[3]
+            rtma_time_4 = rtma_time[4]
+            rtma_time_5 = rtma_time[5]
+            rtma_time_6 = rtma_time[6]
+            rtma_time_7 = rtma_time[7]
 
-        rtma_data_0, rtma_time_0 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t1)
+            NOMADS = False
 
-        rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t2)
+        except Exception as e:
+            ds_list, rtma_times = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_rtma_data_past_6hrs()
+            ds_0 = ds_list[0]
+            ds_1 = ds_list[1]
+            ds_2 = ds_list[2]
+            ds_3 = ds_list[3]
+            ds_4 = ds_list[4]
+            ds_5 = ds_list[5]
+            ds_6 = ds_list[6]
+            ds_7 = ds_list[7]
 
-        if rtma_time_0.hour == rtma_time_1.hour:
+            rtma_time_0 = rtma_times[0]
+            rtma_time_1 = rtma_times[1]
+            rtma_time_2 = rtma_times[2]
+            rtma_time_3 = rtma_times[3]
+            rtma_time_4 = rtma_times[4]
+            rtma_time_5 = rtma_times[5]
+            rtma_time_6 = rtma_times[6]
+            rtma_time_7 = rtma_times[7]
 
-            rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t3)
+            temp_0 = ds_0['tmp2m']
+            temp_1 = ds_1['tmp2m']
+            temp_2 = ds_2['tmp2m']
+            temp_3 = ds_3['tmp2m']
+            temp_4 = ds_4['tmp2m']
+            temp_5 = ds_5['tmp2m']
+            temp_6 = ds_6['tmp2m']
+            temp_7 = ds_7['tmp2m']
 
-            if rtma_time_0.hour == rtma_time_1.hour:
+            dwpt_0 = ds_0['dpt2m']
+            dwpt_1 = ds_1['dpt2m']
+            dwpt_2 = ds_2['dpt2m']
+            dwpt_3 = ds_3['dpt2m']
+            dwpt_4 = ds_4['dpt2m']
+            dwpt_5 = ds_5['dpt2m']
+            dwpt_6 = ds_6['dpt2m']
+            dwpt_7 = ds_7['dpt2m']
 
-                rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t4)
+            temp_0 = temp_0 - 273.15
+            temp_1 = temp_1 - 273.15
+            temp_2 = temp_2 - 273.15
+            temp_3 = temp_3 - 273.15
+            temp_4 = temp_4 - 273.15
+            temp_5 = temp_5 - 273.15
+            temp_6 = temp_6 - 273.15
+            temp_7 = temp_7 - 273.15
 
-                rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t5)
-        
-                rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t6)
-        
-                rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t7)
-        
-                rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t8)
-        
-                rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t9)
+            dwpt_0 = dwpt_0 - 273.15
+            dwpt_1 = dwpt_1 - 273.15
+            dwpt_2 = dwpt_2 - 273.15
+            dwpt_3 = dwpt_3 - 273.15
+            dwpt_4 = dwpt_4 - 273.15
+            dwpt_5 = dwpt_5 - 273.15
+            dwpt_6 = dwpt_6 - 273.15
+            dwpt_7 = dwpt_7 - 273.15
 
-                rtma_data_7, rtma_time_7 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t10)
+            rh_0 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_0, dwpt_0)
+            rh_1 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_1, dwpt_1)
+            rh_2 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_2, dwpt_2)
+            rh_3 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_3, dwpt_3)
+            rh_4 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_4, dwpt_4)
+            rh_5 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_5, dwpt_5)
+            rh_6 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_6, dwpt_6)
+            rh_7 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_7, dwpt_7)
 
+            diff1 = rh_0[0, :, :] - rh_1[0, :, :]
+            diff2 = rh_1[0, :, :] - rh_2[0, :, :]
+            diff3 = rh_2[0, :, :] - rh_3[0, :, :]
+            diff4 = rh_3[0, :, :] - rh_4[0, :, :]
+            diff5 = rh_4[0, :, :] - rh_5[0, :, :]
+            diff6 = rh_5[0, :, :] - rh_6[0, :, :]
+            diff7 = rh_6[0, :, :] - rh_7[0, :, :]
 
-            else:
+            lat_0 = rh_0['lat']
+            lon_0 = rh_0['lon']
+            lat_1 = rh_1['lat']
+            lon_1 = rh_1['lon']
+            lat_2 = rh_2['lat']
+            lon_2 = rh_2['lon']
+            lat_3 = rh_3['lat']
+            lon_3 = rh_3['lon']
+            lat_4 = rh_4['lat']
+            lon_4 = rh_4['lon']
+            lat_5 = rh_5['lat']
+            lon_5 = rh_5['lon']
+            lat_6 = rh_6['lat']
+            lon_6 = rh_6['lon']
+            lat_7 = rh_7['lat']
+            lon_7 = rh_7['lon']
 
-                rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t3)
-                
-                rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t4)
-        
-                rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t5)
-        
-                rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t6)
-        
-                rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t7)
-        
-                rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t8)
-
-                rtma_data_7, rtma_time_7 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t9)
-
-        else:
-
-            rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t2)
-
-            rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t3)
-    
-            rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t4)
-    
-            rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t5)
-    
-            rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t6)
-    
-            rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t7)
-
-            rtma_data_7, rtma_time_7 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(t8)
-
-        diff1 = rtma_data_0 - rtma_data_1
-        diff2 = rtma_data_1 - rtma_data_2
-        diff3 = rtma_data_2 - rtma_data_3
-        diff4 = rtma_data_3 - rtma_data_4
-        diff5 = rtma_data_4 - rtma_data_5
-        diff6 = rtma_data_5 - rtma_data_6
-        diff7 = rtma_data_6 - rtma_data_7
-
-        rtma_df1 = diff1.to_dataframe(name='rtma_rh_change')
-        rtma_df2 = diff2.to_dataframe(name='rtma_rh_change')
-        rtma_df3 = diff3.to_dataframe(name='rtma_rh_change')
-        rtma_df4 = diff4.to_dataframe(name='rtma_rh_change')
-        rtma_df5 = diff5.to_dataframe(name='rtma_rh_change')
-        rtma_df6 = diff6.to_dataframe(name='rtma_rh_change')
-        rtma_df7 = diff7.to_dataframe(name='rtma_rh_change')
-
-        plot_proj_8 = diff1.metpy.cartopy_crs
-        plot_proj_9 = diff2.metpy.cartopy_crs
-        plot_proj_10 = diff3.metpy.cartopy_crs
-        plot_proj_11 = diff4.metpy.cartopy_crs
-        plot_proj_12 = diff5.metpy.cartopy_crs
-        plot_proj_13 = diff6.metpy.cartopy_crs
-        plot_proj_14 = diff7.metpy.cartopy_crs
+            NOMADS = True
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -1546,394 +2306,710 @@ class data_download_included_in_function:
         # FIRST FIGURE #
         ################
 
-        fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig1.set_facecolor('aliceblue')
+        if NOMADS == False:
 
-        fig1.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_0.strftime('%H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")" + " - " + rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_8)
-        ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax1.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
-                         transform=diff1.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
-
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar1.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn1 = mpplots.StationPlot(ax1, rtma_df1['longitude'][::mask], rtma_df1['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            diff1 = rtma_data_0 - rtma_data_1
+            diff2 = rtma_data_1 - rtma_data_2
+            diff3 = rtma_data_2 - rtma_data_3
+            diff4 = rtma_data_3 - rtma_data_4
+            diff5 = rtma_data_4 - rtma_data_5
+            diff6 = rtma_data_5 - rtma_data_6
+            diff7 = rtma_data_6 - rtma_data_7
     
-            stn1.plot_parameter('C', rtma_df1['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            rtma_df1 = diff1.to_dataframe(name='rtma_rh_change')
+            rtma_df2 = diff2.to_dataframe(name='rtma_rh_change')
+            rtma_df3 = diff3.to_dataframe(name='rtma_rh_change')
+            rtma_df4 = diff4.to_dataframe(name='rtma_rh_change')
+            rtma_df5 = diff5.to_dataframe(name='rtma_rh_change')
+            rtma_df6 = diff6.to_dataframe(name='rtma_rh_change')
+            rtma_df7 = diff7.to_dataframe(name='rtma_rh_change')
+    
+            plot_proj_8 = diff1.metpy.cartopy_crs
+            plot_proj_9 = diff2.metpy.cartopy_crs
+            plot_proj_10 = diff3.metpy.cartopy_crs
+            plot_proj_11 = diff4.metpy.cartopy_crs
+            plot_proj_12 = diff5.metpy.cartopy_crs
+            plot_proj_13 = diff6.metpy.cartopy_crs
+            plot_proj_14 = diff7.metpy.cartopy_crs
 
-        else:
-            pass
+            fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig1.set_facecolor('aliceblue')
+    
+            fig1.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_0.strftime('%H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")" + " - " + rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_8)
+            ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax1.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
+                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
+    
+            cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar1.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn1 = mpplots.StationPlot(ax1, rtma_df1['longitude'][::decimate], rtma_df1['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-
-        ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax1.transAxes)
-
-
-        #################
-        # SECOND FIGURE #
-        #################
-
-        fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig2.set_facecolor('aliceblue')
-
-        fig2.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")" + " - " + rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_9)
-        ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
-                         transform=diff2.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
-
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar2.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn2 = mpplots.StationPlot(ax2, rtma_df2['longitude'][::mask], rtma_df2['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                stn1.plot_parameter('C', rtma_df1['rtma_rh_change'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
-            stn2.plot_parameter('C', rtma_df2['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-
-        ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax2.transAxes)
-
-
-        ################
-        # THIRD FIGURE #
-        ################
-
-        fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig3.set_facecolor('aliceblue')
-
-        fig3.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")" + " - " + rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_10)
-        ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax3.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax3.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
-                         transform=diff3.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
-
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar3.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn3 = mpplots.StationPlot(ax3, rtma_df3['longitude'][::mask], rtma_df3['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            else:
+                pass
+            
     
-            stn3.plot_parameter('C', rtma_df3['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
+            ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax1.transAxes)
+    
+    
+            #################
+            # SECOND FIGURE #
+            #################
+    
+            fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig2.set_facecolor('aliceblue')
+    
+            fig2.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")" + " - " + rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_9)
+            ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
+                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
+    
+            cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar2.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn2 = mpplots.StationPlot(ax2, rtma_df2['longitude'][::decimate], rtma_df2['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-
-        ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax3.transAxes)
-
-
-        #################
-        # FOURTH FIGURE #
-        #################
-
-        fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig4.set_facecolor('aliceblue')
-
-        fig4.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")" + " - " + rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_11)
-        ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
-                         transform=diff4.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
-
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar4.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn4 = mpplots.StationPlot(ax4, rtma_df4['longitude'][::mask], rtma_df4['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                stn2.plot_parameter('C', rtma_df2['rtma_rh_change'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
-            stn4.plot_parameter('C', rtma_df4['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax4.transAxes)
-
-
-        ################
-        # FIFTH FIGURE #
-        ################
-
-        fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig5.set_facecolor('aliceblue')
-
-        fig5.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")" + " - " + rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_12)
-        ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
-                         transform=diff5.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
-
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar5.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn5 = mpplots.StationPlot(ax5, rtma_df5['longitude'][::mask], rtma_df5['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            else:
+                pass
     
-            stn5.plot_parameter('C', rtma_df5['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-
-        ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax5.transAxes)
-
-        ################
-        # SIXTH FIGURE #
-        ################
-
-        fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig6.set_facecolor('aliceblue')
-
-        fig6.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")" + " - " + rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_13)
-        ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax6.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax6.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
-                         transform=diff6.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
-
-        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar6.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn6 = mpplots.StationPlot(ax6, rtma_df6['longitude'][::mask], rtma_df6['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn6.plot_parameter('C', rtma_df6['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
+            ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax2.transAxes)
+    
+    
+            ################
+            # THIRD FIGURE #
+            ################
+    
+            fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig3.set_facecolor('aliceblue')
+    
+            fig3.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")" + " - " + rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_10)
+            ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax3.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax3.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
+                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
+    
+            cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar3.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn3 = mpplots.StationPlot(ax3, rtma_df3['longitude'][::decimate], rtma_df3['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-        ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax6.transAxes)
-
-        ##################
-        # SEVENTH FIGURE #
-        ##################
-
-        fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig7.set_facecolor('aliceblue')
-
-        fig7.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")" + " - " + rtma_time_7.strftime('%H:00 Local') + " (" + rtma_time_utc_7.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_14)
-        ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax7.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax7.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
-                         transform=diff7.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
-
-        cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar7.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn7 = mpplots.StationPlot(ax7, rtma_df7['longitude'][::mask], rtma_df7['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                stn3.plot_parameter('C', rtma_df3['rtma_rh_change'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
-            stn7.plot_parameter('C', rtma_df7['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
+            else:
+                pass
+            
+    
+            ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax3.transAxes)
+    
+    
+            #################
+            # FOURTH FIGURE #
+            #################
+    
+            fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig4.set_facecolor('aliceblue')
+    
+            fig4.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")" + " - " + rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_11)
+            ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
+                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
+    
+            cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar4.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn4 = mpplots.StationPlot(ax4, rtma_df4['longitude'][::decimate], rtma_df4['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-        ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax7.transAxes)
+                stn4.plot_parameter('C', rtma_df4['rtma_rh_change'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax4.transAxes)
+    
+    
+            ################
+            # FIFTH FIGURE #
+            ################
+    
+            fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig5.set_facecolor('aliceblue')
+    
+            fig5.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")" + " - " + rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_12)
+            ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
+                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
+    
+            cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar5.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn5 = mpplots.StationPlot(ax5, rtma_df5['longitude'][::decimate], rtma_df5['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn5.plot_parameter('C', rtma_df5['rtma_rh_change'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+    
+            ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax5.transAxes)
+    
+            ################
+            # SIXTH FIGURE #
+            ################
+    
+            fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig6.set_facecolor('aliceblue')
+    
+            fig6.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")" + " - " + rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_13)
+            ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax6.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax6.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
+                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
+    
+            cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar6.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn6 = mpplots.StationPlot(ax6, rtma_df6['longitude'][::decimate], rtma_df6['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn6.plot_parameter('C', rtma_df6['rtma_rh_change'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+            
+            ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax6.transAxes)
+    
+            ##################
+            # SEVENTH FIGURE #
+            ##################
+    
+            fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig7.set_facecolor('aliceblue')
+    
+            fig7.suptitle("RTMA Hourly RH Trend (Shaded)\nValid: "+rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")" + " - " + rtma_time_7.strftime('%H:00 Local') + " (" + rtma_time_utc_7.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_14)
+            ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax7.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax7.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
+                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha, extend='both')
+    
+            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar7.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn7 = mpplots.StationPlot(ax7, rtma_df7['longitude'][::decimate], rtma_df7['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn7.plot_parameter('C', rtma_df7['rtma_rh_change'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+            
+            ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax7.transAxes)
+
+        if NOMADS == True:
+
+            fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig1.set_facecolor('aliceblue')
+
+            ax1 = fig1.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax1.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs1 = ax1.contourf(lon_0, lat_0, diff1, 
+                             transform=ccrs.PlateCarree(), levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha)
+    
+            cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar1.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig1.suptitle("RTMA Hourly RH Trend\nValid: "+rtma_time_0.strftime('%H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")" + " - " + rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax1.transAxes)
+
+            fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig2.set_facecolor('aliceblue')
+
+            ax2 = fig2.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs2 = ax2.contourf(lon_1, lat_1, diff2, 
+                             transform=ccrs.PlateCarree(), levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha)
+    
+            cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar2.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig2.suptitle("RTMA Hourly RH Trend\nValid: "+rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")" + " - " + rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax2.transAxes)
+
+
+            fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig3.set_facecolor('aliceblue')
+
+            ax3 = fig3.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax3.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax3.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs3 = ax3.contourf(lon_2, lat_2, diff3, 
+                             transform=ccrs.PlateCarree(), levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha)
+    
+            cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar3.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig3.suptitle("RTMA Hourly RH Trend\nValid: "+rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")" + " - " + rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax3.transAxes)
+
+            fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig4.set_facecolor('aliceblue')
+
+            ax4 = fig4.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs4 = ax4.contourf(lon_3, lat_3, diff4, 
+                             transform=ccrs.PlateCarree(), levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha)
+    
+            cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar4.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig4.suptitle("RTMA Hourly RH Trend\nValid: "+rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")" + " - " + rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax4.transAxes)
+
+            fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig5.set_facecolor('aliceblue')
+
+            ax5 = fig5.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs5 = ax5.contourf(lon_4, lat_4, diff5, 
+                             transform=ccrs.PlateCarree(), levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha)
+    
+            cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar5.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig5.suptitle("RTMA Hourly RH Trend\nValid: "+rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")" + " - " + rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax5.transAxes)
+
+            fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig6.set_facecolor('aliceblue')
+
+            ax6 = fig6.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax6.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax6.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs6 = ax6.contourf(lon_5, lat_5, diff6, 
+                             transform=ccrs.PlateCarree(), levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha)
+    
+            cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar6.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig6.suptitle("RTMA Hourly RH Trend\nValid: "+rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")" + " - " + rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax6.transAxes)
+
+            fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig7.set_facecolor('aliceblue')
+
+            ax7 = fig7.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax7.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax7.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs7 = ax7.contourf(lon_6, lat_6, diff7,
+                             transform=ccrs.PlateCarree(), levels=np.arange(-25, 26, 1), cmap=cmap_trend, alpha=alpha)
+    
+            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar7.set_label(label="Hourly Relative Humidity Trend (%)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig7.suptitle("RTMA Hourly RH Trend\nValid: "+rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")" + " - " + rtma_time_7.strftime('%H:00 Local') + " (" + rtma_time_utc_7.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax7.transAxes)
 
         figs.append(fig7)
         figs.append(fig6)
@@ -1946,7 +3022,7 @@ class data_download_included_in_function:
         return figs
 
 
-    def plot_temperature_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, temperature_bottom_bound, temperature_top_bound, temperature_step, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_temperature_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, temperature_bottom_bound, temperature_top_bound, temperature_step, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, decimate='default'):
 
         r'''
             This function does the following:
@@ -1981,7 +3057,7 @@ class data_download_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -2012,99 +3088,85 @@ class data_download_included_in_function:
         temperature_step = temperature_step
         local_time, utc_time = standard.plot_creation_time()
 
-        times = []
-
-        for i in range(0, 10):
-            time = utc_time - timedelta(hours=i)
-            times.append(time)
-
-        t1 = times[0]
-        t2 = times[1]
-        t3 = times[2]
-        t4 = times[3]
-        t5 = times[4]
-        t6 = times[5]
-        t7 = times[6]
-        t8 = times[7]
-        t9 = times[8]
-        t10 = times[9]
-
-        rtma_data_0, rtma_time_0 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t1, 'Temperature_Analysis_height_above_ground')
-
-        rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t2, 'Temperature_Analysis_height_above_ground')
-
-        if rtma_time_0.hour == rtma_time_1.hour:
-
-            rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, 'Temperature_Analysis_height_above_ground')
-
-            if rtma_time_0.hour == rtma_time_1.hour:
-
-                rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, 'Temperature_Analysis_height_above_ground')
-
-                rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t9, 'Temperature_Analysis_height_above_ground')
-
-            else:
-
-                rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, 'Temperature_Analysis_height_above_ground')
-                
-                rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, 'Temperature_Analysis_height_above_ground')
-
+        if decimate == 'default':
+            decimate = calc.scaling.get_thredds_decimation(western_bound, eastern_bound, southern_bound, northern_bound, None)
         else:
+            decimate = decimate
 
-            rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t2, 'Temperature_Analysis_height_above_ground')
+        try:
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_past_6hrs('Temperature_Analysis_height_above_ground')
 
-            rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, 'Temperature_Analysis_height_above_ground')
-    
-            rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, 'Temperature_Analysis_height_above_ground')
-    
-            rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, 'Temperature_Analysis_height_above_ground')
-    
-            rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, 'Temperature_Analysis_height_above_ground')
-    
-            rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, 'Temperature_Analysis_height_above_ground')
+            rtma_data_0 = rtma_data[0]
+            rtma_data_1 = rtma_data[1]
+            rtma_data_2 = rtma_data[2]
+            rtma_data_3 = rtma_data[3]
+            rtma_data_4 = rtma_data[4]
+            rtma_data_5 = rtma_data[5]
+            rtma_data_6 = rtma_data[6]
+
+            rtma_time_0 = rtma_time[0]
+            rtma_time_1 = rtma_time[1]
+            rtma_time_2 = rtma_time[2]
+            rtma_time_3 = rtma_time[3]
+            rtma_time_4 = rtma_time[4]
+            rtma_time_5 = rtma_time[5]
+            rtma_time_6 = rtma_time[6]
+            
+            NOMADS = False
+                
+        except Exception as e:
+            ds_list, rtma_times = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_rtma_data_past_6hrs()
+            ds_0 = ds_list[0]
+            ds_1 = ds_list[1]
+            ds_2 = ds_list[2]
+            ds_3 = ds_list[3]
+            ds_4 = ds_list[4]
+            ds_5 = ds_list[5]
+            ds_6 = ds_list[6]
+
+            rtma_time_0 = rtma_times[0]
+            rtma_time_1 = rtma_times[1]
+            rtma_time_2 = rtma_times[2]
+            rtma_time_3 = rtma_times[3]
+            rtma_time_4 = rtma_times[4]
+            rtma_time_5 = rtma_times[5]
+            rtma_time_6 = rtma_times[6]
+
+            temp_0 = ds_0['tmp2m']
+            temp_1 = ds_1['tmp2m']
+            temp_2 = ds_2['tmp2m']
+            temp_3 = ds_3['tmp2m']
+            temp_4 = ds_4['tmp2m']
+            temp_5 = ds_5['tmp2m']
+            temp_6 = ds_6['tmp2m']
+
+            lat_0 = temp_0['lat']
+            lon_0 = temp_0['lon']
+            lat_1 = temp_1['lat']
+            lon_1 = temp_1['lon']
+            lat_2 = temp_2['lat']
+            lon_2 = temp_2['lon']
+            lat_3 = temp_3['lat']
+            lon_3 = temp_3['lon']
+            lat_4 = temp_4['lat']
+            lon_4 = temp_4['lon']
+            lat_5 = temp_5['lat']
+            lon_5 = temp_5['lon']
+            lat_6 = temp_6['lat']
+            lon_6 = temp_6['lon']
+
+            temp_0 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_0)
+            temp_1 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_1)
+            temp_2 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_2)
+            temp_3 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_3)
+            temp_4 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_4)
+            temp_5 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_5)
+            temp_6 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_6)
+
+            NOMADS = True            
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
-
-        rtma_data_0 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_0)
-        rtma_data_1 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_1)
-        rtma_data_2 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_2)
-        rtma_data_3 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_3)
-        rtma_data_4 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_4)
-        rtma_data_5 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_5)
-        rtma_data_6 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_6)
-
-        plot_proj_0 = rtma_data_0.metpy.cartopy_crs
-        plot_proj_1 = rtma_data_1.metpy.cartopy_crs
-        plot_proj_2 = rtma_data_2.metpy.cartopy_crs
-        plot_proj_3 = rtma_data_3.metpy.cartopy_crs
-        plot_proj_4 = rtma_data_4.metpy.cartopy_crs
-        plot_proj_5 = rtma_data_5.metpy.cartopy_crs
-        plot_proj_6 = rtma_data_6.metpy.cartopy_crs
-
-        rtma_df0 = rtma_data_0.to_dataframe()
-        rtma_df1 = rtma_data_1.to_dataframe()
-        rtma_df2 = rtma_data_2.to_dataframe()
-        rtma_df3 = rtma_data_3.to_dataframe()
-        rtma_df4 = rtma_data_4.to_dataframe()
-        rtma_df5 = rtma_data_5.to_dataframe()
-        rtma_df6 = rtma_data_6.to_dataframe()
         
         rtma_time_0 = rtma_time_0.replace(tzinfo=from_zone)
         rtma_time_0 = rtma_time_0.astimezone(to_zone)
@@ -2148,389 +3210,705 @@ class data_download_included_in_function:
         # FIRST FIGURE #
         ################
 
-        fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig1.set_facecolor('aliceblue')
+        if NOMADS == False:
 
-        ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_0)
-        ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax1.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
-                         transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
-
-
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar1.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn1 = mpplots.StationPlot(ax1, rtma_df0['longitude'][::mask], rtma_df0['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            rtma_data_0 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_0)
+            rtma_data_1 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_1)
+            rtma_data_2 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_2)
+            rtma_data_3 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_3)
+            rtma_data_4 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_4)
+            rtma_data_5 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_5)
+            rtma_data_6 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_6)
     
-            stn1.plot_parameter('C', rtma_df0['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        fig1.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_0.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax1.transAxes)
-
-        #################
-        # SECOND FIGURE #
-        #################
-
-        fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig2.set_facecolor('aliceblue')
-
-        ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_1)
-        ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
-                         transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
-
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar2.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn2 = mpplots.StationPlot(ax2, rtma_df1['longitude'][::mask], rtma_df1['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            plot_proj_0 = rtma_data_0.metpy.cartopy_crs
+            plot_proj_1 = rtma_data_1.metpy.cartopy_crs
+            plot_proj_2 = rtma_data_2.metpy.cartopy_crs
+            plot_proj_3 = rtma_data_3.metpy.cartopy_crs
+            plot_proj_4 = rtma_data_4.metpy.cartopy_crs
+            plot_proj_5 = rtma_data_5.metpy.cartopy_crs
+            plot_proj_6 = rtma_data_6.metpy.cartopy_crs
     
-            stn2.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        fig2.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_1.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax2.transAxes)
-
-        ################
-        # THIRD FIGURE #
-        ################
-
-        fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig3.set_facecolor('aliceblue')
-
-        ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_2)
-        ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax3.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax3.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
-                         transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
-
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar3.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn3 = mpplots.StationPlot(ax3, rtma_df2['longitude'][::mask], rtma_df2['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            rtma_df0 = rtma_data_0.to_dataframe()
+            rtma_df1 = rtma_data_1.to_dataframe()
+            rtma_df2 = rtma_data_2.to_dataframe()
+            rtma_df3 = rtma_data_3.to_dataframe()
+            rtma_df4 = rtma_data_4.to_dataframe()
+            rtma_df5 = rtma_data_5.to_dataframe()
+            rtma_df6 = rtma_data_6.to_dataframe()
     
-            stn3.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        fig3.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_2.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax3.transAxes)
-
-
-        #################
-        # FOURTH FIGURE #
-        #################
-
-        fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig4.set_facecolor('aliceblue')
-
-        ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_3)
-        ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
-                         transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
-
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar4.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn4 = mpplots.StationPlot(ax4, rtma_df3['longitude'][::mask], rtma_df3['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig1.set_facecolor('aliceblue')
     
-            stn4.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        fig4.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_3.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax4.transAxes)
-
-
-        ################
-        # FIFTH FIGURE #
-        ################
-
-        fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig5.set_facecolor('aliceblue')
-
-        ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_4)
-        ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
-                         transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
-
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar5.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn5 = mpplots.StationPlot(ax5, rtma_df4['longitude'][::mask], rtma_df4['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_0)
+            ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax1.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
     
-            stn5.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        fig5.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_4.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax5.transAxes)
-
-        ################
-        # SIXTH FIGURE #
-        ################
-
-        fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig6.set_facecolor('aliceblue')
-
-        ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_5)
-        ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax6.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax6.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
-                         transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
-
-        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar6.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn6 = mpplots.StationPlot(ax6, rtma_df5['longitude'][::mask], rtma_df5['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            cs1 = ax1.contourf(rtma_data_0.metpy.x, rtma_data_0.metpy.y, rtma_data_0, 
+                             transform=rtma_data_0.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
     
-            stn6.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        fig6.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_5.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax6.transAxes)
-
-        ##################
-        # SEVENTH FIGURE #
-        ##################
-
-        fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig7.set_facecolor('aliceblue')
-
-        ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_6)
-        ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax7.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax7.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
-                         transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
-
-        cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar7.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn7 = mpplots.StationPlot(ax7, rtma_df6['longitude'][::mask], rtma_df6['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn7.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        fig7.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_6.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar1.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn1 = mpplots.StationPlot(ax1, rtma_df0['longitude'][::decimate], rtma_df0['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-        ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax7.transAxes)
+                stn1.plot_parameter('C', rtma_df0['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            fig1.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_0.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax1.transAxes)
+    
+            #################
+            # SECOND FIGURE #
+            #################
+    
+            fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig2.set_facecolor('aliceblue')
+    
+            ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_1)
+            ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs2 = ax2.contourf(rtma_data_1.metpy.x, rtma_data_1.metpy.y, rtma_data_1, 
+                             transform=rtma_data_1.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
+    
+            cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar2.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn2 = mpplots.StationPlot(ax2, rtma_df1['longitude'][::decimate], rtma_df1['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn2.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            fig2.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_1.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax2.transAxes)
+    
+            ################
+            # THIRD FIGURE #
+            ################
+    
+            fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig3.set_facecolor('aliceblue')
+    
+            ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_2)
+            ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax3.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax3.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs3 = ax3.contourf(rtma_data_2.metpy.x, rtma_data_2.metpy.y, rtma_data_2, 
+                             transform=rtma_data_2.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
+    
+            cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar3.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn3 = mpplots.StationPlot(ax3, rtma_df2['longitude'][::decimate], rtma_df2['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn3.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            fig3.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_2.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax3.transAxes)
+    
+    
+            #################
+            # FOURTH FIGURE #
+            #################
+    
+            fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig4.set_facecolor('aliceblue')
+    
+            ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_3)
+            ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs4 = ax4.contourf(rtma_data_3.metpy.x, rtma_data_3.metpy.y, rtma_data_3, 
+                             transform=rtma_data_3.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
+    
+            cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar4.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn4 = mpplots.StationPlot(ax4, rtma_df3['longitude'][::decimate], rtma_df3['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn4.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            fig4.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_3.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax4.transAxes)
+    
+    
+            ################
+            # FIFTH FIGURE #
+            ################
+    
+            fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig5.set_facecolor('aliceblue')
+    
+            ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_4)
+            ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs5 = ax5.contourf(rtma_data_4.metpy.x, rtma_data_4.metpy.y, rtma_data_4, 
+                             transform=rtma_data_4.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
+    
+            cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar5.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn5 = mpplots.StationPlot(ax5, rtma_df4['longitude'][::decimate], rtma_df4['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn5.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            fig5.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_4.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax5.transAxes)
+    
+            ################
+            # SIXTH FIGURE #
+            ################
+    
+            fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig6.set_facecolor('aliceblue')
+    
+            ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_5)
+            ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax6.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax6.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs6 = ax6.contourf(rtma_data_5.metpy.x, rtma_data_5.metpy.y, rtma_data_5, 
+                             transform=rtma_data_5.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
+    
+            cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar6.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn6 = mpplots.StationPlot(ax6, rtma_df5['longitude'][::decimate], rtma_df5['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn6.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            fig6.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_5.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax6.transAxes)
+    
+            ##################
+            # SEVENTH FIGURE #
+            ##################
+    
+            fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig7.set_facecolor('aliceblue')
+    
+            ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_6)
+            ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax7.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax7.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs7 = ax7.contourf(rtma_data_6.metpy.x, rtma_data_6.metpy.y, rtma_data_6, 
+                             transform=rtma_data_6.metpy.cartopy_crs, levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha, extend='both')
+    
+            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar7.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn7 = mpplots.StationPlot(ax7, rtma_df6['longitude'][::decimate], rtma_df6['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn7.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            fig7.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_6.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax7.transAxes)
+
+        if NOMADS == True:
+
+            fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig1.set_facecolor('aliceblue')
+
+            ax1 = fig1.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax1.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs1 = ax1.contourf(lon_0, lat_0, temp_0[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha)
+    
+            cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar1.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig1.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_0.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax1.transAxes)
+
+            fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig2.set_facecolor('aliceblue')
+
+            ax2 = fig2.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs2 = ax2.contourf(lon_1, lat_1, temp_1[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha)
+    
+            cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar2.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig2.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_1.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax2.transAxes)
+
+
+            fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig3.set_facecolor('aliceblue')
+
+            ax3 = fig3.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax3.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax3.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs3 = ax3.contourf(lon_2, lat_2, temp_2[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha)
+    
+            cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar3.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig3.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_2.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax3.transAxes)
+
+            fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig4.set_facecolor('aliceblue')
+
+            ax4 = fig4.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs4 = ax4.contourf(lon_3, lat_3, temp_3[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha)
+    
+            cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar4.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig4.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_3.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax4.transAxes)
+
+            fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig5.set_facecolor('aliceblue')
+
+            ax5 = fig5.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs5 = ax5.contourf(lon_4, lat_4, temp_4[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha)
+    
+            cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar5.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig5.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_4.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax5.transAxes)
+
+            fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig6.set_facecolor('aliceblue')
+
+            ax6 = fig6.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax6.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax6.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs6 = ax6.contourf(lon_5, lat_5, temp_5[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha)
+    
+            cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar6.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig6.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_5.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax6.transAxes)
+
+            fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig7.set_facecolor('aliceblue')
+
+            ax7 = fig7.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax7.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax7.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs7 = ax7.contourf(lon_6, lat_6, temp_6[0, :, :], 
+                             transform=ccrs.PlateCarree(), levels=np.arange(temperature_bottom_bound, temperature_top_bound + temperature_step, temperature_step), cmap=cmap, alpha=alpha)
+    
+            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar7.set_label(label="Temperature (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig7.suptitle("Real Time Mesoscale Analysis Temperature\nAnalysis Valid: " + rtma_time_6.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax7.transAxes)
 
         figs.append(fig7)
         figs.append(fig6)
@@ -2544,7 +3922,7 @@ class data_download_included_in_function:
 
 
 
-    def plot_temperature_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_temperature_trend_6hr_timelapse(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, decimate='default'):
 
         r'''
             This function does the following:
@@ -2579,7 +3957,7 @@ class data_download_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -2605,116 +3983,100 @@ class data_download_included_in_function:
         
         '''
 
-        mask = mask
+        if decimate == 'default':
+            decimate = calc.scaling.get_thredds_decimation(western_bound, eastern_bound, southern_bound, northern_bound, None)
+        else:
+            decimate = decimate
 
         local_time, utc_time = standard.plot_creation_time()
 
-        times = []
+        try:
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_past_6hrs('Temperature_Analysis_height_above_ground')
 
-        for i in range(0, 10):
-            time = utc_time - timedelta(hours=i)
-            times.append(time)
+            rtma_data_0 = rtma_data[0]
+            rtma_data_1 = rtma_data[1]
+            rtma_data_2 = rtma_data[2]
+            rtma_data_3 = rtma_data[3]
+            rtma_data_4 = rtma_data[4]
+            rtma_data_5 = rtma_data[5]
+            rtma_data_6 = rtma_data[6]
+            rtma_data_7 = rtma_data[7]
 
-        t1 = times[0]
-        t2 = times[1]
-        t3 = times[2]
-        t4 = times[3]
-        t5 = times[4]
-        t6 = times[5]
-        t7 = times[6]
-        t8 = times[7]
-        t9 = times[8]
-        t10 = times[9]
-
-        rtma_data_0, rtma_time_0 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t1, 'Temperature_Analysis_height_above_ground')
-
-        rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t2, 'Temperature_Analysis_height_above_ground')
-
-        if rtma_time_0.hour == rtma_time_1.hour:
-
-            rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, 'Temperature_Analysis_height_above_ground')
-
-            if rtma_time_0.hour == rtma_time_1.hour:
-
-                rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, 'Temperature_Analysis_height_above_ground')
-
-                rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t9, 'Temperature_Analysis_height_above_ground')
-
-                rtma_data_7, rtma_time_7 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t10, 'Temperature_Analysis_height_above_ground')
-
-
-            else:
-
-                rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, 'Temperature_Analysis_height_above_ground')
+            rtma_time_0 = rtma_time[0]
+            rtma_time_1 = rtma_time[1]
+            rtma_time_2 = rtma_time[2]
+            rtma_time_3 = rtma_time[3]
+            rtma_time_4 = rtma_time[4]
+            rtma_time_5 = rtma_time[5]
+            rtma_time_6 = rtma_time[6]
+            rtma_time_7 = rtma_time[7]
+            
+            NOMADS = False
                 
-                rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, 'Temperature_Analysis_height_above_ground')
-        
-                rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, 'Temperature_Analysis_height_above_ground')
+        except Exception as e:
+            ds_list, rtma_times = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_rtma_data_past_6hrs()
+            ds_0 = ds_list[0]
+            ds_1 = ds_list[1]
+            ds_2 = ds_list[2]
+            ds_3 = ds_list[3]
+            ds_4 = ds_list[4]
+            ds_5 = ds_list[5]
+            ds_6 = ds_list[6]
+            ds_7 = ds_list[7]
 
-                rtma_data_7, rtma_time_7 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t9, 'Temperature_Analysis_height_above_ground')
+            rtma_time_0 = rtma_times[0]
+            rtma_time_1 = rtma_times[1]
+            rtma_time_2 = rtma_times[2]
+            rtma_time_3 = rtma_times[3]
+            rtma_time_4 = rtma_times[4]
+            rtma_time_5 = rtma_times[5]
+            rtma_time_6 = rtma_times[6]
+            rtma_time_7 = rtma_times[7]
 
-        else:
+            temp_0 = ds_0['tmp2m']
+            temp_1 = ds_1['tmp2m']
+            temp_2 = ds_2['tmp2m']
+            temp_3 = ds_3['tmp2m']
+            temp_4 = ds_4['tmp2m']
+            temp_5 = ds_5['tmp2m']
+            temp_6 = ds_6['tmp2m']
+            temp_7 = ds_7['tmp2m']
 
-            rtma_data_1, rtma_time_1 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t2, 'Temperature_Analysis_height_above_ground')
+            lat_0 = temp_0['lat']
+            lon_0 = temp_0['lon']
+            lat_1 = temp_1['lat']
+            lon_1 = temp_1['lon']
+            lat_2 = temp_2['lat']
+            lon_2 = temp_2['lon']
+            lat_3 = temp_3['lat']
+            lon_3 = temp_3['lon']
+            lat_4 = temp_4['lat']
+            lon_4 = temp_4['lon']
+            lat_5 = temp_5['lat']
+            lon_5 = temp_5['lon']
+            lat_6 = temp_6['lat']
+            lon_6 = temp_6['lon']
+            lat_7 = temp_7['lat']
+            lon_7 = temp_7['lon']
 
-            rtma_data_2, rtma_time_2 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t3, 'Temperature_Analysis_height_above_ground')
-    
-            rtma_data_3, rtma_time_3 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t4, 'Temperature_Analysis_height_above_ground')
-    
-            rtma_data_4, rtma_time_4 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t5, 'Temperature_Analysis_height_above_ground')
-    
-            rtma_data_5, rtma_time_5 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t6, 'Temperature_Analysis_height_above_ground')
-    
-            rtma_data_6, rtma_time_6 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t7, 'Temperature_Analysis_height_above_ground')
+            temp_0 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_0)
+            temp_1 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_1)
+            temp_2 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_2)
+            temp_3 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_3)
+            temp_4 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_4)
+            temp_5 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_5)
+            temp_6 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_6)
+            temp_7 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_7)
 
-            rtma_data_7, rtma_time_7 = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(t8, 'Temperature_Analysis_height_above_ground')
+            diff1 = temp_0[0, :, :] - temp_1[0, :, :]
+            diff2 = temp_1[0, :, :] - temp_2[0, :, :]
+            diff3 = temp_2[0, :, :] - temp_3[0, :, :]
+            diff4 = temp_3[0, :, :] - temp_4[0, :, :]
+            diff5 = temp_4[0, :, :] - temp_5[0, :, :]
+            diff6 = temp_5[0, :, :] - temp_6[0, :, :]
+            diff7 = temp_6[0, :, :] - temp_7[0, :, :]
 
-        rtma_data_0 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_0)
-        rtma_data_1 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_1)
-        rtma_data_2 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_2)
-        rtma_data_3 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_3)
-        rtma_data_4 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_4)
-        rtma_data_5 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_5)
-        rtma_data_6 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_6)
-        rtma_data_7 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_7)
-
-        diff1 = rtma_data_0 - rtma_data_1
-        diff2 = rtma_data_1 - rtma_data_2
-        diff3 = rtma_data_2 - rtma_data_3
-        diff4 = rtma_data_3 - rtma_data_4
-        diff5 = rtma_data_4 - rtma_data_5
-        diff6 = rtma_data_5 - rtma_data_6
-        diff7 = rtma_data_6 - rtma_data_7
-
-        rtma_df1 = diff1.to_dataframe()
-        rtma_df2 = diff2.to_dataframe()
-        rtma_df3 = diff3.to_dataframe()
-        rtma_df4 = diff4.to_dataframe()
-        rtma_df5 = diff5.to_dataframe()
-        rtma_df6 = diff6.to_dataframe()
-        rtma_df7 = diff7.to_dataframe()
-
-        plot_proj_8 = diff1.metpy.cartopy_crs
-        plot_proj_9 = diff2.metpy.cartopy_crs
-        plot_proj_10 = diff3.metpy.cartopy_crs
-        plot_proj_11 = diff4.metpy.cartopy_crs
-        plot_proj_12 = diff5.metpy.cartopy_crs
-        plot_proj_13 = diff6.metpy.cartopy_crs
-        plot_proj_14 = diff7.metpy.cartopy_crs
+            NOMADS = True    
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -2763,391 +4125,716 @@ class data_download_included_in_function:
         # FIRST FIGURE #
         ################
 
-        fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig1.set_facecolor('aliceblue')
+        if NOMADS == False:
 
-        fig1.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_0.strftime('%H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")" + " - " + rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_8)
-        ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax1.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
-                         transform=diff1.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
-
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar1.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn1 = mpplots.StationPlot(ax1, rtma_df1['longitude'][::mask], rtma_df1['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            rtma_data_0 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_0)
+            rtma_data_1 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_1)
+            rtma_data_2 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_2)
+            rtma_data_3 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_3)
+            rtma_data_4 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_4)
+            rtma_data_5 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_5)
+            rtma_data_6 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_6)
+            rtma_data_7 = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data_7)
     
-            stn1.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
+            diff1 = rtma_data_0 - rtma_data_1
+            diff2 = rtma_data_1 - rtma_data_2
+            diff3 = rtma_data_2 - rtma_data_3
+            diff4 = rtma_data_3 - rtma_data_4
+            diff5 = rtma_data_4 - rtma_data_5
+            diff6 = rtma_data_5 - rtma_data_6
+            diff7 = rtma_data_6 - rtma_data_7
+    
+            rtma_df1 = diff1.to_dataframe()
+            rtma_df2 = diff2.to_dataframe()
+            rtma_df3 = diff3.to_dataframe()
+            rtma_df4 = diff4.to_dataframe()
+            rtma_df5 = diff5.to_dataframe()
+            rtma_df6 = diff6.to_dataframe()
+            rtma_df7 = diff7.to_dataframe()
+    
+            plot_proj_8 = diff1.metpy.cartopy_crs
+            plot_proj_9 = diff2.metpy.cartopy_crs
+            plot_proj_10 = diff3.metpy.cartopy_crs
+            plot_proj_11 = diff4.metpy.cartopy_crs
+            plot_proj_12 = diff5.metpy.cartopy_crs
+            plot_proj_13 = diff6.metpy.cartopy_crs
+            plot_proj_14 = diff7.metpy.cartopy_crs
+    
+            fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig1.set_facecolor('aliceblue')
+    
+            fig1.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_0.strftime('%H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")" + " - " + rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax1 = fig1.add_subplot(1, 1, 1, projection=plot_proj_8)
+            ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax1.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs1 = ax1.contourf(diff1.metpy.x, diff1.metpy.y, diff1, 
+                             transform=diff1.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
+    
+            cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar1.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn1 = mpplots.StationPlot(ax1, rtma_df1['longitude'][::decimate], rtma_df1['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-
-        ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax1.transAxes)
-
-
-        #################
-        # SECOND FIGURE #
-        #################
-
-        fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig2.set_facecolor('aliceblue')
-
-        fig2.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")" + " - " + rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_9)
-        ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
-                         transform=diff2.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
-
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar2.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn2 = mpplots.StationPlot(ax2, rtma_df2['longitude'][::mask], rtma_df2['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                stn1.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
-            stn2.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-
-        ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax2.transAxes)
-
-
-        ################
-        # THIRD FIGURE #
-        ################
-
-        fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig3.set_facecolor('aliceblue')
-
-        fig3.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")" + " - " + rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_10)
-        ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax3.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax3.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
+            else:
+                pass
             
-        cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
-                         transform=diff3.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
-
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar3.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn3 = mpplots.StationPlot(ax3, rtma_df3['longitude'][::mask], rtma_df3['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn3.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
+            ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax1.transAxes)
+    
+    
+            #################
+            # SECOND FIGURE #
+            #################
+    
+            fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig2.set_facecolor('aliceblue')
+    
+            fig2.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")" + " - " + rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax2 = fig2.add_subplot(1, 1, 1, projection=plot_proj_9)
+            ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs2 = ax2.contourf(diff2.metpy.x, diff2.metpy.y, diff2, 
+                             transform=diff2.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
+    
+            cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar2.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn2 = mpplots.StationPlot(ax2, rtma_df2['longitude'][::decimate], rtma_df2['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-
-        ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax3.transAxes)
-
-
-        #################
-        # FOURTH FIGURE #
-        #################
-
-        fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig4.set_facecolor('aliceblue')
-
-        fig4.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")" + " - " + rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_11)
-        ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass    
-        cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
-                         transform=diff4.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
-
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar4.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn4 = mpplots.StationPlot(ax4, rtma_df4['longitude'][::mask], rtma_df4['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                stn2.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
     
-            stn4.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax4.transAxes)
-
-
-        ################
-        # FIFTH FIGURE #
-        ################
-
-        fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig5.set_facecolor('aliceblue')
-
-        fig5.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")" + " - " + rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_12)
-        ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass    
-        cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
-                         transform=diff5.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
-
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar5.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn5 = mpplots.StationPlot(ax5, rtma_df5['longitude'][::mask], rtma_df5['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            else:
+                pass
     
-            stn5.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-
-        ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax5.transAxes)
-
-        ################
-        # SIXTH FIGURE #
-        ################
-
-        fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig6.set_facecolor('aliceblue')
-
-        fig6.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")" + " - " + rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_13)
-        ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax6.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax6.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass    
-        cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
-                         transform=diff6.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
-
-        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar6.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn6 = mpplots.StationPlot(ax6, rtma_df6['longitude'][::mask], rtma_df6['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn6.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
+            ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax2.transAxes)
+    
+    
+            ################
+            # THIRD FIGURE #
+            ################
+    
+            fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig3.set_facecolor('aliceblue')
+    
+            fig3.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")" + " - " + rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax3 = fig3.add_subplot(1, 1, 1, projection=plot_proj_10)
+            ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax3.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax3.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+                
+            cs3 = ax3.contourf(diff3.metpy.x, diff3.metpy.y, diff3, 
+                             transform=diff3.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
+    
+            cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar3.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn3 = mpplots.StationPlot(ax3, rtma_df3['longitude'][::decimate], rtma_df3['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-        ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax6.transAxes)
-
-        ##################
-        # SEVENTH FIGURE #
-        ##################
-
-        fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig7.set_facecolor('aliceblue')
-
-        fig7.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")" + " - " + rtma_time_7.strftime('%H:00 Local') + " (" + rtma_time_utc_7.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-
-        ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_14)
-        ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax7.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax7.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
+                stn3.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
             
-        cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
-                         transform=diff7.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
-
-        cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar7.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-        if show_sample_points == True:
-
-            stn7 = mpplots.StationPlot(ax7, rtma_df7['longitude'][::mask], rtma_df7['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn7.plot_parameter('C', rtma_df7['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
+            ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax3.transAxes)
+    
+    
+            #################
+            # FOURTH FIGURE #
+            #################
+    
+            fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig4.set_facecolor('aliceblue')
+    
+            fig4.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")" + " - " + rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax4 = fig4.add_subplot(1, 1, 1, projection=plot_proj_11)
+            ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass    
+            cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
+                             transform=diff4.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
+    
+            cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar4.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn4 = mpplots.StationPlot(ax4, rtma_df4['longitude'][::decimate], rtma_df4['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-        ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax7.transAxes)
+                stn4.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax4.transAxes)
+    
+    
+            ################
+            # FIFTH FIGURE #
+            ################
+    
+            fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig5.set_facecolor('aliceblue')
+    
+            fig5.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")" + " - " + rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax5 = fig5.add_subplot(1, 1, 1, projection=plot_proj_12)
+            ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass    
+            cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
+                             transform=diff5.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
+    
+            cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar5.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn5 = mpplots.StationPlot(ax5, rtma_df5['longitude'][::decimate], rtma_df5['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn5.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+    
+            ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax5.transAxes)
+    
+            ################
+            # SIXTH FIGURE #
+            ################
+    
+            fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig6.set_facecolor('aliceblue')
+    
+            fig6.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")" + " - " + rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax6 = fig6.add_subplot(1, 1, 1, projection=plot_proj_13)
+            ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax6.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax6.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass    
+            cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
+                             transform=diff6.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
+    
+            cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar6.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn6 = mpplots.StationPlot(ax6, rtma_df6['longitude'][::decimate], rtma_df6['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn6.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+            
+            ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax6.transAxes)
+    
+            ##################
+            # SEVENTH FIGURE #
+            ##################
+    
+            fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig7.set_facecolor('aliceblue')
+    
+            fig7.suptitle("RTMA Hourly Temperature Trend (Shaded)\nValid: "+rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")" + " - " + rtma_time_7.strftime('%H:00 Local') + " (" + rtma_time_utc_7.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+    
+            ax7 = fig7.add_subplot(1, 1, 1, projection=plot_proj_14)
+            ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax7.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax7.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+                
+            cs7 = ax7.contourf(diff7.metpy.x, diff7.metpy.y, diff7, 
+                             transform=diff7.metpy.cartopy_crs, levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha, extend='both')
+    
+            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar7.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+            if show_sample_points == True:
+    
+                stn7 = mpplots.StationPlot(ax7, rtma_df7['longitude'][::decimate], rtma_df7['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        
+                stn7.plot_parameter('C', rtma_df7['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+            
+            ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax7.transAxes)
+
+        if NOMADS == True:
+
+            fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig1.set_facecolor('aliceblue')
+
+            ax1 = fig1.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax1.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax1.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs1 = ax1.contourf(lon_0, lat_0, diff1, 
+                             transform=ccrs.PlateCarree(), levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha)
+    
+            cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar1.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig1.suptitle("RTMA Hourly Temperature Trend\nValid: "+rtma_time_0.strftime('%H:00 Local') + " (" + rtma_time_utc_0.strftime('%H:00 UTC')+")" + " - " + rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax1.transAxes)
+
+            fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig2.set_facecolor('aliceblue')
+
+            ax2 = fig2.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax2.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs2 = ax2.contourf(lon_1, lat_1, diff2, 
+                             transform=ccrs.PlateCarree(), levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha)
+    
+            cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar2.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig2.suptitle("RTMA Hourly Temperature Trend\nValid: "+rtma_time_1.strftime('%H:00 Local') + " (" + rtma_time_utc_1.strftime('%H:00 UTC')+")" + " - " + rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax2.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax2.transAxes)
+
+
+            fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig3.set_facecolor('aliceblue')
+
+            ax3 = fig3.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax3.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax3.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax3.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax3.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax3.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs3 = ax3.contourf(lon_2, lat_2, diff3, 
+                             transform=ccrs.PlateCarree(), levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha)
+    
+            cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar3.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig3.suptitle("RTMA Hourly Temperature Trend\nValid: "+rtma_time_2.strftime('%H:00 Local') + " (" + rtma_time_utc_2.strftime('%H:00 UTC')+")" + " - " + rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax3.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax3.transAxes)
+
+            fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig4.set_facecolor('aliceblue')
+
+            ax4 = fig4.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax4.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs4 = ax4.contourf(lon_3, lat_3, diff4, 
+                             transform=ccrs.PlateCarree(), levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha)
+    
+            cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar4.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig4.suptitle("RTMA Hourly Temperature Trend\nValid: "+rtma_time_3.strftime('%H:00 Local') + " (" + rtma_time_utc_3.strftime('%H:00 UTC')+")" + " - " + rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax4.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax4.transAxes)
+
+            fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig5.set_facecolor('aliceblue')
+
+            ax5 = fig5.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax5.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs5 = ax5.contourf(lon_4, lat_4, diff5, 
+                             transform=ccrs.PlateCarree(), levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha)
+    
+            cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar5.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig5.suptitle("RTMA Hourly Temperature Trend\nValid: "+rtma_time_4.strftime('%H:00 Local') + " (" + rtma_time_utc_4.strftime('%H:00 UTC')+")" + " - " + rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax5.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax5.transAxes)
+
+            fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig6.set_facecolor('aliceblue')
+
+            ax6 = fig6.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax6.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax6.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax6.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax6.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax6.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs6 = ax6.contourf(lon_5, lat_5, diff6, 
+                             transform=ccrs.PlateCarree(), levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha)
+    
+            cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar6.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig6.suptitle("RTMA Hourly Temperature Trend\nValid: "+rtma_time_5.strftime('%H:00 Local') + " (" + rtma_time_utc_5.strftime('%H:00 UTC')+")" + " - " + rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax6.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax6.transAxes)
+
+            fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig7.set_facecolor('aliceblue')
+
+            ax7 = fig7.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax7.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax7.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax7.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax7.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax7.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs7 = ax7.contourf(lon_6, lat_6, diff7,
+                             transform=ccrs.PlateCarree(), levels=np.arange(-15, 16, 1), cmap='seismic', alpha=alpha)
+    
+            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar7.set_label(label="Hourly Temperature Trend (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+
+            fig7.suptitle("RTMA Hourly Temperature Trend\nValid: "+rtma_time_6.strftime('%H:00 Local') + " (" + rtma_time_utc_6.strftime('%H:00 UTC')+")" + " - " + rtma_time_7.strftime('%H:00 Local') + " (" + rtma_time_utc_7.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax7.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax7.transAxes)
 
         figs.append(fig7)
         figs.append(fig6)
@@ -3158,158 +4845,9 @@ class data_download_included_in_function:
         figs.append(fig1)
 
         return figs
-
-    
-
-    def plot_red_flag_relative_humidity_with_METARs(red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
-
-        r'''
-            This function does the following:
-                                            1) Downloads the latest availiable temperature and dewpoint data arrays. 
-                                            2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
-                                            3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
-                                            4) Plots the relative humidity data filtered RH <= red_flag_warning_relative_humidity_threshold (%) overlayed with the latest METAR reports. 
-
-            
-
-            Inputs:
-
-                1) red_flag_warning_relative_humidity_threshold (Integer) - The National Weather Service Red Flag Warning threshold for relative humidity. 
-
-                1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
-
-                2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
-
-                3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
-
-                4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
-
-                5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
-
-                6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
-
-                7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
-
-                8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
-                
-                9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
-
-                10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
-
-                11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
-
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
-
-                13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
-
-                14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
-
-                15) title_font_size (Integer) - The fontsize of the title of the figure. 
-
-                16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
-
-                17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
-
-                18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
-                                           Default setting is 0.05.
-                                           Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
-                                           Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
-
-                19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
-                                            will not display on the map. 
-
-
-            Returns:
-                    1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity data filtered RH <= red_flag_warning_relative_humidity_threshold (%) overlayed with the latest METAR reports. 
         
-        '''
 
-        red_flag_warning_relative_humidity_threshold = red_flag_warning_relative_humidity_threshold
-        red_flag_warning_relative_humidity_threshold_numpy = red_flag_warning_relative_humidity_threshold + 1
-        local_time, utc_time = standard.plot_creation_time()
-
-        rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_proj = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(utc_time, mask)
-
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-        rtma_time = rtma_time.replace(tzinfo=from_zone)
-        rtma_time = rtma_time.astimezone(to_zone)
-        rtma_time_utc = rtma_time.astimezone(from_zone)
-        metar_time_revised = metar_time_revised.replace(tzinfo=from_zone)
-        metar_time_revised = metar_time_revised.astimezone(to_zone)
-        metar_time_revised_utc = metar_time_revised.astimezone(from_zone)
-
-        cmap = colormaps.low_relative_humidity_colormap()
-        
-        mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
-        datacrs = ccrs.PlateCarree()
-
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
-
-        fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig.set_facecolor('aliceblue')
-
-        ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
-        ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, red_flag_warning_relative_humidity_threshold_numpy, 1), cmap=cmap, alpha=alpha)
-
-        cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
-
-        # Plots METAR
-        stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
-                                 transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
-        
-        
-        stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_mask], color='red',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_mask], color='darkorange',
-                          path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_mask], mpplots.sky_cover)
-        
-        stn.plot_parameter('C', sfc_data_rh.to('percent')[sfc_data_mask], color='lime',
-                            path_effects=[withStroke(linewidth=1, foreground='black')])
-        
-        stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
-
-        plt.title("Real Time Mesoscale Analysis\nExceptionally Low Relative Humidity (RH <= "+ str(red_flag_warning_relative_humidity_threshold) +"%)\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %H:00 Local')+" ("+metar_time_revised_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
-        
-        ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax.transAxes)
-
-        return fig
-
-
-    def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -3347,7 +4885,7 @@ class data_download_included_in_function:
 
                 13) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                14) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                14) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 15) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -3377,7 +4915,7 @@ class data_download_included_in_function:
         colorbar_pad = colorbar_pad
         show_sample_points = show_sample_points
         sample_point_fontsize = sample_point_fontsize
-        mask = mask
+        decimate = decimate
 
         low_relative_humidity_threshold = low_relative_humidity_threshold
         low_relative_humidity_threshold_scale = low_relative_humidity_threshold + 1
@@ -3387,11 +4925,24 @@ class data_download_included_in_function:
 
         local_time, utc_time = standard.plot_creation_time()
 
-        rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time)
+        try:
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time1)
+            NOMADS = False
 
-        rtma_df = rtma_data.to_dataframe(name='rtma_rh')
-        mask_low = (rtma_df['rtma_rh'] <= low_relative_humidity_threshold)
-        mask_high = (rtma_df['rtma_rh'] >= high_relative_humidity_threshold)
+        except Exception as e:
+            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            temp = ds['tmp2m']
+            dwpt = ds['dpt2m']
+            temp = temp - 273.15
+            dwpt = dwpt - 273.15
+            
+            rtma_data = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
+            
+            lat = ds['lat']
+            lon = ds['lon']
+            
+            NOMADS = True
+        
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -3408,81 +4959,124 @@ class data_download_included_in_function:
         cmap_high = colormaps.excellent_recovery_colormap()
         cmap_low = colormaps.low_relative_humidity_colormap()
 
-        plot_proj = rtma_data.metpy.cartopy_crs
-
-        fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig.set_facecolor('aliceblue')
-
-        ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
-        ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs_low = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=alpha)
-
-        if show_sample_points == True:
-
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][mask_low][::mask], rtma_df['latitude'][mask_low][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        if NOMADS == False:
+            plot_proj = rtma_data.metpy.cartopy_crs
+            rtma_df = rtma_data.to_dataframe(name='rtma_rh')
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
     
-            stn.plot_parameter('C', rtma_df['rtma_rh'][mask_low][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        cs_high = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(high_relative_humidity_threshold_scale, 101, 1), cmap=cmap_high, alpha=alpha)
-
-        if show_sample_points == True:
-
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][mask_high][::mask], rtma_df['latitude'][mask_high][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
     
-            stn.plot_parameter('C', rtma_df['rtma_rh'][mask_high][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
-        cbar_low.set_label(label="Low Relative Humidity (RH <=" + str(low_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
-
-
-        cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
-        cbar_high.set_label(label="High Relative Humidity (RH >= " + str(high_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
-
-
-        plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=" + str(low_relative_humidity_threshold) +"%) & High RH (RH >= " + str(high_relative_humidity_threshold) +"%)\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            cs_low = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=alpha)
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-        ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax.transAxes)
+                stn.plot_parameter('C', rtma_df['rtma_rh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            cs_high = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(high_relative_humidity_threshold_scale, 101, 1), cmap=cmap_high, alpha=alpha)
+    
+    
+            cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_low.set_label(label="Low Relative Humidity (RH <=" + str(low_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_high.set_label(label="High Relative Humidity (RH >= " + str(high_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA\nLow RH(<=" + str(low_relative_humidity_threshold) +"%) & High RH (RH >= " + str(high_relative_humidity_threshold) +"%)\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+        if NOMADS == True:
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=datacrs)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs_low = ax.contourf(lon, lat, rtma_data[0, :, :], 
+                             transform=datacrs, levels=np.arange(0, low_relative_humidity_threshold_scale, 1), cmap=cmap_low, alpha=alpha)
+    
+            cs_high = ax.contourf(lon, lat, rtma_data[0, :, :], 
+                             transform=datacrs, levels=np.arange(high_relative_humidity_threshold_scale, 101, 1), cmap=cmap_high, alpha=alpha)
+    
+    
+            cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_low.set_label(label="Low Relative Humidity (RH <=" + str(low_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            cbar_high = fig.colorbar(cs_high, location='right', shrink=color_table_shrink, pad=colorbar_pad)
+            cbar_high.set_label(label="High Relative Humidity (RH >= " + str(high_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA\nLow RH(<=" + str(low_relative_humidity_threshold) +"%) & High RH (RH >= " + str(high_relative_humidity_threshold) +"%)\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
 
         return fig
 
 
-    def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, decimate='default'):
 
         r'''
             This function does the following:
@@ -3540,17 +5134,56 @@ class data_download_included_in_function:
         
         '''
 
-
+        western_bound = western_bound
+        eastern_bound = eastern_bound
+        southern_bound = southern_bound
+        northern_bound = northern_bound
+        
         local_time, utc_time = standard.plot_creation_time()
         
         cmap = colormaps.relative_humidity_change_colormap()
 
-        rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_relative_humidity_24_hour_difference_data(utc_time)
+        if decimate == 'default':
+            decimate = calc.scaling.get_thredds_decimation(western_bound, eastern_bound, southern_bound, northern_bound, None)
+        else:
+            decimate = decimate
 
+        try:
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_relative_humidity_24_hour_difference_data(utc_time)
+
+            rtma_df = rtma_data.to_dataframe(name='rtma_rh_change')
+
+            plot_proj = rtma_data.metpy.cartopy_crs
+
+            NOMADS = False
+
+        except Exception as e:
+            ds, ds_24, rtma_time, rtma_time_24 = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+
+            temp = ds['tmp2m']
+            dwpt = ds['dpt2m']
+            temp = temp - 273.15
+            dwpt = dwpt - 273.15
+
+            temp_24 = ds_24['tmp2m']
+            dwpt_24 = ds_24['dpt2m']
+            temp_24 = temp_24 - 273.15
+            dwpt_24 = dwpt_24 - 273.15
+
+            rtma_data = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
+            
+            rtma_data_24 = calc.Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_24, dwpt_24)
+            lat = ds['lat']
+            lon = ds['lon']
+            lat_24 = ds_24['lat']
+            lon_24 = ds_24['lon']
+
+            diff = rtma_data[0, :, :] - rtma_data_24[0, :, :]
+
+            NOMADS = True
+        
         rtma_time_24 = rtma_time - timedelta(hours=24)
 
-        rtma_df = rtma_data.to_dataframe(name='rtma_rh_change')
-        
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
         rtma_time = rtma_time.replace(tzinfo=from_zone)
@@ -3566,65 +5199,107 @@ class data_download_included_in_function:
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
-        plot_proj = rtma_data.metpy.cartopy_crs
-
-        fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig.set_facecolor('aliceblue')
-
-        ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
-        ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=alpha, extend='both')
-
-        if show_sample_points == True:
-
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        if NOMADS == False:
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
     
-            stn.plot_parameter('C', rtma_df['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-
-        cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar.set_label(label="Relative Humidity Change (%)", size=colorbar_label_font_size, fontweight='bold')
-
-
-        plt.title("RTMA 24-Hour Relative Humidity Change (%)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=alpha, extend='both')
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-        ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax.transAxes)
+                stn.plot_parameter('C', rtma_df['rtma_rh_change'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity Change (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Relative Humidity Change (%)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+        if NOMADS == True:
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=datacrs)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs = ax.contourf(lon, lat, diff, 
+                             transform=datacrs, levels=np.arange(-50, 55, 5), cmap=cmap, alpha=alpha, extend='both')
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Relative Humidity Change (%)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Relative Humidity Change (%)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
 
         return fig
 
 
-    def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, decimate='default'):
 
         r'''
             This function does the following:
@@ -3682,11 +5357,37 @@ class data_download_included_in_function:
         
         '''
 
-        mask = mask
+        if decimate == 'default':
+            decimate = calc.scaling.get_thredds_decimation(western_bound, eastern_bound, southern_bound, northern_bound, None)
+        else:
+            decimate = decimate
+            
         local_time, utc_time = standard.plot_creation_time()
 
-        rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Temperature_Analysis_height_above_ground')
+        try:
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Temperature_Analysis_height_above_ground')
 
+            rtma_df = rtma_data.to_dataframe()
+
+            plot_proj = rtma_data.metpy.cartopy_crs
+
+            NOMADS = False
+
+        except Exception as e:
+            ds, ds_24, rtma_time, rtma_time_24 = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+            
+            temp = ds['tmp2m']
+            temp_24 = ds_24['tmp2m']
+
+            lat = ds['lat']
+            lon = ds['lon']
+            lat_24 = ds_24['lat']
+            lon_24 = ds_24['lon']
+
+            rtma_data = temp[0, :, :] - temp_24[0, :, :]
+            NOMADS = True
+
+        
         rtma_time_24 = rtma_time - timedelta(hours=24)
 
         from_zone = tz.tzutc()
@@ -3700,73 +5401,115 @@ class data_download_included_in_function:
 
         rtma_data = calc.unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(rtma_data)
 
-        rtma_df = rtma_data.to_dataframe()
-        
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
 
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
-        plot_proj = rtma_data.metpy.cartopy_crs
-
-        fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig.set_facecolor('aliceblue')
-
-        ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
-        ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=alpha, extend='both', zorder=2)
-
-        if show_sample_points == True:
-
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        if NOMADS == False:
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
     
-            stn.plot_parameter('C', rtma_df['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-
-        cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar.set_label(label="Temperature Change (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
-
-
-        plt.title("RTMA 24-Hour Temperature Change (\N{DEGREE SIGN}F)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=alpha, extend='both', zorder=2)
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-        ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax.transAxes)
+                stn.plot_parameter('C', rtma_df['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Temperature Change (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Temperature Change (\N{DEGREE SIGN}F)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+        if NOMADS == True:
+
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=datacrs)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs = ax.contourf(lon, lat, rtma_data, 
+                             transform=datacrs, levels=np.arange(-25, 26, 1), cmap='seismic', alpha=alpha, extend='both', zorder=2)
+    
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Temperature Change (\N{DEGREE SIGN}F)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Temperature Change (\N{DEGREE SIGN}F)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
 
         return fig
 
 
-    def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, colorblind=False):
+    def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, colorblind=False, decimate='default'):
 
         r'''
             This function does the following:
@@ -3827,9 +5570,35 @@ class data_download_included_in_function:
 
         local_time, utc_time = standard.plot_creation_time()
 
+        if decimate == 'default':
+            decimate = calc.scaling.get_thredds_decimation(western_bound, eastern_bound, southern_bound, northern_bound, None)
+        else:
+            decimate = decimate
+
         colorblind = colorblind
 
-        rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Wind_speed_Analysis_height_above_ground')
+        try:
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time1, 'Wind_speed_Analysis_height_above_ground')
+
+            rtma_df = rtma_data.to_dataframe()
+            plot_proj = rtma_data.metpy.cartopy_crs
+
+            NOMADS = False
+
+        except Exception as e:
+            ds, ds_24, rtma_time, rtma_time_24 = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+
+            ws = ds['wind10m']
+            ws_24 = ds_24['wind10m']
+
+            lat = ds['lat']
+            lon = ds['lon']
+            lat_24 = ds_24['lat']
+            lon_24 = ds_24['lon']
+
+            rtma_data = ws[0, :, :] - ws_24[0, :, :]
+            
+            NOMADS = True
 
         rtma_time_24 = rtma_time - timedelta(hours=24)
 
@@ -3843,7 +5612,6 @@ class data_download_included_in_function:
         rtma_time_24_utc = rtma_time_24.astimezone(from_zone)
 
         rtma_data = rtma_data * 2.23694
-        rtma_df = rtma_data.to_dataframe()
         
         mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
         datacrs = ccrs.PlateCarree()
@@ -3856,64 +5624,107 @@ class data_download_included_in_function:
         if colorblind == True:
             cmap = colormaps.colorblind_mode_divergent_colormap()
 
-        plot_proj = rtma_data.metpy.cartopy_crs
-
-        fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig.set_facecolor('aliceblue')
-
-        ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
-        ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=alpha, extend='both')
-
-        if show_sample_points == True:
-
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+        if NOMADS == False:
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
     
-            stn.plot_parameter('C', rtma_df['Wind_speed_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
-
-        cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
-
-
-        plt.title("RTMA 24-Hour Wind Speed Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=2)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=2)
+            else:
+                pass
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=alpha, extend='both')
+    
+            if show_sample_points == True:
+    
+                stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
         
-        ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax.transAxes)
+                stn.plot_parameter('C', rtma_df['Wind_speed_Analysis_height_above_ground'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+    
+            else:
+                pass
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Wind Speed Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+        if NOMADS == True:
+
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=datacrs)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs = ax.contourf(lon, lat, rtma_data, 
+                             transform=datacrs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=alpha, extend='both')
+    
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Wind Speed Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
 
         return fig
 
 
-    def plot_24_hour_wind_speed_and_direction_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, barbs_or_quivers='barbs', first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, shaded_alpha=0.5, barb_quiver_alpha=1, minshaft=0.000005, headlength=10, headwidth=15, colorblind=False):
+    def plot_24_hour_wind_speed_and_direction_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, barbs_or_quivers='barbs', first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.6, colorbar_label_font_size=7, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, shaded_alpha=0.5, barb_quiver_alpha=1, minshaft=0.000005, headlength=10, headwidth=15, colorblind=False, barb_quiver_fontsize=8):
 
         r'''
             This function does the following:
@@ -3984,34 +5795,60 @@ class data_download_included_in_function:
         headlength = headlength 
         headwidth = headwidth
         colorblind = colorblind
+        
+        if barbs_or_quivers == 'barbs' or barbs_or_quivers == 'Barbs' or barbs_or_quivers == 'BARBS' or barbs_or_quivers == 'B' or barbs_or_quivers == 'b':
+            
+            barbs = True
 
-        rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Wind_speed_Analysis_height_above_ground')
+        if barbs_or_quivers == 'quivers' or barbs_or_quivers == 'Quivers' or barbs_or_quivers == 'QUIVERS' or barbs_or_quivers == 'Q' or barbs_or_quivers == 'q':
 
-        rtma_time_24 = rtma_time - timedelta(hours=24)
+            barbs = False
+        
+        nomads_decimate = calc.scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, barbs)
 
-        u, u_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'u-component_of_wind_Analysis_height_above_ground')
+        thredds_decimate = calc.scaling.get_thredds_decimation(western_bound, eastern_bound, southern_bound, northern_bound, barbs)
+        
+        try:
 
-        u_24, u_24_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(rtma_time_24, 'u-component_of_wind_Analysis_height_above_ground')
+            rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Wind_speed_Analysis_height_above_ground')
+    
+            rtma_time_24 = rtma_time - timedelta(hours=24)
+    
+            u, u_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'u-component_of_wind_Analysis_height_above_ground')
+    
+            u_24, u_24_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(rtma_time_24, 'u-component_of_wind_Analysis_height_above_ground')
+    
+    
+            v, v_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'v-component_of_wind_Analysis_height_above_ground')
+    
+            v_24, v_24_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(rtma_time_24, 'v-component_of_wind_Analysis_height_above_ground')
 
+            NOMADS = False
 
-        v, v_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'v-component_of_wind_Analysis_height_above_ground')
+        except Exception as e:
 
-        v_24, v_24_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(rtma_time_24, 'v-component_of_wind_Analysis_height_above_ground')
+            ds, ds_24, rtma_time, rtma_time_24 = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+
+            u = ds['ugrd10m']
+            v = ds['vgrd10m']
+            u_24 = ds_24['ugrd10m']
+            v_24 = ds_24['vgrd10m']
+            ws = ds['wind10m']
+            ws_24 = ds_24['wind10m']
+            rtma_data = ws[0, :, :] - ws_24[0, :, :]
+            lon = ds['lon']
+            lat = ds['lat']
+            lon_24 = ds_24['lon']
+            lat_24 = ds_24['lat']
+            lon_2d, lat_2d = np.meshgrid(lon, lat)
+            lon_24_2d, lat_24_2d = np.meshgrid(lon_24, lat_24)
+
+            NOMADS = True
 
         u = u * 2.23694
         v = v * 2.23694
         u_24 = u_24 * 2.23694
         v_24 = v_24 * 2.23694
-
-        df_u = u.to_dataframe()
-        df_u24 = u_24.to_dataframe()
-        df_v = v.to_dataframe()
-        df_v24 = v_24.to_dataframe()
-
-        df_u['wind'] = df_u['u-component_of_wind_Analysis_height_above_ground'] 
-        df_v['wind'] = df_v['v-component_of_wind_Analysis_height_above_ground'] 
-        df_u24['wind'] = df_u24['u-component_of_wind_Analysis_height_above_ground'] 
-        df_v24['wind'] = df_v24['v-component_of_wind_Analysis_height_above_ground'] 
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -4035,88 +5872,180 @@ class data_download_included_in_function:
         if colorblind == True:
             cmap = colormaps.colorblind_mode_divergent_colormap()
 
-        plot_proj = rtma_data.metpy.cartopy_crs
+        if NOMADS == False:
 
-        fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-        fig.set_facecolor('aliceblue')
-
-        ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
-        ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-        if show_gacc_borders == True:
-            ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
-        else:
-            pass
-
-        cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
-                         transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=shaded_alpha, extend='both')
-
-        if barbs_or_quivers == 'barbs' or barbs_or_quivers == 'Barbs' or barbs_or_quivers == 'BARBS':
-
-            stn = mpplots.StationPlot(ax, df_u['longitude'][::mask], df_u['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), zorder=4, clip_on=True)
-            stn1 = mpplots.StationPlot(ax, df_u24['longitude'][::mask], df_u24['latitude'][::mask],
-                                             transform=ccrs.PlateCarree(), zorder=4, clip_on=True)
-            if colorblind == False:
-                stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v['v-component_of_wind_Analysis_height_above_ground'][::mask], color='black', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+            df_u = u.to_dataframe()
+            df_u24 = u_24.to_dataframe()
+            df_v = v.to_dataframe()
+            df_v24 = v_24.to_dataframe()
     
-                stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v24['v-component_of_wind_Analysis_height_above_ground'][::mask], color='blue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+            df_u['wind'] = df_u['u-component_of_wind_Analysis_height_above_ground'] 
+            df_v['wind'] = df_v['v-component_of_wind_Analysis_height_above_ground'] 
+            df_u24['wind'] = df_u24['u-component_of_wind_Analysis_height_above_ground'] 
+            df_v24['wind'] = df_v24['v-component_of_wind_Analysis_height_above_ground'] 
 
-            if colorblind == True:
+            plot_proj = rtma_data.metpy.cartopy_crs
 
-                stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v['v-component_of_wind_Analysis_height_above_ground'][::mask], color='crimson', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
     
-                stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v24['v-component_of_wind_Analysis_height_above_ground'][::mask], color='dodgerblue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
-
-        if barbs_or_quivers == 'quivers' or barbs_or_quivers == 'Quivers' or barbs_or_quivers == 'QUIVERS':
-
-            if colorblind == False:
+            ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
+                             transform=rtma_data.metpy.cartopy_crs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=shaded_alpha, extend='both')
+    
+            if barbs_or_quivers == 'barbs' or barbs_or_quivers == 'Barbs' or barbs_or_quivers == 'BARBS' or barbs_or_quivers == 'B' or barbs_or_quivers == 'b':
+    
+                stn = mpplots.StationPlot(ax, df_u['longitude'][::thredds_decimate], df_u['latitude'][::thredds_decimate],
+                                                 transform=ccrs.PlateCarree(), zorder=5, fontsize=barb_quiver_fontsize, clip_on=True)
+                stn1 = mpplots.StationPlot(ax, df_u24['longitude'][::thredds_decimate], df_u24['latitude'][::thredds_decimate],
+                                                 transform=ccrs.PlateCarree(), zorder=5, fontsize=barb_quiver_fontsize, clip_on=True)
+                if colorblind == False:
+                    stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::thredds_decimate], df_v['v-component_of_wind_Analysis_height_above_ground'][::thredds_decimate], color='black', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=5)
+        
+                    stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::thredds_decimate], df_v24['v-component_of_wind_Analysis_height_above_ground'][::thredds_decimate], color='blue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=5)
+    
+                if colorblind == True:
+    
+                    stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::thredds_decimate], df_v['v-component_of_wind_Analysis_height_above_ground'][::thredds_decimate], color='crimson', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=5)
+        
+                    stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::thredds_decimate], df_v24['v-component_of_wind_Analysis_height_above_ground'][::thredds_decimate], color='dodgerblue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=5)
+    
+            if barbs_or_quivers == 'quivers' or barbs_or_quivers == 'Quivers' or barbs_or_quivers == 'QUIVERS' or barbs_or_quivers == 'Q' or barbs_or_quivers == 'q':
+    
+                if colorblind == False:
+                
+                    ax.quiver(df_u['longitude'][::thredds_decimate], df_u['latitude'][::thredds_decimate], df_u['wind'][::thredds_decimate], df_v['wind'][::thredds_decimate], color='black', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=5, transform=ccrs.PlateCarree())
+    
+                    ax.quiver(df_u24['longitude'][::thredds_decimate], df_u24['latitude'][::thredds_decimate], df_u24['wind'][::thredds_decimate], df_v24['wind'][::thredds_decimate], color='blue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=5, transform=ccrs.PlateCarree())
+    
+                if colorblind == True:
+    
+                    ax.quiver(df_u['longitude'][::thredds_decimate], df_u['latitude'][::thredds_decimate], df_u['wind'][::thredds_decimate], df_v['wind'][::thredds_decimate], color='crimson', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=5, transform=ccrs.PlateCarree())
+    
+                    ax.quiver(df_u24['longitude'][::thredds_decimate], df_u24['latitude'][::thredds_decimate], df_u24['wind'][::thredds_decimate], df_v24['wind'][::thredds_decimate], color='dodgerblue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=5, transform=ccrs.PlateCarree())
+    
             
-                ax.quiver(df_u['longitude'][::mask], df_u['latitude'][::mask], df_u['wind'][::mask], df_v['wind'][::mask], color='black', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+            ax.legend(loc=(1, 0.9))
+            
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Wind Speed & Direction Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
 
-                ax.quiver(df_u24['longitude'][::mask], df_u24['latitude'][::mask], df_u24['wind'][::mask], df_v24['wind'][::mask], color='blue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
-
-            if colorblind == True:
-
-                ax.quiver(df_u['longitude'][::mask], df_u['latitude'][::mask], df_u['wind'][::mask], df_v['wind'][::mask], color='crimson', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
-
-                ax.quiver(df_u24['longitude'][::mask], df_u24['latitude'][::mask], df_u24['wind'][::mask], df_v24['wind'][::mask], color='dodgerblue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
-
+        if NOMADS == True:
+            
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+    
+            ax = fig.add_subplot(1, 1, 1, projection=datacrs)
+            ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+    
+            cs = ax.contourf(lon, lat, rtma_data, 
+                             transform=datacrs, levels=np.arange(-20, 21, 1), cmap=cmap, alpha=shaded_alpha, extend='both')
+    
+            if barbs_or_quivers == 'barbs' or barbs_or_quivers == 'Barbs' or barbs_or_quivers == 'BARBS' or barbs_or_quivers == 'B' or barbs_or_quivers == 'b':
+    
+                stn = mpplots.StationPlot(ax, lon_2d[::nomads_decimate, ::nomads_decimate], lat_2d[::nomads_decimate, ::nomads_decimate],
+                                 transform=ccrs.PlateCarree(), zorder=5, fontsize=barb_quiver_fontsize, clip_on=True)
+                
+                stn1 = mpplots.StationPlot(ax, lon_24_2d[::nomads_decimate, ::nomads_decimate], lat_24_2d[::nomads_decimate, ::nomads_decimate],
+                                 transform=ccrs.PlateCarree(), zorder=5, fontsize=barb_quiver_fontsize, clip_on=True)
+                
+                if colorblind == False:
+                    stn.plot_barb(u[0, :, :][::nomads_decimate, ::nomads_decimate], v[0, :, :][::nomads_decimate, ::nomads_decimate], color='black', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=5)
         
-        ax.legend(loc=(1, 0.875))
+                    stn1.plot_barb(u_24[0, :, :][::nomads_decimate, ::nomads_decimate], v_24[0, :, :][::nomads_decimate, ::nomads_decimate], color='blue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=5)
+    
+                if colorblind == True:
+    
+                    stn.plot_barb(u[0, :, :][::nomads_decimate, ::nomads_decimate], v[0, :, :][::nomads_decimate, ::nomads_decimate], color='crimson', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=5)
         
-        cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
-        cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
-
-
-        plt.title("RTMA 24-Hour Wind Speed & Direction Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
-        
-        ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
-       verticalalignment='bottom', transform=ax.transAxes)
+                    stn1.plot_barb(u_24[0, :, :][::nomads_decimate, ::nomads_decimate], v_24[0, :, :][::nomads_decimate, ::nomads_decimate], color='dodgerblue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=5)
+    
+            if barbs_or_quivers == 'quivers' or barbs_or_quivers == 'Quivers' or barbs_or_quivers == 'QUIVERS' or barbs_or_quivers == 'Q' or barbs_or_quivers == 'q':
+    
+                if colorblind == False:
+                
+                    ax.quiver(lon_2d[::nomads_decimate, ::nomads_decimate], lat_2d[::nomads_decimate, ::nomads_decimate], u[0, :, :][::nomads_decimate, ::nomads_decimate], v[0, :, :][::nomads_decimate, ::nomads_decimate], color='black', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=5, transform=ccrs.PlateCarree())
+    
+                    ax.quiver(lon_24_2d[::nomads_decimate, ::nomads_decimate], lat_24_2d[::nomads_decimate, ::nomads_decimate], u_24[0, :, :][::nomads_decimate, ::nomads_decimate], v_24[0, :, :][::nomads_decimate, ::nomads_decimate], color='blue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=5, transform=ccrs.PlateCarree())
+    
+                if colorblind == True:
+    
+                    ax.quiver(lon_2d[::nomads_decimate, ::nomads_decimate], lat_2d[::nomads_decimate, ::nomads_decimate], u[0, :, :][::nomads_decimate, ::nomads_decimate], v[0, :, :][::nomads_decimate, ::nomads_decimate], color='crimson', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=5, transform=ccrs.PlateCarree())
+    
+                    ax.quiver(lon_24_2d[::nomads_decimate, ::nomads_decimate], lat_24_2d[::nomads_decimate, ::nomads_decimate], u_24[0, :, :][::nomads_decimate, ::nomads_decimate], v_24[0, :, :][::nomads_decimate, ::nomads_decimate], color='dodgerblue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=5, transform=ccrs.PlateCarree())
+    
+            
+            ax.legend(loc=(1, 0.9))
+            
+            cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad)
+            cbar.set_label(label="Wind Speed Change (MPH)", size=colorbar_label_font_size, fontweight='bold')
+    
+    
+            plt.title("RTMA 24-Hour Wind Speed & Direction Change (MPH)\nAnalysis Start: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_24_utc.strftime('%H:00 UTC')+ ")\nAnalysis End:" + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+ ")", fontsize=title_font_size, fontweight='bold')
+            
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
 
         return fig
 
 
-    def plot_24_hour_total_cloud_cover_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, colorblind=False):
+    def plot_24_hour_total_cloud_cover_change(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, colorblind=False):
 
         r'''
             This function does the following:
@@ -4174,7 +6103,7 @@ class data_download_included_in_function:
         
         '''
 
-        mask = mask
+        decimate = decimate
         local_time, utc_time = standard.plot_creation_time()
 
         rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Total_cloud_cover_Analysis_entire_atmosphere_single_layer')
@@ -4228,7 +6157,7 @@ class data_download_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -4237,10 +6166,10 @@ class data_download_included_in_function:
 
         if show_sample_points == True:
 
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -4258,7 +6187,7 @@ class data_download_included_in_function:
         return fig
 
 
-    def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -4315,7 +6244,7 @@ class data_download_included_in_function:
         
         '''
 
-        mask = mask
+        decimate = decimate
 
         local_time, utc_time = standard.plot_creation_time()
 
@@ -4324,7 +6253,7 @@ class data_download_included_in_function:
         rtma_data = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data)
 
         rtma_df = rtma_data.to_dataframe()
-        sample_point_mask = (rtma_df['Temperature_Analysis_height_above_ground'] <= 32)
+        sample_point_decimate = (rtma_df['Temperature_Analysis_height_above_ground'] <= 32)
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -4368,7 +6297,7 @@ class data_download_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -4377,10 +6306,10 @@ class data_download_included_in_function:
 
         if show_sample_points == True:
 
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][sample_point_mask][::mask], rtma_df['latitude'][sample_point_mask][::mask],
+            stn = mpplots.StationPlot(ax, rtma_df['longitude'][sample_point_decimate][::decimate], rtma_df['latitude'][sample_point_decimate][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn.plot_parameter('C', rtma_df['Temperature_Analysis_height_above_ground'][sample_point_mask][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn.plot_parameter('C', rtma_df['Temperature_Analysis_height_above_ground'][sample_point_decimate][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -4405,7 +6334,7 @@ class data_download_included_in_function:
                                             1) Downloads the latest available temperature, dewpoint, and wind speed data arrays. 
                                             2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                             3) Converts the wind speed data array from m/s to MPH. 
-                                            4) Masks all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Speed >= red_flag_warning_wind_speed_threshold (MPH). 
+                                            4) decimates all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Speed >= red_flag_warning_wind_speed_threshold (MPH). 
                                             5) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Dry and Windy" criteria are met. 
             
 
@@ -4476,11 +6405,11 @@ class data_download_included_in_function:
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
-        mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_speed_threshold)
-        lon = mask['longitude']
-        lat = mask['latitude']
+        decimate = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_speed_threshold)
+        lon = decimate['longitude']
+        lat = decimate['latitude']
 
-        plot_proj = mask.metpy.cartopy_crs
+        plot_proj = decimate.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig.set_facecolor('aliceblue')
@@ -4508,13 +6437,13 @@ class data_download_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
-        # Plot the mask
+        # Plot the decimate
         try:
-            ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap, zorder=2)
+            ax.pcolormesh(lon,lat,decimate,transform=ccrs.PlateCarree(),cmap=cmap, zorder=2)
 
         except Exception as e:
             pass
@@ -4535,7 +6464,7 @@ class data_download_included_in_function:
                                             1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
                                             2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                             3) Converts the wind gust data array from m/s to MPH. 
-                                            4) Masks all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Gust >= red_flag_warning_wind_gust_threshold (MPH). 
+                                            4) decimates all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Gust >= red_flag_warning_wind_gust_threshold (MPH). 
                                             5) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Dry and Windy" criteria are met. 
             
 
@@ -4606,11 +6535,11 @@ class data_download_included_in_function:
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
-        mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_gust >= red_flag_warning_wind_gust_threshold)
-        lon = mask['longitude']
-        lat = mask['latitude']
+        decimate = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_gust >= red_flag_warning_wind_gust_threshold)
+        lon = decimate['longitude']
+        lat = decimate['latitude']
 
-        plot_proj = mask.metpy.cartopy_crs
+        plot_proj = decimate.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig.set_facecolor('aliceblue')
@@ -4638,13 +6567,13 @@ class data_download_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
-        # Plot the mask
+        # Plot the decimate
         try:
-            ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap, zorder=2)
+            ax.pcolormesh(lon,lat,decimate,transform=ccrs.PlateCarree(),cmap=cmap, zorder=2)
 
         except Exception as e:
             pass
@@ -4665,7 +6594,7 @@ class data_download_included_in_function:
                                             1) Downloads the latest available temperature, dewpoint, and wind speed data arrays. 
                                             2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                             3) Converts the wind speed data array from m/s to MPH. 
-                                            4) Masks all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Speed >= red_flag_warning_wind_speed_threshold (MPH). 
+                                            4) decimates all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Speed >= red_flag_warning_wind_speed_threshold (MPH). 
                                             5) Plots a figure that consists of 3 subplots.
                                             List of subplots:
                                                         1) Plot where the dry and windy conditions are located. 
@@ -4762,11 +6691,11 @@ class data_download_included_in_function:
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
-        mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_speed_threshold)
-        lon = mask['longitude']
-        lat = mask['latitude']
+        decimate = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_speed_threshold)
+        lon = decimate['longitude']
+        lat = decimate['latitude']
 
-        plot_proj_1 = mask.metpy.cartopy_crs
+        plot_proj_1 = decimate.metpy.cartopy_crs
         plot_proj_2 = rtma_rh.metpy.cartopy_crs
         plot_proj_3 = rtma_wind.metpy.cartopy_crs
 
@@ -4797,7 +6726,7 @@ class data_download_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax0.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax0.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -4805,9 +6734,9 @@ class data_download_included_in_function:
         ax0.set_aspect(first_subplot_aspect_ratio)
         ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
-        # Plot the mask
+        # Plot the decimate
         try:
-            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw, zorder=2, alpha=alpha)
+            ax0.pcolormesh(lon,lat,decimate, transform=ccrs.PlateCarree(),cmap=cmap_rfw, zorder=2, alpha=alpha)
 
         except Exception as e:
             pass
@@ -4838,7 +6767,7 @@ class data_download_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
         
@@ -4877,7 +6806,7 @@ class data_download_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
         
@@ -4906,7 +6835,7 @@ class data_download_included_in_function:
                                             1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
                                             2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                             3) Converts the wind gust data array from m/s to MPH. 
-                                            4) Masks all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Gust >= red_flag_warning_wind_gust_threshold (MPH). 
+                                            4) decimates all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Gust >= red_flag_warning_wind_gust_threshold (MPH). 
                                             5) Plots a figure that consists of 3 subplots.
                                             List of subplots:
                                                         1) Plot where the dry and windy conditions are located. 
@@ -5003,11 +6932,11 @@ class data_download_included_in_function:
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
-        mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_gust_threshold)
-        lon = mask['longitude']
-        lat = mask['latitude']
+        decimate = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_gust_threshold)
+        lon = decimate['longitude']
+        lat = decimate['latitude']
 
-        plot_proj_1 = mask.metpy.cartopy_crs
+        plot_proj_1 = decimate.metpy.cartopy_crs
         plot_proj_2 = rtma_rh.metpy.cartopy_crs
         plot_proj_3 = rtma_wind.metpy.cartopy_crs
 
@@ -5038,16 +6967,16 @@ class data_download_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax0.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax0.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
         
         ax0.set_aspect(first_subplot_aspect_ratio)
         ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
-        # Plot the mask
+        # Plot the decimate
         try:
-            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw, zorder=2, alpha=alpha)
+            ax0.pcolormesh(lon,lat,decimate, transform=ccrs.PlateCarree(),cmap=cmap_rfw, zorder=2, alpha=alpha)
 
         except Exception as e:
             pass
@@ -5077,7 +7006,7 @@ class data_download_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
         
@@ -5115,7 +7044,7 @@ class data_download_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
         
@@ -5268,7 +7197,7 @@ class data_download_not_included_in_function:
         return fig
 
 
-    def plot_generic_real_time_mesoanalysis_with_METARs(rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_projection, parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, mask, signature_x_position, signature_y_position, color_table_shrink=0.7, state_border_color='black', county_border_color='black', title_font_size=12, signature_font_size=10, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, state_border_linewidth=2, county_border_linewidth=1):
+    def plot_generic_real_time_mesoanalysis_with_METARs(rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_decimate, metar_time_revised, plot_projection, parameter, plot_title, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, first_standard_parallel, second_standard_parallel, fig_x_length, fig_y_length, color_table, color_table_title, color_table_start, color_table_stop, color_table_step, decimate, signature_x_position, signature_y_position, color_table_shrink=0.7, state_border_color='black', county_border_color='black', title_font_size=12, signature_font_size=10, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, state_border_linewidth=2, county_border_linewidth=1):
 
         r'''
             This function does the following:
@@ -5316,7 +7245,7 @@ class data_download_not_included_in_function:
 
                 18) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                19) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                19) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
           
                 19) state_border_color (String) - Color of the state border. 
 
@@ -5361,7 +7290,7 @@ class data_download_not_included_in_function:
         sfc_data_u_kt = sfc_data_u_kt 
         sfc_data_v_kt = sfc_data_v_kt  
         sfc_data_rh = sfc_data_rh
-        sfc_data_mask = sfc_data_mask  
+        sfc_data_decimate = sfc_data_decimate  
         metar_time_revised = metar_time_revised
 
         if param == 'Wind_speed_gust_Analysis_height_above_ground' or param == 'Wind_speed_Analysis_height_above_ground' or param == 'Wind_speed_error_height_above_ground' or param == 'Wind_speed_gust_error_height_above_ground' or param == 'u-component_of_wind_Analysis_height_above_ground' or param == 'v-component_of_wind_Analysis_height_above_ground':
@@ -5408,22 +7337,22 @@ class data_download_not_included_in_function:
         cbar.set_label(label=color_table_title, size=colorbar_label_font_size, fontweight='bold')
 
         # Plots METAR
-        stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
+        stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_decimate].m, sfc_data['latitude'][sfc_data_decimate].m,
                                  transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
         
         
-        stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_mask], color='red',
+        stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_decimate], color='red',
                           path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_mask], color='blue',
+        stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_decimate], color='blue',
                           path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_mask], mpplots.sky_cover)
+        stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_decimate], mpplots.sky_cover)
         
-        stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_mask], color='lime',
+        stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_decimate], color='lime',
                             path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
+        stn.plot_barb(sfc_data['u'][sfc_data_decimate], sfc_data['v'][sfc_data_decimate])
 
         plt.title(plot_title + "\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %H:00 Local'), fontsize=title_font_size, fontweight='bold')
         
@@ -5433,7 +7362,7 @@ class data_download_not_included_in_function:
         return fig
         
 
-    def plot_relative_humidity(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_relative_humidity(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -5468,7 +7397,7 @@ class data_download_not_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -5494,7 +7423,7 @@ class data_download_not_included_in_function:
         
         '''
 
-        mask = mask
+        decimate = decimate
         local_time, utc_time = standard.plot_creation_time()
         rtma_data = rtma_data 
         rtma_time = rtma_time
@@ -5543,7 +7472,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -5555,10 +7484,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn.plot_parameter('C', rtma_df['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn.plot_parameter('C', rtma_df['rtma_rh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -5571,7 +7500,7 @@ class data_download_not_included_in_function:
         return fig
 
 
-    def plot_total_cloud_cover(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, contour_step, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_total_cloud_cover(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, contour_step, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -5606,7 +7535,7 @@ class data_download_not_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -5632,7 +7561,7 @@ class data_download_not_included_in_function:
         
         '''
 
-        mask = mask
+        decimate = decimate
         local_time, utc_time = standard.plot_creation_time()
         contour_step = contour_step
         rtma_data = rtma_data  
@@ -5681,7 +7610,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -5693,10 +7622,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -5708,7 +7637,7 @@ class data_download_not_included_in_function:
 
         return fig
 
-    def plot_relative_humidity_with_METARs(rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_projection, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_relative_humidity_with_METARs(rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_decimate, metar_time_revised, plot_projection, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -5743,7 +7672,7 @@ class data_download_not_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -5777,7 +7706,7 @@ class data_download_not_included_in_function:
         sfc_data_u_kt = sfc_data_u_kt 
         sfc_data_v_kt = sfc_data_v_kt
         sfc_data_rh = sfc_data_rh 
-        sfc_data_mask = sfc_data_mask 
+        sfc_data_decimate = sfc_data_decimate 
         metar_time_revised = metar_time_revised
 
         from_zone = tz.tzutc()
@@ -5825,7 +7754,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -5836,22 +7765,22 @@ class data_download_not_included_in_function:
         cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
         # Plots METAR
-        stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
+        stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_decimate].m, sfc_data['latitude'][sfc_data_decimate].m,
                                  transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
         
         
-        stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_mask], color='red',
+        stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_decimate], color='red',
                           path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_mask], color='darkorange',
+        stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_decimate], color='darkorange',
                           path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_mask], mpplots.sky_cover)
+        stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_decimate], mpplots.sky_cover)
         
-        stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_mask], color='lime',
+        stn.plot_parameter('E', sfc_data_rh.to('percent')[sfc_data_decimate], color='lime',
                             path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
+        stn.plot_barb(sfc_data['u'][sfc_data_decimate], sfc_data['v'][sfc_data_decimate])
 
         plt.title("Real Time Mesoscale Analysis Relative Humidity\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %H:00 Local')+" ("+metar_time_revised_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
         
@@ -5861,7 +7790,7 @@ class data_download_not_included_in_function:
         return fig
 
 
-    def plot_relative_humidity_6hr_timelapse(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_relative_humidity_6hr_timelapse(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -5896,7 +7825,7 @@ class data_download_not_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -6030,7 +7959,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6043,10 +7972,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn1 = mpplots.StationPlot(ax1, rtma_df0['longitude'][::mask], rtma_df0['latitude'][::mask],
+            stn1 = mpplots.StationPlot(ax1, rtma_df0['longitude'][::decimate], rtma_df0['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn1.plot_parameter('C', rtma_df0['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn1.plot_parameter('C', rtma_df0['rtma_rh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6086,7 +8015,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6098,10 +8027,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn2 = mpplots.StationPlot(ax2, rtma_df1['longitude'][::mask], rtma_df1['latitude'][::mask],
+            stn2 = mpplots.StationPlot(ax2, rtma_df1['longitude'][::decimate], rtma_df1['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn2.plot_parameter('C', rtma_df1['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn2.plot_parameter('C', rtma_df1['rtma_rh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6141,7 +8070,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6153,10 +8082,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn3 = mpplots.StationPlot(ax3, rtma_df2['longitude'][::mask], rtma_df2['latitude'][::mask],
+            stn3 = mpplots.StationPlot(ax3, rtma_df2['longitude'][::decimate], rtma_df2['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn3.plot_parameter('C', rtma_df2['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn3.plot_parameter('C', rtma_df2['rtma_rh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6197,7 +8126,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6209,10 +8138,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn4 = mpplots.StationPlot(ax4, rtma_df3['longitude'][::mask], rtma_df3['latitude'][::mask],
+            stn4 = mpplots.StationPlot(ax4, rtma_df3['longitude'][::decimate], rtma_df3['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn4.plot_parameter('C', rtma_df3['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn4.plot_parameter('C', rtma_df3['rtma_rh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6253,7 +8182,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6265,10 +8194,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn5 = mpplots.StationPlot(ax5, rtma_df4['longitude'][::mask], rtma_df4['latitude'][::mask],
+            stn5 = mpplots.StationPlot(ax5, rtma_df4['longitude'][::decimate], rtma_df4['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn5.plot_parameter('C', rtma_df4['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn5.plot_parameter('C', rtma_df4['rtma_rh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6308,7 +8237,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6320,10 +8249,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn6 = mpplots.StationPlot(ax6, rtma_df5['longitude'][::mask], rtma_df5['latitude'][::mask],
+            stn6 = mpplots.StationPlot(ax6, rtma_df5['longitude'][::decimate], rtma_df5['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn6.plot_parameter('C', rtma_df5['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn6.plot_parameter('C', rtma_df5['rtma_rh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6363,7 +8292,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6375,10 +8304,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn7 = mpplots.StationPlot(ax7, rtma_df6['longitude'][::mask], rtma_df6['latitude'][::mask],
+            stn7 = mpplots.StationPlot(ax7, rtma_df6['longitude'][::decimate], rtma_df6['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn7.plot_parameter('C', rtma_df6['rtma_rh'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn7.plot_parameter('C', rtma_df6['rtma_rh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6399,7 +8328,7 @@ class data_download_not_included_in_function:
         return figs
     
 
-    def plot_relative_humidity_trend_6hr_timelapse(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_relative_humidity_trend_6hr_timelapse(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -6434,7 +8363,7 @@ class data_download_not_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -6585,7 +8514,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6597,10 +8526,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn1 = mpplots.StationPlot(ax1, rtma_df1['longitude'][::mask], rtma_df1['latitude'][::mask],
+            stn1 = mpplots.StationPlot(ax1, rtma_df1['longitude'][::decimate], rtma_df1['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn1.plot_parameter('C', rtma_df1['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn1.plot_parameter('C', rtma_df1['rtma_rh_change'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6642,7 +8571,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6654,10 +8583,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn2 = mpplots.StationPlot(ax2, rtma_df2['longitude'][::mask], rtma_df2['latitude'][::mask],
+            stn2 = mpplots.StationPlot(ax2, rtma_df2['longitude'][::decimate], rtma_df2['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn2.plot_parameter('C', rtma_df2['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn2.plot_parameter('C', rtma_df2['rtma_rh_change'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6699,7 +8628,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6711,10 +8640,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn3 = mpplots.StationPlot(ax3, rtma_df3['longitude'][::mask], rtma_df3['latitude'][::mask],
+            stn3 = mpplots.StationPlot(ax3, rtma_df3['longitude'][::decimate], rtma_df3['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn3.plot_parameter('C', rtma_df3['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn3.plot_parameter('C', rtma_df3['rtma_rh_change'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6756,7 +8685,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6768,10 +8697,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn4 = mpplots.StationPlot(ax4, rtma_df4['longitude'][::mask], rtma_df4['latitude'][::mask],
+            stn4 = mpplots.StationPlot(ax4, rtma_df4['longitude'][::decimate], rtma_df4['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn4.plot_parameter('C', rtma_df4['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn4.plot_parameter('C', rtma_df4['rtma_rh_change'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6812,7 +8741,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6824,10 +8753,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn5 = mpplots.StationPlot(ax5, rtma_df5['longitude'][::mask], rtma_df5['latitude'][::mask],
+            stn5 = mpplots.StationPlot(ax5, rtma_df5['longitude'][::decimate], rtma_df5['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn5.plot_parameter('C', rtma_df5['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn5.plot_parameter('C', rtma_df5['rtma_rh_change'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6868,7 +8797,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6880,10 +8809,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn6 = mpplots.StationPlot(ax6, rtma_df6['longitude'][::mask], rtma_df6['latitude'][::mask],
+            stn6 = mpplots.StationPlot(ax6, rtma_df6['longitude'][::decimate], rtma_df6['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn6.plot_parameter('C', rtma_df6['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn6.plot_parameter('C', rtma_df6['rtma_rh_change'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6923,7 +8852,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -6935,10 +8864,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn7 = mpplots.StationPlot(ax7, rtma_df7['longitude'][::mask], rtma_df7['latitude'][::mask],
+            stn7 = mpplots.StationPlot(ax7, rtma_df7['longitude'][::decimate], rtma_df7['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn7.plot_parameter('C', rtma_df7['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn7.plot_parameter('C', rtma_df7['rtma_rh_change'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -6957,7 +8886,7 @@ class data_download_not_included_in_function:
         return figs
 
 
-    def plot_temperature_6hr_timelapse(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, temperature_bottom_bound, temperature_top_bound, temperature_step, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_temperature_6hr_timelapse(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, temperature_bottom_bound, temperature_top_bound, temperature_step, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -6992,7 +8921,7 @@ class data_download_not_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -7136,7 +9065,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -7149,10 +9078,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn1 = mpplots.StationPlot(ax1, rtma_df0['longitude'][::mask], rtma_df0['latitude'][::mask],
+            stn1 = mpplots.StationPlot(ax1, rtma_df0['longitude'][::decimate], rtma_df0['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn1.plot_parameter('C', rtma_df0['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn1.plot_parameter('C', rtma_df0['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -7192,7 +9121,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -7204,10 +9133,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn2 = mpplots.StationPlot(ax2, rtma_df1['longitude'][::mask], rtma_df1['latitude'][::mask],
+            stn2 = mpplots.StationPlot(ax2, rtma_df1['longitude'][::decimate], rtma_df1['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn2.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn2.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -7247,7 +9176,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -7259,10 +9188,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn3 = mpplots.StationPlot(ax3, rtma_df2['longitude'][::mask], rtma_df2['latitude'][::mask],
+            stn3 = mpplots.StationPlot(ax3, rtma_df2['longitude'][::decimate], rtma_df2['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn3.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn3.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -7303,7 +9232,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -7315,10 +9244,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn4 = mpplots.StationPlot(ax4, rtma_df3['longitude'][::mask], rtma_df3['latitude'][::mask],
+            stn4 = mpplots.StationPlot(ax4, rtma_df3['longitude'][::decimate], rtma_df3['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn4.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn4.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -7359,7 +9288,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -7371,10 +9300,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn5 = mpplots.StationPlot(ax5, rtma_df4['longitude'][::mask], rtma_df4['latitude'][::mask],
+            stn5 = mpplots.StationPlot(ax5, rtma_df4['longitude'][::decimate], rtma_df4['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn5.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn5.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -7414,7 +9343,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -7426,10 +9355,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn6 = mpplots.StationPlot(ax6, rtma_df5['longitude'][::mask], rtma_df5['latitude'][::mask],
+            stn6 = mpplots.StationPlot(ax6, rtma_df5['longitude'][::decimate], rtma_df5['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn6.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn6.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -7469,7 +9398,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -7481,10 +9410,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn7 = mpplots.StationPlot(ax7, rtma_df6['longitude'][::mask], rtma_df6['latitude'][::mask],
+            stn7 = mpplots.StationPlot(ax7, rtma_df6['longitude'][::decimate], rtma_df6['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn7.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn7.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -7506,7 +9435,7 @@ class data_download_not_included_in_function:
 
 
 
-    def plot_temperature_trend_6hr_timelapse(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_temperature_trend_6hr_timelapse(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -7541,7 +9470,7 @@ class data_download_not_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -7567,7 +9496,7 @@ class data_download_not_included_in_function:
         
         '''
 
-        mask = mask
+        decimate = decimate
 
         local_time, utc_time = standard.plot_creation_time()
         rtma_data = rtma_data 
@@ -7699,7 +9628,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -7711,10 +9640,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn1 = mpplots.StationPlot(ax1, rtma_df1['longitude'][::mask], rtma_df1['latitude'][::mask],
+            stn1 = mpplots.StationPlot(ax1, rtma_df1['longitude'][::decimate], rtma_df1['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn1.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn1.plot_parameter('C', rtma_df1['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -7756,7 +9685,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -7768,10 +9697,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn2 = mpplots.StationPlot(ax2, rtma_df2['longitude'][::mask], rtma_df2['latitude'][::mask],
+            stn2 = mpplots.StationPlot(ax2, rtma_df2['longitude'][::decimate], rtma_df2['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn2.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn2.plot_parameter('C', rtma_df2['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -7813,7 +9742,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
             
@@ -7825,10 +9754,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn3 = mpplots.StationPlot(ax3, rtma_df3['longitude'][::mask], rtma_df3['latitude'][::mask],
+            stn3 = mpplots.StationPlot(ax3, rtma_df3['longitude'][::decimate], rtma_df3['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn3.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn3.plot_parameter('C', rtma_df3['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -7870,7 +9799,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass    
         cs4 = ax4.contourf(diff4.metpy.x, diff4.metpy.y, diff4, 
@@ -7881,10 +9810,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn4 = mpplots.StationPlot(ax4, rtma_df4['longitude'][::mask], rtma_df4['latitude'][::mask],
+            stn4 = mpplots.StationPlot(ax4, rtma_df4['longitude'][::decimate], rtma_df4['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn4.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn4.plot_parameter('C', rtma_df4['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -7925,7 +9854,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass    
         cs5 = ax5.contourf(diff5.metpy.x, diff5.metpy.y, diff5, 
@@ -7936,10 +9865,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn5 = mpplots.StationPlot(ax5, rtma_df5['longitude'][::mask], rtma_df5['latitude'][::mask],
+            stn5 = mpplots.StationPlot(ax5, rtma_df5['longitude'][::decimate], rtma_df5['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn5.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn5.plot_parameter('C', rtma_df5['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -7980,7 +9909,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass    
         cs6 = ax6.contourf(diff6.metpy.x, diff6.metpy.y, diff6, 
@@ -7991,10 +9920,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn6 = mpplots.StationPlot(ax6, rtma_df6['longitude'][::mask], rtma_df6['latitude'][::mask],
+            stn6 = mpplots.StationPlot(ax6, rtma_df6['longitude'][::decimate], rtma_df6['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn6.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn6.plot_parameter('C', rtma_df6['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -8034,7 +9963,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
             
@@ -8046,10 +9975,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn7 = mpplots.StationPlot(ax7, rtma_df7['longitude'][::mask], rtma_df7['latitude'][::mask],
+            stn7 = mpplots.StationPlot(ax7, rtma_df7['longitude'][::decimate], rtma_df7['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn7.plot_parameter('C', rtma_df7['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn7.plot_parameter('C', rtma_df7['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -8069,7 +9998,7 @@ class data_download_not_included_in_function:
 
     
 
-    def plot_red_flag_relative_humidity_with_METARs(rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_projection, red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_red_flag_relative_humidity_with_METARs(rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_decimate, metar_time_revised, plot_projection, red_flag_warning_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -8106,7 +10035,7 @@ class data_download_not_included_in_function:
 
                 11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                12) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -8142,7 +10071,7 @@ class data_download_not_included_in_function:
         sfc_data_u_kt = sfc_data_u_kt 
         sfc_data_v_kt = sfc_data_v_kt 
         sfc_data_rh = sfc_data_rh 
-        sfc_data_mask = sfc_data_mask 
+        sfc_data_decimate = sfc_data_decimate 
         metar_time_revised = metar_time_revised
         
         plot_proj = plot_projection
@@ -8190,7 +10119,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -8201,22 +10130,22 @@ class data_download_not_included_in_function:
         cbar.set_label(label="Relative Humidity (%)", size=colorbar_label_font_size, fontweight='bold')
 
         # Plots METAR
-        stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
+        stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_decimate].m, sfc_data['latitude'][sfc_data_decimate].m,
                                  transform=ccrs.PlateCarree(), fontsize=11, zorder=10, clip_on=True)
         
         
-        stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_mask], color='red',
+        stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_decimate], color='red',
                           path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_mask], color='darkorange',
+        stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_decimate], color='darkorange',
                           path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_mask], mpplots.sky_cover)
+        stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_decimate], mpplots.sky_cover)
         
-        stn.plot_parameter('C', sfc_data_rh.to('percent')[sfc_data_mask], color='lime',
+        stn.plot_parameter('C', sfc_data_rh.to('percent')[sfc_data_decimate], color='lime',
                             path_effects=[withStroke(linewidth=1, foreground='black')])
         
-        stn.plot_barb(sfc_data['u'][sfc_data_mask], sfc_data['v'][sfc_data_mask])
+        stn.plot_barb(sfc_data['u'][sfc_data_decimate], sfc_data['v'][sfc_data_decimate])
 
         plt.title("Real Time Mesoscale Analysis\nExceptionally Low Relative Humidity (RH <= "+ str(red_flag_warning_relative_humidity_threshold) +"%)\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")\nMETAR Observations\nValid: " + metar_time_revised.strftime('%m/%d/%Y %H:00 Local')+" ("+metar_time_revised_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
         
@@ -8226,7 +10155,7 @@ class data_download_not_included_in_function:
         return fig
 
 
-    def plot_low_and_high_relative_humidity(rtma_data, rtma_time, low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_low_and_high_relative_humidity(rtma_data, rtma_time, low_relative_humidity_threshold, high_relative_humidity_threshold, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -8264,7 +10193,7 @@ class data_download_not_included_in_function:
 
                 13) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
 
-                14) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+                14) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
 
                 15) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
 
@@ -8294,7 +10223,7 @@ class data_download_not_included_in_function:
         colorbar_pad = colorbar_pad
         show_sample_points = show_sample_points
         sample_point_fontsize = sample_point_fontsize
-        mask = mask
+        decimate = decimate
 
         low_relative_humidity_threshold = low_relative_humidity_threshold
         low_relative_humidity_threshold_scale = low_relative_humidity_threshold + 1
@@ -8308,8 +10237,6 @@ class data_download_not_included_in_function:
         rtma_time = rtma_time
 
         rtma_df = rtma_data.to_dataframe(name='rtma_rh')
-        mask_low = (rtma_df['rtma_rh'] <= low_relative_humidity_threshold)
-        mask_high = (rtma_df['rtma_rh'] >= high_relative_humidity_threshold)
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -8354,7 +10281,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -8363,26 +10290,16 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][mask_low][::mask], rtma_df['latitude'][mask_low][::mask],
+            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn.plot_parameter('C', rtma_df['rtma_rh'][mask_low][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn.plot_parameter('C', rtma_df['rtma_rh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
 
         cs_high = ax.contourf(rtma_data.metpy.x, rtma_data.metpy.y, rtma_data, 
                          transform=rtma_data.metpy.cartopy_crs, levels=np.arange(high_relative_humidity_threshold_scale, 101, 1), cmap=cmap_high, alpha=alpha)
-
-        if show_sample_points == True:
-
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][mask_high][::mask], rtma_df['latitude'][mask_high][::mask],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
-    
-            stn.plot_parameter('C', rtma_df['rtma_rh'][mask_high][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
-
-        else:
-            pass
 
         cbar_low = fig.colorbar(cs_low, location='left', shrink=color_table_shrink, pad=colorbar_pad)
         cbar_low.set_label(label="Low Relative Humidity (RH <=" + str(low_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
@@ -8400,7 +10317,7 @@ class data_download_not_included_in_function:
         return fig
 
 
-    def plot_24_hour_relative_humidity_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_24_hour_relative_humidity_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -8513,7 +10430,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -8522,10 +10439,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn.plot_parameter('C', rtma_df['rtma_rh_change'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn.plot_parameter('C', rtma_df['rtma_rh_change'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -8543,7 +10460,7 @@ class data_download_not_included_in_function:
         return fig
 
 
-    def plot_24_hour_temperature_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_24_hour_temperature_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -8601,7 +10518,7 @@ class data_download_not_included_in_function:
         
         '''
 
-        mask = mask
+        decimate = decimate
         local_time, utc_time = standard.plot_creation_time()
 
         rtma_data = rtma_data 
@@ -8656,7 +10573,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -8665,10 +10582,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn.plot_parameter('C', rtma_df['Temperature_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn.plot_parameter('C', rtma_df['Temperature_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -8686,7 +10603,7 @@ class data_download_not_included_in_function:
         return fig
 
 
-    def plot_24_hour_wind_speed_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, colorblind=False):
+    def plot_24_hour_wind_speed_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, colorblind=False):
 
         r'''
             This function does the following:
@@ -8805,7 +10722,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -8814,10 +10731,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn.plot_parameter('C', rtma_df['Wind_speed_Analysis_height_above_ground'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn.plot_parameter('C', rtma_df['Wind_speed_Analysis_height_above_ground'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -8834,7 +10751,7 @@ class data_download_not_included_in_function:
         return fig
 
 
-    def plot_24_hour_wind_speed_and_direction_change(rtma_data, rtma_time, u, u_time, u_24, u_24_time, v, v_time, v_24, v_24_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, barbs_or_quivers='barbs', first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, shaded_alpha=0.5, barb_quiver_alpha=1, minshaft=0.000005, headlength=10, headwidth=15, colorblind=False):
+    def plot_24_hour_wind_speed_and_direction_change(rtma_data, rtma_time, u, u_time, u_24, u_24_time, v, v_time, v_24, v_24_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, barbs_or_quivers='barbs', first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, shaded_alpha=0.5, barb_quiver_alpha=1, minshaft=0.000005, headlength=10, headwidth=15, colorblind=False):
 
         r'''
             This function does the following:
@@ -8983,7 +10900,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -8992,34 +10909,34 @@ class data_download_not_included_in_function:
 
         if barbs_or_quivers == 'barbs' or barbs_or_quivers == 'Barbs' or barbs_or_quivers == 'BARBS':
 
-            stn = mpplots.StationPlot(ax, df_u['longitude'][::mask], df_u['latitude'][::mask],
+            stn = mpplots.StationPlot(ax, df_u['longitude'][::decimate], df_u['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), zorder=4, clip_on=True)
-            stn1 = mpplots.StationPlot(ax, df_u24['longitude'][::mask], df_u24['latitude'][::mask],
+            stn1 = mpplots.StationPlot(ax, df_u24['longitude'][::decimate], df_u24['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), zorder=4, clip_on=True)
             if colorblind == False:
-                stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v['v-component_of_wind_Analysis_height_above_ground'][::mask], color='black', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+                stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::decimate], df_v['v-component_of_wind_Analysis_height_above_ground'][::decimate], color='black', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
     
-                stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v24['v-component_of_wind_Analysis_height_above_ground'][::mask], color='blue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+                stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::decimate], df_v24['v-component_of_wind_Analysis_height_above_ground'][::decimate], color='blue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
 
             if colorblind == True:
 
-                stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v['v-component_of_wind_Analysis_height_above_ground'][::mask], color='crimson', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+                stn.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::decimate], df_v['v-component_of_wind_Analysis_height_above_ground'][::decimate], color='crimson', label=rtma_time.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
     
-                stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::mask], df_v24['v-component_of_wind_Analysis_height_above_ground'][::mask], color='dodgerblue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
+                stn1.plot_barb(df_u24['u-component_of_wind_Analysis_height_above_ground'][::decimate], df_v24['v-component_of_wind_Analysis_height_above_ground'][::decimate], color='dodgerblue', label=rtma_time_24.strftime('%m/%d %H:00'), alpha=barb_quiver_alpha, zorder=3)
 
         if barbs_or_quivers == 'quivers' or barbs_or_quivers == 'Quivers' or barbs_or_quivers == 'QUIVERS':
 
             if colorblind == False:
             
-                ax.quiver(df_u['longitude'][::mask], df_u['latitude'][::mask], df_u['wind'][::mask], df_v['wind'][::mask], color='black', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+                ax.quiver(df_u['longitude'][::decimate], df_u['latitude'][::decimate], df_u['wind'][::decimate], df_v['wind'][::decimate], color='black', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
 
-                ax.quiver(df_u24['longitude'][::mask], df_u24['latitude'][::mask], df_u24['wind'][::mask], df_v24['wind'][::mask], color='blue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+                ax.quiver(df_u24['longitude'][::decimate], df_u24['latitude'][::decimate], df_u24['wind'][::decimate], df_v24['wind'][::decimate], color='blue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
 
             if colorblind == True:
 
-                ax.quiver(df_u['longitude'][::mask], df_u['latitude'][::mask], df_u['wind'][::mask], df_v['wind'][::mask], color='crimson', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+                ax.quiver(df_u['longitude'][::decimate], df_u['latitude'][::decimate], df_u['wind'][::decimate], df_v['wind'][::decimate], color='crimson', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
 
-                ax.quiver(df_u24['longitude'][::mask], df_u24['latitude'][::mask], df_u24['wind'][::mask], df_v24['wind'][::mask], color='dodgerblue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
+                ax.quiver(df_u24['longitude'][::decimate], df_u24['latitude'][::decimate], df_u24['wind'][::decimate], df_v24['wind'][::decimate], color='dodgerblue', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time_24.strftime('%m/%d %H:00'), zorder=3, transform=ccrs.PlateCarree())
 
         
         ax.legend(loc=(1, 0.875))
@@ -9036,7 +10953,7 @@ class data_download_not_included_in_function:
         return fig
 
 
-    def plot_24_hour_total_cloud_cover_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, colorblind=False):
+    def plot_24_hour_total_cloud_cover_change(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, colorblind=False):
 
         r'''
             This function does the following:
@@ -9094,7 +11011,7 @@ class data_download_not_included_in_function:
         
         '''
 
-        mask = mask
+        decimate = decimate
         local_time, utc_time = standard.plot_creation_time()
 
         rtma_data = rtma_data 
@@ -9149,7 +11066,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -9158,10 +11075,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::mask], rtma_df['latitude'][::mask],
+            stn = mpplots.StationPlot(ax, rtma_df['longitude'][::decimate], rtma_df['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::mask], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn.plot_parameter('C', rtma_df['Total_cloud_cover_Analysis_entire_atmosphere_single_layer'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -9179,7 +11096,7 @@ class data_download_not_included_in_function:
         return fig
 
 
-    def plot_current_frost_freeze_areas(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, mask, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
+    def plot_current_frost_freeze_areas(rtma_data, rtma_time, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5):
 
         r'''
             This function does the following:
@@ -9236,7 +11153,7 @@ class data_download_not_included_in_function:
         
         '''
 
-        mask = mask
+        decimate = decimate
 
         local_time, utc_time = standard.plot_creation_time()
 
@@ -9246,7 +11163,7 @@ class data_download_not_included_in_function:
         rtma_data = calc.unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(rtma_data)
 
         rtma_df = rtma_data.to_dataframe()
-        sample_point_mask = (rtma_df['Temperature_Analysis_height_above_ground'] <= 32)
+        sample_point_decimate = (rtma_df['Temperature_Analysis_height_above_ground'] <= 32)
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -9290,7 +11207,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -9299,10 +11216,10 @@ class data_download_not_included_in_function:
 
         if show_sample_points == True:
 
-            stn = mpplots.StationPlot(ax, rtma_df['longitude'][sample_point_mask][::mask], rtma_df['latitude'][sample_point_mask][::mask],
+            stn = mpplots.StationPlot(ax, rtma_df['longitude'][sample_point_decimate][::decimate], rtma_df['latitude'][sample_point_decimate][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
     
-            stn.plot_parameter('C', rtma_df['Temperature_Analysis_height_above_ground'][sample_point_mask][::mask], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn.plot_parameter('C', rtma_df['Temperature_Analysis_height_above_ground'][sample_point_decimate][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
 
         else:
             pass
@@ -9327,7 +11244,7 @@ class data_download_not_included_in_function:
                                             1) Downloads the latest available temperature, dewpoint, and wind speed data arrays. 
                                             2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                             3) Converts the wind speed data array from m/s to MPH. 
-                                            4) Masks all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Speed >= red_flag_warning_wind_speed_threshold (MPH). 
+                                            4) decimates all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Speed >= red_flag_warning_wind_speed_threshold (MPH). 
                                             5) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Dry and Windy" criteria are met. 
             
 
@@ -9400,11 +11317,11 @@ class data_download_not_included_in_function:
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
-        mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_speed_threshold)
-        lon = mask['longitude']
-        lat = mask['latitude']
+        decimate = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_speed_threshold)
+        lon = decimate['longitude']
+        lat = decimate['latitude']
 
-        plot_proj = mask.metpy.cartopy_crs
+        plot_proj = decimate.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig.set_facecolor('aliceblue')
@@ -9432,13 +11349,13 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
-        # Plot the mask
+        # Plot the decimate
         try:
-            ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap, zorder=2)
+            ax.pcolormesh(lon,lat,decimate,transform=ccrs.PlateCarree(),cmap=cmap, zorder=2)
 
         except Exception as e:
             pass
@@ -9459,7 +11376,7 @@ class data_download_not_included_in_function:
                                             1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
                                             2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                             3) Converts the wind gust data array from m/s to MPH. 
-                                            4) Masks all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Gust >= red_flag_warning_wind_gust_threshold (MPH). 
+                                            4) decimates all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Gust >= red_flag_warning_wind_gust_threshold (MPH). 
                                             5) Plots the 2.5km x 2.5km Real Time Mesoscale Analysis for areas where the aforementioned "Dry and Windy" criteria are met. 
             
 
@@ -9532,11 +11449,11 @@ class data_download_not_included_in_function:
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
-        mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_gust >= red_flag_warning_wind_gust_threshold)
-        lon = mask['longitude']
-        lat = mask['latitude']
+        decimate = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_gust >= red_flag_warning_wind_gust_threshold)
+        lon = decimate['longitude']
+        lat = decimate['latitude']
 
-        plot_proj = mask.metpy.cartopy_crs
+        plot_proj = decimate.metpy.cartopy_crs
 
         fig = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig.set_facecolor('aliceblue')
@@ -9564,13 +11481,13 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
-        # Plot the mask
+        # Plot the decimate
         try:
-            ax.pcolormesh(lon,lat,mask,transform=ccrs.PlateCarree(),cmap=cmap, zorder=2)
+            ax.pcolormesh(lon,lat,decimate,transform=ccrs.PlateCarree(),cmap=cmap, zorder=2)
 
         except Exception as e:
             pass
@@ -9591,7 +11508,7 @@ class data_download_not_included_in_function:
                                             1) Downloads the latest available temperature, dewpoint, and wind speed data arrays. 
                                             2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                             3) Converts the wind speed data array from m/s to MPH. 
-                                            4) Masks all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Speed >= red_flag_warning_wind_speed_threshold (MPH). 
+                                            4) decimates all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Speed >= red_flag_warning_wind_speed_threshold (MPH). 
                                             5) Plots a figure that consists of 3 subplots.
                                             List of subplots:
                                                         1) Plot where the dry and windy conditions are located. 
@@ -9690,11 +11607,11 @@ class data_download_not_included_in_function:
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
-        mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_speed_threshold)
-        lon = mask['longitude']
-        lat = mask['latitude']
+        decimate = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_speed_threshold)
+        lon = decimate['longitude']
+        lat = decimate['latitude']
 
-        plot_proj_1 = mask.metpy.cartopy_crs
+        plot_proj_1 = decimate.metpy.cartopy_crs
         plot_proj_2 = rtma_rh.metpy.cartopy_crs
         plot_proj_3 = rtma_wind.metpy.cartopy_crs
 
@@ -9725,7 +11642,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax0.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax0.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
 
@@ -9733,9 +11650,9 @@ class data_download_not_included_in_function:
         ax0.set_aspect(first_subplot_aspect_ratio)
         ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
-        # Plot the mask
+        # Plot the decimate
         try:
-            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw, zorder=2, alpha=alpha)
+            ax0.pcolormesh(lon,lat,decimate, transform=ccrs.PlateCarree(),cmap=cmap_rfw, zorder=2, alpha=alpha)
 
         except Exception as e:
             pass
@@ -9766,7 +11683,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
         
@@ -9805,7 +11722,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
         
@@ -9834,7 +11751,7 @@ class data_download_not_included_in_function:
                                             1) Downloads the latest available temperature, dewpoint, and wind gust data arrays. 
                                             2) Uses MetPy to calculate a relative humidity data array from the temperature and dewpoint data arrays. 
                                             3) Converts the wind gust data array from m/s to MPH. 
-                                            4) Masks all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Gust >= red_flag_warning_wind_gust_threshold (MPH). 
+                                            4) decimates all areas where the following criteria is not met: RH <= red_flag_warning_relative_humidity_threshold (%) and Wind Gust >= red_flag_warning_wind_gust_threshold (MPH). 
                                             5) Plots a figure that consists of 3 subplots.
                                             List of subplots:
                                                         1) Plot where the dry and windy conditions are located. 
@@ -9933,11 +11850,11 @@ class data_download_not_included_in_function:
         PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
         GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
-        mask = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_gust_threshold)
-        lon = mask['longitude']
-        lat = mask['latitude']
+        decimate = (rtma_rh <= red_flag_warning_relative_humidity_threshold) & (rtma_wind >= red_flag_warning_wind_gust_threshold)
+        lon = decimate['longitude']
+        lat = decimate['latitude']
 
-        plot_proj_1 = mask.metpy.cartopy_crs
+        plot_proj_1 = decimate.metpy.cartopy_crs
         plot_proj_2 = rtma_rh.metpy.cartopy_crs
         plot_proj_3 = rtma_wind.metpy.cartopy_crs
 
@@ -9968,16 +11885,16 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax0.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax0.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
         
         ax0.set_aspect(first_subplot_aspect_ratio)
         ax0.set_title("Exceptionally Dry & Windy Areas", fontsize=subplot_title_font_size, fontweight='bold')
 
-        # Plot the mask
+        # Plot the decimate
         try:
-            ax0.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap_rfw, zorder=2, alpha=alpha)
+            ax0.pcolormesh(lon,lat,decimate, transform=ccrs.PlateCarree(),cmap=cmap_rfw, zorder=2, alpha=alpha)
 
         except Exception as e:
             pass
@@ -10007,7 +11924,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
         
@@ -10045,7 +11962,7 @@ class data_download_not_included_in_function:
         else:
             pass
         if show_state_borders == True:
-            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, edgecolor='black', zorder=6)
+            ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
         
