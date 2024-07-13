@@ -5490,7 +5490,7 @@ def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_re
         cbar_high.set_label(label="High Relative Humidity (RH >= " + str(high_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
 
 
-        plt.title("RTMA\nLow RH(<=" + str(low_relative_humidity_threshold) +"%) & High RH (RH >= " + str(high_relative_humidity_threshold) +"%)\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA\nLow RH (<=" + str(low_relative_humidity_threshold) +"%) & High RH (RH >= " + str(high_relative_humidity_threshold) +"%)\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
@@ -5541,7 +5541,7 @@ def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_re
         cbar_high.set_label(label="High Relative Humidity (RH >= " + str(high_relative_humidity_threshold) +"%)", size=colorbar_label_font_size, fontweight='bold')
 
 
-        plt.title("RTMA\nLow RH(<=" + str(low_relative_humidity_threshold) +"%) & High RH (RH >= " + str(high_relative_humidity_threshold) +"%)\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
+        plt.title("RTMA\nLow RH (<=" + str(low_relative_humidity_threshold) +"%) & High RH (RH >= " + str(high_relative_humidity_threshold) +"%)\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=title_font_size, fontweight='bold')
         
         ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC')+")", fontsize=signature_font_size, fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)
