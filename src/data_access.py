@@ -637,6 +637,49 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
                 print("Unable to connect to either the main or backup servers. Aborting!")
 
+        def get_rtma_24_hour_comparison_data_with_u_and_v_components(current_time):
+
+
+            current_time = current_time
+
+            rtma_data, rtma_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(current_time, 'Wind_speed_Analysis_height_above_ground')
+
+            t.sleep(15)
+    
+            rtma_time_24 = rtma_time - timedelta(hours=24)
+    
+            u, u_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(current_time, 'u-component_of_wind_Analysis_height_above_ground')
+
+            t.sleep(15)
+    
+            u_24, u_24_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(rtma_time_24, 'u-component_of_wind_Analysis_height_above_ground')
+
+            t.sleep(15)
+    
+            v, v_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(current_time, 'v-component_of_wind_Analysis_height_above_ground')
+
+            t.sleep(15)
+    
+            v_24, v_24_time = UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(rtma_time_24, 'v-component_of_wind_Analysis_height_above_ground')
+
+            data = []
+
+            data.append(rtma_data)
+            data.append(rtma_time)
+            data.append(rtma_time_24)
+            data.append(u)
+            data.append(u_time)
+            data.append(u_24)
+            data.append(u_24_time)
+            data.append(v)
+            data.append(v_time)
+            data.append(v_24)
+            data.append(v_24_time)
+
+            return data
+
+        
+
         def get_rtma_data_past_6hrs(parameter):
 
 
@@ -4139,7 +4182,18 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
 
             sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised = UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.get_METAR_Data(new_metar_time, plot_projection, mask)
 
-            return rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_projection
+            data = []
+            data.append(rtma_data)
+            data.append(rtma_time)
+            data.append(sfc_data)
+            data.append(sfc_data_u_kt)
+            data.append(sfc_data_v_kt)
+            data.append(sfc_data_rh)
+            data.append(sfc_data_mask)
+            data.append(metar_time_revised)
+            data.append(plot_projection)
+
+            return data
 
 
         def RTMA_Relative_Humidity_Synced_With_METAR_GUAM(current_time, mask):
