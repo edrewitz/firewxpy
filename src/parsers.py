@@ -3202,7 +3202,7 @@ class save:
 
 
 
-    def make_NDFD_Outlook_GIF(GIF_Image_file_path, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, file_path_8, fps):
+    def make_NDFD_Outlook_GIF(GIF_Image_file_path, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, file_path_8, fps=1):
 
         r'''
         This function makes an animated GIF images of the NWS/NDFD plots and/or SPC Outlooks and saves the GIF to a specified location. 
@@ -3540,7 +3540,7 @@ class save:
                                     pass        
 
 
-    def make_RTMA_6hr_timelapse_GIF(GIF_Image_file_path, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, fps):
+    def make_RTMA_6hr_timelapse_GIF(GIF_Image_file_path, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, fps=1):
 
         r'''
         This function makes an animated GIF images of the SPC Outlooks and saves the GIF to a specified location. 
