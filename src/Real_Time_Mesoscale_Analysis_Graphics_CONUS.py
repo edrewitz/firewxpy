@@ -104,11 +104,18 @@ def plot_relative_humidity(western_bound, eastern_bound, southern_bound, norther
         decimate = decimate
         
     local_time, utc_time = standard.plot_creation_time()
-
+    
     data = data
+    try:
+        if data == None:
+            test = True
+    except Exception as a:
+        test = False
+
+    data.append(data_var)
     time = time
 
-    if data.any() == None and time == None:
+    if test == True and time == None:
         
         try:
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time)
@@ -130,9 +137,9 @@ def plot_relative_humidity(western_bound, eastern_bound, southern_bound, norther
             NOMADS = True
             print("Unpacked the data successfully!")
 
-    elif data.any() != None and time != None:
+    elif test == False and time != None:
         try:
-            rtma_data = data
+            rtma_data = data[0]
             rtma_time = time
             NOMADS = False
             print("Unpacked the data successfully!")
@@ -346,9 +353,14 @@ def plot_total_cloud_cover(western_bound, eastern_bound, southern_bound, norther
     local_time, utc_time = standard.plot_creation_time()
     contour_step = contour_step
     data = data
+    try:
+        if data == None:
+            test = True
+    except Exception as a:
+        test = False
     time = time
 
-    if data.any() == None and time == None:
+    if test == True and time == None:
         try:
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'Total_cloud_cover_Analysis_entire_atmosphere_single_layer')
             NOMADS = False
@@ -362,7 +374,7 @@ def plot_total_cloud_cover(western_bound, eastern_bound, southern_bound, norther
             NOMADS = True
             print("Unpacked the data successfully!")
 
-    elif data.any() != None and time != None:
+    elif test == False and time != None:
         try:
             rtma_data = data
             rtma_time = time
@@ -5348,6 +5360,11 @@ def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_re
     show_sample_points = show_sample_points
     sample_point_fontsize = sample_point_fontsize
     data = data
+    try:
+        if data == None:
+            test = True
+    except Exception as a:
+        test = False
     time = time
     if decimate == 'default':
         decimate = calc.scaling.get_thredds_decimation(western_bound, eastern_bound, southern_bound, northern_bound, None)
@@ -5362,7 +5379,7 @@ def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_re
 
     local_time, utc_time = standard.plot_creation_time()
 
-    if data.any() == None and time == None:
+    if test == True and time == None:
         try:
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_relative_humidity_data(utc_time)
             NOMADS = False
@@ -5384,7 +5401,7 @@ def plot_low_and_high_relative_humidity(low_relative_humidity_threshold, high_re
             NOMADS = True
             print("Unpacked the data successfully!")
 
-    elif data.any() != None and time != None:
+    elif test == False and time != None:
         try:
             rtma_data = data
             rtma_time = time
@@ -5611,7 +5628,14 @@ def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern
     eastern_bound = eastern_bound
     southern_bound = southern_bound
     northern_bound = northern_bound
+    
     data = data
+    try:
+        if data == None:
+            test = True
+    except Exception as a:
+        test = False
+            
     time = time
     
     local_time, utc_time = standard.plot_creation_time()
@@ -5623,9 +5647,11 @@ def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern
     else:
         decimate = decimate
 
-    if data.any() == None and time == None:
+    if test == True and time == None:
         try:
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_relative_humidity_24_hour_difference_data(utc_time)
+            
+            rtma_time_24 = rtma_time - timedelta(hours=24)
 
             rtma_df = rtma_data.to_dataframe(name='rtma_rh_change')
 
@@ -5637,6 +5663,8 @@ def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern
         except Exception as e:
             print("UCAR THREDDS Server is having issues. Now trying data access from NCEP NOMADS Server.")
             ds, ds_24, rtma_time, rtma_time_24 = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+            
+            rtma_time_24 = rtma_time - timedelta(hours=24)
 
             temp = ds['tmp2m']
             dwpt = ds['dpt2m']
@@ -5661,10 +5689,12 @@ def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern
             NOMADS = True
             print("Unpacked the data successfully!")
 
-    elif data.any() != None and time != None:
+    elif test == False and time != None:
         try:
-            rtma_data = data
+            rtma_data = data[0]
             rtma_time = time
+            
+            rtma_time_24 = rtma_time - timedelta(hours=24)
             
             rtma_df = rtma_data.to_dataframe(name='rtma_rh_change')
 
@@ -5682,6 +5712,8 @@ def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern
                 rtma_df = rtma_data.to_dataframe(name='rtma_rh_change')
     
                 plot_proj = rtma_data.metpy.cartopy_crs
+                
+                rtma_time_24 = rtma_time - timedelta(hours=24)
     
                 NOMADS = False
                 print("Unpacked the data successfully!")
@@ -5711,12 +5743,11 @@ def plot_24_hour_relative_humidity_change(western_bound, eastern_bound, southern
                 diff = rtma_data[0, :, :] - rtma_data_24[0, :, :]
     
                 NOMADS = True
+                rtma_time_24 = rtma_time - timedelta(hours=24)
                 print("Unpacked the data successfully!")
 
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")        
-    
-    rtma_time_24 = rtma_time - timedelta(hours=24)
 
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
@@ -5897,11 +5928,16 @@ def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound
         decimate = decimate
 
     data = data
+    try:
+        if data == None:
+            test = True
+    except Exception as a:
+        test = False
     time = time
         
     local_time, utc_time = standard.plot_creation_time()
 
-    if data.any() == None and time == None:
+    if test == True and time == None:
         try:
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Temperature_Analysis_height_above_ground')
 
@@ -5928,7 +5964,7 @@ def plot_24_hour_temperature_change(western_bound, eastern_bound, southern_bound
             NOMADS = True
             print("Unpacked the data successfully!")
 
-    elif data.any() != None and time != None:
+    elif test == False and time != None:
         try:
             rtma_data = data
             rtma_time = time
@@ -6160,9 +6196,14 @@ def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound,
 
     colorblind = colorblind
     data = data
+    try:
+        if data == None:
+            test = True
+    except Exception as a:
+        test = False
     time = time
 
-    if data.any() == None and time == None:
+    if test == True and time == None:
         try:
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Wind_speed_Analysis_height_above_ground')
 
@@ -6189,7 +6230,7 @@ def plot_24_hour_wind_speed_change(western_bound, eastern_bound, southern_bound,
             NOMADS = True
             print("Unpacked the data successfully!")
 
-    elif data.any() != None and time != None:
+    elif test == False and time != None:
         try:
             rtma_data = data
             rtma_time = time
@@ -6808,9 +6849,14 @@ def plot_24_hour_total_cloud_cover_change(western_bound, eastern_bound, southern
     local_time, utc_time = standard.plot_creation_time()
 
     data = data
+    try:
+        if data == None:
+            test = True
+    except Exception as a:
+        test = False
     time = time
 
-    if data.any() == None and time == None:
+    if test == True and time == None:
         
         try:
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_rtma_data_24_hour_difference(utc_time, 'Total_cloud_cover_Analysis_entire_atmosphere_single_layer')
@@ -6837,7 +6883,7 @@ def plot_24_hour_total_cloud_cover_change(western_bound, eastern_bound, southern
             NOMADS = True
             print("Unpacked the data successfully!")
 
-    elif data.any() != None and time != None:
+    elif test == False and time != None:
         try:
             rtma_data = data
             rtma_time = time
@@ -7060,9 +7106,14 @@ def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound
 
     local_time, utc_time = standard.plot_creation_time()
     data = data
+    try:
+        if data == None:
+            test = True
+    except Exception as a:
+        test = False
     time = time
 
-    if data.any() == None and time == None:
+    if test == True and time == None:
 
         try:
             rtma_data, rtma_time = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.CONUS.get_current_rtma_data(utc_time, 'Temperature_Analysis_height_above_ground')
@@ -7089,7 +7140,7 @@ def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound
             NOMADS = True
             print("Unpacked the data successfully!")
 
-    elif data.any() != None and time != None:
+    elif test == False and time != None:
         try:
             rtma_data = data
             rtma_time = time
