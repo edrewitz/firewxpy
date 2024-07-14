@@ -6996,7 +6996,7 @@ def plot_24_hour_total_cloud_cover_change(western_bound, eastern_bound, southern
     return fig
 
 
-def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, decimate='default', data, time):
+def plot_current_frost_freeze_areas(western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, first_standard_parallel=30, second_standard_parallel=60, title_font_size=12, signature_font_size=10, color_table_shrink=0.7, colorbar_label_font_size=8, colorbar_pad=0.02, show_rivers=True, show_gacc_borders=False, show_psa_borders=False, show_county_borders=True, show_state_borders=True, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, gacc_border_linestyle='-', psa_border_linestyle='-', state_border_linestyle='-', county_border_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, decimate='default', data=None, time=None):
 
     r'''
         This function does the following:
