@@ -2757,7 +2757,7 @@ def plot_relative_humidity_trend_6hr_timelapse(western_bound, eastern_bound, sou
             stn4 = mpplots.StationPlot(ax4, rtma_df4['longitude'][::decimate], rtma_df4['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
     
-            stn4.plot_parameter('C', rtma_df4['rtma_rh_change'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn4.plot_parameter('C', rtma_df4['rtma_rh_change'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
 
         else:
             pass
