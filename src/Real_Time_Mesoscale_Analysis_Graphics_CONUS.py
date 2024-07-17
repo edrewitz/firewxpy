@@ -112,7 +112,6 @@ def plot_relative_humidity(western_bound, eastern_bound, southern_bound, norther
     except Exception as a:
         test = False
 
-    data.append(data_var)
     time = time
 
     if test == True and time == None:
