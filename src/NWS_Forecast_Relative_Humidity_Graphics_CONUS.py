@@ -37,7 +37,7 @@ from matplotlib.patheffects import withStroke
 
 
 
-def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(directory_name, poor_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
 
     r'''
     This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -113,6 +113,8 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(directory_
     count_extended = count_extended
     directory_name = directory_name
 
+    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+
     cmap = colormaps.low_relative_humidity_colormap()
 
     PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
@@ -124,13 +126,13 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(directory_
     mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
     datacrs = ccrs.PlateCarree()
 
-    if file_path == None and directory_name != None:
+    if file_path == None:
 
         grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
     
         grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended)
 
-    if file_path != None and directory_name == None:
+    if file_path != None:
 
         grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended)
 
@@ -552,7 +554,7 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(directory_
 
 
 
-def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(directory_name, excellent_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excellent_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
 
     r'''
     This function plots the latest available NOAA/NWS Excellent Overnight Recovery RH Forecast. 
@@ -613,6 +615,8 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(direc
     count_extended = count_extended
 
     cmap = colormaps.excellent_recovery_colormap()
+
+    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
     
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
@@ -1040,7 +1044,7 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(direc
     return figs
 
 
-def plot_NWS_7_Day_maximum_relative_humidity_forecast(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
 
     r'''
     This function plots the latest available NOAA/NWS Maximum RH Forecast. 
@@ -1100,6 +1104,8 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(directory_name, contour_st
     count_extended = count_extended
 
     cmap = colormaps.relative_humidity_colormap()
+
+    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
     
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
@@ -1528,7 +1534,7 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(directory_name, contour_st
 
 
 
-def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
 
     r'''
     This function plots the latest available NOAA/NWS Maximum RH Trend Forecast. 
@@ -1590,6 +1596,8 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(directory_name,
     
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
+
+    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
 
     PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
     GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
@@ -1980,7 +1988,7 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(directory_name,
 
     return figs
 
-def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(directory_name, low_minimum_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
 
     r'''
     This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -2056,6 +2064,8 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(directory_name, low_mi
     count_extended = count_extended
 
     cmap = colormaps.low_relative_humidity_colormap()
+
+    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
 
     PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
     GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
@@ -2890,7 +2900,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(directory_name, low_mi
     return figs
 
 
-def plot_NWS_7_Day_minimum_relative_humidity_forecast(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
 
     r'''
     This function plots the latest available NOAA/NWS Minimum RH Forecast. 
@@ -2949,6 +2959,8 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(directory_name, contour_st
     
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
+
+    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
 
     PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
     GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
@@ -3779,7 +3791,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(directory_name, contour_st
 
 
 
-def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(directory_name, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
 
     r'''
     This function plots the latest available NOAA/NWS Minimum RH Trend Forecast. 
@@ -3838,6 +3850,8 @@ def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(directory_name, c
     
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
+
+    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
 
     PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
     GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
