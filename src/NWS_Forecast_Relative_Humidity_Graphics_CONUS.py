@@ -26,6 +26,8 @@ import data_access as da
 import geometry
 import calc
 import colormaps
+import os
+import xarray as xr
 
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
@@ -37,7 +39,7 @@ from matplotlib.patheffects import withStroke
 
 
 
-def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overnight_recovery_rh_threshold, contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, central_longitude=None, central_latitude=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
 
     r'''
     This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -106,58 +108,84 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overn
     contour_step = contour_step
     poor_overnight_recovery_rh_threshold = poor_overnight_recovery_rh_threshold
     poor_overnight_recovery_rh_thresh = poor_overnight_recovery_rh_threshold + contour_step
-    decimate = decimate
     file_path = file_path
     ds = data_array
     count_short = count_short
     count_extended = count_extended
     directory_name = directory_name
+    state = state
 
-    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+
+    contour_step = contour_step
+    ds = data_array
 
     cmap = colormaps.low_relative_humidity_colormap()
 
-    PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-    GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+    mapcrs = ccrs.PlateCarree()
+    datacrs = ccrs.PlateCarree()
+
+    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and central_longitude != None and central_latitude != None and fig_x_length !=None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+
+        fig_x_length = fig_x_length
+        fig_y_length = fig_y_length
+        signature_x_position = signature_x_position
+        signature_y_position = signature_y_position
+
+    else:
+        pass
+
+    if state == None and gacc_region == None:
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
+        else:
+            decimate = decimate
     
+        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+
+    if state != None and gacc_region == None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'poor recovery')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_state(state)
+        else:
+            decimate = decimate
+
+    if state == None and gacc_region != None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'poor recovery')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+        else:
+            decimate = decimate
+
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
-        
-    mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
-    datacrs = ccrs.PlateCarree()
+
+    PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
+    GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
 
     if file_path == None:
 
-        grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
+        try:
+
+            grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
+
+            print("Downloaded data successfully!")
+        except Exception as a:
+
+            print("Trying again to download data...")
+
+            count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.maxrh.bin')
     
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended)
+            ds = parsers.NDFD.grib_to_xarray('ds.maxrh.bin')
+                
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)
 
     if file_path != None:
 
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended)
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
 
-    vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'maxrh', count, True, count_short, count_extended, discard)
-    
-    df1 = vals[0]
-    mask = (df1['maxrh'] <= poor_overnight_recovery_rh_threshold)
-
-    df2 = vals[1]
-    mask = (df2['maxrh'] <= poor_overnight_recovery_rh_threshold)    
-
-    df3 = vals[2]
-    mask = (df3['maxrh'] <= poor_overnight_recovery_rh_threshold)
-    
-    df4 = vals[3]
-    mask = (df4['maxrh'] <= poor_overnight_recovery_rh_threshold)
-
-    
-    df5 = vals[4]
-    mask = (df5['maxrh'] <= poor_overnight_recovery_rh_threshold)
-    
-    df6 = vals[5]
-    mask = (df6['maxrh'] <= poor_overnight_recovery_rh_threshold)
-
-    
     try:
         if grb_7_vals.all() != None:
             test_7 = True
@@ -177,11 +205,6 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overn
     grb_5_start = grb_5_start.astimezone(to_zone)
     grb_6_start = grb_6_start.replace(tzinfo=from_zone)
     grb_6_start = grb_6_start.astimezone(to_zone)
-    if test_7 == True:
-        grb_7_start = grb_7_start.replace(tzinfo=from_zone)
-        grb_7_start = grb_7_start.astimezone(to_zone)
-    else:
-        pass
 
     grb_1_end = grb_1_end.replace(tzinfo=from_zone)
     grb_1_end = grb_1_end.astimezone(to_zone)
@@ -196,14 +219,44 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overn
     grb_6_end = grb_6_end.replace(tzinfo=from_zone)
     grb_6_end = grb_6_end.astimezone(to_zone)
     if test_7 == True:
+        grb_7_start = grb_7_start.replace(tzinfo=from_zone)
+        grb_7_start = grb_7_start.astimezone(to_zone)
+
         grb_7_end = grb_7_end.replace(tzinfo=from_zone)
         grb_7_end = grb_7_end.astimezone(to_zone)
-
-        df7 = vals[6]
-        mask = (df7['maxrh'] <= poor_overnight_recovery_rh_threshold)
-
     else:
-        pass
+        pass    
+
+    try:
+        vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'maxrh', count, True, count_short, count_extended, discard)
+        
+        df1 = vals[0]
+        mask = (df1['maxrh'] <= poor_overnight_recovery_rh_threshold)
+    
+        df2 = vals[1]
+        mask = (df2['maxrh'] <= poor_overnight_recovery_rh_threshold)    
+    
+        df3 = vals[2]
+        mask = (df3['maxrh'] <= poor_overnight_recovery_rh_threshold)
+        
+        df4 = vals[3]
+        mask = (df4['maxrh'] <= poor_overnight_recovery_rh_threshold)
+        
+        df5 = vals[4]
+        mask = (df5['maxrh'] <= poor_overnight_recovery_rh_threshold)
+        
+        df6 = vals[5]
+        mask = (df6['maxrh'] <= poor_overnight_recovery_rh_threshold)
+    
+        if test_7 == True:
+            df7 = vals[6]
+            mask = (df7['maxrh'] <= poor_overnight_recovery_rh_threshold)
+        else:
+            pass
+
+        no_vals = False
+    except Exception as e:
+        no_vals = True
         
     files = count
 
@@ -243,7 +296,7 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overn
         
     cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -289,7 +342,7 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overn
         
     cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -335,7 +388,7 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overn
         
     cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -381,7 +434,7 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overn
         
     cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -427,7 +480,7 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overn
         
     cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -473,7 +526,7 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overn
         
     cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -521,7 +574,7 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overn
             
         cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -554,7 +607,7 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overn
 
 
 
-def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excellent_overnight_recovery_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excellent_overnight_recovery_rh_threshold, contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, central_longitude=None, central_latitude=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
 
     r'''
     This function plots the latest available NOAA/NWS Excellent Overnight Recovery RH Forecast. 
@@ -613,44 +666,71 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excel
     ds = data_array
     count_short = count_short
     count_extended = count_extended
-
+    mapcrs = ccrs.PlateCarree()
+    datacrs = ccrs.PlateCarree()
     cmap = colormaps.excellent_recovery_colormap()
 
-    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and central_longitude != None and central_latitude != None and fig_x_length !=None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+
+        fig_x_length = fig_x_length
+        fig_y_length = fig_y_length
+        signature_x_position = signature_x_position
+        signature_y_position = signature_y_position
+
+    else:
+        pass
+
+    if state == None and gacc_region == None:
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
+        else:
+            decimate = decimate
     
+        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+
+    if state != None and gacc_region == None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'excellent recovery')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_state(state)
+        else:
+            decimate = decimate
+
+    if state == None and gacc_region != None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'excellent recovery')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+        else:
+            decimate = decimate
+
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
 
     PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
     GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
-        
-    mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
-    datacrs = ccrs.PlateCarree()
 
-    if file_path == None and directory_name != None:
-        
-        grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
-        
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended)
+    if file_path == None:
 
-    if file_path != None and directory_name == None:
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended)        
+        try:
 
-    vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'maxrh', count, True, count_short, count_extended, discard)
+            grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
+
+            print("Downloaded data successfully!")
+        except Exception as a:
+
+            print("Trying again to download data...")
+
+            count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.maxrh.bin')
     
-    df1 = vals[0]
+            ds = parsers.NDFD.grib_to_xarray('ds.maxrh.bin')
+                
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)
 
-    df2 = vals[1] 
+    if file_path != None:
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)     
 
-    df3 = vals[2]
-    
-    df4 = vals[3]
-    
-    df5 = vals[4]
-    
-    df6 = vals[5]
-
-    
     try:
         if grb_7_vals.all() != None:
             test_7 = True
@@ -670,11 +750,6 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excel
     grb_5_start = grb_5_start.astimezone(to_zone)
     grb_6_start = grb_6_start.replace(tzinfo=from_zone)
     grb_6_start = grb_6_start.astimezone(to_zone)
-    if test_7 == True:
-        grb_7_start = grb_7_start.replace(tzinfo=from_zone)
-        grb_7_start = grb_7_start.astimezone(to_zone)
-    else:
-        pass
 
     grb_1_end = grb_1_end.replace(tzinfo=from_zone)
     grb_1_end = grb_1_end.astimezone(to_zone)
@@ -689,13 +764,40 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excel
     grb_6_end = grb_6_end.replace(tzinfo=from_zone)
     grb_6_end = grb_6_end.astimezone(to_zone)
     if test_7 == True:
+        grb_7_start = grb_7_start.replace(tzinfo=from_zone)
+        grb_7_start = grb_7_start.astimezone(to_zone)
+
         grb_7_end = grb_7_end.replace(tzinfo=from_zone)
         grb_7_end = grb_7_end.astimezone(to_zone)
 
-        df7 = vals[6]
-
     else:
         pass
+
+    
+    try:
+        vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'maxrh', count, True, count_short, count_extended, discard)
+        
+        df1 = vals[0]
+    
+        df2 = vals[1] 
+    
+        df3 = vals[2]
+        
+        df4 = vals[3]
+        
+        df5 = vals[4]
+        
+        df6 = vals[5]
+    
+    
+        if test_7 == True:
+            df7 = vals[6]
+        else:
+            pass
+
+        no_vals = False
+    except Exception as g:
+        no_vals = True
 
     files = count
 
@@ -734,7 +836,7 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excel
         
     cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -780,7 +882,7 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excel
         
     cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -826,7 +928,7 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excel
         
     cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -872,7 +974,7 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excel
         
     cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -918,7 +1020,7 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excel
         
     cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -964,7 +1066,7 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excel
         
     cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1012,7 +1114,7 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excel
             
         cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
     
             stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1044,7 +1146,7 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excel
     return figs
 
 
-def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, central_longitude=None, central_latitude=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
 
     r'''
     This function plots the latest available NOAA/NWS Maximum RH Forecast. 
@@ -1102,42 +1204,68 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_boun
     ds = data_array
     count_short = count_short
     count_extended = count_extended
-
     cmap = colormaps.relative_humidity_colormap()
 
-    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and central_longitude != None and central_latitude != None and fig_x_length !=None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+
+        fig_x_length = fig_x_length
+        fig_y_length = fig_y_length
+        signature_x_position = signature_x_position
+        signature_y_position = signature_y_position
+
+    else:
+        pass
+
+    if state == None and gacc_region == None:
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
+        else:
+            decimate = decimate
     
+        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+
+    if state != None and gacc_region == None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'maxrh')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_state(state)
+        else:
+            decimate = decimate
+
+    if state == None and gacc_region != None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+        else:
+            decimate = decimate
+
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
 
     PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
     GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+
+    if file_path == None:
+
+        try:
+
+            grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
+
+            print("Downloaded data successfully!")
+        except Exception as a:
+
+            print("Trying again to download data...")
+
+            count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.maxrh.bin')
+    
+            ds = parsers.NDFD.grib_to_xarray('ds.maxrh.bin')
+                
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)
         
-    mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
-    datacrs = ccrs.PlateCarree()
-
-    if file_path == None and directory_name != None:
-        
-        grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
-        
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended)
-
-    if file_path != None and directory_name == None:
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended)        
-
-    vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'maxrh', count, True, count_short, count_extended, discard)
-    
-    df1 = vals[0]
-
-    df2 = vals[1] 
-
-    df3 = vals[2]
-    
-    df4 = vals[3]
-    
-    df5 = vals[4]
-    
-    df6 = vals[5]
+    if file_path != None:
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)    
 
     
     try:
@@ -1159,11 +1287,6 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_boun
     grb_5_start = grb_5_start.astimezone(to_zone)
     grb_6_start = grb_6_start.replace(tzinfo=from_zone)
     grb_6_start = grb_6_start.astimezone(to_zone)
-    if test_7 == True:
-        grb_7_start = grb_7_start.replace(tzinfo=from_zone)
-        grb_7_start = grb_7_start.astimezone(to_zone)
-    else:
-        pass
 
     grb_1_end = grb_1_end.replace(tzinfo=from_zone)
     grb_1_end = grb_1_end.astimezone(to_zone)
@@ -1177,14 +1300,40 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_boun
     grb_5_end = grb_5_end.astimezone(to_zone)
     grb_6_end = grb_6_end.replace(tzinfo=from_zone)
     grb_6_end = grb_6_end.astimezone(to_zone)
+
     if test_7 == True:
+        grb_7_start = grb_7_start.replace(tzinfo=from_zone)
+        grb_7_start = grb_7_start.astimezone(to_zone)
+
         grb_7_end = grb_7_end.replace(tzinfo=from_zone)
         grb_7_end = grb_7_end.astimezone(to_zone)
-
-        df7 = vals[6]
-
+    
     else:
-        pass
+        pass    
+
+    try:
+        vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'maxrh', count, True, count_short, count_extended, discard)
+        
+        df1 = vals[0]
+    
+        df2 = vals[1] 
+    
+        df3 = vals[2]
+        
+        df4 = vals[3]
+        
+        df5 = vals[4]
+        
+        df6 = vals[5]
+    
+        if test_7 == True:
+            df7 = vals[6]
+        else:
+            pass
+
+        no_vals = False
+    except Exception as g:
+        no_vals = True
         
     files = count
 
@@ -1223,7 +1372,7 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_boun
         
     cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1269,7 +1418,7 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_boun
         
     cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1315,7 +1464,7 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_boun
         
     cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1361,7 +1510,7 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_boun
         
     cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1407,7 +1556,7 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_boun
         
     cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1453,7 +1602,7 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_boun
         
     cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1501,7 +1650,7 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_boun
             
         cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
     
             stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1534,7 +1683,7 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_boun
 
 
 
-def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, central_longitude=None, central_latitude=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
 
     r'''
     This function plots the latest available NOAA/NWS Maximum RH Trend Forecast. 
@@ -1596,51 +1745,75 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, w
     
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
+    
+    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and central_longitude != None and central_latitude != None and fig_x_length !=None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
 
-    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+        fig_x_length = fig_x_length
+        fig_y_length = fig_y_length
+        signature_x_position = signature_x_position
+        signature_y_position = signature_y_position
+
+    else:
+        pass
+
+    if state == None and gacc_region == None:
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
+        else:
+            decimate = decimate
+    
+        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+
+    if state != None and gacc_region == None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'maxrh trend')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_state(state)
+        else:
+            decimate = decimate
+
+    if state == None and gacc_region != None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+        else:
+            decimate = decimate
+
+    from_zone = tz.tzutc()
+    to_zone = tz.tzlocal()
 
     PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
     GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
-        
-    mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
-    datacrs = ccrs.PlateCarree()
 
-    if file_path == None and directory_name != None:
-        
-        grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
-        
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended)
+    if file_path == None:
 
-    if file_path != None and directory_name == None:
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended)        
+        try:
 
-    vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'maxrh', count, True, count_short, count_extended, discard)
+            grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
+
+            print("Downloaded data successfully!")
+        except Exception as a:
+
+            print("Trying again to download data...")
+
+            count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.maxrh.bin')
+    
+            ds = parsers.NDFD.grib_to_xarray('ds.maxrh.bin')
+                
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)
+
+    if file_path != None:
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)        
+
 
     diff1 = grb_2_vals - grb_1_vals
     diff2 = grb_3_vals - grb_2_vals
     diff3 = grb_4_vals - grb_3_vals
     diff4 = grb_5_vals - grb_4_vals
     diff5 = grb_6_vals - grb_5_vals
-    
-    df1 = vals[0]
 
-    df2 = vals[1] 
-
-    df3 = vals[2]
-    
-    df4 = vals[3]
-    
-    df5 = vals[4]
-    
-    df6 = vals[5]
-
-    df2['diff'] = df2['maxrh'] - df1['maxrh']
-    df3['diff'] = df3['maxrh'] - df2['maxrh']
-    df4['diff'] = df4['maxrh'] - df3['maxrh']
-    df5['diff'] = df5['maxrh'] - df4['maxrh']
-    df6['diff'] = df6['maxrh'] - df5['maxrh']
-
-    
     try:
         if grb_7_vals.all() != None:
             test_7 = True
@@ -1660,11 +1833,6 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, w
     grb_5_start = grb_5_start.astimezone(to_zone)
     grb_6_start = grb_6_start.replace(tzinfo=from_zone)
     grb_6_start = grb_6_start.astimezone(to_zone)
-    if test_7 == True:
-        grb_7_start = grb_7_start.replace(tzinfo=from_zone)
-        grb_7_start = grb_7_start.astimezone(to_zone)
-    else:
-        pass
 
     grb_1_end = grb_1_end.replace(tzinfo=from_zone)
     grb_1_end = grb_1_end.astimezone(to_zone)
@@ -1679,16 +1847,47 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, w
     grb_6_end = grb_6_end.replace(tzinfo=from_zone)
     grb_6_end = grb_6_end.astimezone(to_zone)
     if test_7 == True:
+        grb_7_start = grb_7_start.replace(tzinfo=from_zone)
+        grb_7_start = grb_7_start.astimezone(to_zone)
+
         grb_7_end = grb_7_end.replace(tzinfo=from_zone)
         grb_7_end = grb_7_end.astimezone(to_zone)
+
         diff6 = grb_7_vals - grb_6_vals
-
-        df7 = vals[6]
-        dff6 = df7['maxrh'] - df6['maxrh']
-        df7['diff'] = df7['maxrh'] - df6['maxrh']
-
     else:
         pass
+
+    try:    
+        vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'maxrh', count, True, count_short, count_extended, discard)
+        
+        df1 = vals[0]
+    
+        df2 = vals[1] 
+    
+        df3 = vals[2]
+        
+        df4 = vals[3]
+        
+        df5 = vals[4]
+        
+        df6 = vals[5]
+    
+        df2['diff'] = df2['maxrh'] - df1['maxrh']
+        df3['diff'] = df3['maxrh'] - df2['maxrh']
+        df4['diff'] = df4['maxrh'] - df3['maxrh']
+        df5['diff'] = df5['maxrh'] - df4['maxrh']
+        df6['diff'] = df6['maxrh'] - df5['maxrh']
+    
+        
+        if test_7 == True:
+            df7 = vals[6]
+            df7['diff'] = df7['maxrh'] - df6['maxrh']
+        else:
+            pass
+
+        no_vals = False
+    except Exception as g:
+        no_vals = True
         
     files = count
 
@@ -1727,7 +1926,7 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, w
         
     cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1773,7 +1972,7 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, w
         
     cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1819,7 +2018,7 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, w
         
     cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1865,7 +2064,7 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, w
         
     cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1911,7 +2110,7 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, w
         
     cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1959,7 +2158,7 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, w
             
         cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
     
             stn7 = mpplots.StationPlot(ax7, df6['longitude'][::decimate], df6['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -1988,7 +2187,7 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, w
 
     return figs
 
-def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_threshold, contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_threshold, contour_step,  western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, central_longitude=None, central_latitude=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
 
     r'''
     This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -2064,27 +2263,113 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
     count_extended = count_extended
 
     cmap = colormaps.low_relative_humidity_colormap()
+    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and central_longitude != None and central_latitude != None and fig_x_length !=None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
 
-    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+        fig_x_length = fig_x_length
+        fig_y_length = fig_y_length
+        signature_x_position = signature_x_position
+        signature_y_position = signature_y_position
+
+    else:
+        pass
+
+    if state == None and gacc_region == None:
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
+        else:
+            decimate = decimate
+    
+        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+
+    if state != None and gacc_region == None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'low minrh')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_state(state)
+        else:
+            decimate = decimate
+
+    if state == None and gacc_region != None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'low minrh')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+        else:
+            decimate = decimate
+
+    from_zone = tz.tzutc()
+    to_zone = tz.tzlocal()
 
     PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
     GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
-    
-    from_zone = tz.tzutc()
-    to_zone = tz.tzlocal()
         
-    mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
-    datacrs = ccrs.PlateCarree()
 
-    if file_path == None and directory_name != None:
-        grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
-        
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False, count_short, count_extended)
 
-    if file_path != None and directory_name == None:
+    if file_path == None:
 
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended)
+        try:
+
+            grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
+
+            print("Downloaded data successfully!")
+        except Exception as a:
+
+            print("Trying again to download data...")
+
+            count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.minrh.bin')
     
+            ds = parsers.NDFD.grib_to_xarray('ds.minrh.bin')
+                
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False, count_short, count_extended, directory_name)
+
+    if file_path != None:
+
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
+
+
+    try:
+        if grb_7_vals.all() != None:
+            test_7 = True
+
+    except Exception as e:
+        test_7 = False       
+
+    grb_1_start = grb_1_start.replace(tzinfo=from_zone)
+    grb_1_start = grb_1_start.astimezone(to_zone)
+    grb_2_start = grb_2_start.replace(tzinfo=from_zone)
+    grb_2_start = grb_2_start.astimezone(to_zone)
+    grb_3_start = grb_3_start.replace(tzinfo=from_zone)
+    grb_3_start = grb_3_start.astimezone(to_zone)
+    grb_4_start = grb_4_start.replace(tzinfo=from_zone)
+    grb_4_start = grb_4_start.astimezone(to_zone)
+    grb_5_start = grb_5_start.replace(tzinfo=from_zone)
+    grb_5_start = grb_5_start.astimezone(to_zone)
+    grb_6_start = grb_6_start.replace(tzinfo=from_zone)
+    grb_6_start = grb_6_start.astimezone(to_zone)
+
+    grb_1_end = grb_1_end.replace(tzinfo=from_zone)
+    grb_1_end = grb_1_end.astimezone(to_zone)
+    grb_2_end = grb_2_end.replace(tzinfo=from_zone)
+    grb_2_end = grb_2_end.astimezone(to_zone)
+    grb_3_end = grb_3_end.replace(tzinfo=from_zone)
+    grb_3_end = grb_3_end.astimezone(to_zone)
+    grb_4_end = grb_4_end.replace(tzinfo=from_zone)
+    grb_4_end = grb_4_end.astimezone(to_zone)
+    grb_5_end = grb_5_end.replace(tzinfo=from_zone)
+    grb_5_end = grb_5_end.astimezone(to_zone)
+    grb_6_end = grb_6_end.replace(tzinfo=from_zone)
+    grb_6_end = grb_6_end.astimezone(to_zone)
+
+    if test_7 == True:
+        grb_7_start = grb_7_start.replace(tzinfo=from_zone)
+        grb_7_start = grb_7_start.astimezone(to_zone)
+        
+        grb_7_end = grb_7_end.replace(tzinfo=from_zone)
+        grb_7_end = grb_7_end.astimezone(to_zone)
+    else:
+        pass
+
     try:
         vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'minrh', count, True, count_short, count_extended, discard)
         
@@ -2100,114 +2385,40 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
         
         df6 = vals[5]
 
-        
-        try:
-            if grb_7_vals.all() != None:
-                test_7 = True
-
-        except Exception as e:
-            test_7 = False       
-
-        grb_1_start = grb_1_start.replace(tzinfo=from_zone)
-        grb_1_start = grb_1_start.astimezone(to_zone)
-        grb_2_start = grb_2_start.replace(tzinfo=from_zone)
-        grb_2_start = grb_2_start.astimezone(to_zone)
-        grb_3_start = grb_3_start.replace(tzinfo=from_zone)
-        grb_3_start = grb_3_start.astimezone(to_zone)
-        grb_4_start = grb_4_start.replace(tzinfo=from_zone)
-        grb_4_start = grb_4_start.astimezone(to_zone)
-        grb_5_start = grb_5_start.replace(tzinfo=from_zone)
-        grb_5_start = grb_5_start.astimezone(to_zone)
-        grb_6_start = grb_6_start.replace(tzinfo=from_zone)
-        grb_6_start = grb_6_start.astimezone(to_zone)
         if test_7 == True:
-            grb_7_start = grb_7_start.replace(tzinfo=from_zone)
-            grb_7_start = grb_7_start.astimezone(to_zone)
-        else:
-            pass
-
-        grb_1_end = grb_1_end.replace(tzinfo=from_zone)
-        grb_1_end = grb_1_end.astimezone(to_zone)
-        grb_2_end = grb_2_end.replace(tzinfo=from_zone)
-        grb_2_end = grb_2_end.astimezone(to_zone)
-        grb_3_end = grb_3_end.replace(tzinfo=from_zone)
-        grb_3_end = grb_3_end.astimezone(to_zone)
-        grb_4_end = grb_4_end.replace(tzinfo=from_zone)
-        grb_4_end = grb_4_end.astimezone(to_zone)
-        grb_5_end = grb_5_end.replace(tzinfo=from_zone)
-        grb_5_end = grb_5_end.astimezone(to_zone)
-        grb_6_end = grb_6_end.replace(tzinfo=from_zone)
-        grb_6_end = grb_6_end.astimezone(to_zone)
-        if test_7 == True:
-            grb_7_end = grb_7_end.replace(tzinfo=from_zone)
-            grb_7_end = grb_7_end.astimezone(to_zone)
-
             df7 = vals[6]
-
         else:
             pass
+
+
+        no_vals = False
 
     except Exception as ee:
-        vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'unknown', count, True, count_short, count_extended, discard)
-        
-        df1 = vals[0]
-
-        df2 = vals[1]
-
-        df3 = vals[2]
-        
-        df4 = vals[3]
-
-        df5 = vals[4]
-        
-        df6 = vals[5]
-
-        
         try:
-            if grb_7_vals.all() != None:
-                test_7 = True
+            vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'unknown', count, True, count_short, count_extended, discard)
+            
+            df1 = vals[0]
+    
+            df2 = vals[1]
+    
+            df3 = vals[2]
+            
+            df4 = vals[3]
+    
+            df5 = vals[4]
+            
+            df6 = vals[5]
+    
+    
+            if test_7 == True:
+                df7 = vals[6]
+            else:
+                pass
 
-        except Exception as e:
-            test_7 = False       
 
-        grb_1_start = grb_1_start.replace(tzinfo=from_zone)
-        grb_1_start = grb_1_start.astimezone(to_zone)
-        grb_2_start = grb_2_start.replace(tzinfo=from_zone)
-        grb_2_start = grb_2_start.astimezone(to_zone)
-        grb_3_start = grb_3_start.replace(tzinfo=from_zone)
-        grb_3_start = grb_3_start.astimezone(to_zone)
-        grb_4_start = grb_4_start.replace(tzinfo=from_zone)
-        grb_4_start = grb_4_start.astimezone(to_zone)
-        grb_5_start = grb_5_start.replace(tzinfo=from_zone)
-        grb_5_start = grb_5_start.astimezone(to_zone)
-        grb_6_start = grb_6_start.replace(tzinfo=from_zone)
-        grb_6_start = grb_6_start.astimezone(to_zone)
-        if test_7 == True:
-            grb_7_start = grb_7_start.replace(tzinfo=from_zone)
-            grb_7_start = grb_7_start.astimezone(to_zone)
-        else:
-            pass
-
-        grb_1_end = grb_1_end.replace(tzinfo=from_zone)
-        grb_1_end = grb_1_end.astimezone(to_zone)
-        grb_2_end = grb_2_end.replace(tzinfo=from_zone)
-        grb_2_end = grb_2_end.astimezone(to_zone)
-        grb_3_end = grb_3_end.replace(tzinfo=from_zone)
-        grb_3_end = grb_3_end.astimezone(to_zone)
-        grb_4_end = grb_4_end.replace(tzinfo=from_zone)
-        grb_4_end = grb_4_end.astimezone(to_zone)
-        grb_5_end = grb_5_end.replace(tzinfo=from_zone)
-        grb_5_end = grb_5_end.astimezone(to_zone)
-        grb_6_end = grb_6_end.replace(tzinfo=from_zone)
-        grb_6_end = grb_6_end.astimezone(to_zone)
-        if test_7 == True:
-            grb_7_end = grb_7_end.replace(tzinfo=from_zone)
-            grb_7_end = grb_7_end.astimezone(to_zone)
-
-            df7 = vals[6]
-
-        else:
-            pass
+            no_vals = False
+        except Exception as g:
+            no_vals = True
         
     files = count
 
@@ -2248,7 +2459,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
             
         cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2294,7 +2505,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
             
         cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2340,7 +2551,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
             
         cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2386,7 +2597,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
             
         cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2432,7 +2643,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
             
         cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2478,7 +2689,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
             
         cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2526,7 +2737,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
                 
             cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-            if show_sample_points == True:
+            if show_sample_points == True and no_vals == False:
     
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2590,7 +2801,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
             
         cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2636,7 +2847,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
             
         cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2682,7 +2893,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
             
         cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2728,7 +2939,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
             
         cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2774,7 +2985,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
             
         cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2820,7 +3031,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
             
         cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2868,7 +3079,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
                 
             cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-            if show_sample_points == True:
+            if show_sample_points == True and no_vals == False:
     
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -2900,7 +3111,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
     return figs
 
 
-def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, central_longitude=None, central_latitude=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
 
     r'''
     This function plots the latest available NOAA/NWS Minimum RH Forecast. 
@@ -2954,30 +3165,117 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
     local_time, utc_time = standard.plot_creation_time()
     contour_step = contour_step
     ds = data_array
-
     cmap = colormaps.relative_humidity_colormap()
+
+    mapcrs = ccrs.PlateCarree()
+    datacrs = ccrs.PlateCarree()
+
+    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and central_longitude != None and central_latitude != None and fig_x_length !=None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+
+        fig_x_length = fig_x_length
+        fig_y_length = fig_y_length
+        signature_x_position = signature_x_position
+        signature_y_position = signature_y_position
+
+    else:
+        pass
+
+    if state == None and gacc_region == None:
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
+        else:
+            decimate = decimate
     
+        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+
+    if state != None and gacc_region == None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'minrh')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_state(state)
+        else:
+            decimate = decimate
+
+    if state == None and gacc_region != None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'minrh')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+        else:
+            decimate = decimate
+
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
-
-    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
 
     PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
     GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
         
-    mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
-    datacrs = ccrs.PlateCarree()
-
     if file_path == None:
-        grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
         
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False, count_short, count_extended)
+        try:
+
+            grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
+
+            print("Downloaded data successfully!")
+        except Exception as a:
+
+            print("Trying again to download data...")
+
+            count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.minrh.bin')
+    
+            ds = parsers.NDFD.grib_to_xarray('ds.minrh.bin')
+                
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False, count_short, count_extended, directory_name)
+
 
     if file_path != None:
 
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended)
-    
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
+
     try:
+        if grb_7_vals.all() != None:
+            test_7 = True
+    
+    except Exception as e:
+        test_7 = False    
+    
+    grb_1_start = grb_1_start.replace(tzinfo=from_zone)
+    grb_1_start = grb_1_start.astimezone(to_zone)
+    grb_2_start = grb_2_start.replace(tzinfo=from_zone)
+    grb_2_start = grb_2_start.astimezone(to_zone)
+    grb_3_start = grb_3_start.replace(tzinfo=from_zone)
+    grb_3_start = grb_3_start.astimezone(to_zone)
+    grb_4_start = grb_4_start.replace(tzinfo=from_zone)
+    grb_4_start = grb_4_start.astimezone(to_zone)
+    grb_5_start = grb_5_start.replace(tzinfo=from_zone)
+    grb_5_start = grb_5_start.astimezone(to_zone)
+    grb_6_start = grb_6_start.replace(tzinfo=from_zone)
+    grb_6_start = grb_6_start.astimezone(to_zone)
+
+    grb_1_end = grb_1_end.replace(tzinfo=from_zone)
+    grb_1_end = grb_1_end.astimezone(to_zone)
+    grb_2_end = grb_2_end.replace(tzinfo=from_zone)
+    grb_2_end = grb_2_end.astimezone(to_zone)
+    grb_3_end = grb_3_end.replace(tzinfo=from_zone)
+    grb_3_end = grb_3_end.astimezone(to_zone)
+    grb_4_end = grb_4_end.replace(tzinfo=from_zone)
+    grb_4_end = grb_4_end.astimezone(to_zone)
+    grb_5_end = grb_5_end.replace(tzinfo=from_zone)
+    grb_5_end = grb_5_end.astimezone(to_zone)
+    grb_6_end = grb_6_end.replace(tzinfo=from_zone)
+    grb_6_end = grb_6_end.astimezone(to_zone)
+    if test_7 == True:
+        grb_7_start = grb_7_start.replace(tzinfo=from_zone)
+        grb_7_start = grb_7_start.astimezone(to_zone)
+
+        grb_7_end = grb_7_end.replace(tzinfo=from_zone)
+        grb_7_end = grb_7_end.astimezone(to_zone)
+    else:
+        pass
+
+    try:
+        
         vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'minrh', count, True, count_short, count_extended, discard)
         
         df1 = vals[0]
@@ -2990,116 +3288,44 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
         
         df5 = vals[4]
         
-        df6 = vals[5]
+        df6 = vals[5]   
 
-        
-        try:
-            if grb_7_vals.all() != None:
-                test_7 = True
-
-        except Exception as e:
-            test_7 = False       
-
-        grb_1_start = grb_1_start.replace(tzinfo=from_zone)
-        grb_1_start = grb_1_start.astimezone(to_zone)
-        grb_2_start = grb_2_start.replace(tzinfo=from_zone)
-        grb_2_start = grb_2_start.astimezone(to_zone)
-        grb_3_start = grb_3_start.replace(tzinfo=from_zone)
-        grb_3_start = grb_3_start.astimezone(to_zone)
-        grb_4_start = grb_4_start.replace(tzinfo=from_zone)
-        grb_4_start = grb_4_start.astimezone(to_zone)
-        grb_5_start = grb_5_start.replace(tzinfo=from_zone)
-        grb_5_start = grb_5_start.astimezone(to_zone)
-        grb_6_start = grb_6_start.replace(tzinfo=from_zone)
-        grb_6_start = grb_6_start.astimezone(to_zone)
         if test_7 == True:
-            grb_7_start = grb_7_start.replace(tzinfo=from_zone)
-            grb_7_start = grb_7_start.astimezone(to_zone)
-        else:
-            pass
-
-        grb_1_end = grb_1_end.replace(tzinfo=from_zone)
-        grb_1_end = grb_1_end.astimezone(to_zone)
-        grb_2_end = grb_2_end.replace(tzinfo=from_zone)
-        grb_2_end = grb_2_end.astimezone(to_zone)
-        grb_3_end = grb_3_end.replace(tzinfo=from_zone)
-        grb_3_end = grb_3_end.astimezone(to_zone)
-        grb_4_end = grb_4_end.replace(tzinfo=from_zone)
-        grb_4_end = grb_4_end.astimezone(to_zone)
-        grb_5_end = grb_5_end.replace(tzinfo=from_zone)
-        grb_5_end = grb_5_end.astimezone(to_zone)
-        grb_6_end = grb_6_end.replace(tzinfo=from_zone)
-        grb_6_end = grb_6_end.astimezone(to_zone)
-        if test_7 == True:
-            grb_7_end = grb_7_end.replace(tzinfo=from_zone)
-            grb_7_end = grb_7_end.astimezone(to_zone)
 
             df7 = vals[6]
 
         else:
             pass
 
+        no_vals = False
     except Exception as ee:
-        vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'unknown', count, True, count_short, count_extended, discard)
-        
-        df1 = vals[0]
-
-        df2 = vals[1]
-
-        df3 = vals[2]
-        
-        df4 = vals[3]
-
-        df5 = vals[4]
-        
-        df6 = vals[5]
-
-        
         try:
-            if grb_7_vals.all() != None:
-                test_7 = True
+            vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'unknown', count, True, count_short, count_extended, discard)
+            
+            df1 = vals[0]
+    
+            df2 = vals[1]
+    
+            df3 = vals[2]
+            
+            df4 = vals[3]
+    
+            df5 = vals[4]
+            
+            df6 = vals[5]
+       
+    
+            if test_7 == True:
+    
+                df7 = vals[6]
+    
+            else:
+                pass
 
-        except Exception as e:
-            test_7 = False       
-
-        grb_1_start = grb_1_start.replace(tzinfo=from_zone)
-        grb_1_start = grb_1_start.astimezone(to_zone)
-        grb_2_start = grb_2_start.replace(tzinfo=from_zone)
-        grb_2_start = grb_2_start.astimezone(to_zone)
-        grb_3_start = grb_3_start.replace(tzinfo=from_zone)
-        grb_3_start = grb_3_start.astimezone(to_zone)
-        grb_4_start = grb_4_start.replace(tzinfo=from_zone)
-        grb_4_start = grb_4_start.astimezone(to_zone)
-        grb_5_start = grb_5_start.replace(tzinfo=from_zone)
-        grb_5_start = grb_5_start.astimezone(to_zone)
-        grb_6_start = grb_6_start.replace(tzinfo=from_zone)
-        grb_6_start = grb_6_start.astimezone(to_zone)
-        if test_7 == True:
-            grb_7_start = grb_7_start.replace(tzinfo=from_zone)
-            grb_7_start = grb_7_start.astimezone(to_zone)
-        else:
-            pass
-
-        grb_1_end = grb_1_end.replace(tzinfo=from_zone)
-        grb_1_end = grb_1_end.astimezone(to_zone)
-        grb_2_end = grb_2_end.replace(tzinfo=from_zone)
-        grb_2_end = grb_2_end.astimezone(to_zone)
-        grb_3_end = grb_3_end.replace(tzinfo=from_zone)
-        grb_3_end = grb_3_end.astimezone(to_zone)
-        grb_4_end = grb_4_end.replace(tzinfo=from_zone)
-        grb_4_end = grb_4_end.astimezone(to_zone)
-        grb_5_end = grb_5_end.replace(tzinfo=from_zone)
-        grb_5_end = grb_5_end.astimezone(to_zone)
-        grb_6_end = grb_6_end.replace(tzinfo=from_zone)
-        grb_6_end = grb_6_end.astimezone(to_zone)
-        if test_7 == True:
-            grb_7_end = grb_7_end.replace(tzinfo=from_zone)
-            grb_7_end = grb_7_end.astimezone(to_zone)
-
-            df7 = vals[6]
-
-        else:
-            pass
+            no_vals = False
+        except Exception as g:    
+            no_vals = True
+    
         
     files = count
 
@@ -3138,7 +3364,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
             
         cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3184,7 +3410,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
             
         cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3230,7 +3456,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
             
         cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3276,7 +3502,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
             
         cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3322,7 +3548,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
             
         cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3368,7 +3594,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
             
         cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3416,7 +3642,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
                 
             cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-            if show_sample_points == True:
+            if show_sample_points == True and no_vals == False:
     
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3477,10 +3703,12 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
         else:
             pass
         ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+        mask = (lons_1 <= -110)
             
         cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3526,7 +3754,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
             
         cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3572,7 +3800,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
             
         cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3618,7 +3846,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
             
         cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3664,7 +3892,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
             
         cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3710,7 +3938,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
             
         cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
 
             stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3758,7 +3986,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
                 
             cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
 
-            if show_sample_points == True:
+            if show_sample_points == True and no_vals == False:
     
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
                                                  transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -3791,7 +4019,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
 
 
 
-def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(contour_step, western_bound, eastern_bound, southern_bound, northern_bound, central_longitude, central_latitude, fig_x_length, fig_y_length, signature_x_position, signature_y_position, decimate, first_standard_parallel=30, second_standard_parallel=60, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None):
+def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, central_longitude=None, central_latitude=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
 
     r'''
     This function plots the latest available NOAA/NWS Minimum RH Trend Forecast. 
@@ -3851,21 +4079,122 @@ def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(contour_step, wes
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
 
-    directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+    mapcrs = ccrs.PlateCarree()
+    datacrs = ccrs.PlateCarree()
+
+    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and central_longitude != None and central_latitude != None and fig_x_length !=None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+
+        fig_x_length = fig_x_length
+        fig_y_length = fig_y_length
+        signature_x_position = signature_x_position
+        signature_y_position = signature_y_position
+
+    else:
+        pass
+
+    if state == None and gacc_region == None:
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
+        else:
+            decimate = decimate
+    
+        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+
+    if state != None and gacc_region == None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'minrh trend')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_state(state)
+        else:
+            decimate = decimate
+
+    if state == None and gacc_region != None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'minrh trend')
+
+        if decimate == 'default':
+            decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+        else:
+            decimate = decimate
+
+    from_zone = tz.tzutc()
+    to_zone = tz.tzlocal()
 
     PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
     GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
         
-    mapcrs = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude, standard_parallels=(first_standard_parallel,second_standard_parallel))
-    datacrs = ccrs.PlateCarree()
     if file_path == None:
-        grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
-        
-        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False, count_short, count_extended)
+
+        try:
+
+            grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
+
+            print("Downloaded data successfully!")
+        except Exception as a:
+
+            print("Trying again to download data...")
+
+            count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.minrh.bin')
+    
+            ds = parsers.NDFD.grib_to_xarray('ds.minrh.bin')
+                
+        grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False, count_short, count_extended, directory_name)
 
     if file_path != None:
 
         grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended)
+
+    try:
+        if grb_7_vals.all() != None:
+            test_7 = True
+
+    except Exception as e:
+        test_7 = False      
+    
+    diff1 = grb_2_vals - grb_1_vals
+    diff2 = grb_3_vals - grb_2_vals
+    diff3 = grb_4_vals - grb_3_vals
+    diff4 = grb_5_vals - grb_4_vals
+    diff5 = grb_6_vals - grb_5_vals
+
+
+    grb_1_start = grb_1_start.replace(tzinfo=from_zone)
+    grb_1_start = grb_1_start.astimezone(to_zone)
+    grb_2_start = grb_2_start.replace(tzinfo=from_zone)
+    grb_2_start = grb_2_start.astimezone(to_zone)
+    grb_3_start = grb_3_start.replace(tzinfo=from_zone)
+    grb_3_start = grb_3_start.astimezone(to_zone)
+    grb_4_start = grb_4_start.replace(tzinfo=from_zone)
+    grb_4_start = grb_4_start.astimezone(to_zone)
+    grb_5_start = grb_5_start.replace(tzinfo=from_zone)
+    grb_5_start = grb_5_start.astimezone(to_zone)
+    grb_6_start = grb_6_start.replace(tzinfo=from_zone)
+    grb_6_start = grb_6_start.astimezone(to_zone)
+
+    grb_1_end = grb_1_end.replace(tzinfo=from_zone)
+    grb_1_end = grb_1_end.astimezone(to_zone)
+    grb_2_end = grb_2_end.replace(tzinfo=from_zone)
+    grb_2_end = grb_2_end.astimezone(to_zone)
+    grb_3_end = grb_3_end.replace(tzinfo=from_zone)
+    grb_3_end = grb_3_end.astimezone(to_zone)
+    grb_4_end = grb_4_end.replace(tzinfo=from_zone)
+    grb_4_end = grb_4_end.astimezone(to_zone)
+    grb_5_end = grb_5_end.replace(tzinfo=from_zone)
+    grb_5_end = grb_5_end.astimezone(to_zone)
+    grb_6_end = grb_6_end.replace(tzinfo=from_zone)
+    grb_6_end = grb_6_end.astimezone(to_zone)
+
+    if test_7 == True:
+        grb_7_start = grb_7_start.replace(tzinfo=from_zone)
+        grb_7_start = grb_7_start.astimezone(to_zone)
+
+        grb_7_end = grb_7_end.replace(tzinfo=from_zone)
+        grb_7_end = grb_7_end.astimezone(to_zone)  
+        
+        diff6 = grb_7_vals - grb_6_vals
+    else:
+        pass
+
     
     try:
         vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'minrh', count, True, count_short, count_extended, discard)
@@ -3882,145 +4211,56 @@ def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(contour_step, wes
         
         df6 = vals[5]
 
-        diff1 = grb_2_vals - grb_1_vals
-        diff2 = grb_3_vals - grb_2_vals
-        diff3 = grb_4_vals - grb_3_vals
-        diff4 = grb_5_vals - grb_4_vals
-        diff5 = grb_6_vals - grb_5_vals
-
         df2['diff'] = df2['minrh'] - df1['minrh']
         df3['diff'] = df3['minrh'] - df2['minrh']
         df4['diff'] = df4['minrh'] - df3['minrh']
         df5['diff'] = df5['minrh'] - df4['minrh']
         df6['diff'] = df6['minrh'] - df5['minrh']
 
-        
-        try:
-            if grb_7_vals.all() != None:
-                test_7 = True
-
-        except Exception as e:
-            test_7 = False       
-
-        grb_1_start = grb_1_start.replace(tzinfo=from_zone)
-        grb_1_start = grb_1_start.astimezone(to_zone)
-        grb_2_start = grb_2_start.replace(tzinfo=from_zone)
-        grb_2_start = grb_2_start.astimezone(to_zone)
-        grb_3_start = grb_3_start.replace(tzinfo=from_zone)
-        grb_3_start = grb_3_start.astimezone(to_zone)
-        grb_4_start = grb_4_start.replace(tzinfo=from_zone)
-        grb_4_start = grb_4_start.astimezone(to_zone)
-        grb_5_start = grb_5_start.replace(tzinfo=from_zone)
-        grb_5_start = grb_5_start.astimezone(to_zone)
-        grb_6_start = grb_6_start.replace(tzinfo=from_zone)
-        grb_6_start = grb_6_start.astimezone(to_zone)
         if test_7 == True:
-            grb_7_start = grb_7_start.replace(tzinfo=from_zone)
-            grb_7_start = grb_7_start.astimezone(to_zone)
-        else:
-            pass
-
-        grb_1_end = grb_1_end.replace(tzinfo=from_zone)
-        grb_1_end = grb_1_end.astimezone(to_zone)
-        grb_2_end = grb_2_end.replace(tzinfo=from_zone)
-        grb_2_end = grb_2_end.astimezone(to_zone)
-        grb_3_end = grb_3_end.replace(tzinfo=from_zone)
-        grb_3_end = grb_3_end.astimezone(to_zone)
-        grb_4_end = grb_4_end.replace(tzinfo=from_zone)
-        grb_4_end = grb_4_end.astimezone(to_zone)
-        grb_5_end = grb_5_end.replace(tzinfo=from_zone)
-        grb_5_end = grb_5_end.astimezone(to_zone)
-        grb_6_end = grb_6_end.replace(tzinfo=from_zone)
-        grb_6_end = grb_6_end.astimezone(to_zone)
-        if test_7 == True:
-            grb_7_end = grb_7_end.replace(tzinfo=from_zone)
-            grb_7_end = grb_7_end.astimezone(to_zone)
-
             df7 = vals[6]
-
-            diff6 = grb_7_vals - grb_6_vals
             df7['diff'] = df7['minrh'] - df6['minrh']
-
         else:
             pass
-
-    except Exception as ee:
-        vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'unknown', count, True, count_short, count_extended, discard)
-        
-        df1 = vals[0]
-
-        df2 = vals[1]
-
-        df3 = vals[2]
-        
-        df4 = vals[3]
-
-        df5 = vals[4]
-        
-        df6 = vals[5]
-
-        diff1 = grb_2_vals - grb_1_vals
-        diff2 = grb_3_vals - grb_2_vals
-        diff3 = grb_4_vals - grb_3_vals
-        diff4 = grb_5_vals - grb_4_vals
-        diff5 = grb_6_vals - grb_5_vals
-
-        df2['diff'] = df2['unknown'] - df1['unknown']
-        df3['diff'] = df3['unknown'] - df2['unknown']
-        df4['diff'] = df4['unknown'] - df3['unknown']
-        df5['diff'] = df5['unknown'] - df4['unknown']
-        df6['diff'] = df6['unknown'] - df5['unknown']
-
-        
-        try:
-            if grb_7_vals.all() != None:
-                test_7 = True
-
-        except Exception as e:
-            test_7 = False       
-
-        grb_1_start = grb_1_start.replace(tzinfo=from_zone)
-        grb_1_start = grb_1_start.astimezone(to_zone)
-        grb_2_start = grb_2_start.replace(tzinfo=from_zone)
-        grb_2_start = grb_2_start.astimezone(to_zone)
-        grb_3_start = grb_3_start.replace(tzinfo=from_zone)
-        grb_3_start = grb_3_start.astimezone(to_zone)
-        grb_4_start = grb_4_start.replace(tzinfo=from_zone)
-        grb_4_start = grb_4_start.astimezone(to_zone)
-        grb_5_start = grb_5_start.replace(tzinfo=from_zone)
-        grb_5_start = grb_5_start.astimezone(to_zone)
-        grb_6_start = grb_6_start.replace(tzinfo=from_zone)
-        grb_6_start = grb_6_start.astimezone(to_zone)
-        if test_7 == True:
-            grb_7_start = grb_7_start.replace(tzinfo=from_zone)
-            grb_7_start = grb_7_start.astimezone(to_zone)
-        else:
-            pass
-
-        grb_1_end = grb_1_end.replace(tzinfo=from_zone)
-        grb_1_end = grb_1_end.astimezone(to_zone)
-        grb_2_end = grb_2_end.replace(tzinfo=from_zone)
-        grb_2_end = grb_2_end.astimezone(to_zone)
-        grb_3_end = grb_3_end.replace(tzinfo=from_zone)
-        grb_3_end = grb_3_end.astimezone(to_zone)
-        grb_4_end = grb_4_end.replace(tzinfo=from_zone)
-        grb_4_end = grb_4_end.astimezone(to_zone)
-        grb_5_end = grb_5_end.replace(tzinfo=from_zone)
-        grb_5_end = grb_5_end.astimezone(to_zone)
-        grb_6_end = grb_6_end.replace(tzinfo=from_zone)
-        grb_6_end = grb_6_end.astimezone(to_zone)
-        if test_7 == True:
-            grb_7_end = grb_7_end.replace(tzinfo=from_zone)
-            grb_7_end = grb_7_end.astimezone(to_zone)
-
-            df7 = vals[6]
-
-            diff6 = grb_7_vals - grb_6_vals
     
-            df7['diff'] = df7['unknown'] - df6['unknown']
+        no_vals = False
+    except Exception as ee:
+        try:
+            vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'unknown', count, True, count_short, count_extended, discard)
+            
+            df1 = vals[0]
+    
+            df2 = vals[1]
+    
+            df3 = vals[2]
+            
+            df4 = vals[3]
+    
+            df5 = vals[4]
+            
+            df6 = vals[5]
+    
+            diff1 = grb_2_vals - grb_1_vals
+            diff2 = grb_3_vals - grb_2_vals
+            diff3 = grb_4_vals - grb_3_vals
+            diff4 = grb_5_vals - grb_4_vals
+            diff5 = grb_6_vals - grb_5_vals
+    
+            df2['diff'] = df2['unknown'] - df1['unknown']
+            df3['diff'] = df3['unknown'] - df2['unknown']
+            df4['diff'] = df4['unknown'] - df3['unknown']
+            df5['diff'] = df5['unknown'] - df4['unknown']
+            df6['diff'] = df6['unknown'] - df5['unknown']
+    
+            if test_7 == True:
+                df7 = vals[6]
+                df7['diff'] = df7['unknown'] - df6['unknown']
+            else:
+                pass
 
-        else:
-            pass
+            no_vals = False
+        except Exception as g:
+            no_vals = True
         
     files = count
 
@@ -4059,7 +4299,7 @@ def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(contour_step, wes
         
     cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn1 = mpplots.StationPlot(ax1, df2['longitude'][::decimate], df2['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -4105,7 +4345,7 @@ def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(contour_step, wes
         
     cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn2 = mpplots.StationPlot(ax2, df3['longitude'][::decimate], df3['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -4151,7 +4391,7 @@ def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(contour_step, wes
         
     cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn3 = mpplots.StationPlot(ax3, df4['longitude'][::decimate], df4['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -4197,7 +4437,7 @@ def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(contour_step, wes
         
     cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn4 = mpplots.StationPlot(ax4, df5['longitude'][::decimate], df5['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -4243,7 +4483,7 @@ def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(contour_step, wes
         
     cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
 
-    if show_sample_points == True:
+    if show_sample_points == True and no_vals == False:
 
         stn5 = mpplots.StationPlot(ax5, df6['longitude'][::decimate], df6['latitude'][::decimate],
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -4291,7 +4531,7 @@ def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(contour_step, wes
             
         cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
 
-        if show_sample_points == True:
+        if show_sample_points == True and no_vals == False:
     
             stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
