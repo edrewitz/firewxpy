@@ -17,6 +17,8 @@ import imageio
 import os.path, time
 import calc
 import os
+import cartopy.crs as ccrs
+import xarray as xr
 
 from datetime import datetime, timedelta
 from metpy.units import units
@@ -34,7 +36,23 @@ class NDFD:
         for i in figure_list:
             i = i + 1
             return i
-    
+
+    def grib_to_xarray(file):
+        
+        try:
+            ds = xr.open_dataset(file, engine='cfgrib')
+            ds = ds.metpy.parse_cf()
+            print("Extracted the data successfully.")
+            stepUnits = False
+        except Exception as e:
+            print("Unsuccessful data extraction. Likely an issue with stepUnits. Retrying!")
+            ds = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'stepUnits': 0})
+            ds1 = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'stepUnits': 1})
+            ds = ds.combine_first(ds1)
+            ds = ds.metpy.parse_cf()
+            print("Extracted the data successfully.")
+            stepUnits = True
+        return ds, stepUnits
 
     def GRIB_temperature_conversion_test(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files):
     
@@ -647,145 +665,6 @@ class NDFD:
     
                 return grb_1_vals, grb_2_vals, grb_3_vals, grb_4_vals, grb_5_vals
 
-
-    def get_maximum_temperature_color_scale(directory_name):
-
-        r'''
-        THIS FUNCTION CREATES THE COLORSCALE FOR THE MAXIMUM TEMPERATURE FORECAST FOR EACH REGION OF THE CONUS FOR BOTH THE WARM AND COLD/COOL SEASON. EACH COLORSCALE IS REFLECTIVE OF EACH REGION SINCE A BROAD COLORSCALE WOULDN'T WORK SINCE FOR EXAMPLE A COLORSCALE FOR SOUTHERN CALIFORNIA WON'T BE VERY REPRESENTATIVE FOR PLOTTING TEMPERATURES IN THE NORTHEAST. THESE FUNCTIONS ALLOW THE CHANGING OF THE COLORSCALE BETWEEN REGIONS AND SEASONS SO USERS WON'T NEED TO WORRY ABOUT IT. 
-
-        (C) METEOROLOGIST ERIC J. DREWITZ 2023
-
-        '''
-
-        dirName = directory_name
-        
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/':
-            temp_scale_warm = np.arange(50, 135, 5)
-            temp_scale_cool = np.arange(10, 105, 5)
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/':
-            temp_scale_warm = np.arange(40, 125, 5)
-            temp_scale_cool = np.arange(-10, 85, 5)
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/':
-            temp_scale_warm = np.arange(40, 125, 5)
-            temp_scale_cool = np.arange(-30, 75, 5)
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/':
-            temp_scale_warm = np.arange(45, 135, 5)
-            temp_scale_cool = np.arange(-20, 95, 5)
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/':
-            temp_scale_warm = np.arange(60, 125, 5)
-            temp_scale_cool = np.arange(0, 85, 5)
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/':
-            temp_scale_warm = np.arange(30, 115, 5)
-            temp_scale_cool = np.arange(-20, 75, 5)
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/':
-            temp_scale_warm = np.arange(30, 135, 5)
-            temp_scale_cool = np.arange(-30, 105, 5)
-
-        return temp_scale_warm, temp_scale_cool
-
-
-    def get_minimum_temperature_color_scale(directory_name):
-
-        r'''
-        THIS FUNCTION CREATES THE COLORSCALE FOR THE MINIMUM TEMPERATURE FORECAST FOR EACH REGION OF THE CONUS FOR BOTH THE WARM AND COLD/COOL SEASON. EACH COLORSCALE IS REFLECTIVE OF EACH REGION SINCE A BROAD COLORSCALE WOULDN'T WORK SINCE FOR EXAMPLE A COLORSCALE FOR SOUTHERN CALIFORNIA WON'T BE VERY REPRESENTATIVE FOR PLOTTING TEMPERATURES IN THE NORTHEAST. THESE FUNCTIONS ALLOW THE CHANGING OF THE COLORSCALE BETWEEN REGIONS AND SEASONS SO USERS WON'T NEED TO WORRY ABOUT IT. 
-
-        (C) METEOROLOGIST ERIC J. DREWITZ 2023
-
-        '''
-
-        dirName = directory_name
-        
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/':
-            temp_scale_warm = np.arange(30, 105, 5)
-            temp_scale_cool = np.arange(-10, 75, 5)
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/':
-            temp_scale_warm = np.arange(20, 95, 5)
-            temp_scale_cool = np.arange(-20, 65, 5)
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/':
-            temp_scale_warm = np.arange(20, 85, 5)
-            temp_scale_cool = np.arange(-30, 65, 5)
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/':
-            temp_scale_warm = np.arange(30, 95, 5)
-            temp_scale_cool = np.arange(-20, 65, 5)
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/':
-            temp_scale_warm = np.arange(50, 95, 5)
-            temp_scale_cool = np.arange(-10, 75, 5)
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/':
-            temp_scale_warm = np.arange(30, 85, 5)
-            temp_scale_cool = np.arange(-30, 65, 5)
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/':
-            temp_scale_warm = np.arange(20, 105, 5)
-            temp_scale_cool = np.arange(-30, 75, 5)
-
-        return temp_scale_warm, temp_scale_cool
-
-
-    def get_extreme_heat_color_scale(directory_name):
-
-        r'''
-        THIS FUNCTION CREATES THE COLORSCALE FOR THE EXTREME HEAT FORECAST FOR EACH REGION OF THE CONUS FOR BOTH THE WARM AND COLD/COOL SEASON. EACH COLORSCALE IS REFLECTIVE OF EACH REGION SINCE A BROAD COLORSCALE WOULDN'T WORK SINCE FOR EXAMPLE A COLORSCALE FOR SOUTHERN CALIFORNIA WON'T BE VERY REPRESENTATIVE FOR PLOTTING TEMPERATURES IN THE NORTHEAST. THESE FUNCTIONS ALLOW THE CHANGING OF THE COLORSCALE BETWEEN REGIONS AND SEASONS SO USERS WON'T NEED TO WORRY ABOUT IT. 
-
-        (C) METEOROLOGIST ERIC J. DREWITZ 2023
-
-        '''
-
-        dirName = directory_name
-        
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/':
-            temp_scale_warm = np.arange(120, 140, 1)
-            temp_scale_cool = np.arange(100, 125, 1)
-            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 120 \N{DEGREE SIGN}F)"
-            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)"
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/':
-            temp_scale_warm = np.arange(100, 125, 1)
-            temp_scale_cool = np.arange(85, 115, 1)
-            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)"
-            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 85 \N{DEGREE SIGN}F)"
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/':
-            temp_scale_warm = np.arange(95, 125, 1)
-            temp_scale_cool = np.arange(85, 115, 1)
-            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 95 \N{DEGREE SIGN}F)"
-            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 85 \N{DEGREE SIGN}F)"
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/':
-            temp_scale_warm = np.arange(95, 125, 1)
-            temp_scale_cool = np.arange(85, 115, 1)
-            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 95 \N{DEGREE SIGN}F)"
-            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 85 \N{DEGREE SIGN}F)"           
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/':
-            temp_scale_warm = np.arange(100, 130, 1)
-            temp_scale_cool = np.arange(85, 115, 1)
-            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 100 \N{DEGREE SIGN}F)"
-            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 85 \N{DEGREE SIGN}F)"
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/' or dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/':
-            temp_scale_warm = np.arange(90, 115, 1)
-            temp_scale_cool = np.arange(75, 105, 1)
-            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 90 \N{DEGREE SIGN}F)"
-            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 75 \N{DEGREE SIGN}F)"
-
-        if dirName == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/':
-            temp_scale_warm = np.arange(95, 140, 1)
-            temp_scale_cool = np.arange(85, 125, 1)
-            title_warm = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 95 \N{DEGREE SIGN}F)"
-            title_cool = "National Weather Service Short-Term Forecast\nExtreme Heat (Maximum Temperature >= 85 \N{DEGREE SIGN}F)"
-
-        return temp_scale_warm, temp_scale_cool, title_warm, title_cool
     
     
     def parse_SPC_GRIB_data(first_GRIB_file, second_GRIB_file, third_GRIB_file, fourth_GRIB_file, fifth_GRIB_file, count_of_GRIB_files):
@@ -1431,13 +1310,14 @@ class NDFD:
     
         return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5
 
-    def parse_GRIB_files_full_forecast_period(file_path, grid_time_interval, convert_temperature, count_short, count_extended):
+    def parse_GRIB_files_full_forecast_period(file_path, grid_time_interval, convert_temperature, count_short, count_extended, directory_name):
 
         GRIB_File_List = pygrib.open(file_path)
         grid_time_interval = grid_time_interval
         convert_temperature = convert_temperature
         count_short = count_short
         count_extended = count_extended
+        directory_name = directory_name
 
         utc = datetime.utcnow()
         local = datetime.now()
@@ -1558,7 +1438,7 @@ class NDFD:
                 grb_6 = GRIB_File_List[6]
                 grb_7 = GRIB_File_List[7]
                 grb_8 = None
-    
+
                 grb_1_vals = grb_1.values
                 grb_1_start = grb_1.validDate
                 grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
@@ -1602,7 +1482,7 @@ class NDFD:
                 grb_6 = GRIB_File_List[6]
                 grb_7 = GRIB_File_List[7]
                 grb_8 = GRIB_File_List[8]
-    
+
                 grb_1_vals = grb_1.values
                 grb_1_start = grb_1.validDate
                 grb_1_end = grb_1_start + timedelta(hours=grid_time_interval)
@@ -1711,7 +1591,7 @@ class NDFD:
                     return grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard
                     
                 else:
-                    if local_hour < 15 or local_hour >= 18:
+                    if local_hour < 15:
                         print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 15:00 (3PM)\nThe first maximum temperature grid is still returned.")
     
                         year = utc.year
@@ -2832,51 +2712,338 @@ class checks:
 
         vals = []
         if count == 2:
+            try:
+                if discard == False:
+                    vals_00 = ds[parameter][1, 0, :, :]
+                    vals_01 = ds[parameter][1, 1, :, :]
+                    if count_short == 2:
+                        vals_02 = ds[parameter][0, 2, :, :]
+                        vals_03 = ds[parameter][0, 3, :, :]
+                        vals_04 = ds[parameter][0, 4, :, :]                    
+                    if count_short == 3:
+                        vals_02 = ds[parameter][1, 2, :, :]
+                        vals_03 = ds[parameter][0, 3, :, :]
+                        vals_04 = ds[parameter][0, 4, :, :]
+                    if count_short == 4:
+                        vals_02 = ds[parameter][1, 2, :, :]
+                        vals_03 = ds[parameter][1, 3, :, :]
+                        vals_04 = ds[parameter][0, 4, :, :]
+                    if count_short == 5:
+                        vals_02 = ds[parameter][1, 2, :, :]
+                        vals_03 = ds[parameter][1, 3, :, :]
+                        vals_04 = ds[parameter][1, 4, :, :]
+                    vals_05 = ds[parameter][0, 5, :, :]
+                    if file_count >= 7:
+                        vals_06 = ds[parameter][0, 6, :, :]
+        
+                if discard == True:
+                    vals_00 = ds[parameter][1, 1, :, :]
+                    vals_01 = ds[parameter][1, 2, :, :]
+                    if count_short == 2:
+                        vals_02 = ds[parameter][0, 3, :, :]
+                        vals_03 = ds[parameter][0, 4, :, :]
+                        vals_04 = ds[parameter][0, 5, :, :]                    
+                    if count_short == 3:
+                        vals_02 = ds[parameter][1, 3, :, :]
+                        vals_03 = ds[parameter][0, 4, :, :]
+                        vals_04 = ds[parameter][0, 5, :, :]
+                    if count_short == 4:
+                        vals_02 = ds[parameter][1, 3, :, :]
+                        vals_03 = ds[parameter][1, 4, :, :]
+                        vals_04 = ds[parameter][0, 5, :, :]
+                    if count_short == 5:
+                        vals_02 = ds[parameter][1, 3, :, :]
+                        vals_03 = ds[parameter][1, 4, :, :]
+                        vals_04 = ds[parameter][1, 5, :, :]
+                    vals_05 = ds[parameter][0, 6, :, :]
+                    if file_count >= 7:
+                        vals_06 = ds[parameter][0, 7, :, :]
+
+            except Exception as e:
+                if discard == False:
+                    vals_00 = ds[parameter][1, 0, :]
+                    vals_01 = ds[parameter][1, 1, :]
+                    if count_short == 2:
+                        vals_02 = ds[parameter][0, 2, :]
+                        vals_03 = ds[parameter][0, 3, :]
+                        vals_04 = ds[parameter][0, 4, :]                    
+                    if count_short == 3:
+                        vals_02 = ds[parameter][1, 2, :]
+                        vals_03 = ds[parameter][0, 3, :]
+                        vals_04 = ds[parameter][0, 4, :]
+                    if count_short == 4:
+                        vals_02 = ds[parameter][1, 2, :]
+                        vals_03 = ds[parameter][1, 3, :]
+                        vals_04 = ds[parameter][0, 4, :]
+                    if count_short == 5:
+                        vals_02 = ds[parameter][1, 2, :]
+                        vals_03 = ds[parameter][1, 3, :]
+                        vals_04 = ds[parameter][1, 4, :]
+                    vals_05 = ds[parameter][0, 5, :]
+                    if file_count >= 7:
+                        vals_06 = ds[parameter][0, 6, :]
+        
+                if discard == True:
+                    vals_00 = ds[parameter][1, 1, :]
+                    vals_01 = ds[parameter][1, 2, :]
+                    if count_short == 2:
+                        vals_02 = ds[parameter][0, 3, :]
+                        vals_03 = ds[parameter][0, 4, :]
+                        vals_04 = ds[parameter][0, 5, :]                    
+                    if count_short == 3:
+                        vals_02 = ds[parameter][1, 3, :]
+                        vals_03 = ds[parameter][0, 4, :]
+                        vals_04 = ds[parameter][0, 5, :]
+                    if count_short == 4:
+                        vals_02 = ds[parameter][1, 3, :]
+                        vals_03 = ds[parameter][1, 4, :]
+                        vals_04 = ds[parameter][0, 5, :]
+                    if count_short == 5:
+                        vals_02 = ds[parameter][1, 3, :]
+                        vals_03 = ds[parameter][1, 4, :]
+                        vals_04 = ds[parameter][1, 5, :]
+                    vals_05 = ds[parameter][0, 6, :]
+                    if file_count >= 7:
+                        vals_06 = ds[parameter][0, 7, :]                
+
+            vals.append(vals_00)
+            vals.append(vals_01)
+            vals.append(vals_02)
+            vals.append(vals_03)
+            vals.append(vals_04)
+            vals.append(vals_05)
+            if file_count >= 7:
+                vals.append(vals_06)                
+                if file_count == 8:
+                    vals_07 = ds[parameter][0, 7, :, :]
+                    vals.append(vals_07)
+  
+
+        if count == 1:
             if discard == False:
-                vals_00 = ds[parameter][1, 0, :, :]
-                vals_01 = ds[parameter][1, 1, :, :]
-                if count_short == 2:
-                    vals_02 = ds[parameter][0, 2, :, :]
-                    vals_03 = ds[parameter][0, 3, :, :]
-                    vals_04 = ds[parameter][0, 4, :, :]                    
-                if count_short == 3:
-                    vals_02 = ds[parameter][1, 2, :, :]
-                    vals_03 = ds[parameter][0, 3, :, :]
-                    vals_04 = ds[parameter][0, 4, :, :]
-                if count_short == 4:
-                    vals_02 = ds[parameter][1, 2, :, :]
-                    vals_03 = ds[parameter][1, 3, :, :]
-                    vals_04 = ds[parameter][0, 4, :, :]
-                if count_short == 5:
-                    vals_02 = ds[parameter][1, 2, :, :]
-                    vals_03 = ds[parameter][1, 3, :, :]
-                    vals_04 = ds[parameter][1, 4, :, :]
+                vals_00 = ds[parameter][0, 0, :, :]
+                vals_01 = ds[parameter][0, 1, :, :]
+                vals_02 = ds[parameter][0, 2, :, :]
+                vals_03 = ds[parameter][0, 3, :, :]
+                vals_04 = ds[parameter][0, 4, :, :]
                 vals_05 = ds[parameter][0, 5, :, :]
                 if file_count >= 7:
                     vals_06 = ds[parameter][0, 6, :, :]
-
             if discard == True:
-                vals_00 = ds[parameter][1, 1, :, :]
-                vals_01 = ds[parameter][1, 2, :, :]
-                if count_short == 2:
-                    vals_02 = ds[parameter][0, 3, :, :]
-                    vals_03 = ds[parameter][0, 4, :, :]
-                    vals_04 = ds[parameter][0, 5, :, :]                    
-                if count_short == 3:
-                    vals_02 = ds[parameter][1, 3, :, :]
-                    vals_03 = ds[parameter][0, 4, :, :]
-                    vals_04 = ds[parameter][0, 5, :, :]
-                if count_short == 4:
-                    vals_02 = ds[parameter][1, 3, :, :]
-                    vals_03 = ds[parameter][1, 4, :, :]
-                    vals_04 = ds[parameter][0, 5, :, :]
-                if count_short == 5:
-                    vals_02 = ds[parameter][1, 3, :, :]
-                    vals_03 = ds[parameter][1, 4, :, :]
-                    vals_04 = ds[parameter][1, 5, :, :]
+                vals_00 = ds[parameter][0, 1, :, :]
+                vals_01 = ds[parameter][0, 2, :, :]
+                vals_02 = ds[parameter][0, 3, :, :]
+                vals_03 = ds[parameter][0, 4, :, :]
+                vals_04 = ds[parameter][0, 5, :, :]
                 vals_05 = ds[parameter][0, 6, :, :]
                 if file_count >= 7:
                     vals_06 = ds[parameter][0, 7, :, :]
+
+            vals.append(vals_00)
+            vals.append(vals_01)
+            vals.append(vals_02)
+            vals.append(vals_03)
+            vals.append(vals_04)
+            vals.append(vals_05)
+            if file_count >= 7:
+                vals.append(vals_06)                
+                if file_count == 8:
+                    vals_07 = ds[parameter][0, 7, :, :]
+                    vals.append(vals_07)
+            
+
+        if count == 0:
+            if discard == False:
+                vals_00 = ds[parameter][0, :, :]
+                vals_01 = ds[parameter][1, :, :]
+                vals_02 = ds[parameter][2, :, :]
+                vals_03 = ds[parameter][3, :, :]
+                vals_04 = ds[parameter][4, :, :]
+                vals_05 = ds[parameter][5, :, :]
+                if file_count >= 7:
+                    vals_06 = ds[parameter][6, :, :]
+
+            if discard == True:
+                vals_00 = ds[parameter][1, :, :]
+                vals_01 = ds[parameter][2, :, :]
+                vals_02 = ds[parameter][3, :, :]
+                vals_03 = ds[parameter][4, :, :]
+                vals_04 = ds[parameter][5, :, :]
+                vals_05 = ds[parameter][6, :, :]
+                if file_count >= 7:
+                    vals_06 = ds[parameter][7, :, :]
+
+
+            vals.append(vals_00)
+            vals.append(vals_01)
+            vals.append(vals_02)
+            vals.append(vals_03)
+            vals.append(vals_04)
+            vals.append(vals_05)
+            if file_count >= 7:
+                vals.append(vals_06)                
+                if file_count == 8:
+                    vals_07 = ds[parameter][7, :, :]
+                    vals.append(vals_07)
+
+
+        if convert_to_pandas_dataframe == False:
+            return vals
+
+        if convert_to_pandas_dataframe == True:
+            vals_df = []
+            ds0 = vals[0]
+            ds1 = vals[1]
+            ds2 = vals[2]
+            ds3 = vals[3]
+            ds4 = vals[4]
+            ds5 = vals[5]
+            if file_count >= 7:
+                ds6 = vals[6]
+
+            df0 = ds0.to_dataframe()
+            df1 = ds1.to_dataframe()
+            df2 = ds2.to_dataframe()
+            df3 = ds3.to_dataframe()
+            df4 = ds4.to_dataframe()
+            df5 = ds5.to_dataframe()
+            if file_count >= 7:
+                df6 = ds6.to_dataframe()
+
+            if file_count < 8:
+                vals_df.append(df0)
+            vals_df.append(df1)
+            vals_df.append(df2)
+            vals_df.append(df3)
+            vals_df.append(df4)
+            vals_df.append(df5)
+            if file_count >= 7:
+                vals_df.append(df6)
+            
+            if file_count == 8:
+                ds7 = vals[7]
+                df7 = ds7.to_dataframe()
+                vals_df.append(df7)
+   
+            return vals_df
+
+
+    def parse_NWS_GRIB_data_array_test(data_array, parameter, file_count, convert_to_pandas_dataframe, count_short, count_extended, discard, stepUnits):
+
+
+        ds = data_array
+        parameter = parameter
+        file_count = file_count
+        count_short = count_short 
+        count_extended = count_extended
+        convert_to_pandas_dataframe = convert_to_pandas_dataframe
+        discard = discard
+        stepUnits = stepUnits
+        
+        try:
+            count = 0
+            for i in data_array['time']:
+                count = count + 1
+
+        except Exception as e:
+            count = 0
+
+        vals = []
+        if count == 2:
+            if stepUnits == False:
+                if discard == False:
+                    vals_00 = ds[parameter][1, 0, :, :]
+                    vals_01 = ds[parameter][1, 1, :, :]
+                    if count_short == 2:
+                        vals_02 = ds[parameter][0, 2, :, :]
+                        vals_03 = ds[parameter][0, 3, :, :]
+                        vals_04 = ds[parameter][0, 4, :, :]                    
+                    if count_short == 3:
+                        vals_02 = ds[parameter][1, 2, :, :]
+                        vals_03 = ds[parameter][0, 3, :, :]
+                        vals_04 = ds[parameter][0, 4, :, :]
+                    if count_short == 4:
+                        vals_02 = ds[parameter][1, 2, :, :]
+                        vals_03 = ds[parameter][1, 3, :, :]
+                        vals_04 = ds[parameter][0, 4, :, :]
+                    if count_short == 5:
+                        vals_02 = ds[parameter][1, 2, :, :]
+                        vals_03 = ds[parameter][1, 3, :, :]
+                        vals_04 = ds[parameter][1, 4, :, :]
+                    vals_05 = ds[parameter][0, 5, :, :]
+                    if file_count >= 7:
+                        vals_06 = ds[parameter][0, 6, :, :]
+        
+                if discard == True:
+                    vals_00 = ds[parameter][1, 1, :, :]
+                    vals_01 = ds[parameter][1, 2, :, :]
+                    if count_short == 2:
+                        vals_02 = ds[parameter][0, 3, :, :]
+                        vals_03 = ds[parameter][0, 4, :, :]
+                        vals_04 = ds[parameter][0, 5, :, :]                    
+                    if count_short == 3:
+                        vals_02 = ds[parameter][1, 3, :, :]
+                        vals_03 = ds[parameter][0, 4, :, :]
+                        vals_04 = ds[parameter][0, 5, :, :]
+                    if count_short == 4:
+                        vals_02 = ds[parameter][1, 3, :, :]
+                        vals_03 = ds[parameter][1, 4, :, :]
+                        vals_04 = ds[parameter][0, 5, :, :]
+                    if count_short == 5:
+                        vals_02 = ds[parameter][1, 3, :, :]
+                        vals_03 = ds[parameter][1, 4, :, :]
+                        vals_04 = ds[parameter][1, 5, :, :]
+                    vals_05 = ds[parameter][0, 6, :, :]
+                    if file_count >= 7:
+                        vals_06 = ds[parameter][0, 7, :, :]
+
+            if stepUnits == True:
+                if discard == False:
+                    vals_00 = ds[parameter][0, :, :, 1]
+                    vals_01 = ds[parameter][1, :, :, 1]
+                    if count_short == 2:
+                        vals_02 = ds[parameter][2, :, :, 0]
+                        vals_03 = ds[parameter][3, :, :, 0]
+                        vals_04 = ds[parameter][4, :, :, 0]                    
+                    if count_short == 3:
+                        vals_02 = ds[parameter][2, :, :, 1]
+                        vals_03 = ds[parameter][3, :, :, 0]
+                        vals_04 = ds[parameter][4, :, :, 0]
+                    if count_short == 4:
+                        vals_02 = ds[parameter][2, :, :, 1]
+                        vals_03 = ds[parameter][3, :, :, 1]
+                        vals_04 = ds[parameter][4, :, :, 0]
+                    if count_short == 5:
+                        vals_02 = ds[parameter][2, :, :, 1]
+                        vals_03 = ds[parameter][3, :, :, 1]
+                        vals_04 = ds[parameter][4, :, :, 1]
+                    vals_05 = ds[parameter][5, :, :, 0]
+                    if file_count >= 7:
+                        vals_06 = ds[parameter][6, :, :, 0]
+        
+                if discard == True:
+                    vals_00 = ds[parameter][1, :, :, 1]
+                    vals_01 = ds[parameter][2, :, :, 1]
+                    if count_short == 2:
+                        vals_02 = ds[parameter][3, :, :, 0]
+                        vals_03 = ds[parameter][4, :, :, 0]
+                        vals_04 = ds[parameter][5, :, :, 0]                    
+                    if count_short == 3:
+                        vals_02 = ds[parameter][3, :, :, 1]
+                        vals_03 = ds[parameter][4, :, :, 0]
+                        vals_04 = ds[parameter][5, :, :, 0]
+                    if count_short == 4:
+                        vals_02 = ds[parameter][3, :, :, 1]
+                        vals_03 = ds[parameter][4, :, :, 1]
+                        vals_04 = ds[parameter][5, :, :, 0]
+                    if count_short == 5:
+                        vals_02 = ds[parameter][3, :, :, 1]
+                        vals_03 = ds[parameter][4, :, :, 1]
+                        vals_04 = ds[parameter][5, :, :, 1]
+                    vals_05 = ds[parameter][6, :, :, 0]
+                    if file_count >= 7:
+                        vals_06 = ds[parameter][7, :, :, 0]
+                
 
             vals.append(vals_00)
             vals.append(vals_01)
@@ -3079,7 +3246,1856 @@ class checks:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/'
 
         return directory_name
+
+
+    def get_state_data_and_coords(state, ndfd_grids, plot_type):
+
+        state = state
+        ndfd_grids = ndfd_grids
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
+        plot_type = plot_type
+        shrink = 0.7
+
+        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -126
+            eastern_bound = -66
+            southern_bound = 20
+            northern_bound = 55
+            fig_x_length = 12
+            fig_y_length = 8
+            signature_x_position = 0.09
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=20 
+            signature_fontsize=20
+            sample_point_fontsize=8
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'AK' or state == 'ak':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            western_bound = -168.4
+            eastern_bound = -129.73
+            southern_bound = 54.5
+            northern_bound = 71.46
+            fig_x_length = 15
+            fig_y_length = 8
+            signature_x_position = 0.15
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=20 
+            signature_fontsize=23
+            sample_point_fontsize=12
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'HI' or state == 'hi':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/'
+            western_bound = -160.36
+            eastern_bound = -154.57
+            southern_bound = 18.81
+            northern_bound = 22.46
+            fig_x_length = 15
+            fig_y_length = 10
+            signature_x_position = 0.15
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=20 
+            signature_fontsize=23
+            sample_point_fontsize=12
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'ME' or state == 'me':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
+            western_bound = -71.2
+            eastern_bound = -66.75
+            southern_bound = 42.87
+            northern_bound = 47.6
+            fig_x_length = 8
+            fig_y_length = 8
+            signature_x_position = 0.10
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'NH' or state == 'nh':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
+            western_bound = -72.65
+            eastern_bound = -70.60
+            southern_bound = 42.66
+            northern_bound = 45.36
+            fig_x_length = 8
+            fig_y_length = 9
+            signature_x_position = 0.10
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'VT' or state == 'vt':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
+            western_bound = -73.50
+            eastern_bound = -71.44
+            southern_bound = 42.66
+            northern_bound = 45.10
+            fig_x_length = 8
+            fig_y_length = 9
+            signature_x_position = 0.10
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'MA' or state == 'ma':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
+            western_bound = -73.55
+            eastern_bound = -69.88
+            southern_bound = 41.22
+            northern_bound = 42.92
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.10
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9 
+            signature_fontsize=11
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'RI' or state == 'ri':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
+            western_bound = -71.86
+            eastern_bound = -71.11
+            southern_bound = 41.29
+            northern_bound = 42.03
+            fig_x_length = 8
+            fig_y_length = 8
+            signature_x_position = 0.10
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'CT' or state == 'ct':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
+            western_bound = -73.74
+            eastern_bound = -71.77
+            southern_bound = 40.97
+            northern_bound = 42.06
+            fig_x_length = 8
+            fig_y_length = 5
+            signature_x_position = 0.10
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'NJ' or state == 'nj':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
+            western_bound = -75.60
+            eastern_bound = -73.88
+            southern_bound = 38.91
+            northern_bound = 41.37
+            fig_x_length = 8
+            fig_y_length = 9
+            signature_x_position = 0.10
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'DE' or state == 'de':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
+            western_bound = -75.855
+            eastern_bound = -75.0
+            southern_bound = 39.88
+            northern_bound = 38.41
+            fig_x_length = 7
+            fig_y_length = 9
+            signature_x_position = 0.10
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'NY' or state == 'ny':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -79.85
+            eastern_bound = -71.85
+            southern_bound = 40.48
+            northern_bound = 45.08
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.10
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9 
+            signature_fontsize=11
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'PA' or state == 'pa':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -80.6
+            eastern_bound = -74.6
+            southern_bound = 39.65
+            northern_bound = 42.32
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.12
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9 
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'OH' or state == 'oh':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -84.9
+            eastern_bound = -80.4
+            southern_bound = 38.35
+            northern_bound = 42.0
+            fig_x_length = 6
+            fig_y_length = 5
+            signature_x_position = 0.07
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9 
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'MI' or state == 'mi':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -90.5
+            eastern_bound = -82.31
+            southern_bound = 41.67
+            northern_bound = 48.26
+            fig_x_length = 7
+            fig_y_length = 5
+            signature_x_position = 0.13
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9 
+            signature_fontsize=10
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'MN' or state == 'mn':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
+            western_bound = -97.45
+            eastern_bound = -89.28
+            southern_bound = 43.46
+            northern_bound = 49.45
+            fig_x_length = 7
+            fig_y_length = 5
+            signature_x_position = 0.11
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9 
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'WI' or state == 'wi':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/'
+            western_bound = -93.1
+            eastern_bound = -86.68
+            southern_bound = 42.38
+            northern_bound = 47.11
+            fig_x_length = 7
+            fig_y_length = 5
+            signature_x_position = 0.11
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9 
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'IA' or state == 'ia':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/'
+            western_bound = -96.77
+            eastern_bound = -90
+            southern_bound = 40.3
+            northern_bound = 43.7
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.11
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9 
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'IN' or state == 'in':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/'
+            western_bound = -88.19
+            eastern_bound = -84.69
+            southern_bound = 37.68
+            northern_bound = 41.79
+            fig_x_length = 7
+            fig_y_length = 7
+            signature_x_position = 0.11
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9 
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'MO' or state == 'mo':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/'
+            western_bound = -95.9
+            eastern_bound = -88.92
+            southern_bound = 35.8
+            northern_bound = 40.66
+            fig_x_length = 7
+            fig_y_length = 5
+            signature_x_position = 0.11
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9 
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'IL' or state == 'il':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -91.67
+            eastern_bound = -87.44
+            southern_bound = 36.87
+            northern_bound = 42.55
+            fig_x_length = 7
+            fig_y_length = 7
+            signature_x_position = 0.17
+            signature_y_position = 0.02
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9 
+            signature_fontsize=10
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if state == 'ND' or state == 'nd':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
+            western_bound = -104.2
+            eastern_bound = -96.47
+            southern_bound = 45.8
+            northern_bound = 49.1
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.08
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9 
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.6
+
+        if state == 'SD' or state == 'sd':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
+            western_bound = -104.14
+            eastern_bound = -96.3
+            southern_bound = 42.45
+            northern_bound = 46
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.08
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9 
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.6
+
+        if state == 'NE' or state == 'ne':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
+            western_bound = -104.14
+            eastern_bound = -95.25
+            southern_bound = 39.9
+            northern_bound = 43.1
+            fig_x_length = 7
+            fig_y_length = 3
+            signature_x_position = 0.09
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=6
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5    
+
+        if state == 'MD' or state == 'md':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -79.52
+            eastern_bound = -74.97
+            southern_bound = 37.93
+            northern_bound = 39.79
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.09
+            signature_y_position = 0.06
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5   
+
+        if state == 'VA' or state == 'va':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/'
+            western_bound = -83.77
+            eastern_bound = -75.15
+            southern_bound = 36.45
+            northern_bound = 39.53
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.07
+            signature_y_position = 0.06
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5   
+
+        if state == 'SC' or state == 'sc':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/'
+            western_bound = -83.46
+            eastern_bound = -78.35
+            southern_bound = 31.96
+            northern_bound = 35.25
+            fig_x_length = 7
+            fig_y_length = 5
+            signature_x_position = 0.07
+            signature_y_position = 0.06
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7   
+
+        if state == 'KY' or state == 'ky':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -89.64
+            eastern_bound = -81.86
+            southern_bound = 36.42
+            northern_bound = 39.24
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.07
+            signature_y_position = 0.06
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5   
+
+        if state == 'WV' or state == 'wv':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -82.68
+            eastern_bound = -77.61
+            southern_bound = 37.15
+            northern_bound = 40.72
+            fig_x_length = 7
+            fig_y_length = 5
+            signature_x_position = 0.07
+            signature_y_position = 0.04
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5   
+
+        if state == 'NC' or state == 'nc':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/'
+            western_bound = -84.4
+            eastern_bound = -75.35
+            southern_bound = 33
+            northern_bound = 37
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.07
+            signature_y_position = 0.06
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5   
+
+        if state == 'CA' or state == 'ca':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -124.61
+            eastern_bound = -113.93
+            southern_bound = 32.4
+            northern_bound = 42.2
+            fig_x_length = 7
+            fig_y_length = 6
+            signature_x_position = 0.07
+            signature_y_position = 0.04
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5 
+
+        if state == 'NV' or state == 'nv':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -120.15
+            eastern_bound = -113.92
+            southern_bound = 34.91
+            northern_bound = 42.09
+            fig_x_length = 7
+            fig_y_length = 7
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5   
+
+        if state == 'FL' or state == 'fl':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/'
+            western_bound = -87.71
+            eastern_bound = -79.77
+            southern_bound = 24.44
+            northern_bound = 31.08
+            fig_x_length = 7
+            fig_y_length = 6
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7   
+
+        if state == 'OR' or state == 'or':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
+            western_bound = -125
+            eastern_bound = -116.25
+            southern_bound = 41.9
+            northern_bound = 46.36
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7   
+
+        if state == 'WA' or state == 'wa':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
+            western_bound = -125
+            eastern_bound = -116.9
+            southern_bound = 41.9
+            northern_bound = 49.1
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7   
+
+        if state == 'ID' or state == 'id':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
+            western_bound = -117.4
+            eastern_bound = -110.97
+            southern_bound = 41.9
+            northern_bound = 49.1
+            fig_x_length = 7
+            fig_y_length = 7
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=10
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7   
+
+        if state == 'GA' or state == 'ga':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -85.8
+            eastern_bound = -80.68
+            southern_bound = 30.28
+            northern_bound = 35.05
+            fig_x_length = 7
+            fig_y_length = 6
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=10
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7  
+
+        if state == 'AL' or state == 'al':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -88.75
+            eastern_bound = -84.77
+            southern_bound = 30.12
+            northern_bound = 35.05
+            fig_x_length = 7
+            fig_y_length = 8
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=10
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7  
+
+        if state == 'MS' or state == 'ms':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
+            western_bound = -91.82
+            eastern_bound = -87.95
+            southern_bound = 30.12
+            northern_bound = 35.05
+            fig_x_length = 7
+            fig_y_length = 8
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=10
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7 
+
+        if state == 'LA' or state == 'la':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
+            western_bound = -94.24
+            eastern_bound = -88.85
+            southern_bound = 28.88
+            northern_bound = 33.13
+            fig_x_length = 7
+            fig_y_length = 6
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=10
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7 
+
+        if state == 'AR' or state == 'ar':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
+            western_bound = -94.81
+            eastern_bound = -89.48
+            southern_bound = 32.96
+            northern_bound = 36.58
+            fig_x_length = 7
+            fig_y_length = 5
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=10
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7 
+
+        if state == 'TX' or state == 'tx':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/'
+            western_bound = -106.95
+            eastern_bound = -93.28
+            southern_bound = 25.68
+            northern_bound = 36.71
+            fig_x_length = 7
+            fig_y_length = 6
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=10
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7 
+
+        if state == 'OK' or state == 'ok':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/'
+            western_bound = -103.18
+            eastern_bound = -94.26
+            southern_bound = 33.5
+            northern_bound = 37.2
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.07
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=10
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5 
+
+        if state == 'NM' or state == 'nm':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -109.24
+            eastern_bound = -102.89
+            southern_bound = 31.18
+            northern_bound = 37.1
+            fig_x_length = 7
+            fig_y_length = 6
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            title_fontsize=18
+            subplot_title_fontsize=10
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7 
+
+        if state == 'AZ' or state == 'az':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
+            western_bound = -115.05
+            eastern_bound = -108.94
+            southern_bound = 31.18
+            northern_bound = 37.1
+            fig_x_length = 7
+            fig_y_length = 6
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=10
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7 
+
+        if state == 'UT' or state == 'ut':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
+            western_bound = -114.2
+            eastern_bound = -108.97
+            southern_bound = 36.9
+            northern_bound = 42.1
+            fig_x_length = 7
+            fig_y_length = 6
+            signature_x_position = 0.11
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=10
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7 
+
+        if state == 'CO' or state == 'co':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/'
+            western_bound = -109.2
+            eastern_bound = -101.93
+            southern_bound = 36.9
+            northern_bound = 41.1
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.14
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=10
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7 
+
+        if state == 'WY' or state == 'wy':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/'
+            western_bound = -111.1
+            eastern_bound = -103.95
+            southern_bound = 40.94
+            northern_bound = 45.07
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.14
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=10
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7 
+
+        if state == 'MT' or state == 'mt':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/'
+            western_bound = -116.22
+            eastern_bound = -103.93
+            southern_bound = 44.38
+            northern_bound = 49.1
+            fig_x_length = 6
+            fig_y_length = 3
+            signature_x_position = 0.11
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=10
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5
+
+        if state == 'KS' or state == 'ks':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/'
+            western_bound = -102.16
+            eastern_bound = -94.51
+            southern_bound = 36.94
+            northern_bound = 40.11
+            fig_x_length = 6
+            fig_y_length = 3
+            signature_x_position = 0.11
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=10
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5
+
+        if state == 'NE' or state == 'ne':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/'
+            western_bound = -104.19
+            eastern_bound = -95.15
+            southern_bound = 39.92
+            northern_bound = 43.11
+            fig_x_length = 6
+            fig_y_length = 3
+            signature_x_position = 0.07
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5
         
+            
+        return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, shrink, mapcrs, datacrs
+        
+
+    def get_gacc_region_data_and_coords(gacc_region, ndfd_grids, plot_type):
+
+        gacc_region = gacc_region
+        ndfd_grids = ndfd_grids
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
+        shrink = 0.7
+
+        if gacc_region == 'OSCC' or gacc_region == 'oscc' or gacc_region == 'SOPS' or gacc_region == 'sops':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
+            western_bound = -122.1
+            eastern_bound = -113.93
+            southern_bound = 32.4
+            northern_bound = 39.06
+            fig_x_length = 7
+            fig_y_length = 6
+            signature_x_position = 0.09
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if gacc_region == 'ONCC' or gacc_region == 'oncc' or gacc_region == 'NOPS' or gacc_region == 'nops':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -124.8
+            eastern_bound = -119.1
+            southern_bound = 36.6
+            northern_bound = 42.15
+            fig_x_length = 7
+            fig_y_length = 7
+            signature_x_position = 0.09
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if gacc_region == 'GBCC' or gacc_region == 'gbcc' or gacc_region == 'GB' or gacc_region == 'gb':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -120.5
+            eastern_bound = -107.47
+            southern_bound = 34.9
+            northern_bound = 46.4
+            fig_x_length = 7
+            fig_y_length = 6
+            signature_x_position = 0.07
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+
+        if gacc_region == 'NRCC' or gacc_region == 'nrcc' or gacc_region == 'NR' or gacc_region == 'nr':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -117.7
+            eastern_bound = -96
+            southern_bound = 43
+            northern_bound = 50
+            fig_x_length = 8
+            fig_y_length = 4
+            signature_x_position = 0.1
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=10
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5
+
+        if gacc_region == 'RMCC' or gacc_region == 'rmcc' or gacc_region == 'RM' or gacc_region == 'rm':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -111.3
+            eastern_bound = -94.2
+            southern_bound = 36.2
+            northern_bound = 46.8
+            fig_x_length = 7
+            fig_y_length = 5
+            signature_x_position = 0.1
+            signature_y_position = 0.06
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=13
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5
+
+        if gacc_region == 'SWCC' or gacc_region == 'swcc' or gacc_region == 'SW' or gacc_region == 'sw':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -114.89
+            eastern_bound = -101.7
+            southern_bound = 31.22
+            northern_bound = 37.14
+            fig_x_length = 7
+            fig_y_length = 7
+            signature_x_position = 0.1
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5
+
+        if gacc_region == 'SACC' or gacc_region == 'sacc' or gacc_region == 'SE' or gacc_region == 'se':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -106.88
+            eastern_bound = -74.7
+            southern_bound = 25.5
+            northern_bound = 39.65
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.07
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.5
+
+        if gacc_region == 'EACC' or gacc_region == 'eacc' or gacc_region == 'E' or gacc_region == 'e':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            western_bound = -97.35
+            eastern_bound = -66.18
+            southern_bound = 35
+            northern_bound = 49.65
+            fig_x_length = 7
+            fig_y_length = 4
+            signature_x_position = 0.1
+            signature_y_position = 0.05
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=12 
+            signature_fontsize=12
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.6
+
+        if gacc_region == 'PNW' or gacc_region == 'pnw' or gacc_region == 'NWCC' or gacc_region == 'nwcc' or gacc_region == 'NW' or gacc_region == 'nw':
+            if ndfd_grids == True:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
+            western_bound = -125
+            eastern_bound = -116.25
+            southern_bound = 41
+            northern_bound = 49.1
+            fig_x_length = 7
+            fig_y_length = 6
+            signature_x_position = 0.07
+            signature_y_position = 0.03
+            if plot_type == 'minrh':
+                title_fontsize=17 
+            if plot_type == 'poor recovery':
+                title_fontsize=15 
+            if plot_type == 'excellent recovery':
+                title_fontsize=14
+            if plot_type == 'maxrh':
+                title_fontsize=17
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                title_fontsize=15
+            if plot_type == 'low minrh':
+                title_fontsize=15
+            subplot_title_fontsize=9
+            signature_fontsize=14
+            sample_point_fontsize=10
+            colorbar_fontsize=12
+            if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+                colorbar_fontsize=8
+            shrink=0.7   
+
+
+        return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, shrink, mapcrs, datacrs
 
 class save:
 
