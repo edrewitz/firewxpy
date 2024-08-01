@@ -9,6 +9,8 @@ This file hosts all the functions that return the settings for each plot for eac
 
 '''
 
+import cartopy.crs as ccrs
+
 
 def check_NDFD_directory_name(directory_name):
 
