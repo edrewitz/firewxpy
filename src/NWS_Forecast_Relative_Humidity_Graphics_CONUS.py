@@ -28,6 +28,7 @@ import calc
 import colormaps
 import os
 import xarray as xr
+import settings
 
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
@@ -141,10 +142,10 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overn
         else:
             decimate = decimate
     
-        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+        directory_name = settings.check_NDFD_directory_name(directory_name)
 
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'poor recovery')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'poor recovery')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_state(state)
@@ -152,7 +153,7 @@ def plot_NWS_7_Day_poor_overnight_recovery_relative_humidity_forecast(poor_overn
             decimate = decimate
 
     if state == None and gacc_region != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'poor recovery')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'poor recovery')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -687,10 +688,10 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excel
         else:
             decimate = decimate
     
-        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+        directory_name = settings.check_NDFD_directory_name(directory_name)
 
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'excellent recovery')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'excellent recovery')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_state(state)
@@ -698,7 +699,7 @@ def plot_NWS_7_Day_excellent_overnight_recovery_relative_humidity_forecast(excel
             decimate = decimate
 
     if state == None and gacc_region != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'excellent recovery')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'excellent recovery')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -1223,10 +1224,10 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_boun
         else:
             decimate = decimate
     
-        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+        directory_name = settings.check_NDFD_directory_name(directory_name)
 
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'maxrh')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxrh')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_state(state)
@@ -1234,7 +1235,7 @@ def plot_NWS_7_Day_maximum_relative_humidity_forecast(contour_step, western_boun
             decimate = decimate
 
     if state == None and gacc_region != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -1763,10 +1764,10 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, w
         else:
             decimate = decimate
     
-        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+        directory_name = settings.check_NDFD_directory_name(directory_name)
 
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'maxrh trend')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxrh trend')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_state(state)
@@ -1774,7 +1775,7 @@ def plot_NWS_Nights_2_through_7_maximum_relative_humidity_trends(contour_step, w
             decimate = decimate
 
     if state == None and gacc_region != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -2280,10 +2281,10 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
         else:
             decimate = decimate
     
-        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+        directory_name = settings.check_NDFD_directory_name(directory_name)
 
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'low minrh')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'low minrh')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_state(state)
@@ -2291,7 +2292,7 @@ def plot_NWS_7_Day_low_minimum_relative_humidity_forecast(low_minimum_rh_thresho
             decimate = decimate
 
     if state == None and gacc_region != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'low minrh')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'low minrh')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -3187,10 +3188,10 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
         else:
             decimate = decimate
     
-        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+        directory_name = settings.check_NDFD_directory_name(directory_name)
 
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'minrh')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'minrh')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_state(state)
@@ -3198,7 +3199,7 @@ def plot_NWS_7_Day_minimum_relative_humidity_forecast(contour_step, western_boun
             decimate = decimate
 
     if state == None and gacc_region != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'minrh')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'minrh')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -4099,10 +4100,10 @@ def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(contour_step, wes
         else:
             decimate = decimate
     
-        directory_name = parsers.checks.check_NDFD_directory_name(directory_name)
+        directory_name = settings.check_NDFD_directory_name(directory_name)
 
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_state_data_and_coords(state, True, 'minrh trend')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'minrh trend')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_state(state)
@@ -4110,7 +4111,7 @@ def plot_NWS_Days_2_through_7_minimum_relative_humidity_trends(contour_step, wes
             decimate = decimate
 
     if state == None and gacc_region != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = parsers.checks.get_gacc_region_data_and_coords(gacc_region, True, 'minrh trend')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'minrh trend')
 
         if decimate == 'default':
             decimate = calc.scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
