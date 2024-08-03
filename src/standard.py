@@ -1,0 +1,89 @@
+'''
+This file hosts standard functions which are used across all plotting functions: 
+
+    1) plot_creation_time()
+    2) no_data_graphic()
+
+ This file was written by Meteorologist Eric J. Drewitz 
+
+            (C) Meteorologist Eric J. Drewitz 
+                        USDA/USFS
+    
+'''
+
+#### IMPORTS ####
+
+import pytz
+from datetime import datetime, timedelta
+
+
+def plot_creation_time():
+
+    r'''
+    This function uses the datetime module to find the time at which the script ran. 
+
+    This can be used in many ways:
+    1) Timestamp for graphic in both local time and UTC
+    2) When downloading data with functions in the data_access module, this function is called to find 
+       the time which is passed into the data downloading functions in order for the latest data to be
+       downloaded. 
+
+    There are no variables to pass into this function. 
+
+    Returns: 1) Current Local Time
+             2) Current UTC Time
+            
+    '''
+
+    now = datetime.now()
+    UTC = now.astimezone(pytz.utc)
+    
+    sec = now.second
+    mn = now.minute
+    hr = now.hour
+    dy = now.day
+    mon = now.month
+    yr = now.year
+    
+    sec1 = UTC.second
+    mn1 = UTC.minute
+    hr1 = UTC.hour
+    dy1 = UTC.day
+    mon1 = UTC.month
+    yr1 = UTC.year
+    
+    Local_Time_Now = datetime(yr, mon, dy, hr, mn, sec)
+    UTC_Now = datetime(yr1, mon1, dy1, hr1, mn1, sec1)
+    
+    return Local_Time_Now, UTC_Now
+
+
+def no_data_graphic():
+
+    r'''
+    This function creates a default graphic for when there is no data present. 
+    On the image, it shows the time at which the image was created and that there is
+    no data availiable at this time. 
+
+    There are no variables to pass into this function. 
+
+    Returns: 1) A standard graphic stating there is no data available and the time at which the graphic was created. 
+
+    '''
+    
+    local_time, utc_time = plot_creation_time()
+    
+    fig = plt.figure(figsize=(20,10))
+    ax = plt.subplot(1, 1, 1)
+    plt.axis('off')
+    fig.text(0.04, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontsize=20, fontweight='bold')
+    ax.text(0.1, 0.6, 'NO DATA FOR: ' + utc_time.strftime('%m/%d/%Y %HZ'), fontsize=60, fontweight='bold')
+
+    return fig
+
+
+
+
+
+
+            
