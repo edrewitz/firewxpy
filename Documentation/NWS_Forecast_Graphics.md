@@ -9,7 +9,7 @@ The `relative_humidity` class hosts 7 functions that plot the NWS Relative Humid
 
 1) [Poor Overnight Recovery Forecast](####-Poor-Overnight-Recovery-Forecast) 
 
-2) Excellent Overnight Recovery Forecast
+2) [Excellent Overnight Recovery Forecast](####-Excellent-Overnight-Recovery-Forecast)
 
 3) Maximum Relative Humidity Forecast
 
@@ -35,11 +35,12 @@ The `relative_humidity` class hosts 7 functions that plot the NWS Relative Humid
 
 Optional Arguments: 
 
+
 1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees. 
-                       The default setting is None. If set to None, the user must select a state or gacc_region. 
-                       This setting should be changed from None to an integer or float value if the user wishes to
-                       have a custom area selected. Negative values denote the western hemisphere and positive 
-                       values denote the eastern hemisphere. 
+   The default setting is None. If set to None, the user must select a state or gacc_region. 
+   This setting should be changed from None to an integer or float value if the user wishes to
+   have a custom area selected. Negative values denote the western hemisphere and positive 
+   values denote the eastern hemisphere. 
 
 2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees. 
    The default setting is None. If set to None, the user must select a state or gacc_region. 
@@ -266,4 +267,6 @@ Optional Arguments:
     Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
 
 Return: A list of figures for each forecast day. 
+
+  #### Excellent Overnight Recovery Forecast
     
