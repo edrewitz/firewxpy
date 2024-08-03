@@ -27,12 +27,12 @@ import colormaps
 import pandas as pd
 import matplotlib.gridspec as gridspec
 import math
+import standard
 
 from matplotlib.patheffects import withStroke
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
 from metpy.plots import colortables
-from NWS_Generic_Forecast_Graphics import standard
 from dateutil import tz
 
 
