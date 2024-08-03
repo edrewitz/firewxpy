@@ -1,5 +1,5 @@
 # **National Weather Service Forecast Graphics**
-**Classes**
+### **Classes**
 1) Relative Humidity (`relative_humidity`)
 2) Temperature (`temperature`)
 
@@ -7,7 +7,7 @@
 
 The `relative_humidity` class hosts 7 functions that plot the NWS Relative Humidity Forecasts:
 
-1) Poor Overnight Recovery Forecast 
+1) [Poor Overnight Recovery Forecast](####-Poor-Overnight-Recovery-Forecast) 
 
 2) Excellent Overnight Recovery Forecast
 
@@ -21,7 +21,7 @@ The `relative_humidity` class hosts 7 functions that plot the NWS Relative Humid
 
 7) Minimum Relative Humidity Trend Forecast
 
-  *Poor Overnight Recovery Forecast*
+  #### Poor Overnight Recovery Forecast
   
   This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
     
