@@ -72,36 +72,108 @@ class relative_humidity:
 
                             2) contour_step (Integer) - The contour interval. (i.e. a value of 5 means the RH gets contoured every 5%). 
 
-        Optional Arguments: 1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+        Optional Arguments: 1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
     
-                            2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+                            2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
     
-                            3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+                            3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
     
-                            4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+                            4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
               
                             5) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
     
-                            11) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+                            6) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
     
-                            12) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
-                            13) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
-                            14) key_x_position (Integer or Float) - The x-position of the colortable key. 
+                            7) signature_x_position (Integer or Float) - The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - This is how the colorbar is sized to the figure. 
+                               This is a feature of matplotlib, as per their definition, the shrink is:
+                               "Fraction by which to multiply the size of the colorbar." The default setting is None. 
+                               This should only be changed if the user wishes to change the size of the colorbar. 
+                               Preset values are called from the settings module for each state and/or gacc_region.
+                                
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
+                                Default setting is 12 point font for a custom plot. Default fontsizes
+                                are called from the settings module for each state and/or gacc_region. 
     
-                            15) key_y_position (Integer or Float) - The y-position of the colortable key. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                                Default setting is 10 point font for a custom plot. Default fontsizes
+                                are called from the settings module for each state and/or gacc_region.  
     
-                            16) subplot_title_fontsize (Integer) - The fontsize of the plot title. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
+                                Default setting is 10 point font for a custom plot. Default fontsizes
+                                are called from the settings module for each state and/or gacc_region.
     
-                            17) signature_fontsize (Integer) - The fontsize of the signature. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                                Default setting is 8 point font for a custom plot. Default fontsizes
+                                are called from the settings module for each state and/or gacc_region.
     
-                            18) key_fontsize (Integer) - The fontsize of the key. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                                Default setting is True. Users should change this value to False if they wish to hide rivers. 
     
-                            19) show_counties (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
-    
-                            20) show_rivers (Boolean) - If set to True, rivers will display. If set to False, rivers will not display. 
-                            21) state_linewidth (Integer) - Width of the state borders. 
-    
-                            22) county_linewidth (Integer) - Width of the county borders.
+                            15) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                                Default setting is True. Users should change this value to False if they wish to hide state borders. 
+
+                            16) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                                Default setting is True. Users should change this value to False if they wish to hide county borders. 
+
+                            17) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                                Default setting is False. Users should change this value to True if they wish to display GACC borders. 
+
+                            17) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                                Default setting is False. Users should change this value to True if they wish to display PSA borders.
+
+                            18) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+
+                            19) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+
+                            20) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+
+                            21) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+
+                            22) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                                To change to a dashed line, users should set state_border_linestyle='--'. 
+
+                            23) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                                To change to a dashed line, users should set county_border_linestyle='--'. 
+
+                            24) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                                To change to a dashed line, users should set gacc_border_linestyle='--'. 
+
+                            25) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                                To change to a dashed line, users should set psa_border_linestyle='--'. 
     
         Return: A list of figures for each forecast day. 
         '''
