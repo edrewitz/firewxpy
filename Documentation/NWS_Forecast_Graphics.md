@@ -7,9 +7,9 @@
 
 The `relative_humidity` class hosts 7 functions that plot the NWS Relative Humidity Forecasts:
 
-1) [Poor Overnight Recovery Forecast](#-Poor-Overnight-Recovery-Forecast) 
+1) [Poor Overnight Recovery Forecast](Poor-Overnight-Recovery-Forecast) 
 
-2) [Excellent Overnight Recovery Forecast](#-Excellent-Overnight-Recovery-Forecast)
+2) [Excellent Overnight Recovery Forecast](Excellent-Overnight-Recovery-Forecast)
 
 3) Maximum Relative Humidity Forecast
 
