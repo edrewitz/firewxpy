@@ -22,10 +22,11 @@ The `relative_humidity` class hosts 7 functions that plot the NWS Relative Humid
 7) Minimum Relative Humidity Trend Forecast
 
   #### Poor Overnight Recovery Forecast
-  
+
+  <img width="628" alt="Screenshot 2024-08-03 150711" src="https://github.com/user-attachments/assets/72c217b5-9f9e-411b-9ca9-94835a6c5aa6">
+
   This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
 
-    
   Required Arguments: 
 
 1) poor_overnight_recovery_rh_threshold (Integer) - The relative humidity threshold for 
