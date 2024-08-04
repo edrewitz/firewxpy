@@ -519,6 +519,9 @@ Return: A list of figures for each forecast day.
 
   ##### Maximum Relative Humidity Forecast
 
+  <img width="629" alt="Screenshot 2024-08-03 151118" src="https://github.com/user-attachments/assets/87a4cf9b-7f6f-4bf7-9ccd-c559747c25c7">
+
+
 This function plots the latest available NOAA/NWS Maximum RH Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/src/NWS_Forecast_Graphics.py#L1504)
 
 Required Arguments: 
@@ -761,6 +764,9 @@ Return: A list of figures for each forecast day.
 
   ##### Maximum Relative Humidity Trend Forecast
 
+  <img width="631" alt="Screenshot 2024-08-03 151118" src="https://github.com/user-attachments/assets/de35eba7-f474-4dab-90c2-03f1bc923332">
+
+
 This function plots the latest available NOAA/NWS Maximum RH Trend Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/src/NWS_Forecast_Graphics.py#L2203)
 
 Required Arguments: 
@@ -1002,6 +1008,8 @@ Optional Arguments:
 Return: A list of figures for each forecast day.   
 
   ##### Low Minimum Relative Humidity Forecast
+
+<img width="623" alt="Screenshot 2024-08-03 151118" src="https://github.com/user-attachments/assets/5be73151-2246-4caa-a20a-8cc56b5b7aee">
 
 
 This function plots the latest available NOAA/NWS Low Minimum RH Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/src/NWS_Forecast_Graphics.py#L2869)
@@ -1250,6 +1258,9 @@ Return: A list of figures for each forecast day.
 
   ##### Minimum Relative Humidity Forecast
 
+  <img width="626" alt="Screenshot 2024-08-03 151118" src="https://github.com/user-attachments/assets/9ebf4264-4ede-48b7-979a-76633f0dab45">
+
+
 This function plots the latest available NOAA/NWS Minimum RH Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/src/NWS_Forecast_Graphics.py#L3960)
 
 Required Arguments: 
@@ -1491,6 +1502,8 @@ None and the gacc_region variable must be set to one of the acceptable abbreviat
 Return: A list of figures for each forecast day. 
 
   ##### Minimum Relative Humidity Trend Forecast
+
+<img width="627" alt="Screenshot 2024-08-03 151118" src="https://github.com/user-attachments/assets/98454272-efac-424d-a5e4-67db1ffdf494">
 
 
 This function plots the latest available NOAA/NWS Minimum RH Trend Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/src/NWS_Forecast_Graphics.py#L5030)
@@ -1753,6 +1766,9 @@ The `temperature` class hosts 7 functions that plot the NWS Relative Humidity Fo
 
  ##### Extreme Heat Forecast
 
+ <img width="629" alt="Screenshot 2024-08-03 151118" src="https://github.com/user-attachments/assets/a1c92f3c-0ca7-44eb-be93-9885cd915050">
+
+
 This function plots the latest available NOAA/NWS Extreme Heat Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/src/NWS_Forecast_Graphics.py#L5755)
 
 Required Arguments: 
@@ -2011,6 +2027,9 @@ None and the gacc_region variable must be set to one of the acceptable abbreviat
   Return: A list of figures for each forecast day. 
 
  ##### Extremely Warm Low Temperature Forecast
+
+ <img width="629" alt="Screenshot 2024-08-03 151118" src="https://github.com/user-attachments/assets/7c735bf0-d767-407f-9f56-c158c0729113">
+
 
  This function plots the latest available NOAA/NWS Extremely Warm Low Temperature Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/src/NWS_Forecast_Graphics.py#L6586)
 
@@ -2271,6 +2290,9 @@ None and the gacc_region variable must be set to one of the acceptable abbreviat
 
  ##### Frost/Freeze Forecast
 
+ <img width="623" alt="Screenshot 2024-08-03 151118" src="https://github.com/user-attachments/assets/90ed6ba4-e10e-4498-9420-c8edd2e41aae">
+
+
 This function plots the latest available NOAA/NWS Frost/Freeze Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/src/NWS_Forecast_Graphics.py#L7417)
 
 Required Arguments: 
@@ -2516,6 +2538,8 @@ None and the gacc_region variable must be set to one of the acceptable abbreviat
   Return: A list of figures for each forecast day. 
 
  ##### Maximum Temperature Forecast
+
+ <img width="632" alt="Screenshot 2024-08-03 151118" src="https://github.com/user-attachments/assets/338a98c7-a9f5-4103-8779-488422bb28ae">
 
 
 This function plots the latest available NOAA/NWS Maximum Temperature Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/src/NWS_Forecast_Graphics.py#L8163)
@@ -2777,6 +2801,9 @@ None and the gacc_region variable must be set to one of the acceptable abbreviat
 
  ##### Minimum Temperature Forecast
 
+ <img width="632" alt="Screenshot 2024-08-03 151118" src="https://github.com/user-attachments/assets/039aa8f2-6ef4-4edf-917a-e8f6f6192c0e">
+
+
 This function plots the latest available NOAA/NWS Minimum Temperature Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/src/NWS_Forecast_Graphics.py#L8985)
 
 Required Arguments: 
@@ -3036,6 +3063,9 @@ None and the gacc_region variable must be set to one of the acceptable abbreviat
 
  ##### Maximum Temperature Trend Forecast
 
+ <img width="633" alt="Screenshot 2024-08-03 151118" src="https://github.com/user-attachments/assets/26a7b292-9ef6-40c8-ab30-301316d6d6fa">
+
+
 This function plots the latest available NOAA/NWS Maximum Temperature Trend Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/src/NWS_Forecast_Graphics.py#L10493)
 
 Required Arguments: 
@@ -3277,6 +3307,9 @@ None and the gacc_region variable must be set to one of the acceptable abbreviat
   Return: A list of figures for each forecast day. 
 
  ##### Minimum Temperature Trend Forecast
+
+ <img width="629" alt="Screenshot 2024-08-03 151118" src="https://github.com/user-attachments/assets/30493cb7-05f5-406b-ad2c-1830441b2088">
+
 
 This function plots the latest available NOAA/NWS Minimum Temperature Trend Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/src/NWS_Forecast_Graphics.py#L9805)
 
