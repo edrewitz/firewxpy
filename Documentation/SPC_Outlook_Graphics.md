@@ -1,5 +1,7 @@
 # **Storm Prediction Center Outlook Graphics**
 
+For more information on the methodology behind these Storm Prediction Center products, click [here](https://www.spc.noaa.gov/misc/about.html#FireWx)
+
 ### **Functions**
 1) [Critical Fire Weather Forecast](#critical-fire-weather-forecast)
 2) [Dry Ligtning Forecast](#dry-lightning-forecast)
