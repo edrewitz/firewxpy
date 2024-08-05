@@ -40,7 +40,7 @@ from dateutil import tz
 def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, colorbar_pad=0.02, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True, show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, state='us', gacc_region=None):
 
     r'''
-        This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
+        This function plots the latest available Storm Prediction Center Critical Fire Weather Forecast. 
     
         Required Arguments: None
 
@@ -631,7 +631,7 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
 def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, colorbar_pad=0.02, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, state='us', gacc_region=None):
 
     r'''
-        This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
+        This function plots the latest available Storm Prediction Dry Lightning Forecast. 
     
         Required Arguments: None
 
