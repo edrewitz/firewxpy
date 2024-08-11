@@ -1,3 +1,4 @@
+
 '''
 This file hosts all the plotting functions for the National Weather Service Forecast Graphics.
 
@@ -332,7 +333,7 @@ class relative_humidity:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'poor recovery')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'poor recovery')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -1045,7 +1046,7 @@ class relative_humidity:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'excellent recovery')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'excellent recovery')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -1718,6 +1719,8 @@ class relative_humidity:
         count_short = count_short
         count_extended = count_extended
         cmap = colormaps.relative_humidity_colormap()
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
     
         if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
     
@@ -1743,7 +1746,7 @@ class relative_humidity:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxrh')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -2445,7 +2448,7 @@ class relative_humidity:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxrh trend')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -3129,7 +3132,7 @@ class relative_humidity:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'low minrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'low minrh')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -3137,7 +3140,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'low minrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'low minrh')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -4198,7 +4201,7 @@ class relative_humidity:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'minrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'minrh')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -4711,8 +4714,6 @@ class relative_humidity:
             else:
                 pass
             ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
-    
-            mask = (lons_1 <= -110)
                 
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5272,7 +5273,7 @@ class relative_humidity:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'minrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'minrh trend')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -6052,7 +6053,8 @@ class temperature:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'extreme heat')
+
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'extreme heat')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -6060,7 +6062,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'extreme heat')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'extreme heat')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -6883,7 +6885,7 @@ class temperature:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'warm lows')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'warm lows')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -7063,7 +7065,7 @@ class temperature:
     
     
         cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-        cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
@@ -7118,7 +7120,7 @@ class temperature:
     
     
         cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-        cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
@@ -7174,7 +7176,7 @@ class temperature:
     
     
         cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-        cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
@@ -7228,7 +7230,7 @@ class temperature:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
         cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-        cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
@@ -7282,7 +7284,7 @@ class temperature:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
         cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-        cbar5.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar5.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
@@ -7336,7 +7338,7 @@ class temperature:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
         cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-        cbar6.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar6.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
@@ -7394,7 +7396,7 @@ class temperature:
     
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-            cbar7.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+            cbar7.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
             figs.append(fig2)
@@ -7690,7 +7692,7 @@ class temperature:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'frost freeze')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'frost freeze')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -7861,7 +7863,7 @@ class temperature:
             pass
     
         cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-        cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
@@ -7907,7 +7909,7 @@ class temperature:
             pass
     
         cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-        cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
@@ -7953,7 +7955,7 @@ class temperature:
             pass
     
         cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-        cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
@@ -7999,7 +8001,7 @@ class temperature:
             pass
     
         cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-        cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
@@ -8045,7 +8047,7 @@ class temperature:
             pass
     
         cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-        cbar5.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar5.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
@@ -8091,7 +8093,7 @@ class temperature:
             pass
     
         cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-        cbar6.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar6.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
@@ -8139,7 +8141,7 @@ class temperature:
                 pass
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-            cbar7.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+            cbar7.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
             figs.append(fig2)
@@ -8458,7 +8460,7 @@ class temperature:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxt')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxt')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -8636,7 +8638,7 @@ class temperature:
             pass
     
         cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-        cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
@@ -8690,7 +8692,7 @@ class temperature:
             pass
     
         cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-        cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
@@ -8744,7 +8746,7 @@ class temperature:
             pass
     
         cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-        cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
@@ -8798,7 +8800,7 @@ class temperature:
             pass
     
         cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-        cbar4.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar4.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
@@ -8852,7 +8854,7 @@ class temperature:
             pass
     
         cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-        cbar5.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar5.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
@@ -8906,7 +8908,7 @@ class temperature:
             pass
     
         cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-        cbar6.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar6.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
@@ -8962,7 +8964,7 @@ class temperature:
                 pass
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-            cbar7.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+            cbar7.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
             figs.append(fig2)
@@ -9277,7 +9279,7 @@ class temperature:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'mint')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'mint')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -9455,7 +9457,7 @@ class temperature:
             pass
     
         cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
-        cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
@@ -9509,7 +9511,7 @@ class temperature:
             pass
     
         cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
-        cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
@@ -9563,7 +9565,7 @@ class temperature:
             pass
     
         cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
-        cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
@@ -9617,7 +9619,7 @@ class temperature:
             pass
     
         cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
-        cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
@@ -9671,7 +9673,7 @@ class temperature:
             pass
     
         cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
-        cbar5.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar5.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
@@ -9725,7 +9727,7 @@ class temperature:
             pass
     
         cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
-        cbar6.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+        cbar6.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
@@ -9781,7 +9783,7 @@ class temperature:
                 pass
     
             cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
-            cbar7.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
+            cbar7.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
             figs.append(fig2)
@@ -10061,7 +10063,7 @@ class temperature:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'mint trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'mint trend')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -10749,7 +10751,7 @@ class temperature:
             directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxt trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxt trend')
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -11176,11 +11178,3 @@ class temperature:
             figs.append(fig5)
     
         return figs
-
-
-
-
-
-
-
-
