@@ -1641,6 +1641,10 @@ class save:
     This class hosts the function that parses through a figure list and saves the figures to a specified file location
 
     '''
+
+    def save_image(file_path):
+
+        plt.savefig(file_path, bbox_inches='tight')
         
     def extract_NWS_NDFD_figures(figure_list, file_count, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5):
 
@@ -1662,37 +1666,37 @@ class save:
         
         if file_count == 1:
             fig1 = figure_list[0]
-            fig1 = fig1.savefig(file_path_1)
+            fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
             plt.close(fig1)
         if file_count == 2:
             fig1 = figure_list[0]
             fig2 = figure_list[1]
-            fig1 = fig1.savefig(file_path_1)
+            fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
             plt.close(fig1)
-            fig2 = fig2.savefig(file_path_2)
+            fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
             plt.close(fig2)
         if file_count == 3:
             fig1 = figure_list[0]
             fig2 = figure_list[1]
             fig3 = figure_list[2]
-            fig1 = fig1.savefig(file_path_1)
+            fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
             plt.close(fig1)
-            fig2 = fig2.savefig(file_path_2)
+            fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
             plt.close(fig2)
-            fig3 = fig3.savefig(file_path_3)
+            fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
             plt.close(fig3)
         if file_count == 4:
             fig1 = figure_list[0]
             fig2 = figure_list[1]
             fig3 = figure_list[2]
             fig4 = figure_list[3]
-            fig1 = fig1.savefig(file_path_1)
+            fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
             plt.close(fig1)
-            fig2 = fig2.savefig(file_path_2)
+            fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
             plt.close(fig2)
-            fig3 = fig3.savefig(file_path_3)
+            fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
             plt.close(fig3)
-            fig4 = fig4.savefig(file_path_4)
+            fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
             plt.close(fig4)
         if file_count == 5:
             fig1 = figure_list[0]
@@ -1700,15 +1704,15 @@ class save:
             fig3 = figure_list[2]
             fig4 = figure_list[3]
             fig5 = figure_list[4]
-            fig1 = fig1.savefig(file_path_1)
+            fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
             plt.close(fig1)
-            fig2 = fig2.savefig(file_path_2)
+            fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
             plt.close(fig2)
-            fig3 = fig3.savefig(file_path_3)
+            fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
             plt.close(fig3)
-            fig4 = fig4.savefig(file_path_4)
+            fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
             plt.close(fig4)
-            fig5 = fig5.savefig(file_path_5)
+            fig5 = fig5.savefig(file_path_5, bbox_inches='tight')
             plt.close(fig5)
 
     def extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7):
@@ -1731,106 +1735,106 @@ class save:
         '''
         try:
             fig1 = figure_list[0]
-            fig1 = fig1.savefig(file_path_1)
+            fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
             plt.close(fig1)
             fig2 = figure_list[1]
-            fig2 = fig2.savefig(file_path_2)
+            fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
             plt.close(fig2)
             fig3 = figure_list[2]
-            fig3 = fig3.savefig(file_path_3)
+            fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
             plt.close(fig3)
             fig4 = figure_list[3]
-            fig4 = fig4.savefig(file_path_4)
+            fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
             plt.close(fig4) 
             fig5 = figure_list[4]
-            fig5 = fig5.savefig(file_path_5)
+            fig5 = fig5.savefig(file_path_5, bbox_inches='tight')
             plt.close(fig5) 
             fig6 = figure_list[5]
-            fig6 = fig6.savefig(file_path_6)
+            fig6 = fig6.savefig(file_path_6, bbox_inches='tight')
             plt.close(fig6) 
             fig7 = figure_list[6]
-            fig7 = fig7.savefig(file_path_7)
+            fig7 = fig7.savefig(file_path_7, bbox_inches='tight')
             plt.close(fig7)
             print("Files saved!")
         except Exception as ee:
             try:
                 fig1 = figure_list[0]
-                fig1 = fig1.savefig(file_path_1)
+                fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                 plt.close(fig1)
                 fig2 = figure_list[1]
-                fig2 = fig2.savefig(file_path_2)
+                fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                 plt.close(fig2)
                 fig3 = figure_list[2]
-                fig3 = fig3.savefig(file_path_3)
+                fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
                 plt.close(fig3)
                 fig4 = figure_list[3]
-                fig4 = fig4.savefig(file_path_4)
+                fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
                 plt.close(fig4) 
                 fig5 = figure_list[4]
-                fig5 = fig5.savefig(file_path_5)
+                fig5 = fig5.savefig(file_path_5, bbox_inches='tight')
                 plt.close(fig5) 
                 fig6 = figure_list[5]
-                fig6 = fig6.savefig(file_path_6)
+                fig6 = fig6.savefig(file_path_6, bbox_inches='tight')
                 plt.close(fig6) 
                 print("Files saved!")
             except Exception as a:
                 try:
                     fig1 = figure_list[0]
-                    fig1 = fig1.savefig(file_path_1)
+                    fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                     plt.close(fig1)
                     fig2 = figure_list[1]
-                    fig2 = fig2.savefig(file_path_2)
+                    fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                     plt.close(fig2)
                     fig3 = figure_list[2]
-                    fig3 = fig3.savefig(file_path_3)
+                    fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
                     plt.close(fig3)
                     fig4 = figure_list[3]
-                    fig4 = fig4.savefig(file_path_4)
+                    fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
                     plt.close(fig4) 
                     fig5 = figure_list[4]
-                    fig5 = fig5.savefig(file_path_5)
+                    fig5 = fig5.savefig(file_path_5, bbox_inches='tight')
                     plt.close(fig5)
                     print("Files saved!")
                 except Exception as b:    
                     try:
                         fig1 = figure_list[0]
-                        fig1 = fig1.savefig(file_path_1)
+                        fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                         plt.close(fig1)
                         fig2 = figure_list[1]
-                        fig2 = fig2.savefig(file_path_2)
+                        fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                         plt.close(fig2)
                         fig3 = figure_list[2]
-                        fig3 = fig3.savefig(file_path_3)
+                        fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
                         plt.close(fig3)
                         fig4 = figure_list[3]
-                        fig4 = fig4.savefig(file_path_4)
+                        fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
                         plt.close(fig4)
                         print("Files saved!")
                     except Exception as c:
                         try:     
                             fig1 = figure_list[0]
-                            fig1 = fig1.savefig(file_path_1)
+                            fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                             plt.close(fig1)
                             fig2 = figure_list[1]
-                            fig2 = fig2.savefig(file_path_2)
+                            fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                             plt.close(fig2)
                             fig3 = figure_list[2]
-                            fig3 = fig3.savefig(file_path_3)
+                            fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
                             plt.close(fig3)
                             print("Files saved!")
                         except Exception as b:
                             try:
                                 fig1 = figure_list[0]
-                                fig1 = fig1.savefig(file_path_1)
+                                fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                                 plt.close(fig1)
                                 fig2 = figure_list[1]
-                                fig2 = fig2.savefig(file_path_2)
+                                fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                                 plt.close(fig2)
                                 print("Files saved!")
                             except Exception as c:
                                 try:
                                     fig1 = figure_list[0]
-                                    fig1 = fig1.savefig(file_path_1)
+                                    fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                                     plt.close(fig1)
                                     print("Files saved!")
                                 except Exception as d:
@@ -2071,105 +2075,105 @@ class save:
         '''
         try:
             fig1 = figure_list[0]
-            fig1 = fig1.savefig(file_path_1)
+            fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
             plt.close(fig1)
             fig2 = figure_list[1]
-            fig2 = fig2.savefig(file_path_2)
+            fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
             plt.close(fig2)
             fig3 = figure_list[2]
-            fig3 = fig3.savefig(file_path_3)
+            fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
             plt.close(fig3)
             fig4 = figure_list[3]
-            fig4 = fig4.savefig(file_path_4)
+            fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
             plt.close(fig4) 
             fig5 = figure_list[4]
-            fig5 = fig5.savefig(file_path_5)
+            fig5 = fig5.savefig(file_path_5, bbox_inches='tight')
             plt.close(fig5) 
             fig6 = figure_list[5]
-            fig6 = fig6.savefig(file_path_6)
+            fig6 = fig6.savefig(file_path_6, bbox_inches='tight')
             plt.close(fig6) 
             fig7 = figure_list[6]
-            fig7 = fig7.savefig(file_path_7)
+            fig7 = fig7.savefig(file_path_7, bbox_inches='tight')
             plt.close(fig7)
 
         except Exception as a:
             try:
                 fig1 = figure_list[0]
-                fig1 = fig1.savefig(file_path_1)
+                fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                 plt.close(fig1)
                 fig2 = figure_list[1]
-                fig2 = fig2.savefig(file_path_2)
+                fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                 plt.close(fig2)
                 fig3 = figure_list[2]
-                fig3 = fig3.savefig(file_path_3)
+                fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
                 plt.close(fig3)
                 fig4 = figure_list[3]
-                fig4 = fig4.savefig(file_path_4)
+                fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
                 plt.close(fig4) 
                 fig5 = figure_list[4]
-                fig5 = fig5.savefig(file_path_5)
+                fig5 = fig5.savefig(file_path_5, bbox_inches='tight')
                 plt.close(fig5) 
                 fig6 = figure_list[5]
-                fig6 = fig6.savefig(file_path_6)
+                fig6 = fig6.savefig(file_path_6, bbox_inches='tight')
                 plt.close(fig6) 
     
             except Exception as b:
                 try:
                     fig1 = figure_list[0]
-                    fig1 = fig1.savefig(file_path_1)
+                    fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                     plt.close(fig1)
                     fig2 = figure_list[1]
-                    fig2 = fig2.savefig(file_path_2)
+                    fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                     plt.close(fig2)
                     fig3 = figure_list[2]
-                    fig3 = fig3.savefig(file_path_3)
+                    fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
                     plt.close(fig3)
                     fig4 = figure_list[3]
-                    fig4 = fig4.savefig(file_path_4)
+                    fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
                     plt.close(fig4) 
                     fig5 = figure_list[4]
-                    fig5 = fig5.savefig(file_path_5)
+                    fig5 = fig5.savefig(file_path_5, bbox_inches='tight')
                     plt.close(fig5)
                 except Exception as c:    
                     try:
                         fig1 = figure_list[0]
-                        fig1 = fig1.savefig(file_path_1)
+                        fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                         plt.close(fig1)
                         fig2 = figure_list[1]
-                        fig2 = fig2.savefig(file_path_2)
+                        fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                         plt.close(fig2)
                         fig3 = figure_list[2]
-                        fig3 = fig3.savefig(file_path_3)
+                        fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
                         plt.close(fig3)
                         fig4 = figure_list[3]
-                        fig4 = fig4.savefig(file_path_4)
+                        fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
                         plt.close(fig4)
                     
                     except Exception as d:
                         try:     
                             fig1 = figure_list[0]
-                            fig1 = fig1.savefig(file_path_1)
+                            fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                             plt.close(fig1)
                             fig2 = figure_list[1]
-                            fig2 = fig2.savefig(file_path_2)
+                            fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                             plt.close(fig2)
                             fig3 = figure_list[2]
-                            fig3 = fig3.savefig(file_path_3)
+                            fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
                             plt.close(fig3)
                 
                         except Exception as e:
                             try:
                                 fig1 = figure_list[0]
-                                fig1 = fig1.savefig(file_path_1)
+                                fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                                 plt.close(fig1)
                                 fig2 = figure_list[1]
-                                fig2 = fig2.savefig(file_path_2)
+                                fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                                 plt.close(fig2)
                 
                             except Exception as f:
                                 try:
                                     fig1 = figure_list[0]
-                                    fig1 = fig1.savefig(file_path_1)
+                                    fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                                     plt.close(fig1)
                 
                                 except Exception as g:
