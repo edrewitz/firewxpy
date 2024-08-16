@@ -34,6 +34,25 @@ from pysolar import solar, radiation
 
 def graphical_daily_summary(station_id, file_save_path=None):
 
+
+    r'''
+    This function creates a graphical daily weather summary and solar information for the previous day's ASOS observations at any particular ASOS site. 
+
+    Required Arguments: 1) station_id (String) - The 4-letter station identifier of the ASOS station
+
+    Optional Arguments: 1) file_save_path (String) - The file path at which the user wants to save the image to. Default is set to None
+                                                     which returns the figure without saving it anywhere. 
+
+    Returns: A figure showing a graphical daily weather summary and solar information for the previous day's ASOS observations. 
+             The parameters on this daily weather summary are: 1) Temperature
+                                                               2) Relative Humidity
+                                                               3) Wind Speed
+                                                               4) Solar Elevation Angle
+                                                               5) Solar Radiation
+    
+
+    '''
+
     df, maximum_temperature, maximum_temperature_time, maximum_temperature_time_local, minimum_temperature, minimum_temperature_time, minimum_temperature_time_local, minimum_relative_humidity, minimum_relative_humidity_time, minimum_relative_humidity_time_local, maximum_relative_humidity, maximum_relative_humidity_time, maximum_relative_humidity_time_local, maximum_wind_speed, wind_dir, maximum_wind_speed_time, maximum_wind_speed_time_local, maximum_wind_gust, maximum_wind_gust_time, maximum_wind_gust_time_local, station_id, previous_day_utc = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.previous_day_weather_summary_and_all_data(station_id)
 
     time = df['date_time']
