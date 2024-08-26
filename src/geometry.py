@@ -190,25 +190,40 @@ def import_shapefiles(file_path, line_color, boundary_type):
 
     if boundary_type == 'cwa':
 
-        print("Unzipping the shapefiles...")
+        if os.path.exists('w_05mr24.shp'):
+            print("Already Satisfied: CWA Shapefile Exists!")
+        else:
+            print("CWA Shapefile needs to be unzipped!")
 
-        extract_zipped_files(f"NWS_CWA_Boundaries/w_05mr24.zip", f"NWS_CWA_Boundaries")
+            print("Unzipping the shapefiles...")
+    
+            extract_zipped_files(f"NWS_CWA_Boundaries/w_05mr24.zip", f"NWS_CWA_Boundaries")
 
         print("Shapefiles extracted successfully!")
 
     elif boundary_type == 'fwz':
 
-        print("Unzipping the shapefiles...")
-
-        extract_zipped_files(f"NWS_Fire_Weather_Zones/fz05mr24.zip", f"NWS_Fire_Weather_Zones")
+        if os.path.exists('fz05mr24.shp'):
+            print("Already Satisfied: FWZ Shapefile Exists!")
+        else:
+            print("FWZ Shapefile needs to be unzipped!")
+            
+            print("Unzipping the shapefiles...")
+    
+            extract_zipped_files(f"NWS_Fire_Weather_Zones/fz05mr24.zip", f"NWS_Fire_Weather_Zones")
 
         print("Shapefiles extracted successfully!")
 
     elif boundary_type == 'pz':
 
-        print("Unzipping the shapefiles...")
+        if os.path.exists('z_05mr24.shp'):
+            print("Already Satisfied: FWZ Shapefile Exists!")
+        else:
+            print("Public Zones Shapefile needs to be unzipped!")
 
-        extract_zipped_files(f"NWS_Public_Zones/z_05mr24.zip", f"NWS_Public_Zones")
+            print("Unzipping the shapefiles...")
+    
+            extract_zipped_files(f"NWS_Public_Zones/z_05mr24.zip", f"NWS_Public_Zones")
 
         print("Shapefiles extracted successfully!")
 
