@@ -13,9 +13,9 @@ import os
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 
-from zipfile import ZipFile
 from cartopy.io.shapereader import Reader
 from cartopy.feature import ShapelyFeature
+from utilities import file_functions
 
 #### INFORMATION CLASS ####
 # The information class returns helpful tips for when the user encounters errors
@@ -54,7 +54,7 @@ def download_shape_files():
     # CWAs
     
     if os.path.exists(cwa_path):
-        print("Already Satisfied: NWS_CWA_Boundaries folder exists!")
+        print("Already Satisfied: NWS_CWA_Boundaries folder exists.")
     else:
         print("NWS_CWA_Boundaries folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
@@ -74,7 +74,7 @@ def download_shape_files():
     # Fire Weather Zones
 
     if os.path.exists(fwz_path):
-        print("Already Satisfied: NWS_CWA_Boundaries folder exists!")
+        print("Already Satisfied: NWS_Fire_Weather_Zones folder exists.")
     else:
         print("NWS_Fire_Weather_Zones folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
@@ -94,7 +94,7 @@ def download_shape_files():
     # Public Zones
 
     if os.path.exists(pz_path):
-        print("Already Satisfied: NWS_CWA_Boundaries folder exists!")
+        print("Already Satisfied: NWS_Public_Zones folder exists.")
     else:
         print("NWS_Public_Zones folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
@@ -113,7 +113,7 @@ def download_shape_files():
 
     # GACC Boundaries
     if os.path.exists(gacc_path):
-        print("Already Satisfied: NWS_CWA_Boundaries folder exists!")
+        print("Already Satisfied: GACC Boundaries Shapefiles folder exists.")
     else:
         print("GACC Boundaries Shapefiles folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
@@ -136,7 +136,7 @@ def download_shape_files():
 
     # PSA Boundaries
     if os.path.exists(psa_path):
-        print("Already Satisfied: NWS_CWA_Boundaries folder exists!")
+        print("Already Satisfied: PSA Shapefiles folder exists.")
     else:
         print("PSA Shapefiles folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
@@ -157,15 +157,6 @@ def download_shape_files():
         os.replace('National_PSA_Current.prj', f"PSA Shapefiles/National_PSA_Current.prj")
         os.replace('National_PSA_Current.shp', f"PSA Shapefiles/National_PSA_Current.shp")
         os.replace('National_PSA_Current.shx', f"PSA Shapefiles/National_PSA_Current.shx")
-
-
-def extract_zipped_files(file_path, extraction_folder):
-
-    # Load the zipfile
-    with ZipFile(file_path, 'r') as zObject:
-        # extract a specific file in the zipped folder
-        zObject.extractall(extraction_folder)
-    zObject.close()
 
 
 
@@ -190,40 +181,40 @@ def import_shapefiles(file_path, line_color, boundary_type):
 
     if boundary_type == 'cwa':
 
-        if os.path.exists('w_05mr24.shp'):
-            print("Already Satisfied: CWA Shapefile Exists!")
+        if os.path.exists(f"NWS_CWA_Boundaries/w_05mr24.shp"):
+            print("Already Satisfied: CWA Shapefile Exists.")
         else:
-            print("CWA Shapefile needs to be unzipped!")
+            print("CWA Shapefile needs to be unzipped.")
 
             print("Unzipping the shapefiles...")
     
-            extract_zipped_files(f"NWS_CWA_Boundaries/w_05mr24.zip", f"NWS_CWA_Boundaries")
+            file_functions.extract_zipped_files(f"NWS_CWA_Boundaries/w_05mr24.zip", f"NWS_CWA_Boundaries")
 
         print("Shapefiles extracted successfully!")
 
     elif boundary_type == 'fwz':
 
-        if os.path.exists('fz05mr24.shp'):
-            print("Already Satisfied: FWZ Shapefile Exists!")
+        if os.path.exists(f"NWS_Fire_Weather_Zones/fz05mr24.shp"):
+            print("Already Satisfied: FWZ Shapefile Exists.")
         else:
-            print("FWZ Shapefile needs to be unzipped!")
+            print("FWZ Shapefile needs to be unzipped.")
             
             print("Unzipping the shapefiles...")
     
-            extract_zipped_files(f"NWS_Fire_Weather_Zones/fz05mr24.zip", f"NWS_Fire_Weather_Zones")
+            file_functions.extract_zipped_files(f"NWS_Fire_Weather_Zones/fz05mr24.zip", f"NWS_Fire_Weather_Zones")
 
         print("Shapefiles extracted successfully!")
 
     elif boundary_type == 'pz':
 
-        if os.path.exists('z_05mr24.shp'):
-            print("Already Satisfied: FWZ Shapefile Exists!")
+        if os.path.exists(f"NWS_Public_Zones/z_05mr24.shp"):
+            print("Already Satisfied: FWZ Shapefile Exists.")
         else:
-            print("Public Zones Shapefile needs to be unzipped!")
+            print("Public Zones Shapefile needs to be unzipped.")
 
             print("Unzipping the shapefiles...")
     
-            extract_zipped_files(f"NWS_Public_Zones/z_05mr24.zip", f"NWS_Public_Zones")
+            file_functions.extract_zipped_files(f"NWS_Public_Zones/z_05mr24.zip", f"NWS_Public_Zones")
 
         print("Shapefiles extracted successfully!")
 
