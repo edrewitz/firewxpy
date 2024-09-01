@@ -45,70 +45,70 @@ def shape_file_error():
 def download_shape_files():
 
     # Defines file paths for different shapefiles
-    cwa_path = f"NWS_CWA_Boundaries"
-    fwz_path = f"NWS_Fire_Weather_Zones"
-    pz_path = f"NWS_Public_Zones"
+    cwa_path = f"NWS CWA Boundaries"
+    fwz_path = f"NWS Fire Weather Zones"
+    pz_path = f"NWS Public Zones"
     psa_path = f"PSA Shapefiles"
     gacc_path = f"GACC Boundaries Shapefiles"
 
     # CWAs
     
     if os.path.exists(cwa_path):
-        print("Already Satisfied: NWS_CWA_Boundaries folder exists.")
+        print("Already Satisfied: NWS CWA Boundaries folder exists.")
     else:
-        print("NWS_CWA_Boundaries folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
+        print("NWS CWA Boundaries folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
-        os.mkdir("NWS_CWA_Boundaries")
+        os.mkdir("NWS CWA Boundaries")
         # Downloads the CWA Shapefiles
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_CWA_Boundaries/w_05mr24.dbf', 'w_05mr24.dbf')
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_CWA_Boundaries/w_05mr24.prj', 'w_05mr24.prj')
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_CWA_Boundaries/w_05mr24.shx', 'w_05mr24.shx')
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_CWA_Boundaries/w_05mr24.zip', 'w_05mr24.zip')
         # Moves files to new folder
-        os.replace('w_05mr24.zip', f"NWS_CWA_Boundaries/w_05mr24.zip")
-        os.replace('w_05mr24.dbf', f"NWS_CWA_Boundaries/w_05mr24.dbf")
-        os.replace('w_05mr24.prj', f"NWS_CWA_Boundaries/w_05mr24.prj")
-        os.replace('w_05mr24.shx', f"NWS_CWA_Boundaries/w_05mr24.shx")
+        os.replace('w_05mr24.zip', f"NWS CWA Boundaries/w_05mr24.zip")
+        os.replace('w_05mr24.dbf', f"NWS CWA Boundaries/w_05mr24.dbf")
+        os.replace('w_05mr24.prj', f"NWS CWA Boundaries/w_05mr24.prj")
+        os.replace('w_05mr24.shx', f"NWS CWA Boundaries/w_05mr24.shx")
         print("Success!")
 
     # Fire Weather Zones
 
     if os.path.exists(fwz_path):
-        print("Already Satisfied: NWS_Fire_Weather_Zones folder exists.")
+        print("Already Satisfied: NWS Fire Weather Zones folder exists.")
     else:
-        print("NWS_Fire_Weather_Zones folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
+        print("NWS Fire Weather Zones folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
-        os.mkdir("NWS_Fire_Weather_Zones")
+        os.mkdir("NWS Fire Weather Zones")
         # Downloads the FWZ Shapefiles
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Fire_Weather_Zones/fz05mr24.zip', 'fz05mr24.zip')
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Fire_Weather_Zones/fz05mr24.dbf', 'fz05mr24.dbf')
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Fire_Weather_Zones/fz05mr24.prj', 'fz05mr24.prj')
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Fire_Weather_Zones/fz05mr24.shx', 'fz05mr24.shx')
         # Moves files to new folder
-        os.replace('fz05mr24.zip', f"NWS_Fire_Weather_Zones/fz05mr24.zip")
-        os.replace('fz05mr24.dbf', f"NWS_Fire_Weather_Zones/fz05mr24.dbf")
-        os.replace('fz05mr24.prj', f"NWS_Fire_Weather_Zones/fz05mr24.prj")
-        os.replace('fz05mr24.shx', f"NWS_Fire_Weather_Zones/fz05mr24.shx")
+        os.replace('fz05mr24.zip', f"NWS Fire Weather Zones/fz05mr24.zip")
+        os.replace('fz05mr24.dbf', f"NWS Fire Weather Zones/fz05mr24.dbf")
+        os.replace('fz05mr24.prj', f"NWS Fire Weather Zones/fz05mr24.prj")
+        os.replace('fz05mr24.shx', f"NWS Fire Weather Zones/fz05mr24.shx")
         print("Success!")
 
     # Public Zones
 
     if os.path.exists(pz_path):
-        print("Already Satisfied: NWS_Public_Zones folder exists.")
+        print("Already Satisfied: NWS Public Zones folder exists.")
     else:
-        print("NWS_Public_Zones folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
+        print("NWS Public Zones folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
-        os.mkdir("NWS_Public_Zones")
+        os.mkdir("NWS Public Zones")
         # Downloads files
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Public_Zones/z_05mr24.zip', 'z_05mr24.zip')
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Public_Zones/z_05mr24.dbf', 'z_05mr24.dbf')
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Public_Zones/z_05mr24.prj', 'z_05mr24.prj')
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Public_Zones/z_05mr24.shx', 'z_05mr24.shx')
         # Moves files to new folder
-        os.replace('z_05mr24.zip', f"NWS_Public_Zones/z_05mr24.zip")
-        os.replace('z_05mr24.dbf', f"NWS_Public_Zones/z_05mr24.dbf")
-        os.replace('z_05mr24.prj', f"NWS_Public_Zones/z_05mr24.prj")
-        os.replace('z_05mr24.shx', f"NWS_Public_Zones/z_05mr24.shx")
+        os.replace('z_05mr24.zip', f"NWS Public Zones/z_05mr24.zip")
+        os.replace('z_05mr24.dbf', f"NWS Public Zones/z_05mr24.dbf")
+        os.replace('z_05mr24.prj', f"NWS Public Zones/z_05mr24.prj")
+        os.replace('z_05mr24.shx', f"NWS Public Zones/z_05mr24.shx")
         print("Success!")
 
     # GACC Boundaries
@@ -181,40 +181,40 @@ def import_shapefiles(file_path, line_color, boundary_type):
 
     if boundary_type == 'cwa':
 
-        if os.path.exists(f"NWS_CWA_Boundaries/w_05mr24.shp"):
+        if os.path.exists(f"NWS CWA Boundaries/w_05mr24.shp"):
             print("Already Satisfied: CWA Shapefile Exists.")
         else:
             print("CWA Shapefile needs to be unzipped.")
 
             print("Unzipping the shapefiles...")
     
-            file_functions.extract_zipped_files(f"NWS_CWA_Boundaries/w_05mr24.zip", f"NWS_CWA_Boundaries")
+            file_functions.extract_zipped_files(f"NWS CWA Boundaries/w_05mr24.zip", f"NWS CWA Boundaries")
 
         print("Shapefiles extracted successfully!")
 
     elif boundary_type == 'fwz':
 
-        if os.path.exists(f"NWS_Fire_Weather_Zones/fz05mr24.shp"):
+        if os.path.exists(f"NWS Fire Weather Zones/fz05mr24.shp"):
             print("Already Satisfied: FWZ Shapefile Exists.")
         else:
             print("FWZ Shapefile needs to be unzipped.")
             
             print("Unzipping the shapefiles...")
     
-            file_functions.extract_zipped_files(f"NWS_Fire_Weather_Zones/fz05mr24.zip", f"NWS_Fire_Weather_Zones")
+            file_functions.extract_zipped_files(f"NWS Fire Weather Zones/fz05mr24.zip", f"NWS Fire Weather Zones")
 
         print("Shapefiles extracted successfully!")
 
     elif boundary_type == 'pz':
 
-        if os.path.exists(f"NWS_Public_Zones/z_05mr24.shp"):
+        if os.path.exists(f"NWS Public Zones/z_05mr24.shp"):
             print("Already Satisfied: FWZ Shapefile Exists.")
         else:
             print("Public Zones Shapefile needs to be unzipped.")
 
             print("Unzipping the shapefiles...")
     
-            file_functions.extract_zipped_files(f"NWS_Public_Zones/z_05mr24.zip", f"NWS_Public_Zones")
+            file_functions.extract_zipped_files(f"NWS Public Zones/z_05mr24.zip", f"NWS Public Zones")
 
         print("Shapefiles extracted successfully!")
 
