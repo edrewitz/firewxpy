@@ -126,7 +126,11 @@ class info:
     def parameter_name_error():
         error_msg = f"""
     
-        WARNING: USER ENTERED AN INVALID PARAMETER NAME. 
+        WARNING - THIS ERROR COULD BE ATTRIBUTED TO EITHER OF THE FOLLOWING:
+
+        1) USER ENTERED AN INVALID PARAMETER NAME
+
+        2) USER SCHEDULED THE SCRIPT TO RUN BETWEEN THE 17TH AND 47TH MINUTE OF THE HOUR
     
         FOR THE FULL LIST OF PARAMETER NAMES VISIT THE FOLLOWING LINK:
     
@@ -241,6 +245,29 @@ class FTP_Downloads:
     The new file is created automatically by running the script, thus the user does not need to manually create a blank file as that wouldn't work with the script as written. 
 
     '''
+
+    def download_NDFD_grids(directory_name, parameter):
+
+        directory_name = directory_name
+        parameter = parameter
+
+        try:
+
+            grbs, ds, count_short, count_extended = FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, parameter)
+
+            print("Downloaded data successfully!")
+        except Exception as a:
+
+            standard.idle()
+
+            print("Trying again to download data...")
+
+            grbs, ds, count_short, count_extended = FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, parameter)
+
+            print("Downloaded data successfully!")
+
+        return grbs, ds, count_short, count_extended
+
 
     def get_NWS_NDFD_7_Day_grid_data(directory_name, parameter):
         
