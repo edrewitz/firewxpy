@@ -23,7 +23,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
-	"matplotlib>=3.8",
+	"matplotlib>=3.7",
 	"metpy>=1.5.1",
 	"netcdf4>=1.7.1",
 	"numpy>=1.26.2",
