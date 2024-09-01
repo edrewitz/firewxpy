@@ -206,7 +206,7 @@ class scaling:
         return decimate
 
 
-    def get_thredds_decimation(western_bound, eastern_bound, southern_bound, northern_bound, barbs):
+    def get_rtma_decimation(western_bound, eastern_bound, southern_bound, northern_bound, barbs):
 
         western_bound_init = -122
         eastern_bound_init = -114
@@ -368,7 +368,35 @@ class scaling:
             decimate = decimate
 
         return decimate
+
+    def get_rtma_decimation_by_state(state):
         
+        state = state
+
+        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+            decimation = 11300
+        if state == 'ME' or state =='me':
+            decimation = 300
+        if state == 'NH' or state =='nh':
+            decimation = 300
+        if state == 'VT' or state =='vt':
+            decimation = 300
+        if state == 'MA' or state =='ma':
+            decimation = 300
+        if state == 'RI' or state =='ri':
+            decimation = 100
+        if state == 'CT' or state =='ct':
+            decimation = 300
+        if state == 'NJ' or state =='nj':
+            decimation = 300
+        if state == 'DE' or state =='de':
+            decimation = 100
+        if state == 'NY' or state =='ny':
+            decimation = 300
+        if state == 'PA' or state =='pa':
+            decimation = 300
+
+        return decimation
         
     def get_NDFD_decimation_by_state(state):
 
@@ -462,8 +490,6 @@ class scaling:
             decimate = 225
         if state == 'KS' or state == 'ks':
             decimate = 125
-        if state == 'NE' or state == 'ne':
-            decimate = 125
         if state == 'WI' or state == 'wi':
             decimate = 100 
         if state == 'IA' or state == 'ia':
@@ -475,6 +501,8 @@ class scaling:
         if state == 'MO' or state == 'mo':
             decimate = 90
         if state == 'KY' or state == 'ky':
+            decimate = 2100
+        if state == 'TN' or state == 'tn':
             decimate = 2100
 
         return decimate
@@ -514,5 +542,26 @@ class scaling:
         return decimate
 
 
+class contouring:
+
+    def get_label_levels(start, stop, step):
+
+        start=start
+        stop=stop
+        step=step
+
+        levels = []
+
+        levels.append(start)
+        for i in range(start, stop):
+            val = ((start + step) * i) + step
+            if val < stop:
+                levels.append(val)             
+
+        levels.append(stop)
+
+        return levels
+
+        
 
         
