@@ -93,7 +93,19 @@ def check_NDFD_directory_name(directory_name):
     return directory_name
 
 
-def get_state_data_and_coords(state, ndfd_grids, plot_type):
+def get_sample_point_color_by_state(state, plot_type):
+
+    if plot_type == 'rtma rh':
+        color = 'blue'
+        if state == 'US' or state == 'us' or state == 'usa' or state == 'USA':
+            color = 'red'
+        if state == 'NY' or state =='ny':
+            color = 'red'
+
+    return color
+
+
+def get_state_data_and_coords(state, ndfd_grids, plot_type, rtma_data=None):
 
     state = state
     ndfd_grids = ndfd_grids
@@ -101,36 +113,35 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
     datacrs = ccrs.PlateCarree()
     plot_type = plot_type
     shrink = 0.7
+    legend_fontsize = 14
+    directory_name = None
+    state_border_linewidth=1
+    county_border_linewidth=0.5
+    title_x_position = 0.5
+    aspect=30
+    tick = 9
 
     if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -126
         eastern_bound = -66
-        southern_bound = 20
-        northern_bound = 55
-        fig_x_length = 12
+        southern_bound = 24
+        northern_bound = 50   
+        fig_x_length = 14
         fig_y_length = 8
-        signature_x_position = 0.09
-        signature_y_position = 0.05
-        if plot_type == 'minrh':
-            title_fontsize=17 
-        if plot_type == 'poor recovery':
-            title_fontsize=15 
-        if plot_type == 'excellent recovery':
-            title_fontsize=14
-        if plot_type == 'maxrh':
-            title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            title_fontsize=15
-        if plot_type == 'low minrh':
-            title_fontsize=15
-        subplot_title_fontsize=20 
-        signature_fontsize=20
+        signature_x_position = 0.13
+        signature_y_position = 0.26
+        title_fontsize = 20
+        subplot_title_fontsize=14 
+        signature_fontsize=10
         sample_point_fontsize=8
         colorbar_fontsize=12
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            colorbar_fontsize=8
+        legend_fontsize = 12
+        state_border_linewidth=1
+        county_border_linewidth=0.2
+            
+
 
     if state == 'AK' or state == 'ak':
         if ndfd_grids == True:
@@ -197,328 +208,551 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
         western_bound = -71.2
         eastern_bound = -66.75
-        southern_bound = 42.87
+        southern_bound = 42.2
         northern_bound = 47.6
-        fig_x_length = 8
-        fig_y_length = 8
-        signature_x_position = 0.10
-        signature_y_position = 0.05
-        if plot_type == 'minrh':
-            title_fontsize=17 
-        if plot_type == 'poor recovery':
-            title_fontsize=15 
-        if plot_type == 'excellent recovery':
-            title_fontsize=14
-        if plot_type == 'maxrh':
-            title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            title_fontsize=15
-        if plot_type == 'low minrh':
-            title_fontsize=15
-        subplot_title_fontsize=12 
+        fig_x_length = 15
+        fig_y_length = 15
+        title_fontsize = 18
+        signature_x_position = 0.255
+        signature_y_position = 0.25
         signature_fontsize=14
         sample_point_fontsize=10
         colorbar_fontsize=12
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            colorbar_fontsize=8
+        subplot_title_fontsize=15 
+        legend_fontsize = 30
+
+            
 
     if state == 'NH' or state == 'nh':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
         western_bound = -72.65
         eastern_bound = -70.60
-        southern_bound = 42.66
+        southern_bound = 42.5
         northern_bound = 45.36
-        fig_x_length = 8
-        fig_y_length = 9
+        fig_x_length = 25
+        fig_y_length = 25
         signature_x_position = 0.10
         signature_y_position = 0.05
+        subplot_title_fontsize=12 
+        signature_fontsize=14
+        title_fontsize = 12
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=15
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            title_fontsize = 50
+            subplot_title_fontsize = 30
+            signature_x_position = 0.29
+            signature_y_position = 0.25
+            signature_fontsize=18
+            fig_y_length = 25
+            fig_x_length = 25
+            shrink = 0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
+        if plot_type == 'rtma rh':
+            fig_x_length = 7
+            fig_y_length = 7
+            signature_x_position = 0.5
+            signature_y_position = -0.13  
+            signature_fontsize=10
+            title_x_position = 0.45
+            title_fontsize = 16
 
     if state == 'VT' or state == 'vt':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
         western_bound = -73.50
         eastern_bound = -71.44
-        southern_bound = 42.66
+        southern_bound = 42.5
         northern_bound = 45.10
-        fig_x_length = 8
-        fig_y_length = 9
+        fig_x_length = 25
+        fig_y_length = 25
         signature_x_position = 0.10
         signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=15
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.29
+            signature_y_position = 0.25
+            signature_fontsize=18
+            fig_y_length = 25
+            fig_x_length = 25
+            shrink = 0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
+        if plot_type == 'rtma rh':
+            fig_x_length = 7
+            fig_y_length = 7
+            signature_x_position = 0.5
+            signature_y_position = -0.13  
+            signature_fontsize=10
+            title_x_position = 0.45
+            title_fontsize = 16
 
     if state == 'MA' or state == 'ma':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
         western_bound = -73.55
         eastern_bound = -69.88
-        southern_bound = 41.22
+        southern_bound = 41.3
         northern_bound = 42.92
-        fig_x_length = 7
-        fig_y_length = 4
+        fig_x_length = 25
+        fig_y_length = 12
         signature_x_position = 0.10
         signature_y_position = 0.05
+        title_fontsize = 30
+        subplot_title_fontsize=20
+        signature_fontsize=11
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 27
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9 
-        signature_fontsize=11
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=13
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.17
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
+        if plot_type == 'rtma rh':
+            fig_x_length = 6
+            fig_y_length = 3
+            signature_x_position = 0.4
+            signature_y_position = 0.4 
+            signature_fontsize=8
+            title_x_position = 0.45
+            title_fontsize = 16
 
     if state == 'RI' or state == 'ri':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
         western_bound = -71.86
         eastern_bound = -71.11
-        southern_bound = 41.29
+        southern_bound = 41.2
         northern_bound = 42.03
-        fig_x_length = 8
-        fig_y_length = 8
+        fig_x_length = 25
+        fig_y_length = 25
         signature_x_position = 0.10
         signature_y_position = 0.05
+        title_fontsize=50
+        subplot_title_fontsize=30
+        signature_fontsize=14
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=15
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.23
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
+        if plot_type == 'rtma rh':
+            fig_x_length = 8
+            fig_y_length = 7
+            signature_x_position = 0.5
+            signature_y_position = -0.12  
+            signature_fontsize=12
+            title_x_position = 0.45
+            title_fontsize = 16
 
     if state == 'CT' or state == 'ct':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
         western_bound = -73.74
         eastern_bound = -71.77
-        southern_bound = 40.97
+        southern_bound = 40.85
         northern_bound = 42.06
-        fig_x_length = 8
-        fig_y_length = 5
+        fig_x_length = 25
+        fig_y_length = 12
         signature_x_position = 0.10
         signature_y_position = 0.05
+        title_fontsize = 30
+        subplot_title_fontsize=20
+        signature_fontsize=11
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 27
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=15
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.27
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
+        if plot_type == 'rtma rh':
+            fig_x_length = 6
+            fig_y_length = 3
+            signature_x_position = 0.5
+            signature_y_position = -0.18
+            signature_fontsize=8
+            title_x_position = 0.45
+            title_fontsize = 14
 
     if state == 'NJ' or state == 'nj':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
         western_bound = -75.60
         eastern_bound = -73.88
-        southern_bound = 38.91
+        southern_bound = 38.75
         northern_bound = 41.37
-        fig_x_length = 8
-        fig_y_length = 9
+        fig_x_length = 25
+        fig_y_length = 25
         signature_x_position = 0.10
-        signature_y_position = 0.03
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=15
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.31
+            signature_y_position = 0.25
+            signature_fontsize=18
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
+        if plot_type == 'rtma rh':
+            fig_y_length = 6
+            fig_x_length = 5
+            signature_x_position = 0.5
+            signature_y_position = -0.12
+            signature_fontsize=8
+            title_x_position = 0.45
+            title_fontsize = 14
+            subplot_title_fontsize=10
 
     if state == 'DE' or state == 'de':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
-        western_bound = -75.855
+        western_bound = -76
         eastern_bound = -75.0
-        southern_bound = 39.88
-        northern_bound = 38.41
-        fig_x_length = 7
-        fig_y_length = 9
+        southern_bound = 38.3
+        northern_bound = 39.9
+        fig_x_length = 25
+        fig_y_length = 25
         signature_x_position = 0.10
-        signature_y_position = 0.03
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=13
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.32
+            signature_y_position = 0.25
+            signature_fontsize=18
+            fig_y_length = 25
+            fig_x_length = 25
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
+        if plot_type == 'rtma rh':
+            fig_y_length = 6
+            fig_x_length = 5
+            signature_x_position = 0.5
+            signature_y_position = -0.12
+            signature_fontsize=8
+            title_x_position = 0.45
+            title_fontsize = 14
+            subplot_title_fontsize=10
 
     if state == 'NY' or state == 'ny':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -79.85
         eastern_bound = -71.85
-        southern_bound = 40.48
+        southern_bound = 40.2
         northern_bound = 45.08
-        fig_x_length = 7
-        fig_y_length = 4
+        fig_x_length = 25
+        fig_y_length = 18
         signature_x_position = 0.10
         signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9 
-        signature_fontsize=11
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.15
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
+        if plot_type == 'rtma rh':
+            signature_x_position = 0.5
+            signature_y_position = -0.18
+            signature_fontsize=8
+            title_x_position = 0.45
+            title_fontsize = 16
+            subplot_title_fontsize=10
+            sample_point_fontsize=7
+            fig_x_length=6
 
     if state == 'PA' or state == 'pa':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -80.6
         eastern_bound = -74.6
-        southern_bound = 39.65
+        southern_bound = 39.25
         northern_bound = 42.32
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.12
+        fig_x_length = 25
+        fig_y_length = 16
+        signature_x_position = 0.10
         signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9 
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.14
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
+        if plot_type == 'rtma rh':
+            signature_x_position = 0.015
+            signature_y_position = 0.135
+            signature_fontsize=15
+            title_x_position = 0.5
+            title_fontsize = 30
+            subplot_title_fontsize=18
+            sample_point_fontsize=15
+            fig_x_length=20
+            fig_y_length=8
+            shrink=0.5
+            colorbar_fontsize=12
+            
 
     if state == 'OH' or state == 'oh':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -84.9
         eastern_bound = -80.4
-        southern_bound = 38.35
+        southern_bound = 38.2
         northern_bound = 42.0
-        fig_x_length = 6
-        fig_y_length = 5
-        signature_x_position = 0.07
+        fig_x_length = 25
+        fig_y_length = 16
+        signature_x_position = 0.10
         signature_y_position = 0.05
+        subplot_title_fontsize=27
+        title_fontsize = 47
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9 
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.28
+            signature_y_position = 0.25
+            signature_fontsize=14
+            shrink=0.6
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
 
@@ -527,28 +761,42 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -90.5
         eastern_bound = -82.31
-        southern_bound = 41.67
+        southern_bound = 41.1
         northern_bound = 48.26
-        fig_x_length = 7
-        fig_y_length = 5
-        signature_x_position = 0.13
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 18
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9 
-        signature_fontsize=10
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.24
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
 
@@ -557,28 +805,42 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
         western_bound = -97.45
         eastern_bound = -89.28
-        southern_bound = 43.46
+        southern_bound = 43
         northern_bound = 49.45
-        fig_x_length = 7
-        fig_y_length = 5
-        signature_x_position = 0.11
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 23
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9 
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.15
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
 
@@ -587,28 +849,42 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/'
         western_bound = -93.1
         eastern_bound = -86.68
-        southern_bound = 42.38
+        southern_bound = 41.8
         northern_bound = 47.11
-        fig_x_length = 7
-        fig_y_length = 5
-        signature_x_position = 0.11
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 22
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9 
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.18
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
 
@@ -617,28 +893,42 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/'
         western_bound = -96.77
         eastern_bound = -90
-        southern_bound = 40.3
+        southern_bound = 39.9
         northern_bound = 43.7
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.11
+        fig_x_length = 25
+        fig_y_length = 18
+        signature_x_position = 0.10
         signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9 
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.14
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
 
@@ -647,58 +937,87 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/'
         western_bound = -88.19
         eastern_bound = -84.69
-        southern_bound = 37.68
+        southern_bound = 37.2
         northern_bound = 41.79
-        fig_x_length = 7
-        fig_y_length = 7
-        signature_x_position = 0.11
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 25
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9 
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.3
+            signature_y_position = 0.25
+            signature_fontsize=18
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
 
     if state == 'MO' or state == 'mo':
         if ndfd_grids == True:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/'
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -95.9
         eastern_bound = -88.92
         southern_bound = 35.8
         northern_bound = 40.66
-        fig_x_length = 7
-        fig_y_length = 5
-        signature_x_position = 0.11
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 21
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9 
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.16
+            signature_y_position = 0.25
+            signature_fontsize=22
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
 
@@ -707,28 +1026,43 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -91.67
         eastern_bound = -87.44
-        southern_bound = 36.87
+        southern_bound = 36.3
         northern_bound = 42.55
-        fig_x_length = 7
-        fig_y_length = 7
-        signature_x_position = 0.17
-        signature_y_position = 0.02
+        fig_x_length = 25
+        fig_y_length = 25
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9 
-        signature_fontsize=10
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.3
+            signature_y_position = 0.25
+            signature_fontsize=18
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
 
@@ -737,248 +1071,360 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
         western_bound = -104.2
         eastern_bound = -96.47
-        southern_bound = 45.8
+        southern_bound = 45.3
         northern_bound = 49.1
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.08
+        fig_x_length = 25
+        fig_y_length = 15
+        signature_x_position = 0.10
         signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9 
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.14
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.6
+        
 
     if state == 'SD' or state == 'sd':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
         western_bound = -104.14
         eastern_bound = -96.3
-        southern_bound = 42.45
+        southern_bound = 42.05
         northern_bound = 46
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.08
+        fig_x_length = 25
+        fig_y_length = 15
+        signature_x_position = 0.10
         signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9 
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.14
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.6
+        
 
     if state == 'NE' or state == 'ne':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
         western_bound = -104.14
         eastern_bound = -95.25
-        southern_bound = 39.9
+        southern_bound = 39.4
         northern_bound = 43.1
-        fig_x_length = 7
-        fig_y_length = 3
-        signature_x_position = 0.09
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 13
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=6
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.14
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.5    
+           
 
     if state == 'MD' or state == 'md':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -79.52
         eastern_bound = -74.97
-        southern_bound = 37.93
+        southern_bound = 37.9
         northern_bound = 39.79
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.09
-        signature_y_position = 0.06
+        fig_x_length = 25
+        fig_y_length = 14
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.14
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.5   
+           
 
     if state == 'VA' or state == 'va':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/'
         western_bound = -83.77
         eastern_bound = -75.15
-        southern_bound = 36.45
+        southern_bound = 36
         northern_bound = 39.53
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.07
-        signature_y_position = 0.06
+        fig_x_length = 25
+        fig_y_length = 13
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.14
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.5   
+          
 
     if state == 'SC' or state == 'sc':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/'
         western_bound = -83.46
         eastern_bound = -78.35
-        southern_bound = 31.96
+        southern_bound = 31.4
         northern_bound = 35.25
-        fig_x_length = 7
-        fig_y_length = 5
-        signature_x_position = 0.07
-        signature_y_position = 0.06
+        fig_x_length = 25
+        fig_y_length = 21
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.16
+            signature_y_position = 0.25
+            signature_fontsize=22
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7   
+          
 
     if state == 'KY' or state == 'ky':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -89.64
         eastern_bound = -81.86
-        southern_bound = 36.42
+        southern_bound = 36
         northern_bound = 39.24
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.07
-        signature_y_position = 0.06
+        fig_x_length = 25
+        fig_y_length = 13
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.14
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.5   
+          
 
     if state == 'WV' or state == 'wv':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -82.68
         eastern_bound = -77.61
-        southern_bound = 37.15
+        southern_bound = 36.5
         northern_bound = 40.72
-        fig_x_length = 7
-        fig_y_length = 5
-        signature_x_position = 0.07
-        signature_y_position = 0.04
+        fig_x_length = 25
+        fig_y_length = 21
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.2
+            signature_y_position = 0.25
+            signature_fontsize=22
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.5   
+           
 
     if state == 'NC' or state == 'nc':
         if ndfd_grids == True:
@@ -987,60 +1433,89 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
         eastern_bound = -75.35
         southern_bound = 33
         northern_bound = 37
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.07
-        signature_y_position = 0.06
+        fig_x_length = 25
+        fig_y_length = 13
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=25
+        title_fontsize = 45
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.14
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.5   
+           
 
     if state == 'CA' or state == 'ca':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -124.61
         eastern_bound = -113.93
-        southern_bound = 32.4
+        southern_bound = 32.1
         northern_bound = 42.2
-        fig_x_length = 7
-        fig_y_length = 6
-        signature_x_position = 0.07
-        signature_y_position = 0.04
+        fig_x_length = 25
+        fig_y_length = 25
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=35
+        title_fontsize = 55
+        signature_fontsize=22
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
+        tick=12
+        aspect=30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.19
+            signature_y_position = 0.25
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.5 
+        
 
     if state == 'NV' or state == 'nv':
         if ndfd_grids == True:
@@ -1049,29 +1524,44 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
         eastern_bound = -113.92
         southern_bound = 34.91
         northern_bound = 42.09
-        fig_x_length = 7
-        fig_y_length = 7
-        signature_x_position = 0.07
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 21
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.29
+            signature_y_position = 0.25
+            signature_fontsize=20
+            shrink=0.6
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.5   
+          
 
     if state == 'FL' or state == 'fl':
         if ndfd_grids == True:
@@ -1080,308 +1570,453 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
         eastern_bound = -79.77
         southern_bound = 24.44
         northern_bound = 31.08
-        fig_x_length = 7
-        fig_y_length = 6
-        signature_x_position = 0.07
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 21
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.23
+            signature_y_position = 0.25
+            signature_fontsize=20
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7   
+        
 
     if state == 'OR' or state == 'or':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
         western_bound = -125
         eastern_bound = -116.25
-        southern_bound = 41.9
+        southern_bound = 41.3
         northern_bound = 46.36
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.07
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 18
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.14
+            signature_y_position = 0.25
+            signature_fontsize=20
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7   
+          
 
     if state == 'WA' or state == 'wa':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
         western_bound = -125
         eastern_bound = -116.9
-        southern_bound = 41.9
+        southern_bound = 45
         northern_bound = 49.1
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.07
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 17
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.14
+            signature_y_position = 0.25
+            signature_fontsize=20
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7   
+         
 
     if state == 'ID' or state == 'id':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
         western_bound = -117.4
         eastern_bound = -110.97
-        southern_bound = 41.9
+        southern_bound = 41.2
         northern_bound = 49.1
-        fig_x_length = 7
-        fig_y_length = 7
-        signature_x_position = 0.07
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 21
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=10
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.3
+            signature_y_position = 0.25
+            signature_fontsize=20
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7   
+        
 
     if state == 'GA' or state == 'ga':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -85.8
         eastern_bound = -80.68
-        southern_bound = 30.28
+        southern_bound = 29.8
         northern_bound = 35.05
-        fig_x_length = 7
-        fig_y_length = 6
-        signature_x_position = 0.07
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 21
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=10
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=13
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.28
+            signature_y_position = 0.25
+            signature_fontsize=20
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7  
+          
 
     if state == 'AL' or state == 'al':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -88.75
         eastern_bound = -84.77
-        southern_bound = 30.12
+        southern_bound = 29.75
         northern_bound = 35.05
-        fig_x_length = 7
-        fig_y_length = 8
-        signature_x_position = 0.07
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 21
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=10
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.32
+            signature_y_position = 0.25
+            signature_fontsize=20
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7  
+        
 
     if state == 'MS' or state == 'ms':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
         western_bound = -91.82
         eastern_bound = -87.95
-        southern_bound = 30.12
+        southern_bound = 29.65
         northern_bound = 35.05
-        fig_x_length = 7
-        fig_y_length = 8
-        signature_x_position = 0.07
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 21
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=10
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.32
+            signature_y_position = 0.25
+            signature_fontsize=20
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7 
+        
 
     if state == 'LA' or state == 'la':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
         western_bound = -94.24
         eastern_bound = -88.85
-        southern_bound = 28.88
+        southern_bound = 28.4
         northern_bound = 33.13
-        fig_x_length = 7
-        fig_y_length = 6
-        signature_x_position = 0.07
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 21
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=10
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.23
+            signature_y_position = 0.25
+            signature_fontsize=20
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7 
+        
 
     if state == 'AR' or state == 'ar':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
         western_bound = -94.81
         eastern_bound = -89.48
-        southern_bound = 32.96
+        southern_bound = 32.4
         northern_bound = 36.58
-        fig_x_length = 7
-        fig_y_length = 5
-        signature_x_position = 0.07
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 21
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=10
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.23
+            signature_y_position = 0.25
+            signature_fontsize=20
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7 
+        
 
     if state == 'TX' or state == 'tx':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/'
         western_bound = -106.95
         eastern_bound = -93.28
-        southern_bound = 25.68
+        southern_bound = 24.9
         northern_bound = 36.71
-        fig_x_length = 7
-        fig_y_length = 6
-        signature_x_position = 0.07
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 25
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=10
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.2
+            signature_y_position = 0.25
+            signature_fontsize=18
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7 
+        
 
     if state == 'OK' or state == 'ok':
         if ndfd_grids == True:
@@ -1390,49 +2025,89 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
         eastern_bound = -94.26
         southern_bound = 33.5
         northern_bound = 37.2
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.07
+        fig_x_length = 25
+        fig_y_length = 13
+        signature_x_position = 0.10
         signature_y_position = 0.05
+        subplot_title_fontsize=25
+        title_fontsize = 45
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=10
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.14
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.5 
+        
 
     if state == 'NM' or state == 'nm':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -109.24
         eastern_bound = -102.89
-        southern_bound = 31.18
+        southern_bound = 30.7
         northern_bound = 37.1
-        fig_x_length = 7
-        fig_y_length = 6
-        signature_x_position = 0.07
-        signature_y_position = 0.03
-        title_fontsize=18
-        subplot_title_fontsize=10
-        signature_fontsize=14
+        fig_x_length = 25
+        fig_y_length = 25
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
         sample_point_fontsize=10
         colorbar_fontsize=12
+        legend_fontsize = 30
+        if plot_type == 'minrh':
+            title_fontsize=17 
+        if plot_type == 'poor recovery':
+            title_fontsize=15 
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
+            title_fontsize=14
+        if plot_type == 'maxrh':
+            title_fontsize=17
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
+            title_fontsize=15
+        if plot_type == 'low minrh':
+            title_fontsize=15
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.2
+            signature_y_position = 0.25
+            signature_fontsize=18
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7 
+        
 
     if state == 'AZ' or state == 'az':
         if ndfd_grids == True:
@@ -1441,218 +2116,317 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type):
         eastern_bound = -108.94
         southern_bound = 31.18
         northern_bound = 37.1
-        fig_x_length = 7
-        fig_y_length = 6
-        signature_x_position = 0.07
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 25
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=10
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.2
+            signature_y_position = 0.25
+            signature_fontsize=18
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7 
+        
 
     if state == 'UT' or state == 'ut':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
         western_bound = -114.2
         eastern_bound = -108.97
-        southern_bound = 36.9
+        southern_bound = 36.5
         northern_bound = 42.1
-        fig_x_length = 7
-        fig_y_length = 6
-        signature_x_position = 0.11
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 25
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=10
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.22
+            signature_y_position = 0.25
+            signature_fontsize=18
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7 
+        
 
     if state == 'CO' or state == 'co':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/'
         western_bound = -109.2
         eastern_bound = -101.93
-        southern_bound = 36.9
+        southern_bound = 36.4
         northern_bound = 41.1
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.14
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 21
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=10
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.18
+            signature_y_position = 0.25
+            signature_fontsize=18
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7 
+        
 
     if state == 'WY' or state == 'wy':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/'
         western_bound = -111.1
         eastern_bound = -103.95
-        southern_bound = 40.94
+        southern_bound = 40.5
         northern_bound = 45.07
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.14
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 21
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=30
+        title_fontsize = 50
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=10
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.18
+            signature_y_position = 0.25
+            signature_fontsize=18
+            shrink=0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.7 
+
 
     if state == 'MT' or state == 'mt':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/'
         western_bound = -116.22
         eastern_bound = -103.93
-        southern_bound = 44.38
+        southern_bound = 43.7
         northern_bound = 49.1
-        fig_x_length = 6
-        fig_y_length = 3
-        signature_x_position = 0.11
-        signature_y_position = 0.03
+        fig_x_length = 25
+        fig_y_length = 13
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=25
+        title_fontsize = 45
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=10
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.14
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.5
+        
 
     if state == 'KS' or state == 'ks':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/'
         western_bound = -102.16
         eastern_bound = -94.51
-        southern_bound = 36.94
+        southern_bound = 36.5
         northern_bound = 40.11
-        fig_x_length = 6
-        fig_y_length = 3
-        signature_x_position = 0.11
-        signature_y_position = 0.03
-        if plot_type == 'minrh':
-            title_fontsize=17 
-        if plot_type == 'poor recovery':
-            title_fontsize=15 
-        if plot_type == 'excellent recovery':
-            title_fontsize=14
-        if plot_type == 'maxrh':
-            title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            title_fontsize=15
-        if plot_type == 'low minrh':
-            title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=10
-        sample_point_fontsize=10
-        colorbar_fontsize=12
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            colorbar_fontsize=8
-        shrink=0.5
-
-    if state == 'NE' or state == 'ne':
-        if ndfd_grids == True:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/'
-        western_bound = -104.19
-        eastern_bound = -95.15
-        southern_bound = 39.92
-        northern_bound = 43.11
-        fig_x_length = 6
-        fig_y_length = 3
-        signature_x_position = 0.07
+        fig_x_length = 25
+        fig_y_length = 13
+        signature_x_position = 0.10
         signature_y_position = 0.05
+        subplot_title_fontsize=25
+        title_fontsize = 45
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
         if plot_type == 'minrh':
             title_fontsize=17 
         if plot_type == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
             title_fontsize=14
         if plot_type == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
             title_fontsize=15
         if plot_type == 'low minrh':
             title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.18
+            signature_y_position = 0.25
+            signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-        shrink=0.5
-    
+
+    if state == 'TN' or state == 'tn':
+        if ndfd_grids == True:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        western_bound = -90.37
+        eastern_bound = -81.57
+        southern_bound = 34.5
+        northern_bound = 36.75
+        fig_x_length = 25
+        fig_y_length = 10
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=25
+        title_fontsize = 45
+        signature_fontsize=18
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 30
+        if plot_type == 'minrh':
+            title_fontsize=17 
+        if plot_type == 'poor recovery':
+            title_fontsize=15 
+        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
+            title_fontsize=14
+        if plot_type == 'maxrh':
+            title_fontsize=17
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
+            title_fontsize=15
+        if plot_type == 'low minrh':
+            title_fontsize=15
+        if plot_type == 'extreme heat':
+            title_fontsize=15
+        if plot_type == 'warm lows':
+            title_fontsize=12
+        if plot_type == 'frost freeze':
+            title_fontsize=15
+        if plot_type == 'maxt' or plot_type == 'mint':
+            title_fontsize=15
+        if plot_type == 'critical fire' or plot_type == 'dry lightning':
+            signature_x_position = 0.18
+            signature_y_position = 0.25
+            signature_fontsize=18
+        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+            colorbar_fontsize=4
         
-    return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, shrink, mapcrs, datacrs
+    return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick
     
 
 def get_gacc_region_data_and_coords(gacc_region, ndfd_grids, plot_type):
@@ -1941,3 +2715,67 @@ def get_gacc_region_data_and_coords(gacc_region, ndfd_grids, plot_type):
 
 
     return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, shrink, mapcrs, datacrs
+
+def get_colorbar_label_coords(state, plot_type):
+
+    state = state 
+    plot_type
+
+    if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+        if plot_type == 'critical fire':
+            x1 = 0.3
+            x2 = 0.47
+            x3 = 0.65
+            y = 0.195
+
+        if plot_type == 'dry lightning':
+            x1 = 0.325
+            x2 = 0.585
+            x3 = None
+            y = 0.195
+
+    if state == 'ME' or state == 'me':
+
+        if plot_type == 'critical fire':
+            x1 = 0.278
+            x2 = 0.46
+            x3 = 0.64
+            y = 0.207
+
+        if plot_type == 'dry lightning':
+            x1 = 0.325
+            x2 = 0.585
+            x3 = None
+            y = 0.195
+
+    if state == 'NH' or state == 'nh':
+
+        if plot_type == 'critical fire':
+            x1 = 0.278
+            x2 = 0.46
+            x3 = 0.64
+            y = 0.207
+
+        if plot_type == 'dry lightning':
+            x1 = 0.325
+            x2 = 0.585
+            x3 = None
+            y = 0.195
+
+    if state == 'VT' or state == 'vt':
+
+        if plot_type == 'critical fire':
+            x1 = 0.278
+            x2 = 0.46
+            x3 = 0.64
+            y = 0.207
+
+        if plot_type == 'dry lightning':
+            x1 = 0.325
+            x2 = 0.585
+            x3 = None
+            y = 0.195
+
+    return x1, x2, x3, y
+
+    
