@@ -18,6 +18,7 @@ Classes in this file:
 #### IMPORTS ####
 
 import pytz
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
@@ -38,7 +39,8 @@ from datetime import datetime, timedelta
 from metpy.plots import colortables
 from dateutil import tz
 from matplotlib.patheffects import withStroke
-from calc import scaling, unit_conversion
+from calc import scaling, unit_conversion, contouring
+from utilities import file_functions
 
 class relative_humidity:
 
@@ -62,7 +64,7 @@ class relative_humidity:
 
     '''
 
-    def plot_poor_overnight_recovery_relative_humidity_forecast(poor_overnight_recovery_rh_threshold, contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
+    def plot_poor_overnight_recovery_relative_humidity_forecast(poor_overnight_recovery_rh_threshold=30, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -273,12 +275,6 @@ class relative_humidity:
     
         Return: A list of figures for each forecast day. 
         '''
-    
-    
-        local_time, utc_time = standard.plot_creation_time()
-        show_state_borders = show_state_borders
-        show_county_borders = show_county_borders
-        show_gacc_borders = show_gacc_borders
         state_border_linewidth = state_border_linewidth
         county_border_linewidth = county_border_linewidth
         gacc_border_linewidth = gacc_border_linewidth
@@ -290,26 +286,115 @@ class relative_humidity:
         show_sample_points = show_sample_points
         sample_point_fontsize = sample_point_fontsize
         alpha = alpha
-        contour_step = contour_step
         poor_overnight_recovery_rh_threshold = poor_overnight_recovery_rh_threshold
-        poor_overnight_recovery_rh_thresh = poor_overnight_recovery_rh_threshold + contour_step
         file_path = file_path
-        ds = data_array
         count_short = count_short
         count_extended = count_extended
         directory_name = directory_name
         state = state
-    
-    
-        contour_step = contour_step
-        ds = data_array
-    
+
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        thresh = poor_overnight_recovery_rh_threshold + 1
+
         cmap = colormaps.low_relative_humidity_colormap()
-    
+
+        reference_system = reference_system
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'Custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
     
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+
+        
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        levels = np.arange(0, thresh, 1)
+        if thresh > 31:
+            labels = levels[::2]
+        else:
+            labels = levels
+            
+    
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh trend')
+    
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
@@ -319,40 +404,39 @@ class relative_humidity:
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
     
         else:
             pass
     
-        if state == None and gacc_region == None:
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
-        
-            directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'poor recovery')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'poor recovery')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-    
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
     
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
+        
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
     
         if file_path == None:
     
@@ -362,14 +446,17 @@ class relative_humidity:
     
                 print("Downloaded data successfully!")
             except Exception as a:
+
+                standard.idle()
     
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.maxrh.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.maxrh.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)
+
     
         if file_path != None:
     
@@ -418,6 +505,7 @@ class relative_humidity:
             pass    
     
         try:
+
             vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'maxrh', count, True, count_short, count_extended, discard)
             
             df1 = vals[0]
@@ -449,12 +537,14 @@ class relative_humidity:
             no_vals = True
             
         files = count
+
+        local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig1.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 1]', fontsize=title_fontsize, fontweight='bold')
     
@@ -484,24 +574,24 @@ class relative_humidity:
             
         ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
+        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
         if show_sample_points == True and no_vals == False:
     
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn1.plot_parameter('C', df1['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn1.plot_parameter('C', df1['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
-            pass                                                                 
-    
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+            pass  
+
+        cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig2.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 2]', fontsize=title_fontsize, fontweight='bold')
         
@@ -530,24 +620,24 @@ class relative_humidity:
             pass
         ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
+        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
         if show_sample_points == True and no_vals == False:
     
             stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn2.plot_parameter('C', df2['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn2.plot_parameter('C', df2['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass   
     
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+        cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig3.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 3]', fontsize=title_fontsize, fontweight='bold')
     
@@ -576,24 +666,24 @@ class relative_humidity:
             pass
         ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
+        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
         if show_sample_points == True and no_vals == False:
     
             stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn3.plot_parameter('C', df3['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn3.plot_parameter('C', df3['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass   
     
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+        cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig4.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 4]', fontsize=title_fontsize, fontweight='bold')
         
@@ -622,24 +712,24 @@ class relative_humidity:
             pass
         ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
+        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
         if show_sample_points == True and no_vals == False:
     
             stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn4.plot_parameter('C', df4['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn4.plot_parameter('C', df4['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass   
     
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+        cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig5.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 5]', fontsize=title_fontsize, fontweight='bold')
         
@@ -668,24 +758,24 @@ class relative_humidity:
             pass
         ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
+        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
         if show_sample_points == True and no_vals == False:
     
             stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn5.plot_parameter('C', df5['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn5.plot_parameter('C', df5['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass   
     
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+        cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig6.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 6]', fontsize=title_fontsize, fontweight='bold')
         
@@ -714,26 +804,26 @@ class relative_humidity:
             pass
         ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
+        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
         if show_sample_points == True and no_vals == False:
     
             stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn6.plot_parameter('C', df6['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn6.plot_parameter('C', df6['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass   
     
-        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
+        cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig7.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 7]', fontsize=title_fontsize, fontweight='bold')
             
@@ -762,19 +852,19 @@ class relative_humidity:
                 pass
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, poor_overnight_recovery_rh_thresh, contour_step), cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
+            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
             if show_sample_points == True and no_vals == False:
     
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn7.plot_parameter('C', df7['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn7.plot_parameter('C', df7['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+            cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
@@ -793,11 +883,12 @@ class relative_humidity:
             figs.append(fig5)
             figs.append(fig6)
     
-        return figs
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Poor Overnight Recovery', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Poor Overnight Recovery')
     
     
     
-    def plot_excellent_overnight_recovery_relative_humidity_forecast(excellent_overnight_recovery_rh_threshold, contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
+    def plot_excellent_overnight_recovery_relative_humidity_forecast(excellent_overnight_recovery_rh_threshold=80, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Excellent Overnight Recovery RH Forecast. 
@@ -1009,20 +1100,112 @@ class relative_humidity:
         Return: A list of figures for each forecast day. 
         '''
     
-    
-        local_time, utc_time = standard.plot_creation_time()
         state_border_linewidth = state_border_linewidth
-        contour_step = contour_step
         excellent_overnight_recovery_rh_threshold = excellent_overnight_recovery_rh_threshold
         file_path = file_path
-        ds = data_array
         count_short = count_short
         count_extended = count_extended
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
         cmap = colormaps.excellent_recovery_colormap()
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        reference_system = reference_system
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
     
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+
+        
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        levels = np.arange(excellent_overnight_recovery_rh_threshold, 101, 1)
+        if excellent_overnight_recovery_rh_threshold < 80:
+            labels = levels[::2]
+        else:
+            labels = levels
+            
+    
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh trend')
+    
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
@@ -1032,40 +1215,39 @@ class relative_humidity:
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
     
         else:
             pass
     
-        if state == None and gacc_region == None:
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
-        
-            directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'excellent recovery')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'excellent recovery')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-    
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
     
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
+        
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
     
         if file_path == None:
     
@@ -1075,12 +1257,14 @@ class relative_humidity:
     
                 print("Downloaded data successfully!")
             except Exception as a:
+
+                standard.idle()
     
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.maxrh.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.maxrh.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -1156,12 +1340,14 @@ class relative_humidity:
             no_vals = True
     
         files = count
+
+        local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig1.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 1]', fontsize=title_fontsize, fontweight='bold')
     
@@ -1190,24 +1376,24 @@ class relative_humidity:
             pass
         ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
     
         if show_sample_points == True and no_vals == False:
     
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn1.plot_parameter('C', df1['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn1.plot_parameter('C', df1['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass     
     
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+        cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig2.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 2]', fontsize=title_fontsize, fontweight='bold')
         
@@ -1236,24 +1422,24 @@ class relative_humidity:
             pass
         ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
     
         if show_sample_points == True and no_vals == False:
     
             stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn2.plot_parameter('C', df2['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn2.plot_parameter('C', df2['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass  
     
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+        cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig3.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 3]', fontsize=title_fontsize, fontweight='bold')
     
@@ -1282,24 +1468,24 @@ class relative_humidity:
             pass
         ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
     
         if show_sample_points == True and no_vals == False:
     
             stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn3.plot_parameter('C', df3['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn3.plot_parameter('C', df3['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass  
     
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+        cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig4.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 4]', fontsize=title_fontsize, fontweight='bold')
         
@@ -1328,24 +1514,24 @@ class relative_humidity:
             pass
         ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
     
         if show_sample_points == True and no_vals == False:
     
             stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn4.plot_parameter('C', df4['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn4.plot_parameter('C', df4['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass  
     
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+        cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig5.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 5]', fontsize=title_fontsize, fontweight='bold')
         
@@ -1374,24 +1560,24 @@ class relative_humidity:
             pass
         ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
     
         if show_sample_points == True and no_vals == False:
     
             stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn5.plot_parameter('C', df5['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn5.plot_parameter('C', df5['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass  
     
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+        cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig6.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 6]', fontsize=title_fontsize, fontweight='bold')
         
@@ -1420,26 +1606,26 @@ class relative_humidity:
             pass
         ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
     
         if show_sample_points == True and no_vals == False:
     
             stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn6.plot_parameter('C', df6['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn6.plot_parameter('C', df6['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass  
     
-        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
+        cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig7.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 7]', fontsize=title_fontsize, fontweight='bold')
             
@@ -1468,19 +1654,19 @@ class relative_humidity:
                 pass
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(excellent_overnight_recovery_rh_threshold, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
     
             if show_sample_points == True and no_vals == False:
         
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
         
-                stn7.plot_parameter('C', df7['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn7.plot_parameter('C', df7['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
         
             else:
                 pass  
     
-            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+            cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
@@ -1499,10 +1685,11 @@ class relative_humidity:
             figs.append(fig5)
             figs.append(fig6)
     
-        return figs
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Excellent Overnight Recovery', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Excellent Overnight Recovery')
     
     
-    def plot_maximum_relative_humidity_forecast(contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
+    def plot_maximum_relative_humidity_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Maximum RH Forecast. 
@@ -1710,19 +1897,104 @@ class relative_humidity:
         Return: A list of figures for each forecast day. 
         '''
     
-    
-        local_time, utc_time = standard.plot_creation_time()
-    
-        contour_step = contour_step
         file_path = file_path
-        ds = data_array
         count_short = count_short
         count_extended = count_extended
-        cmap = colormaps.relative_humidity_colormap()
+        reference_system = reference_system
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
     
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+
+        
+        cmap = colormaps.relative_humidity_colormap()
+        
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        levels = np.arange(0, 102, 1)
+        labels = levels[::4]
+            
+    
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+    
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
@@ -1732,55 +2004,56 @@ class relative_humidity:
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
     
         else:
             pass
     
-        if state == None and gacc_region == None:
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
-        
-            directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxrh')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-    
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
     
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
+        
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
     
         if file_path == None:
     
             try:
-    
+
                 grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
     
                 print("Downloaded data successfully!")
             except Exception as a:
+
+                standard.idle()
     
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.maxrh.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.maxrh.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)
             
@@ -1856,12 +2129,14 @@ class relative_humidity:
             no_vals = True
             
         files = count
+
+        local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig1.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 1]', fontsize=title_fontsize, fontweight='bold')
     
@@ -1890,24 +2165,24 @@ class relative_humidity:
             pass
         ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
         if show_sample_points == True and no_vals == False:
     
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn1.plot_parameter('C', df1['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn1.plot_parameter('C', df1['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass     
     
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+        cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, pad=0.02, shrink=color_table_shrink)
         cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig2.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 2]', fontsize=title_fontsize, fontweight='bold')
         
@@ -1936,24 +2211,24 @@ class relative_humidity:
             pass
         ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
         if show_sample_points == True and no_vals == False:
     
             stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn2.plot_parameter('C', df2['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn2.plot_parameter('C', df2['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass     
     
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+        cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, pad=0.02, shrink=color_table_shrink)
         cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig3.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 3]', fontsize=title_fontsize, fontweight='bold')
     
@@ -1982,24 +2257,24 @@ class relative_humidity:
             pass
         ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
         if show_sample_points == True and no_vals == False:
     
             stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn3.plot_parameter('C', df3['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn3.plot_parameter('C', df3['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass     
     
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+        cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, pad=0.02, shrink=color_table_shrink)
         cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig4.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 4]', fontsize=title_fontsize, fontweight='bold')
         
@@ -2028,24 +2303,24 @@ class relative_humidity:
             pass
         ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
         if show_sample_points == True and no_vals == False:
     
             stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn4.plot_parameter('C', df4['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn4.plot_parameter('C', df4['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass     
     
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+        cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, pad=0.02, shrink=color_table_shrink)
         cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig5.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 5]', fontsize=title_fontsize, fontweight='bold')
         
@@ -2074,24 +2349,24 @@ class relative_humidity:
             pass
         ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
         if show_sample_points == True and no_vals == False:
     
             stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn5.plot_parameter('C', df5['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn5.plot_parameter('C', df5['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass     
     
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+        cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, pad=0.02, shrink=color_table_shrink)
         cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig6.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 6]', fontsize=title_fontsize, fontweight='bold')
         
@@ -2120,26 +2395,26 @@ class relative_humidity:
             pass
         ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
         if show_sample_points == True and no_vals == False:
     
             stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn6.plot_parameter('C', df6['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn6.plot_parameter('C', df6['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass     
     
-        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
+        cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, pad=0.02, shrink=color_table_shrink)
         cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig7.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 7]', fontsize=title_fontsize, fontweight='bold')
             
@@ -2168,19 +2443,19 @@ class relative_humidity:
                 pass
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
         
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
         
-                stn7.plot_parameter('C', df7['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn7.plot_parameter('C', df7['maxrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
         
             else:
                 pass     
     
-            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+            cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, pad=0.02, shrink=color_table_shrink)
             cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
@@ -2199,11 +2474,12 @@ class relative_humidity:
             figs.append(fig5)
             figs.append(fig6)
     
-        return figs
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Maximum RH', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Maximum RH')
     
     
     
-    def plot_maximum_relative_humidity_trend_forecast(contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
+    def plot_maximum_relative_humidity_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Maximum RH Trend Forecast. 
@@ -2410,45 +2686,89 @@ class relative_humidity:
     
         Return: A list of figures for each forecast day. 
         '''
-    
-    
-        local_time, utc_time = standard.plot_creation_time()
         file_path = file_path
-        ds = data_array
         count_short = count_short
         count_extended = count_extended
-        contour_step = contour_step
+        reference_system = reference_system
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
     
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+
+        
         cmap = colormaps.relative_humidity_change_colormap()
         
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
-        
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
-    
-            fig_x_length = fig_x_length
-            fig_y_length = fig_y_length
-            signature_x_position = signature_x_position
-            signature_y_position = signature_y_position
-            western_bound = western_bound
-            eastern_bound = eastern_bound
-            southern_bound = southern_bound
-            northern_bound = northern_bound
-    
-        else:
-            pass
-    
-        if state == None and gacc_region == None:
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
-        
-            directory_name = settings.check_NDFD_directory_name(directory_name)
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        levels = np.arange(-50, 51, 1)
+        labels = levels[::4]
+            
     
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh trend')
+    
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_state(state)
@@ -2462,12 +2782,50 @@ class relative_humidity:
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
             else:
                 decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
+    
+            fig_x_length = fig_x_length
+            fig_y_length = fig_y_length
+            signature_x_position = signature_x_position
+            signature_y_position = signature_y_position
+            western_bound = western_bound
+            eastern_bound = eastern_bound
+            southern_bound = southern_bound
+            northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
+    
+        else:
+            pass
     
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
     
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
+        
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
     
         if file_path == None:
     
@@ -2477,12 +2835,14 @@ class relative_humidity:
     
                 print("Downloaded data successfully!")
             except Exception as a:
+
+                standard.idle()
     
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.maxrh.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.maxrh.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxrh.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -2541,7 +2901,7 @@ class relative_humidity:
     
         try:    
             vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'maxrh', count, True, count_short, count_extended, discard)
-            
+        
             df1 = vals[0]
         
             df2 = vals[1] 
@@ -2572,12 +2932,14 @@ class relative_humidity:
             no_vals = True
             
         files = count
+
+        local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig1.suptitle('National Weather Service Forecast\nMaximum Relative Humidity Trend [Night 2]', fontsize=title_fontsize, fontweight='bold')
     
@@ -2604,26 +2966,38 @@ class relative_humidity:
             ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
+        if show_cwa_borders == True:
+            ax1.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax1.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
         ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
+        cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=levels, cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
     
         if show_sample_points == True and no_vals == False:
     
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn1.plot_parameter('C', df2['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn1.plot_parameter('C', df2['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass     
     
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+        cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig2.suptitle('National Weather Service Forecast\nMaximum Relative Humidity Trend [Night 3]', fontsize=title_fontsize, fontweight='bold')
         
@@ -2650,26 +3024,38 @@ class relative_humidity:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
+        if show_cwa_borders == True:
+            ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
         ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
+        cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=levels, cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
     
         if show_sample_points == True and no_vals == False:
     
             stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn2.plot_parameter('C', df3['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn2.plot_parameter('C', df3['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass 
     
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+        cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig3.suptitle('National Weather Service Forecast\nMaximum Relative Humidity Trend [Night 4]', fontsize=title_fontsize, fontweight='bold')
     
@@ -2696,26 +3082,38 @@ class relative_humidity:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
+        if show_cwa_borders == True:
+            ax3.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax3.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
         ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
+        cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=levels, cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
     
         if show_sample_points == True and no_vals == False:
     
             stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn3.plot_parameter('C', df4['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn3.plot_parameter('C', df4['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass 
     
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+        cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig4.suptitle('National Weather Service Forecast\nMaximum Relative Humidity Trend [Night 5]', fontsize=title_fontsize, fontweight='bold')
         
@@ -2742,26 +3140,38 @@ class relative_humidity:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
+        if show_cwa_borders == True:
+            ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
         ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
+        cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=levels, cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
     
         if show_sample_points == True and no_vals == False:
     
             stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn4.plot_parameter('C', df5['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn4.plot_parameter('C', df5['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass 
     
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+        cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig5.suptitle('National Weather Service Forecast\nMaximum Relative Humidity Trend [Night 6]', fontsize=title_fontsize, fontweight='bold')
         
@@ -2788,28 +3198,40 @@ class relative_humidity:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
+        if show_cwa_borders == True:
+            ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
         ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+        cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=levels, cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
     
         if show_sample_points == True and no_vals == False:
     
             stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn5.plot_parameter('C', df6['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn5.plot_parameter('C', df6['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass 
     
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+        cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig7.suptitle('National Weather Service Forecast\nMaximum Relative Humidity Trend [Night 7]', fontsize=title_fontsize, fontweight='bold')
             
@@ -2836,21 +3258,33 @@ class relative_humidity:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
+            if show_cwa_borders == True:
+                ax7.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax7.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=levels, cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
         
                 stn7 = mpplots.StationPlot(ax7, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
         
-                stn7.plot_parameter('C', df7['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn7.plot_parameter('C', df7['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
         
             else:
                 pass 
     
-            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+            cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
@@ -2866,10 +3300,13 @@ class relative_humidity:
             figs.append(fig3)
             figs.append(fig4)
             figs.append(fig5)
+
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Maximum RH Trend', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Maximum RH Trend')
     
-        return figs
+        
     
-    def plot_low_minimum_relative_humidity_forecast(low_minimum_rh_threshold, contour_step,  western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
+    def plot_low_minimum_relative_humidity_forecast(low_minimum_rh_threshold=15, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Low Minimum RH Forecast. 
@@ -3080,12 +3517,6 @@ class relative_humidity:
     
         Return: A list of figures for each forecast day. 
         '''
-    
-    
-        local_time, utc_time = standard.plot_creation_time()
-        show_state_borders = show_state_borders
-        show_county_borders = show_county_borders
-        show_gacc_borders = show_gacc_borders
         state_border_linewidth = state_border_linewidth
         county_border_linewidth = county_border_linewidth
         gacc_border_linewidth = gacc_border_linewidth
@@ -3098,17 +3529,106 @@ class relative_humidity:
         sample_point_fontsize = sample_point_fontsize
         alpha = alpha
         decimate = decimate
-        contour_step = contour_step
         low_minimum_rh_threshold = low_minimum_rh_threshold
-        low_minimum_rh_thresh = low_minimum_rh_threshold + contour_step
         file_path = file_path  
-        ds = data_array
         count_short = count_short
         count_extended = count_extended
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        thresh = low_minimum_rh_threshold + 1
+
+        levels = np.arange(0, thresh, 1)
+        labels = levels
     
         cmap = colormaps.low_relative_humidity_colormap()
+        reference_system = reference_system
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
+    
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
         
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+            
+    
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+    
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
@@ -3118,43 +3638,40 @@ class relative_humidity:
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
     
         else:
             pass
     
-        if state == None and gacc_region == None:
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
-        
-            directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'low minrh')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'low minrh')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-    
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
     
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
-            
-    
-    
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
+        
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
+        
         if file_path == None:
     
             try:
@@ -3163,12 +3680,14 @@ class relative_humidity:
     
                 print("Downloaded data successfully!")
             except Exception as a:
+
+                standard.idle()
     
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.minrh.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.minrh.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -3245,7 +3764,6 @@ class relative_humidity:
         except Exception as ee:
             try:
                 vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'unknown', count, True, count_short, count_extended, discard)
-                
                 df1 = vals[0]
         
                 df2 = vals[1]
@@ -3270,14 +3788,15 @@ class relative_humidity:
                 no_vals = True
             
         files = count
-    
+
+        local_time, utc_time = standard.plot_creation_time()    
         
         figs = [] 
     
         try:
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig1.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 1]', fontsize=title_fontsize, fontweight='bold')
     
@@ -3306,24 +3825,24 @@ class relative_humidity:
                 pass
             ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn1.plot_parameter('C', df1['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn1.plot_parameter('C', df1['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass     
     
-            cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+            cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig2.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 2]', fontsize=title_fontsize, fontweight='bold')
             
@@ -3352,24 +3871,24 @@ class relative_humidity:
                 pass
             ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn2.plot_parameter('C', df2['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn2.plot_parameter('C', df2['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+            cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig3.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 3]', fontsize=title_fontsize, fontweight='bold')
         
@@ -3398,24 +3917,24 @@ class relative_humidity:
                 pass
             ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn3.plot_parameter('C', df3['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn3.plot_parameter('C', df3['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+            cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig4.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 4]', fontsize=title_fontsize, fontweight='bold')
             
@@ -3444,24 +3963,24 @@ class relative_humidity:
                 pass
             ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn4.plot_parameter('C', df4['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn4.plot_parameter('C', df4['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+            cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
-            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig5.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 5]', fontsize=title_fontsize, fontweight='bold')
             
@@ -3490,24 +4009,24 @@ class relative_humidity:
                 pass
             ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn5.plot_parameter('C', df5['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn5.plot_parameter('C', df5['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+            cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
-            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig6.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 6]', fontsize=title_fontsize, fontweight='bold')
             
@@ -3536,26 +4055,26 @@ class relative_humidity:
                 pass
             ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn6.plot_parameter('C', df6['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn6.plot_parameter('C', df6['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
+            cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
                 fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig7.set_facecolor('aliceblue')
-                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
                 fig7.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 7]', fontsize=title_fontsize, fontweight='bold')
                 
@@ -3584,19 +4103,19 @@ class relative_humidity:
                     pass
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
-                cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+                cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
                 if show_sample_points == True and no_vals == False:
         
                     stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
         
-                    stn7.plot_parameter('C', df7['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                    stn7.plot_parameter('C', df7['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
         
                 else:
                     pass   
     
-                cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+                cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
                 cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
@@ -3619,7 +4138,7 @@ class relative_humidity:
     
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig1.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 1]', fontsize=title_fontsize, fontweight='bold')
     
@@ -3648,24 +4167,24 @@ class relative_humidity:
                 pass
             ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn1.plot_parameter('C', df1['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn1.plot_parameter('C', df1['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass     
     
-            cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+            cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig2.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 2]', fontsize=title_fontsize, fontweight='bold')
             
@@ -3694,24 +4213,24 @@ class relative_humidity:
                 pass
             ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn2.plot_parameter('C', df2['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn2.plot_parameter('C', df2['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+            cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig3.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 3]', fontsize=title_fontsize, fontweight='bold')
         
@@ -3740,24 +4259,24 @@ class relative_humidity:
                 pass
             ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn3.plot_parameter('C', df3['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn3.plot_parameter('C', df3['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+            cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig4.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 4]', fontsize=title_fontsize, fontweight='bold')
             
@@ -3786,24 +4305,24 @@ class relative_humidity:
                 pass
             ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn4.plot_parameter('C', df4['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn4.plot_parameter('C', df4['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+            cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
-            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig5.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 5]', fontsize=title_fontsize, fontweight='bold')
             
@@ -3832,24 +4351,24 @@ class relative_humidity:
                 pass
             ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn5.plot_parameter('C', df5['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn5.plot_parameter('C', df5['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+            cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
-            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig6.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 6]', fontsize=title_fontsize, fontweight='bold')
             
@@ -3878,26 +4397,26 @@ class relative_humidity:
                 pass
             ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn6.plot_parameter('C', df6['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn6.plot_parameter('C', df6['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
+            cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
                 fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig7.set_facecolor('aliceblue')
-                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
                 fig7.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 7]', fontsize=title_fontsize, fontweight='bold')
                 
@@ -3926,19 +4445,19 @@ class relative_humidity:
                     pass
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
-                cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, low_minimum_rh_thresh, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+                cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
                 if show_sample_points == True and no_vals == False:
         
                     stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
         
-                    stn7.plot_parameter('C', df7['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                    stn7.plot_parameter('C', df7['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
         
                 else:
                     pass   
     
-                cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+                cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
                 cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
@@ -3957,10 +4476,11 @@ class relative_humidity:
                 figs.append(fig5)
                 figs.append(fig6)
     
-        return figs
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Low Minimum RH', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Low Minimum RH')
     
     
-    def plot_minimum_relative_humidity_forecast(contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
+    def plot_minimum_relative_humidity_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Minimum RH Forecast. 
@@ -4167,17 +4687,101 @@ class relative_humidity:
     
         Return: A list of figures for each forecast day. 
         '''
-    
-    
-        local_time, utc_time = standard.plot_creation_time()
-        contour_step = contour_step
-        ds = data_array
+        file_path = file_path
         cmap = colormaps.relative_humidity_colormap()
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        levels = np.arange(0, 102, 1)
+        labels = levels[::4]
     
+        reference_system = reference_system
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
     
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+        
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+            
+    
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+    
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
@@ -4187,40 +4791,39 @@ class relative_humidity:
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
     
         else:
             pass
     
-        if state == None and gacc_region == None:
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
-        
-            directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'minrh')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'minrh')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-    
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
     
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
+        
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
             
         if file_path == None:
             
@@ -4230,12 +4833,14 @@ class relative_humidity:
     
                 print("Downloaded data successfully!")
             except Exception as a:
+
+                standard.idle()
     
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.minrh.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.minrh.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -4286,7 +4891,7 @@ class relative_humidity:
             pass
     
         try:
-            
+
             vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'minrh', count, True, count_short, count_extended, discard)
             
             df1 = vals[0]
@@ -4339,12 +4944,14 @@ class relative_humidity:
         
             
         files = count
+        
+        local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
         try:
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig1.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 1]', fontsize=title_fontsize, fontweight='bold')
     
@@ -4373,24 +4980,24 @@ class relative_humidity:
                 pass
             ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn1.plot_parameter('C', df1['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn1.plot_parameter('C', df1['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass     
     
-            cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+            cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig2.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 2]', fontsize=title_fontsize, fontweight='bold')
             
@@ -4419,24 +5026,24 @@ class relative_humidity:
                 pass
             ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn2.plot_parameter('C', df2['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn2.plot_parameter('C', df2['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+            cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig3.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 3]', fontsize=title_fontsize, fontweight='bold')
         
@@ -4465,24 +5072,24 @@ class relative_humidity:
                 pass
             ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn3.plot_parameter('C', df3['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn3.plot_parameter('C', df3['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+            cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig4.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 4]', fontsize=title_fontsize, fontweight='bold')
             
@@ -4511,24 +5118,24 @@ class relative_humidity:
                 pass
             ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn4.plot_parameter('C', df4['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn4.plot_parameter('C', df4['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+            cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
-            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig5.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 5]', fontsize=title_fontsize, fontweight='bold')
             
@@ -4557,24 +5164,24 @@ class relative_humidity:
                 pass
             ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn5.plot_parameter('C', df5['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn5.plot_parameter('C', df5['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+            cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
-            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig6.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 6]', fontsize=title_fontsize, fontweight='bold')
             
@@ -4603,26 +5210,26 @@ class relative_humidity:
                 pass
             ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn6.plot_parameter('C', df6['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn6.plot_parameter('C', df6['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
+            cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
                 fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig7.set_facecolor('aliceblue')
-                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
                 fig7.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 7]', fontsize=title_fontsize, fontweight='bold')
                 
@@ -4651,19 +5258,19 @@ class relative_humidity:
                     pass
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
-                cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+                cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
                 if show_sample_points == True and no_vals == False:
         
                     stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
         
-                    stn7.plot_parameter('C', df7['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                    stn7.plot_parameter('C', df7['minrh'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
         
                 else:
                     pass   
     
-                cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+                cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
                 cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
@@ -4686,7 +5293,7 @@ class relative_humidity:
     
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig1.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 1]', fontsize=title_fontsize, fontweight='bold')
     
@@ -4715,24 +5322,24 @@ class relative_humidity:
                 pass
             ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn1.plot_parameter('C', df1['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn1.plot_parameter('C', df1['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass     
     
-            cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+            cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar1.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig2.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 2]', fontsize=title_fontsize, fontweight='bold')
             
@@ -4761,24 +5368,24 @@ class relative_humidity:
                 pass
             ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn2.plot_parameter('C', df2['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn2.plot_parameter('C', df2['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+            cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar2.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig3.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 3]', fontsize=title_fontsize, fontweight='bold')
         
@@ -4807,24 +5414,24 @@ class relative_humidity:
                 pass
             ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn3.plot_parameter('C', df3['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn3.plot_parameter('C', df3['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+            cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar3.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig4.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 4]', fontsize=title_fontsize, fontweight='bold')
             
@@ -4853,24 +5460,24 @@ class relative_humidity:
                 pass
             ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn4.plot_parameter('C', df4['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn4.plot_parameter('C', df4['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+            cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar4.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
-            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig5.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 5]', fontsize=title_fontsize, fontweight='bold')
             
@@ -4899,24 +5506,24 @@ class relative_humidity:
                 pass
             ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn5.plot_parameter('C', df5['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn5.plot_parameter('C', df5['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+            cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar5.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
-            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig6.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 6]', fontsize=title_fontsize, fontweight='bold')
             
@@ -4945,26 +5552,26 @@ class relative_humidity:
                 pass
             ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+            cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
             if show_sample_points == True and no_vals == False:
     
                 stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn6.plot_parameter('C', df6['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn6.plot_parameter('C', df6['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass   
     
-            cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
+            cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar6.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
             if files == 7:
     
                 fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig7.set_facecolor('aliceblue')
-                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
                 fig7.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 7]', fontsize=title_fontsize, fontweight='bold')
                 
@@ -4993,19 +5600,19 @@ class relative_humidity:
                     pass
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                     
-                cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(0, 100 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
+                cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
                 if show_sample_points == True and no_vals == False:
         
                     stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
         
-                    stn7.plot_parameter('C', df7['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                    stn7.plot_parameter('C', df7['unknown'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
         
                 else:
                     pass   
     
-                cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+                cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
                 cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
             
                 figs.append(fig1)
@@ -5024,11 +5631,12 @@ class relative_humidity:
                 figs.append(fig5)
                 figs.append(fig6)
     
-        return figs
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Minimum RH', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Minimum RH')
     
     
     
-    def plot_minimum_relative_humidity_trend_forecast(contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
+    def plot_minimum_relative_humidity_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Minimum RH Trend Forecast. 
@@ -5235,21 +5843,104 @@ class relative_humidity:
     
         Return: A list of figures for each forecast day. 
         '''
+        
+        file_path = file_path
+
+        reference_system = reference_system
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
     
-    
-        local_time, utc_time = standard.plot_creation_time()
-        contour_step = contour_step
-        ds = data_array
-    
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+
+        
         cmap = colormaps.relative_humidity_change_colormap()
         
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        levels = np.arange(-50, 51, 1)
+        labels = levels[::4]
+            
     
-        mapcrs = ccrs.PlateCarree()
-        datacrs = ccrs.PlateCarree()
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh trend')
     
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
@@ -5259,40 +5950,39 @@ class relative_humidity:
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
     
         else:
             pass
     
-        if state == None and gacc_region == None:
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
-        
-            directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'minrh trend')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'minrh trend')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-    
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
     
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
+        
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
             
         if file_path == None:
     
@@ -5302,18 +5992,20 @@ class relative_humidity:
     
                 print("Downloaded data successfully!")
             except Exception as a:
+
+                standard.idle()
     
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.minrh.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.minrh.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.minrh.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False, count_short, count_extended, directory_name)
     
         if file_path != None:
     
-            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended)
+            grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
     
         try:
             if grb_7_vals.all() != None:
@@ -5369,7 +6061,6 @@ class relative_humidity:
         
         try:
             vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'minrh', count, True, count_short, count_extended, discard)
-            
             df1 = vals[0]
     
             df2 = vals[1] 
@@ -5398,7 +6089,6 @@ class relative_humidity:
         except Exception as ee:
             try:
                 vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'unknown', count, True, count_short, count_extended, discard)
-                
                 df1 = vals[0]
         
                 df2 = vals[1]
@@ -5434,12 +6124,14 @@ class relative_humidity:
                 no_vals = True
             
         files = count
+
+        local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig1.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Trend [Day 2]', fontsize=title_fontsize, fontweight='bold')
     
@@ -5468,24 +6160,24 @@ class relative_humidity:
             pass
         ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+        cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn1 = mpplots.StationPlot(ax1, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn1.plot_parameter('C', df2['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn1.plot_parameter('C', df2['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass   
     
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+        cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig2.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Trend [Day 3]', fontsize=title_fontsize, fontweight='bold')
         
@@ -5514,24 +6206,24 @@ class relative_humidity:
             pass
         ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+        cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn2 = mpplots.StationPlot(ax2, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn2.plot_parameter('C', df3['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn2.plot_parameter('C', df3['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass   
     
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+        cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig3.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Trend [Day 4]', fontsize=title_fontsize, fontweight='bold')
     
@@ -5560,24 +6252,24 @@ class relative_humidity:
             pass
         ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+        cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn3 = mpplots.StationPlot(ax3, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn3.plot_parameter('C', df4['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn3.plot_parameter('C', df4['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass   
     
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+        cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig4.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Trend [Day 5]', fontsize=title_fontsize, fontweight='bold')
         
@@ -5606,24 +6298,24 @@ class relative_humidity:
             pass
         ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+        cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn4 = mpplots.StationPlot(ax4, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn4.plot_parameter('C', df5['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn4.plot_parameter('C', df5['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass   
     
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+        cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig5.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Trend [Day 6]', fontsize=title_fontsize, fontweight='bold')
         
@@ -5652,26 +6344,26 @@ class relative_humidity:
             pass
         ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+        cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn5 = mpplots.StationPlot(ax5, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn5.plot_parameter('C', df6['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn5.plot_parameter('C', df6['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass   
     
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+        cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig7.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Trend [Day 7]', fontsize=title_fontsize, fontweight='bold')
             
@@ -5700,19 +6392,19 @@ class relative_humidity:
                 pass
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-50, 50 + contour_step, contour_step), cmap=cmap, transform=datacrs, zorder=2, extend='both')
+            cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='both')
     
             if show_sample_points == True and no_vals == False:
         
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
         
-                stn7.plot_parameter('C', df7['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                stn7.plot_parameter('C', df7['diff'][::decimate], color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
         
             else:
                 pass   
     
-            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+            cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
@@ -5729,7 +6421,8 @@ class relative_humidity:
             figs.append(fig4)
             figs.append(fig5)
     
-        return figs
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Minimum RH Trend', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Minimum RH Trend')
 
 class temperature: 
 
@@ -5753,7 +6446,7 @@ class temperature:
     '''
 
 
-    def plot_extreme_heat_forecast(start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None): 
+    def plot_extreme_heat_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=100, temp_scale_warm_stop=120, temp_scale_cool_start=90, temp_scale_cool_stop=110, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Extreme Heat Forecast. 
@@ -5977,7 +6670,7 @@ class temperature:
     
         Return: A list of figures for each forecast day. 
         '''
-    
+        file_path = file_path
         start_of_warm_season_month = start_of_warm_season_month
         end_of_warm_season_month = end_of_warm_season_month
         start_of_cool_season_month = start_of_cool_season_month
@@ -5999,9 +6692,6 @@ class temperature:
         temp_scale_cool_stop = temp_scale_cool_stop
         temp_scale_cool_stop_corrected = temp_scale_cool_stop + temp_scale_step
     
-        show_state_borders = show_state_borders
-        show_county_borders = show_county_borders
-        show_gacc_borders = show_gacc_borders
         state_border_linewidth = state_border_linewidth
         county_border_linewidth = county_border_linewidth
         gacc_border_linewidth = gacc_border_linewidth
@@ -6015,21 +6705,103 @@ class temperature:
         alpha = alpha
         state = state
         gacc_region = gacc_region
-        ds = data_array
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
     
         temp_scale_cool = np.arange(temp_scale_cool_start, temp_scale_cool_stop_corrected, temp_scale_step)
     
         temp_scale_warm = np.arange(temp_scale_warm_start, temp_scale_warm_stop_corrected, temp_scale_step)
+
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+
+        reference_system = reference_system
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
+    
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
         
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
+            
     
-        local_time, utc_time = standard.plot_creation_time()
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
     
-        mapcrs = ccrs.PlateCarree()
-        datacrs = ccrs.PlateCarree()
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
@@ -6039,38 +6811,39 @@ class temperature:
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
     
         else:
             pass
     
-        if state == None and gacc_region == None:
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
     
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
-            directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        if state != None and gacc_region == None:
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
 
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'extreme heat')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'extreme heat')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-    
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
     
         if file_path == None:
     
@@ -6080,12 +6853,14 @@ class temperature:
     
                 print("Downloaded data successfully!")
             except Exception as a:
+
+                standard.idle()
     
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.maxt.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.maxt.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxt.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxt.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -6177,12 +6952,19 @@ class temperature:
             no_vals = True
             
         files = count
+
+        local_time, utc_time = standard.plot_creation_time()
+
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            labels = temp_scale_warm
+        if utc_time.month >= start_of_cool_season_month and utc_time.month <= end_of_cool_season_month:
+            labels = temp_scale_cool
     
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig1.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 1]", fontsize=title_fontsize, fontweight='bold')
@@ -6219,9 +7001,9 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn1.plot_parameter('C', df1['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn1.plot_parameter('C', df1['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
@@ -6233,12 +7015,12 @@ class temperature:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
     
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+        cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig2.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 2]", fontsize=title_fontsize, fontweight='bold')
@@ -6274,9 +7056,9 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn2.plot_parameter('C', df2['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn2.plot_parameter('C', df2['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
@@ -6288,12 +7070,12 @@ class temperature:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
     
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+        cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig3.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 3]", fontsize=title_fontsize, fontweight='bold')
@@ -6330,9 +7112,9 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn3.plot_parameter('C', df3['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn3.plot_parameter('C', df3['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
@@ -6344,12 +7126,12 @@ class temperature:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
     
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+        cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig4.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 4]", fontsize=title_fontsize, fontweight='bold')
@@ -6385,9 +7167,9 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn4.plot_parameter('C', df4['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn4.plot_parameter('C', df4['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
@@ -6398,12 +7180,12 @@ class temperature:
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+        cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar4.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig5.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 5]", fontsize=title_fontsize, fontweight='bold')
@@ -6439,9 +7221,9 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn5.plot_parameter('C', df5['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn5.plot_parameter('C', df5['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
@@ -6452,12 +7234,12 @@ class temperature:
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+        cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar5.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig6.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 6]", fontsize=title_fontsize, fontweight='bold')
@@ -6493,9 +7275,9 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn6.plot_parameter('C', df6['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn6.plot_parameter('C', df6['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
@@ -6506,17 +7288,17 @@ class temperature:
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
-        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
+        cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar6.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
     
         if files == 7:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                fig7.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F) [Day 7]", fontsize=title_fontsize, fontweight='bold')
+                fig7.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 7]", fontsize=title_fontsize, fontweight='bold')
     
             if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
                 fig7.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 7]", fontsize=title_fontsize, fontweight='bold')
@@ -6549,9 +7331,9 @@ class temperature:
             if show_sample_points == True and no_vals == False:
     
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn7.plot_parameter('C', df7['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn7.plot_parameter('C', df7['tmaxf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass
@@ -6564,7 +7346,7 @@ class temperature:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
     
-            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+            cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar7.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
         
             figs.append(fig1)
@@ -6583,9 +7365,10 @@ class temperature:
             figs.append(fig5)
             figs.append(fig6)
     
-        return figs
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Extreme Heat', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Extreme Heat')
 
-    def plot_extremely_warm_low_temperature_forecast(start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None): 
+    def plot_extremely_warm_low_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=70, temp_scale_warm_stop=90, temp_scale_cool_start=60, temp_scale_cool_stop=80, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Extremely Warm Low Temperature Forecast. 
@@ -6831,9 +7614,6 @@ class temperature:
         temp_scale_cool_stop = temp_scale_cool_stop
         temp_scale_cool_stop_corrected = temp_scale_cool_stop + temp_scale_step
     
-        show_state_borders = show_state_borders
-        show_county_borders = show_county_borders
-        show_gacc_borders = show_gacc_borders
         state_border_linewidth = state_border_linewidth
         county_border_linewidth = county_border_linewidth
         gacc_border_linewidth = gacc_border_linewidth
@@ -6848,6 +7628,8 @@ class temperature:
         state = state
         gacc_region = gacc_region
         ds = data_array
+
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
     
         temp_scale_cool = np.arange(temp_scale_cool_start, temp_scale_cool_stop_corrected, temp_scale_step)
     
@@ -6856,12 +7638,94 @@ class temperature:
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
     
-        local_time, utc_time = standard.plot_creation_time()
-    
+        reference_system = reference_system
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
     
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+        
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+            
+    
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+    
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
@@ -6871,37 +7735,39 @@ class temperature:
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
     
         else:
             pass
     
-        if state == None and gacc_region == None:
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
     
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
-            directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'warm lows')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'warm lows')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-    
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
     
         if file_path == None:
     
@@ -6911,12 +7777,14 @@ class temperature:
     
                 print("Downloaded data successfully!")
             except Exception as a:
+
+                standard.idle()
     
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.mint.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.mint.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.mint.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -7008,18 +7876,25 @@ class temperature:
             no_vals = True
             
         files = count
+
+        local_time, utc_time = standard.plot_creation_time()
+
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            labels = temp_scale_warm
+        if utc_time.month >= start_of_cool_season_month and utc_time.month <= end_of_cool_season_month:
+            labels = temp_scale_cool
     
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig1.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 1]", fontsize=title_fontsize, fontweight='bold')
+            fig1.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 1]", fontsize=title_fontsize, fontweight='bold')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig1.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 1]", fontsize=title_fontsize, fontweight='bold')
+            fig1.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 1]", fontsize=title_fontsize, fontweight='bold')
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7050,9 +7925,9 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn1.plot_parameter('C', df1['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn1.plot_parameter('C', df1['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
@@ -7064,18 +7939,18 @@ class temperature:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
     
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+        cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig2.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 2]", fontsize=title_fontsize, fontweight='bold')
+            fig2.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 2]", fontsize=title_fontsize, fontweight='bold')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig2.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 2]", fontsize=title_fontsize, fontweight='bold')
+            fig2.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 2]", fontsize=title_fontsize, fontweight='bold')
     
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7105,9 +7980,9 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn2.plot_parameter('C', df2['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn2.plot_parameter('C', df2['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
@@ -7119,19 +7994,19 @@ class temperature:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
     
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+        cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig3.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 3]", fontsize=title_fontsize, fontweight='bold')
+            fig3.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 3]", fontsize=title_fontsize, fontweight='bold')
     
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig3.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 3]", fontsize=title_fontsize, fontweight='bold')
+            fig3.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 3]", fontsize=title_fontsize, fontweight='bold')
     
         ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7161,9 +8036,9 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn3.plot_parameter('C', df3['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn3.plot_parameter('C', df3['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
@@ -7175,18 +8050,18 @@ class temperature:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
     
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+        cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig4.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 4]", fontsize=title_fontsize, fontweight='bold')
+            fig4.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 4]", fontsize=title_fontsize, fontweight='bold')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig4.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 4]", fontsize=title_fontsize, fontweight='bold')
+            fig4.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 4]", fontsize=title_fontsize, fontweight='bold')
     
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7216,9 +8091,9 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn4.plot_parameter('C', df4['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn4.plot_parameter('C', df4['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
@@ -7229,18 +8104,18 @@ class temperature:
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+        cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig5.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 5]", fontsize=title_fontsize, fontweight='bold')
+            fig5.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 5]", fontsize=title_fontsize, fontweight='bold')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig5.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 5]", fontsize=title_fontsize, fontweight='bold')
+            fig5.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 5]", fontsize=title_fontsize, fontweight='bold')
     
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7270,9 +8145,9 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn5.plot_parameter('C', df5['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn5.plot_parameter('C', df5['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
@@ -7283,18 +8158,18 @@ class temperature:
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+        cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar5.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig6.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 6]", fontsize=title_fontsize, fontweight='bold')
+            fig6.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 6]", fontsize=title_fontsize, fontweight='bold')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig6.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 6]", fontsize=title_fontsize, fontweight='bold')
+            fig6.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 6]", fontsize=title_fontsize, fontweight='bold')
     
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7324,9 +8199,9 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn6.plot_parameter('C', df6['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn6.plot_parameter('C', df6['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
@@ -7337,20 +8212,20 @@ class temperature:
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
-        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
+        cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar6.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                fig7.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F) [Day 7]", fontsize=title_fontsize, fontweight='bold')
+                fig7.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 7]", fontsize=title_fontsize, fontweight='bold')
     
             if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-                fig7.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 7]", fontsize=title_fontsize, fontweight='bold')
+                fig7.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 7]", fontsize=title_fontsize, fontweight='bold')
         
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7380,9 +8255,9 @@ class temperature:
             if show_sample_points == True and no_vals == False:
     
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn7.plot_parameter('C', df7['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn7.plot_parameter('C', df7['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass
@@ -7395,7 +8270,7 @@ class temperature:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
     
     
-            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+            cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar7.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
@@ -7414,9 +8289,10 @@ class temperature:
             figs.append(fig5)
             figs.append(fig6)
     
-        return figs
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Warm Min T', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Warm Min T')
     
-    def plot_frost_freeze_forecast(temperature_bottom_bound, temp_scale_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None): 
+    def plot_frost_freeze_forecast(temperature_bottom_bound=-10, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Frost/Freeze Forecast. 
@@ -7638,12 +8514,8 @@ class temperature:
         signature_y_position = signature_y_position 
         signature_fontsize = signature_fontsize
         temperature_bottom_bound = temperature_bottom_bound
-        temp_scale_step = temp_scale_step
         decimate = decimate
         
-        show_state_borders = show_state_borders
-        show_county_borders = show_county_borders
-        show_gacc_borders = show_gacc_borders
         state_border_linewidth = state_border_linewidth
         county_border_linewidth = county_border_linewidth
         gacc_border_linewidth = gacc_border_linewidth
@@ -7657,18 +8529,105 @@ class temperature:
         alpha = alpha
         state = state
         gacc_region = gacc_region
+
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
     
         cmap = colormaps.cool_temperatures_colormap()
         
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
+
+        levels = np.arange(temperature_bottom_bound, 33, 1)
+        labels = levels[::2]
     
-        local_time, utc_time = standard.plot_creation_time()
-    
+        reference_system = reference_system
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
     
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+        
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+            
+    
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+    
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
@@ -7678,37 +8637,39 @@ class temperature:
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
     
         else:
             pass
     
-        if state == None and gacc_region == None:
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
     
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
-            directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'frost freeze')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'frost freeze')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-    
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
     
         if file_path == None:
     
@@ -7719,11 +8680,13 @@ class temperature:
                 print("Downloaded data successfully!")
             except Exception as a:
     
+                standard.idle()
+    
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.mint.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.mint.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.mint.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -7816,12 +8779,14 @@ class temperature:
             no_vals = True
             
         files = count
+
+        local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig1.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F)) [Night 1]", fontsize=title_fontsize, fontweight='bold')
     
@@ -7850,24 +8815,24 @@ class temperature:
             pass
         ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
     
-        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(temperature_bottom_bound, 32 + temp_scale_step, temp_scale_step), cmap=cmap , transform=datacrs, extend='min')
+        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
         if show_sample_points == True and no_vals == False:
     
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn1.plot_parameter('C', df1['tminf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn1.plot_parameter('C', df1['tminf'][::decimate], color='orange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+        cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig2.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F)) [Night 2]", fontsize=title_fontsize, fontweight='bold')
     
@@ -7896,24 +8861,24 @@ class temperature:
             pass
         ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
     
-        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(temperature_bottom_bound, 32 + temp_scale_step, temp_scale_step), cmap=cmap , transform=datacrs, extend='min')
+        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
         if show_sample_points == True and no_vals == False:
     
             stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn2.plot_parameter('C', df2['tminf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn2.plot_parameter('C', df2['tminf'][::decimate], color='orange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+        cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig3.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F)) [Night 3]", fontsize=title_fontsize, fontweight='bold')
     
@@ -7942,24 +8907,24 @@ class temperature:
             pass
         ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
     
-        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(temperature_bottom_bound, 32 + temp_scale_step, temp_scale_step), cmap=cmap , transform=datacrs, extend='min')
+        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
         if show_sample_points == True and no_vals == False:
     
             stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn3.plot_parameter('C', df3['tminf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn3.plot_parameter('C', df3['tminf'][::decimate], color='orange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+        cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig4.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F)) [Night 4]", fontsize=title_fontsize, fontweight='bold')
     
@@ -7988,24 +8953,24 @@ class temperature:
             pass
         ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
     
-        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(temperature_bottom_bound, 32 + temp_scale_step, temp_scale_step), cmap=cmap , transform=datacrs, extend='min')
+        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
         if show_sample_points == True and no_vals == False:
     
             stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn4.plot_parameter('C', df4['tminf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn4.plot_parameter('C', df4['tminf'][::decimate], color='orange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+        cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig5.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F)) [Night 5]", fontsize=title_fontsize, fontweight='bold')
         
@@ -8034,24 +8999,24 @@ class temperature:
             pass
         ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
     
-        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(temperature_bottom_bound, 32 + temp_scale_step, temp_scale_step), cmap=cmap , transform=datacrs, extend='min')
+        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
         if show_sample_points == True and no_vals == False:
     
             stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn5.plot_parameter('C', df5['tminf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn5.plot_parameter('C', df5['tminf'][::decimate], color='orange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+        cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar5.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig6.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F)) [Night 6]", fontsize=title_fontsize, fontweight='bold')
     
@@ -8080,26 +9045,26 @@ class temperature:
             pass
         ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
     
-        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(temperature_bottom_bound, 32 + temp_scale_step, temp_scale_step), cmap=cmap , transform=datacrs, extend='min')
+        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
         if show_sample_points == True and no_vals == False:
     
             stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn6.plot_parameter('C', df6['tminf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn6.plot_parameter('C', df6['tminf'][::decimate], color='orange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
+        cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar6.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig7.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F) [Night 7]", fontsize=title_fontsize, fontweight='bold')
         
@@ -8128,19 +9093,19 @@ class temperature:
                 pass
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
     
-            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(temperature_bottom_bound, 32 + temp_scale_step, temp_scale_step), cmap=cmap , transform=datacrs, extend='min')
+            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
             if show_sample_points == True and no_vals == False:
     
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn7.plot_parameter('C', df7['tminf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn7.plot_parameter('C', df7['tminf'][::decimate], color='orange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass
     
-            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+            cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar7.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
@@ -8159,10 +9124,11 @@ class temperature:
             figs.append(fig5)
             figs.append(fig6)
     
-        return figs
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Frost Freeze', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Frost Freeze')
     
     
-    def plot_maximum_temperature_forecast(start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None): 
+    def plot_maximum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=50, temp_scale_warm_stop=120, temp_scale_cool_start=10, temp_scale_cool_stop=80, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Maximum Temperature Forecast. 
@@ -8408,9 +9374,6 @@ class temperature:
         temp_scale_cool_stop = temp_scale_cool_stop
         temp_scale_cool_stop_corrected = temp_scale_cool_stop + temp_scale_step
     
-        show_state_borders = show_state_borders
-        show_county_borders = show_county_borders
-        show_gacc_borders = show_gacc_borders
         state_border_linewidth = state_border_linewidth
         county_border_linewidth = county_border_linewidth
         gacc_border_linewidth = gacc_border_linewidth
@@ -8422,21 +9385,105 @@ class temperature:
         show_sample_points = show_sample_points
         sample_point_fontsize = sample_point_fontsize
         alpha = alpha
+
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
     
         cmap = colormaps.temperature_colormap()
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
     
-        local_time, utc_time = standard.plot_creation_time()
-    
-        mapcrs = ccrs.PlateCarree()
-        datacrs = ccrs.PlateCarree()
-    
         temp_scale_cool = np.arange(temp_scale_cool_start, temp_scale_cool_stop_corrected, temp_scale_step)
     
         temp_scale_warm = np.arange(temp_scale_warm_start, temp_scale_warm_stop_corrected, temp_scale_step)
     
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+        reference_system = reference_system
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
+    
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+        
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+            
+    
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+    
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
@@ -8446,37 +9493,39 @@ class temperature:
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
     
         else:
             pass
     
-        if state == None and gacc_region == None:
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
     
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
-            directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxt')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxt')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-    
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
     
         if file_path == None:
     
@@ -8486,12 +9535,14 @@ class temperature:
     
                 print("Downloaded data successfully!")
             except Exception as a:
+
+                standard.idle()
     
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.maxt.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.maxt.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxt.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxt.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -8583,12 +9634,19 @@ class temperature:
             no_vals = True
             
         files = count
+
+        local_time, utc_time = standard.plot_creation_time()
+
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            labels = temp_scale_warm[::5]
+        if utc_time.month >= start_of_cool_season_month and utc_time.month <= end_of_cool_season_month:
+            labels = temp_scale_cool[::5]
     
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig1.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 1]", fontsize=title_fontsize, fontweight='bold')
@@ -8630,19 +9688,19 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn1.plot_parameter('C', df1['tmaxf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn1.plot_parameter('C', df1['tmaxf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+        cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar1.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig2.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 2]", fontsize=title_fontsize, fontweight='bold')
@@ -8684,19 +9742,19 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn2.plot_parameter('C', df2['tmaxf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn2.plot_parameter('C', df2['tmaxf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+        cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar2.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig3.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 3]", fontsize=title_fontsize, fontweight='bold')
@@ -8738,19 +9796,19 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn3.plot_parameter('C', df3['tmaxf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn3.plot_parameter('C', df3['tmaxf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+        cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar3.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig4.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 4]", fontsize=title_fontsize, fontweight='bold')
@@ -8792,19 +9850,19 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn4.plot_parameter('C', df4['tmaxf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn4.plot_parameter('C', df4['tmaxf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+        cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar4.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig5.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 5]", fontsize=title_fontsize, fontweight='bold')
@@ -8846,19 +9904,19 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn5.plot_parameter('C', df5['tmaxf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn5.plot_parameter('C', df5['tmaxf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+        cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar5.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig6.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 6]", fontsize=title_fontsize, fontweight='bold')
@@ -8900,21 +9958,21 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn6.plot_parameter('C', df6['tmaxf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn6.plot_parameter('C', df6['tmaxf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
+        cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar6.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
                 fig7.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 7]", fontsize=title_fontsize, fontweight='bold')
@@ -8956,14 +10014,14 @@ class temperature:
             if show_sample_points == True and no_vals == False:
     
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn7.plot_parameter('C', df7['tmaxf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn7.plot_parameter('C', df7['tmaxf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass
     
-            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+            cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar7.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
@@ -8982,9 +10040,10 @@ class temperature:
             figs.append(fig5)
             figs.append(fig6)
     
-        return figs
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Max T', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Max T')
     
-    def plot_minimum_temperature_forecast(start_of_warm_season_month, end_of_warm_season_month, start_of_cool_season_month, end_of_cool_season_month, temp_scale_warm_start, temp_scale_warm_stop, temp_scale_cool_start, temp_scale_cool_stop, temp_scale_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None): 
+    def plot_minimum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=30, temp_scale_warm_stop=90, temp_scale_cool_start=-10, temp_scale_cool_stop=60, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Minimum Temperature Forecast. 
@@ -9230,9 +10289,6 @@ class temperature:
         temp_scale_cool_stop = temp_scale_cool_stop
         temp_scale_cool_stop_corrected = temp_scale_cool_stop + temp_scale_step
     
-        show_state_borders = show_state_borders
-        show_county_borders = show_county_borders
-        show_gacc_borders = show_gacc_borders
         state_border_linewidth = state_border_linewidth
         county_border_linewidth = county_border_linewidth
         gacc_border_linewidth = gacc_border_linewidth
@@ -9244,6 +10300,8 @@ class temperature:
         show_sample_points = show_sample_points
         sample_point_fontsize = sample_point_fontsize
         alpha = alpha
+
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
     
         cmap = colormaps.temperature_colormap()
         from_zone = tz.tzutc()
@@ -9253,9 +10311,95 @@ class temperature:
     
         temp_scale_warm = np.arange(temp_scale_warm_start, temp_scale_warm_stop_corrected, temp_scale_step)
     
-        local_time, utc_time = standard.plot_creation_time()
     
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+        reference_system = reference_system
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
+    
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+        
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+            
+    
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+    
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
@@ -9265,37 +10409,39 @@ class temperature:
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
     
         else:
             pass
     
-        if state == None and gacc_region == None:
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
     
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
-            directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'mint')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'mint')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-    
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
     
         if file_path == None:
     
@@ -9305,12 +10451,14 @@ class temperature:
     
                 print("Downloaded data successfully!")
             except Exception as a:
+
+                standard.idle()
     
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.mint.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.mint.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.mint.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -9402,12 +10550,19 @@ class temperature:
             no_vals = True
             
         files = count
+
+        local_time, utc_time = standard.plot_creation_time()
+
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            labels = temp_scale_warm[::5]
+        if utc_time.month >= start_of_cool_season_month and utc_time.month <= end_of_cool_season_month:
+            labels = temp_scale_cool[::5]
     
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig1.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 1]", fontsize=title_fontsize, fontweight='bold')
@@ -9449,19 +10604,19 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn1.plot_parameter('C', df1['tminf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn1.plot_parameter('C', df1['tminf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+        cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar1.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig2.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 2]", fontsize=title_fontsize, fontweight='bold')
@@ -9503,19 +10658,19 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn2 = mpplots.StationPlot(ax2, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn2.plot_parameter('C', df2['tminf'][::decimate], color='white', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn2.plot_parameter('C', df2['tminf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+        cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar2.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig3.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 3]", fontsize=title_fontsize, fontweight='bold')
@@ -9557,19 +10712,19 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn3 = mpplots.StationPlot(ax3, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn3.plot_parameter('C', df3['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn3.plot_parameter('C', df3['tminf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+        cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar3.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig4.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 4]", fontsize=title_fontsize, fontweight='bold')
@@ -9611,19 +10766,19 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn4 = mpplots.StationPlot(ax4, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn4.plot_parameter('C', df4['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn4.plot_parameter('C', df4['tminf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+        cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig5.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 5]", fontsize=title_fontsize, fontweight='bold')
@@ -9665,19 +10820,19 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn5 = mpplots.StationPlot(ax5, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn5.plot_parameter('C', df5['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn5.plot_parameter('C', df5['tminf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+        cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar5.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             fig6.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 6]", fontsize=title_fontsize, fontweight='bold')
@@ -9719,21 +10874,21 @@ class temperature:
         if show_sample_points == True and no_vals == False:
     
             stn6 = mpplots.StationPlot(ax6, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn6.plot_parameter('C', df6['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn6.plot_parameter('C', df6['tminf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar6 = fig6.colorbar(cs6, shrink=color_table_shrink)
+        cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar6.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
                 fig7.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 7]", fontsize=title_fontsize, fontweight='bold')
@@ -9775,14 +10930,14 @@ class temperature:
             if show_sample_points == True and no_vals == False:
     
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn7.plot_parameter('C', df7['tminf'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn7.plot_parameter('C', df7['tminf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass
     
-            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+            cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar7.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
@@ -9801,10 +10956,11 @@ class temperature:
             figs.append(fig5)
             figs.append(fig6)
     
-        return figs 
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Min T', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Min T')
     
     
-    def plot_minimum_temperature_trend_forecast(contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
+    def plot_minimum_temperature_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Minimum Temperature Trend Forecast. 
@@ -10012,13 +11168,7 @@ class temperature:
         Return: A list of figures for each forecast day. 
         '''
     
-    
-        local_time, utc_time = standard.plot_creation_time()
-    
         decimate = decimate
-        show_state_borders = show_state_borders
-        show_county_borders = show_county_borders
-        show_gacc_borders = show_gacc_borders
         state_border_linewidth = state_border_linewidth
         county_border_linewidth = county_border_linewidth
         gacc_border_linewidth = gacc_border_linewidth
@@ -10030,16 +11180,102 @@ class temperature:
         show_sample_points = show_sample_points
         sample_point_fontsize = sample_point_fontsize
         alpha = alpha
+
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        levels = np.arange(-25, 26, 1)
+        labels = levels[::2]
     
-        cmap = colormaps.relative_humidity_change_colormap()
+        cmap = colormaps.temperature_change_colormap()
+        
+        reference_system = reference_system
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
+    
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
         
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
-    
-        mapcrs = ccrs.PlateCarree()
-        datacrs = ccrs.PlateCarree()
             
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+    
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+    
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
@@ -10049,37 +11285,39 @@ class temperature:
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
     
         else:
             pass
     
-        if state == None and gacc_region == None:
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
     
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
-            directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'mint trend')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'mint trend')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-    
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
     
         if file_path == None:
     
@@ -10089,12 +11327,14 @@ class temperature:
     
                 print("Downloaded data successfully!")
             except Exception as a:
+
+                standard.idle()
     
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.mint.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.mint.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.mint.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -10157,7 +11397,7 @@ class temperature:
     
         
         try:
-            vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'tmin', count, True, count_short, count_extended, discard)     
+            vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'tmin', count, True, count_short, count_extended, discard)
             
             df1 = vals[0]
             df1['tminf'] = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(df1['tmin'])
@@ -10194,12 +11434,14 @@ class temperature:
             no_vals = True
     
         files = count
+
+        local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig1.suptitle('National Weather Service Forecast\nMinimum Temperature Trend [Night 2]', fontsize=title_fontsize, fontweight='bold')
     
@@ -10228,24 +11470,24 @@ class temperature:
             pass
         ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-25, 25 + contour_step, contour_step), cmap='seismic', alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn1 = mpplots.StationPlot(ax1, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn1.plot_parameter('C', df2['tdiff'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn1.plot_parameter('C', df2['tdiff'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+        cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig2.suptitle('National Weather Service Forecast\nMinimum Temperature Trend [Night 3]', fontsize=title_fontsize, fontweight='bold')
         
@@ -10274,24 +11516,24 @@ class temperature:
             pass
         ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-25, 25 + contour_step, contour_step), cmap='seismic', alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn2 = mpplots.StationPlot(ax2, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn2.plot_parameter('C', df3['tdiff'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn2.plot_parameter('C', df3['tdiff'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+        cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar2.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig3.suptitle('National Weather Service Forecast\nMinimum Temperature Trend [Night 4]', fontsize=title_fontsize, fontweight='bold')
     
@@ -10320,24 +11562,24 @@ class temperature:
             pass
         ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-25, 25 + contour_step, contour_step), cmap='seismic', alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn3 = mpplots.StationPlot(ax3, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn3.plot_parameter('C', df4['tdiff'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn3.plot_parameter('C', df4['tdiff'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+        cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar3.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig4.suptitle('National Weather Service Forecast\nMinimum Temperature Trend [Night 5]', fontsize=title_fontsize, fontweight='bold')
         
@@ -10366,24 +11608,24 @@ class temperature:
             pass
         ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-25, 25 + contour_step, contour_step), cmap='seismic', alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn4 = mpplots.StationPlot(ax4, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn4.plot_parameter('C', df5['tdiff'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn4.plot_parameter('C', df5['tdiff'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+        cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar4.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         fig5.suptitle('National Weather Service Forecast\nMinimum Temperature Trend [Night 6]', fontsize=title_fontsize, fontweight='bold')
         
@@ -10412,26 +11654,26 @@ class temperature:
             pass
         ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-25, 25 + contour_step, contour_step), cmap='seismic', alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn5 = mpplots.StationPlot(ax5, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn5.plot_parameter('C', df6['tdiff'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn5.plot_parameter('C', df6['tdiff'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+        cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar5.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             fig7.suptitle('National Weather Service Forecast\nMinimum Temperature Trend [Night 7]', fontsize=title_fontsize, fontweight='bold')
             
@@ -10460,19 +11702,19 @@ class temperature:
                 pass
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-25, 25 + contour_step, contour_step), cmap='seismic', alpha=alpha, transform=datacrs, zorder=2, extend='both')
+            cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
             if show_sample_points == True and no_vals == False:
     
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn7.plot_parameter('C', df7['tdiff'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn7.plot_parameter('C', df7['tdiff'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass
     
-            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+            cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar7.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
@@ -10489,10 +11731,11 @@ class temperature:
             figs.append(fig4)
             figs.append(fig5)
     
-        return figs
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Min T Trend', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Min T Trend')
     
     
-    def plot_maximum_temperature_trend_forecast(contour_step, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None):
+    def plot_maximum_temperature_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Maximum Temperature Trend Forecast. 
@@ -10699,14 +11942,8 @@ class temperature:
     
         Return: A list of figures for each forecast day. 
         '''
-    
-    
-        local_time, utc_time = standard.plot_creation_time()
-    
+        
         decimate = decimate
-        show_state_borders = show_state_borders
-        show_county_borders = show_county_borders
-        show_gacc_borders = show_gacc_borders
         state_border_linewidth = state_border_linewidth
         county_border_linewidth = county_border_linewidth
         gacc_border_linewidth = gacc_border_linewidth
@@ -10718,16 +11955,105 @@ class temperature:
         show_sample_points = show_sample_points
         sample_point_fontsize = sample_point_fontsize
         alpha = alpha
+
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        levels = np.arange(-25, 26, 1)
+        labels = levels[::2]
     
-        cmap = colormaps.relative_humidity_change_colormap()
+        cmap = colormaps.temperature_change_colormap()
         
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
     
+        reference_system = reference_system
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
             
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
+    
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States and Counties':
+                show_state_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC and PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'CWA and Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'CWA and Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'CWA and Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC with PSA and Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+            if reference_system == 'GACC with PSA and Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+            if reference_system == 'GACC with PSA and CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+            if reference_system == 'GACC with PSA and Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+            if reference_system == 'GACC and Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+        
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+            
+    
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+    
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
             fig_y_length = fig_y_length
@@ -10737,37 +12063,39 @@ class temperature:
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
     
         else:
             pass
     
-        if state == None and gacc_region == None:
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
     
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name)
-            else:
-                decimate = decimate
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
-            directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'maxt trend')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxt trend')
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-    
-        PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-        GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+        ds = data_array
     
         if file_path == None:
     
@@ -10777,12 +12105,14 @@ class temperature:
     
                 print("Downloaded data successfully!")
             except Exception as a:
-    
+
+                standard.idle()
+
                 print("Trying again to download data...")
     
-                count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.maxt.bin')
-        
-                ds = parsers.NDFD.grib_to_xarray('ds.maxt.bin')
+                grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.maxt.bin')
+    
+                print("Downloaded data successfully!")
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxt.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -10845,7 +12175,8 @@ class temperature:
     
         
         try:
-            vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'tmax', count, True, count_short, count_extended, discard)     
+
+            vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'tmax', count, True, count_short, count_extended, discard)
             
             df1 = vals[0]
             df1['tmaxf'] = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(df1['tmax'])
@@ -10882,14 +12213,16 @@ class temperature:
             no_vals = True
     
         files = count
+
+        local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        fig1.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Night 2]', fontsize=title_fontsize, fontweight='bold')
+        fig1.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Day 2]', fontsize=title_fontsize, fontweight='bold')
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -10916,26 +12249,26 @@ class temperature:
             pass
         ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=np.arange(-25, 25 + contour_step, contour_step), cmap='seismic', alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn1 = mpplots.StationPlot(ax1, df2['longitude'][::decimate], df2['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn1.plot_parameter('C', df2['tdiff'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn1.plot_parameter('C', df2['tdiff'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar1 = fig1.colorbar(cs1, shrink=color_table_shrink)
+        cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        fig2.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Night 3]', fontsize=title_fontsize, fontweight='bold')
+        fig2.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Day 3]', fontsize=title_fontsize, fontweight='bold')
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -10962,26 +12295,26 @@ class temperature:
             pass
         ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=np.arange(-25, 25 + contour_step, contour_step), cmap='seismic', alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn2 = mpplots.StationPlot(ax2, df3['longitude'][::decimate], df3['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn2.plot_parameter('C', df3['tdiff'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn2.plot_parameter('C', df3['tdiff'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar2 = fig2.colorbar(cs2, shrink=color_table_shrink)
+        cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar2.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        fig3.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Night 4]', fontsize=title_fontsize, fontweight='bold')
+        fig3.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Day 4]', fontsize=title_fontsize, fontweight='bold')
     
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -11008,26 +12341,26 @@ class temperature:
             pass
         ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=np.arange(-25, 25 + contour_step, contour_step), cmap='seismic', alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn3 = mpplots.StationPlot(ax3, df4['longitude'][::decimate], df4['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn3.plot_parameter('C', df4['tdiff'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn3.plot_parameter('C', df4['tdiff'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar3 = fig3.colorbar(cs3, shrink=color_table_shrink)
+        cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar3.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        fig4.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Night 5]', fontsize=title_fontsize, fontweight='bold')
+        fig4.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Day 5]', fontsize=title_fontsize, fontweight='bold')
         
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -11054,26 +12387,26 @@ class temperature:
             pass
         ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=np.arange(-25, 25 + contour_step, contour_step), cmap='seismic', alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn4 = mpplots.StationPlot(ax4, df5['longitude'][::decimate], df5['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn4.plot_parameter('C', df5['tdiff'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn4.plot_parameter('C', df5['tdiff'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar4 = fig4.colorbar(cs4, shrink=color_table_shrink)
+        cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar4.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        fig5.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Night 6]', fontsize=title_fontsize, fontweight='bold')
+        fig5.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Day 6]', fontsize=title_fontsize, fontweight='bold')
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -11100,28 +12433,28 @@ class temperature:
             pass
         ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
-        cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=np.arange(-25, 25 + contour_step, contour_step), cmap='seismic', alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
             stn5 = mpplots.StationPlot(ax5, df6['longitude'][::decimate], df6['latitude'][::decimate],
-                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                             transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-            stn5.plot_parameter('C', df6['tdiff'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+            stn5.plot_parameter('C', df6['tdiff'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
             pass
     
-        cbar5 = fig5.colorbar(cs5, shrink=color_table_shrink)
+        cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar5.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\n                 Data Source: NOAA/NWS\n         Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-            fig7.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Night 7]', fontsize=title_fontsize, fontweight='bold')
+            fig7.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Day 7]', fontsize=title_fontsize, fontweight='bold')
             
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -11148,19 +12481,19 @@ class temperature:
                 pass
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
                 
-            cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=np.arange(-25, 25 + contour_step, contour_step), cmap='seismic', alpha=alpha, transform=datacrs, zorder=2, extend='both')
+            cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
             if show_sample_points == True and no_vals == False:
     
                 stn7 = mpplots.StationPlot(ax7, df7['longitude'][::decimate], df7['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=3, clip_on=True)
+                                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
     
-                stn7.plot_parameter('C', df7['tdiff'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=3)
+                stn7.plot_parameter('C', df7['tdiff'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
             else:
                 pass
     
-            cbar7 = fig7.colorbar(cs7, shrink=color_table_shrink)
+            cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar7.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
@@ -11177,4 +12510,7 @@ class temperature:
             figs.append(fig4)
             figs.append(fig5)
     
-        return figs
+        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Max T Trend', reference_system)
+        file_functions.update_images(figs, path, gif_path, 'NWS Max T Trend')
+
+
