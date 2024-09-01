@@ -4,6 +4,8 @@ The issue is with pygrib since pygrib does not have a binary wheel for windows a
 **How to install firewxpy for windows users for Python>=3.9** during the alpha-beta (the stages before I try to get this on conda-forge):
 1) conda install pygrib
 2) pip install "git+https://github.com/edrewitz/FireWxPy.git"
+
+
    **For Python 3.8**
      - Must use conda to install cartopy and netcdf4. 
 
