@@ -11,7 +11,7 @@ authors = [
 description = "Weather Analysis and Forecasting For Fire Weather"
 readme = "README.md"
 keywords = ["meteorology", "science", "data-analysis", "weather", "forecasting"]
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.10",
