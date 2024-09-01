@@ -15,6 +15,7 @@ This file hosts standard functions which are used across all plotting functions:
 
 import pytz
 from datetime import datetime, timedelta
+import time as t
 
 
 def plot_creation_time():
@@ -56,6 +57,33 @@ def plot_creation_time():
     UTC_Now = datetime(yr1, mon1, dy1, hr1, mn1, sec1)
     
     return Local_Time_Now, UTC_Now
+
+
+def idle():
+
+    
+    now = datetime.now()
+    year = now.year
+    month = now.month
+    day = now.day
+    hour = now.hour
+    minute = now.minute
+    second = now.second
+    sec = minute * 60
+    current = second + sec
+    resume = 48 * 60
+    idle = resume - current
+    resume_time = datetime(year, month, day, hour, 48)
+    current_time = datetime(year, month, day, hour, minute)
+    mins = idle/60
+
+    print("NDFD grid files update on the NWS FTP server from the 17th through 47th minute of the hour.\nThe program will idle until "+resume_time.strftime('%H:%M Local')+".\nYou have "+str(int(round(mins, 0)))+" minutes until the program automatically resumes and tries re-downloading and plotting the data again.")
+
+    print("Current time: "+current_time.strftime('%H:%M Local'))
+
+    t.sleep(idle)
+
+    print("Resuming!")
 
 
 def no_data_graphic():
