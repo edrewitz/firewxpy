@@ -11,3 +11,5 @@ The issue is with pygrib since pygrib does not have a binary wheel for windows a
 
 **mac and linux users**
 1) pip install "git+https://github.com/edrewitz/FireWxPy.git"
+
+**The packages that need to be conda installed need to be installed BEFORE pip installing FireWxPy**
