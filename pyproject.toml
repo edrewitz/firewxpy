@@ -3,7 +3,7 @@ requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "FireWxPy"
+name = "firewxpy"
 version = "1.00"
 authors = [
   { name="Eric J Drewitz, USDA/USFS"},
