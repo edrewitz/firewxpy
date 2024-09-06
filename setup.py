@@ -5,9 +5,9 @@ if sys.version_info[0] < 3:
   print("ERROR: User is running Python 2.7.\nTo use FireWxPy, the user must be using Python 3.")
 
 setup(
-    name = "__init__.py",
+    name = "firewxpy",
     version = "1.0.0",
-    packages = find_packages(),
+    packages = __init__.py,
     install_requires=[
         "matplotlib>=3.7",
         "metpy>=1.5.1",
