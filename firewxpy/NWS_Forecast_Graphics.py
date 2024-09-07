@@ -25,7 +25,7 @@ import cartopy.feature as cfeature
 import metpy.plots as mpplots
 import metpy.calc as mpcalc
 import numpy as np
-import parsers
+import firewxpy.parsers
 import data_access as da
 import geometry
 import colormaps
