@@ -26,21 +26,21 @@ import metpy.plots as mpplots
 import metpy.calc as mpcalc
 import numpy as np
 import firewxpy.parsers
-import data_access as da
-import geometry
-import colormaps
+import firewxpy.data_access as da
+import firewxpy.geometry
+import firewxpy.colormaps
 import os
 import xarray as xr
-import settings
-import standard
+import firewxpy.settings
+import firewxpy.standard
 
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
 from metpy.plots import colortables
 from dateutil import tz
 from matplotlib.patheffects import withStroke
-from calc import scaling, unit_conversion, contouring
-from utilities import file_functions
+from firewxpy.calc import scaling, unit_conversion, contouring
+from firewxpy.utilities import file_functions
 
 class relative_humidity:
 
