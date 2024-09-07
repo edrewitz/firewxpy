@@ -293,9 +293,16 @@ class relative_humidity:
         directory_name = directory_name
         state = state
 
+        thresh = poor_overnight_recovery_rh_threshold + 1
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-        thresh = poor_overnight_recovery_rh_threshold + 1
+        levels = np.arange(0, thresh, 1)
+        if thresh > 31:
+            labels = levels[::2]
+        else:
+            labels = levels
 
         cmap = colormaps.low_relative_humidity_colormap()
 
@@ -312,7 +319,7 @@ class relative_humidity:
             show_nws_firewx_zones = show_nws_firewx_zones
             show_nws_public_zones = show_nws_public_zones
 
-        if reference_system != 'Custom' and reference_system != 'Custom':
+        if reference_system != 'Custom' and reference_system != 'custom':
             
             show_state_borders = False
             show_county_borders = False
@@ -347,36 +354,28 @@ class relative_humidity:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
-
         
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
-
-        levels = np.arange(0, thresh, 1)
-        if thresh > 31:
-            labels = levels[::2]
-        else:
-            labels = levels
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -387,7 +386,10 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -421,9 +423,6 @@ class relative_humidity:
     
         else:
             pass
-    
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -1108,7 +1107,15 @@ class relative_humidity:
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
         cmap = colormaps.excellent_recovery_colormap()
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        levels = np.arange(excellent_overnight_recovery_rh_threshold, 101, 1)
+        if excellent_overnight_recovery_rh_threshold < 80:
+            labels = levels[::2]
+        else:
+            labels = levels
 
         reference_system = reference_system
         mapcrs = ccrs.PlateCarree()
@@ -1158,36 +1165,28 @@ class relative_humidity:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
-
         
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
-
-        levels = np.arange(excellent_overnight_recovery_rh_threshold, 101, 1)
-        if excellent_overnight_recovery_rh_threshold < 80:
-            labels = levels[::2]
-        else:
-            labels = levels
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -1198,7 +1197,10 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -1903,6 +1905,14 @@ class relative_humidity:
         reference_system = reference_system
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
+        cmap = colormaps.relative_humidity_colormap()
+        
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        levels = np.arange(0, 102, 1)
+        labels = levels[::4]
 
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -1948,35 +1958,28 @@ class relative_humidity:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
-
         
-        cmap = colormaps.relative_humidity_colormap()
-        
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
-
-        levels = np.arange(0, 102, 1)
-        labels = levels[::4]
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -1987,7 +1990,10 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -2692,6 +2698,14 @@ class relative_humidity:
         reference_system = reference_system
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
+        cmap = colormaps.relative_humidity_change_colormap()
+        
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        levels = np.arange(-50, 51, 1)
+        labels = levels[::4]
 
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -2737,35 +2751,28 @@ class relative_humidity:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
-
         
-        cmap = colormaps.relative_humidity_change_colormap()
-        
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
-
-        levels = np.arange(-50, 51, 1)
-        labels = levels[::4]
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -2776,7 +2783,10 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -3544,6 +3554,8 @@ class relative_humidity:
         reference_system = reference_system
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
 
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -3589,28 +3601,28 @@ class relative_humidity:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
         
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -3621,7 +3633,10 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -4698,6 +4713,9 @@ class relative_humidity:
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
 
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
             show_county_borders = show_county_borders
@@ -4742,28 +4760,28 @@ class relative_humidity:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
         
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -4774,7 +4792,10 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -4808,9 +4829,6 @@ class relative_humidity:
     
         else:
             pass
-    
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -5850,6 +5868,15 @@ class relative_humidity:
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
 
+        cmap = colormaps.relative_humidity_change_colormap()
+        
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        levels = np.arange(-50, 51, 1)
+        labels = levels[::4]
+
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
             show_county_borders = show_county_borders
@@ -5894,35 +5921,28 @@ class relative_humidity:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
-
         
-        cmap = colormaps.relative_humidity_change_colormap()
-        
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
-
-        levels = np.arange(-50, 51, 1)
-        labels = levels[::4]
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -5933,7 +5953,10 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -6762,28 +6785,28 @@ class temperature:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
         
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -6794,13 +6817,16 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
             else:
                 decimate = decimate
-
+                
         if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
             fig_x_length = fig_x_length
@@ -6828,9 +6854,6 @@ class temperature:
     
         else:
             pass
-    
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -7686,28 +7709,28 @@ class temperature:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
         
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -7718,7 +7741,10 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -7752,9 +7778,6 @@ class temperature:
     
         else:
             pass
-    
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -8588,28 +8611,28 @@ class temperature:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
         
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -8620,7 +8643,10 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -8654,9 +8680,6 @@ class temperature:
     
         else:
             pass
-    
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -9444,28 +9467,28 @@ class temperature:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
         
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -9476,7 +9499,10 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -9510,9 +9536,6 @@ class temperature:
     
         else:
             pass
-    
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -9627,7 +9650,7 @@ class temperature:
                 df7['tmaxf'] = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(df7['tmax'])
             else:
                 pass
-    
+            
             no_vals = False
     
         except Exception as g:
@@ -9689,7 +9712,7 @@ class temperature:
     
             stn1 = mpplots.StationPlot(ax1, df1['longitude'][::decimate], df1['latitude'][::decimate],
                                              transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=10, clip_on=True)
-    
+        
             stn1.plot_parameter('C', df1['tmaxf'][::decimate], color='green', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
         else:
@@ -10360,28 +10383,28 @@ class temperature:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
         
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -10392,7 +10415,10 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -10426,9 +10452,6 @@ class temperature:
     
         else:
             pass
-    
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -11191,6 +11214,9 @@ class temperature:
         reference_system = reference_system
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
+        
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
 
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -11236,28 +11262,28 @@ class temperature:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
         
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -11268,7 +11294,10 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -11302,9 +11331,6 @@ class temperature:
     
         else:
             pass
-    
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -12014,28 +12040,28 @@ class temperature:
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
+                cwa_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
+                county_border_linewidth=0.25
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
         
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
-            
-    
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True, 'maxrh')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -12046,7 +12072,10 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'maxrh trend')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
     
             if decimate == 'default':
                 decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
@@ -12080,9 +12109,6 @@ class temperature:
     
         else:
             pass
-    
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
