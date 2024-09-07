@@ -1,0 +1,9 @@
+LICENSE
+README.md
+pyproject.toml
+setup.py
+firewxpy.egg-info/PKG-INFO
+firewxpy.egg-info/SOURCES.txt
+firewxpy.egg-info/dependency_links.txt
+firewxpy.egg-info/requires.txt
+firewxpy.egg-info/top_level.txt
