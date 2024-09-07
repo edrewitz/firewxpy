@@ -1,2 +1,1 @@
-import src.firewxpy as firewxpy
 from firewxpy.NWS_Forecast_Graphics import temperature as nws_temperature_forecast
