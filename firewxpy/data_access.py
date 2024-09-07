@@ -19,16 +19,16 @@ import xarray as xr
 import os
 import metpy
 import metpy.calc as mpcalc
-import parsers
+import firewxpy.parsers as parsers
 import pandas as pd
 import cartopy.crs as ccrs
 import requests
-import calc
+import firewxpy.calc as calc
 import numpy as np
 import pickle
 import netCDF4
 import time as t
-import standard
+import firewxpy.standard as standard
 
 from ftplib import FTP
 from siphon.catalog import TDSCatalog

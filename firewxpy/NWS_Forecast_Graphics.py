@@ -25,14 +25,14 @@ import cartopy.feature as cfeature
 import metpy.plots as mpplots
 import metpy.calc as mpcalc
 import numpy as np
-import firewxpy.parsers
+import firewxpy.parsers as parsers
 import firewxpy.data_access as da
-import firewxpy.geometry
-import firewxpy.colormaps
+import firewxpy.geometry as geometry
+import firewxpy.colormaps as colormaps
 import os
 import xarray as xr
-import firewxpy.settings
-import firewxpy.standard
+import firewxpy.settings as settings
+import firewxpy.standard as standard
 
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta

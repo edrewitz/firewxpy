@@ -13,7 +13,7 @@ import pygrib
 import numpy as np
 import data_access as da
 import matplotlib.pyplot as plt
-import calc
+import firewxpy.calc as calc
 import os
 import cartopy.crs as ccrs
 import xarray as xr

@@ -15,7 +15,7 @@ import cartopy.crs as ccrs
 
 from cartopy.io.shapereader import Reader
 from cartopy.feature import ShapelyFeature
-from utilities import file_functions
+from firewxpy.utilities import file_functions
 
 #### INFORMATION CLASS ####
 # The information class returns helpful tips for when the user encounters errors
