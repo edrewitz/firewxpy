@@ -1,3 +1,3 @@
-from firewxpy.NWS_Forecast_Graphics import temperature as nws_temperature_forecast
+from src.firewxpy.NWS_Forecast_Graphics import temperature as nws_temperature_forecast
 #from firewxpy.NWS_Forecast_Graphics import temperature as nws_temperature_forecast
 #from firewxpy.NWS_Forecast_Graphics import relative_humidity as nws_relative_humidity_forecast
