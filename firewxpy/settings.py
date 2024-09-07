@@ -105,13 +105,12 @@ def get_sample_point_color_by_state(state, plot_type):
     return color
 
 
-def get_state_data_and_coords(state, ndfd_grids, plot_type, rtma_data=None):
+def get_state_data_and_coords(state, ndfd_grids):
 
     state = state
     ndfd_grids = ndfd_grids
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
-    plot_type = plot_type
     shrink = 0.7
     legend_fontsize = 14
     directory_name = None
@@ -140,7 +139,6 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type, rtma_data=None):
         legend_fontsize = 12
         state_border_linewidth=1
         county_border_linewidth=0.2
-            
 
 
     if state == 'AK' or state == 'ak':
@@ -210,15 +208,15 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type, rtma_data=None):
         eastern_bound = -66.75
         southern_bound = 42.2
         northern_bound = 47.6
-        fig_x_length = 15
-        fig_y_length = 15
+        fig_x_length = 10
+        fig_y_length = 10
         title_fontsize = 18
         signature_x_position = 0.255
         signature_y_position = 0.25
-        signature_fontsize=14
+        signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        subplot_title_fontsize=15 
+        subplot_title_fontsize=13 
         legend_fontsize = 30
 
             
@@ -230,8 +228,8 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type, rtma_data=None):
         eastern_bound = -70.60
         southern_bound = 42.5
         northern_bound = 45.36
-        fig_x_length = 25
-        fig_y_length = 25
+        fig_x_length = 10
+        fig_y_length = 10
         signature_x_position = 0.10
         signature_y_position = 0.05
         subplot_title_fontsize=12 
@@ -266,8 +264,8 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type, rtma_data=None):
             signature_x_position = 0.29
             signature_y_position = 0.25
             signature_fontsize=18
-            fig_y_length = 25
-            fig_x_length = 25
+            fig_x_length = 10
+            fig_y_length = 10
             shrink = 0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
@@ -287,8 +285,8 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type, rtma_data=None):
         eastern_bound = -71.44
         southern_bound = 42.5
         northern_bound = 45.10
-        fig_x_length = 25
-        fig_y_length = 25
+        fig_x_length = 10
+        fig_y_length = 10
         signature_x_position = 0.10
         signature_y_position = 0.05
         subplot_title_fontsize=30
@@ -321,8 +319,8 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type, rtma_data=None):
             signature_x_position = 0.29
             signature_y_position = 0.25
             signature_fontsize=18
-            fig_y_length = 25
-            fig_x_length = 25
+            fig_x_length = 10
+            fig_y_length = 10
             shrink = 0.5
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
@@ -2391,7 +2389,7 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type, rtma_data=None):
         northern_bound = 36.75
         fig_x_length = 25
         fig_y_length = 10
-        signature_x_position = 0.10
+        signature_x_position = 0.08
         signature_y_position = 0.05
         subplot_title_fontsize=25
         title_fontsize = 45
@@ -2426,16 +2424,27 @@ def get_state_data_and_coords(state, ndfd_grids, plot_type, rtma_data=None):
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=4
         
-    return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, shrink, legend_fontsize, mapcrs, datacrs, state_border_linewidth, county_border_linewidth, title_x_position, aspect, tick
+    return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick
     
 
-def get_gacc_region_data_and_coords(gacc_region, ndfd_grids, plot_type):
+def get_gacc_region_data_and_coords(gacc_region, ndfd_grids):
 
     gacc_region = gacc_region
     ndfd_grids = ndfd_grids
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
-    shrink = 0.7
+    color_table_shrink = 0.7
+    aspect=30
+    tick = 9
+    fig_x_length = 12
+    fig_y_length = 12
+    title_fontsize=20 
+    subplot_title_fontsize=14 
+    signature_fontsize=10 
+    sample_point_fontsize=14
+    colorbar_fontsize=10 
+    legend_fontsize=12          
+    title_x_position=0.5 
 
     if gacc_region == 'OSCC' or gacc_region == 'oscc' or gacc_region == 'SOPS' or gacc_region == 'sops':
         if ndfd_grids == True:
@@ -2444,243 +2453,83 @@ def get_gacc_region_data_and_coords(gacc_region, ndfd_grids, plot_type):
         eastern_bound = -113.93
         southern_bound = 32.4
         northern_bound = 39.06
-        fig_x_length = 7
-        fig_y_length = 6
-        signature_x_position = 0.09
-        signature_y_position = 0.05
-        if plot_type == 'minrh':
-            title_fontsize=17 
-        if plot_type == 'poor recovery':
-            title_fontsize=15 
-        if plot_type == 'excellent recovery':
-            title_fontsize=14
-        if plot_type == 'maxrh':
-            title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            title_fontsize=15
-        if plot_type == 'low minrh':
-            title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            colorbar_fontsize=8
+        signature_x_position = 0.13
+        signature_y_position = 0.26
 
     if gacc_region == 'ONCC' or gacc_region == 'oncc' or gacc_region == 'NOPS' or gacc_region == 'nops':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -124.8
         eastern_bound = -119.1
-        southern_bound = 36.6
+        southern_bound = 35.9
         northern_bound = 42.15
-        fig_x_length = 7
-        fig_y_length = 7
-        signature_x_position = 0.09
-        signature_y_position = 0.05
-        if plot_type == 'minrh':
-            title_fontsize=17 
-        if plot_type == 'poor recovery':
-            title_fontsize=15 
-        if plot_type == 'excellent recovery':
-            title_fontsize=14
-        if plot_type == 'maxrh':
-            title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            title_fontsize=15
-        if plot_type == 'low minrh':
-            title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            colorbar_fontsize=8
+        signature_x_position = 0.23
+        signature_y_position = 0.255
 
     if gacc_region == 'GBCC' or gacc_region == 'gbcc' or gacc_region == 'GB' or gacc_region == 'gb':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -120.5
         eastern_bound = -107.47
-        southern_bound = 34.9
+        southern_bound = 33
         northern_bound = 46.4
-        fig_x_length = 7
-        fig_y_length = 6
-        signature_x_position = 0.07
-        signature_y_position = 0.05
-        if plot_type == 'minrh':
-            title_fontsize=17 
-        if plot_type == 'poor recovery':
-            title_fontsize=15 
-        if plot_type == 'excellent recovery':
-            title_fontsize=14
-        if plot_type == 'maxrh':
-            title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            title_fontsize=15
-        if plot_type == 'low minrh':
-            title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            colorbar_fontsize=8
+        signature_x_position = 0.21
+        signature_y_position = 0.255
 
     if gacc_region == 'NRCC' or gacc_region == 'nrcc' or gacc_region == 'NR' or gacc_region == 'nr':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -117.7
         eastern_bound = -96
-        southern_bound = 43
+        southern_bound = 41.5
         northern_bound = 50
-        fig_x_length = 8
-        fig_y_length = 4
-        signature_x_position = 0.1
-        signature_y_position = 0.05
-        if plot_type == 'minrh':
-            title_fontsize=17 
-        if plot_type == 'poor recovery':
-            title_fontsize=15 
-        if plot_type == 'excellent recovery':
-            title_fontsize=14
-        if plot_type == 'maxrh':
-            title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            title_fontsize=15
-        if plot_type == 'low minrh':
-            title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=10
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            colorbar_fontsize=8
-        shrink=0.5
+        fig_y_length = 7
+        signature_x_position = 0.14
+        signature_y_position = 0.255
 
     if gacc_region == 'RMCC' or gacc_region == 'rmcc' or gacc_region == 'RM' or gacc_region == 'rm':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -111.3
         eastern_bound = -94.2
-        southern_bound = 36.2
+        southern_bound = 35.2
         northern_bound = 46.8
-        fig_x_length = 7
-        fig_y_length = 5
-        signature_x_position = 0.1
-        signature_y_position = 0.06
-        if plot_type == 'minrh':
-            title_fontsize=17 
-        if plot_type == 'poor recovery':
-            title_fontsize=15 
-        if plot_type == 'excellent recovery':
-            title_fontsize=14
-        if plot_type == 'maxrh':
-            title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            title_fontsize=15
-        if plot_type == 'low minrh':
-            title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=13
-        sample_point_fontsize=10
-        colorbar_fontsize=12
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            colorbar_fontsize=8
-        shrink=0.5
+        fig_y_length = 10
+        signature_x_position = 0.15
+        signature_y_position = 0.255
 
     if gacc_region == 'SWCC' or gacc_region == 'swcc' or gacc_region == 'SW' or gacc_region == 'sw':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -114.89
         eastern_bound = -101.7
-        southern_bound = 31.22
-        northern_bound = 37.14
-        fig_x_length = 7
-        fig_y_length = 7
-        signature_x_position = 0.1
-        signature_y_position = 0.05
-        if plot_type == 'minrh':
-            title_fontsize=17 
-        if plot_type == 'poor recovery':
-            title_fontsize=15 
-        if plot_type == 'excellent recovery':
-            title_fontsize=14
-        if plot_type == 'maxrh':
-            title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            title_fontsize=15
-        if plot_type == 'low minrh':
-            title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            colorbar_fontsize=8
-        shrink=0.5
+        southern_bound = 30.2
+        northern_bound = 38
+        fig_y_length = 9
+        signature_x_position = 0.15
+        signature_y_position = 0.255
 
     if gacc_region == 'SACC' or gacc_region == 'sacc' or gacc_region == 'SE' or gacc_region == 'se':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -106.88
         eastern_bound = -74.7
-        southern_bound = 25.5
+        southern_bound = 23.5
         northern_bound = 39.65
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.07
-        signature_y_position = 0.05
-        if plot_type == 'minrh':
-            title_fontsize=17 
-        if plot_type == 'poor recovery':
-            title_fontsize=15 
-        if plot_type == 'excellent recovery':
-            title_fontsize=14
-        if plot_type == 'maxrh':
-            title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            title_fontsize=15
-        if plot_type == 'low minrh':
-            title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            colorbar_fontsize=8
-        shrink=0.5
+        fig_y_length = 8
+        signature_x_position = 0.15
+        signature_y_position = 0.255
 
     if gacc_region == 'EACC' or gacc_region == 'eacc' or gacc_region == 'E' or gacc_region == 'e':
         if ndfd_grids == True:
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -97.35
         eastern_bound = -66.18
-        southern_bound = 35
+        southern_bound = 33.5
         northern_bound = 49.65
-        fig_x_length = 7
-        fig_y_length = 4
-        signature_x_position = 0.1
-        signature_y_position = 0.05
-        if plot_type == 'minrh':
-            title_fontsize=17 
-        if plot_type == 'poor recovery':
-            title_fontsize=15 
-        if plot_type == 'excellent recovery':
-            title_fontsize=14
-        if plot_type == 'maxrh':
-            title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            title_fontsize=15
-        if plot_type == 'low minrh':
-            title_fontsize=15
-        subplot_title_fontsize=12 
-        signature_fontsize=12
-        sample_point_fontsize=10
-        colorbar_fontsize=12
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            colorbar_fontsize=8
-        shrink=0.6
+        fig_y_length = 8
+        signature_x_position = 0.15
+        signature_y_position = 0.255
 
     if gacc_region == 'PNW' or gacc_region == 'pnw' or gacc_region == 'NWCC' or gacc_region == 'nwcc' or gacc_region == 'NW' or gacc_region == 'nw':
         if ndfd_grids == True:
@@ -2689,32 +2538,11 @@ def get_gacc_region_data_and_coords(gacc_region, ndfd_grids, plot_type):
         eastern_bound = -116.25
         southern_bound = 41
         northern_bound = 49.1
-        fig_x_length = 7
-        fig_y_length = 6
-        signature_x_position = 0.07
-        signature_y_position = 0.03
-        if plot_type == 'minrh':
-            title_fontsize=17 
-        if plot_type == 'poor recovery':
-            title_fontsize=15 
-        if plot_type == 'excellent recovery':
-            title_fontsize=14
-        if plot_type == 'maxrh':
-            title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            title_fontsize=15
-        if plot_type == 'low minrh':
-            title_fontsize=15
-        subplot_title_fontsize=9
-        signature_fontsize=14
-        sample_point_fontsize=10
-        colorbar_fontsize=12
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            colorbar_fontsize=8
-        shrink=0.7   
+        signature_x_position = 0.17
+        signature_y_position = 0.255
 
 
-    return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, shrink, mapcrs, datacrs
+    return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick
 
 def get_colorbar_label_coords(state, plot_type):
 
