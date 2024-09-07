@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: firewxpy
-Version: 1.0.0.3
+Version: 1.0.0.4
 Summary: Weather Analysis and Forecasting For Fire Weather
 Author: Eric J Drewitz, USDA/USFS
 Keywords: meteorology,science,data-analysis,weather,forecasting
@@ -14,18 +14,6 @@ Classifier: License :: OSI Approved :: MIT License
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: matplotlib>=3.7
-Requires-Dist: metpy>=1.5.1
-Requires-Dist: netcdf4>=1.7.1
-Requires-Dist: numpy>=1.24
-Requires-Dist: pandas>=2
-Requires-Dist: siphon>=0.9
-Requires-Dist: xarray>=2023.1.0
-Requires-Dist: pysolar>=0.11
-Requires-Dist: pygrib>=2.1.4
-Requires-Dist: cfgrib>=0.9.10.4
-Requires-Dist: cartopy>=0.21.0
-Requires-Dist: imageio>=2.34.0
 
 # FireWxPy
 

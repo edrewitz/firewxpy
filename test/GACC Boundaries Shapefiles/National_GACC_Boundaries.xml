@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><MD_Metadata xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:xalan="http://xml.apache.org/xalan" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.isotc211.org/2005/gmd">
+    <language>
+        <LanguageCode codeList="http://www.loc.gov/standards/iso639-2/php/code_list.php" codeListValue="eng" codeSpace="ISO639-2">eng</LanguageCode>
+    </language>
+    <characterSet>
+        <MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8" codeSpace="ISOTC211/19115">utf8</MD_CharacterSetCode>
+    </characterSet>
+    <hierarchyLevel>
+        <MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset" codeSpace="ISOTC211/19115">dataset</MD_ScopeCode>
+    </hierarchyLevel>
+    <hierarchyLevelName>
+        <gco:CharacterString>dataset</gco:CharacterString>
+    </hierarchyLevelName>
+    <contact gco:nilReason="missing"/>
+    <dateStamp>
+        <gco:Date>2023-04-06</gco:Date>
+    </dateStamp>
+    <metadataStandardName>
+        <gco:CharacterString>ISO 19139 Geographic Information - Metadata - Implementation Specification</gco:CharacterString>
+    </metadataStandardName>
+    <metadataStandardVersion>
+        <gco:CharacterString>2007</gco:CharacterString>
+    </metadataStandardVersion>
+    <spatialRepresentationInfo>
+        <MD_VectorSpatialRepresentation>
+            <topologyLevel>
+                <MD_TopologyLevelCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopologyLevelCode" codeListValue="geometryOnly" codeSpace="ISOTC211/19115">geometryOnly</MD_TopologyLevelCode>
+            </topologyLevel>
+            <geometricObjects>
+                <MD_GeometricObjects>
+                    <geometricObjectType>
+                        <MD_GeometricObjectTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_GeometricObjectTypeCode" codeListValue="composite" codeSpace="ISOTC211/19115">composite</MD_GeometricObjectTypeCode>
+                    </geometricObjectType>
+                    <geometricObjectCount>
+                        <gco:Integer>10</gco:Integer>
+                    </geometricObjectCount>
+                </MD_GeometricObjects>
+            </geometricObjects>
+        </MD_VectorSpatialRepresentation>
+    </spatialRepresentationInfo>
+    <referenceSystemInfo>
+        <MD_ReferenceSystem>
+            <referenceSystemIdentifier>
+                <RS_Identifier>
+                    <code>
+                        <gco:CharacterString>4269</gco:CharacterString>
+                    </code>
+                    <codeSpace>
+                        <gco:CharacterString>EPSG</gco:CharacterString>
+                    </codeSpace>
+                    <version>
+                        <gco:CharacterString>6.5(3.0.1)</gco:CharacterString>
+                    </version>
+                </RS_Identifier>
+            </referenceSystemIdentifier>
+        </MD_ReferenceSystem>
+    </referenceSystemInfo>
+    <identificationInfo>
+        <MD_DataIdentification>
+            <citation>
+                <CI_Citation>
+                    <title>
+                        <gco:CharacterString>Geographic Area Coordination Center Boundaries (polygon)</gco:CharacterString>
+                    </title>
+                    <date gco:nilReason="missing"/>
+                    <presentationForm>
+                        <CI_PresentationFormCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_PresentationFormCode" codeListValue="mapDigital" codeSpace="ISOTC211/19115">mapDigital</CI_PresentationFormCode>
+                    </presentationForm>
+                </CI_Citation>
+            </citation>
+            <abstract>
+                <gco:CharacterString>The physical location of an interagency, regional operation center for the effective coordination, mobilization and demobilization of emergency management resources. A coordination center serves federal, state and local wildland fire agencies through logistical coordination of resources throughout the geographic area, and with other geographic areas, as well. Listings of geographic coordination centers and their respective geographic coordinating areas can be found within the National Interagency Mobilization Guide.3/23/2023 - Tabular changes only.  Name changes per Official Unit IDs list "Unit Idx Name" field supplied by Kara Stringer (Combined Dispatch Centers 03222023.xlsx), co-lead for NWCG Unit ID Committee.  Edits by JKuenzi, USFS.  Changes include:From "Southwest Coordination Center" to "Southwest Area Coordination Center"From "Southern California Geographic Area Coordination Center" to "Southern California Coordination Center" 9/6/2022 - 9/26/2022 - Geospatial and tabular changes in accordance with proposed GACC boundary re-alignments between Southern California and Great Basin in the state of Nevada, specifically between Queen Valley and Mono Valley, .  The team making the changes are led by James Tomaselli, Gina Dingman, and Ian Mills.  Changes proposed will be put into effect for the 2023 calendar year, and will also impact alignments of Initial Attack Frequency Zones and Dispatch boundaries in the area described.  Initial edits provided by Daniel Yarborough.   Final edits by JKuenzi, USFS.   A description of the change is as follows:  The northwest end of changes start approximately 1 mile west of Mt Olsen and approximately 0.5 mile south of the Virginia Lakes area.Head northwest passing on the northeast side of Red Lake and the south side of Big Virginia Lake to follow HWY 395 North east to CA 270.East through Bodie to the CA/NV state line.Follows the CA/NV State Line south to HWY CA 167/NV 359.East on NV359 to where the HWY intersects the corner of FS/BLM land.Follows the FS/BLM boundary to the east and then south where it ties into the current GACC boundary.  1/3/2022 - Tabular changes in accordance with data shown in WFMI (Wildland Fire Management Information) Application.  Edits by JKuenzi, USFS.   GACCLocation Field for Alaska Interagency Coordination Center modified from "Fairbanks, AK" to "Fairbanks, AK (Fort Wainwright,AK)".GACCLocation Field for Great Basin Coordination Center changed from "Boise, ID" to "Salt Lake City, UT".  3/24/2021 - Geospatial and tabular changes in accordance with proposed GACC boundary re-alignments between Southwestern and Southern GACCs proposed and implemented. The interagency team making the change are led by Kenan Jaycox, Calvin Miller, and Dana (Nancy) Ellsworth, but also include: Elliott Herrera, David Sosa, Tiffany Fralie, Chris Adamcik, Jonathan Nash, Tammy Milton, Juan Ortiz, Cathy Peterson, and Kim Albracht, among others. Portions of Texas, formerly under Southwestern GACC direction were moved to the Southern GACC with a few exceptions that will remain part of the Southwestern GACC, including:Kiowa/Rita Blanca National Grasslands. Black Kettle National Grasslands, including Lake Martin, and Lake McClellan. Guadalupe Mountains National Park. Fort Bliss Military Reservation and McGregor Range. All changes proposed for implementation starting 1/10/2022. Current changes to be released in January 2022. Edits by JKuenzi, USFS. See also data sets for Dispatch Areas, and Initial Attack Frequency Zones Federal for related changes. </gco:CharacterString>
+            </abstract>
+            <purpose>
+                <gco:CharacterString>Polygon boundaries depicting the administrative area of Geographic Area Coordination Centers (GACC) across the USA used in incident management, including wildland fire.  GACC Boundaries may also be known as Tier 2 Dispatch Boundaries.</gco:CharacterString>
+            </purpose>
+            <credit>
+                <gco:CharacterString>National Wildfire Coordinating Group 
+Geospatial Subcommittee
+National Interagency Fire Center
+Boise, ID  83705</gco:CharacterString>
+            </credit>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>GACC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geographic Area Coordination Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Wildland Fire</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NWCG</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Wildfire Coordinating Group</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geospatial Subcommittee</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Interagency Fire Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC Open Data</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Boundary_OpenData</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <resourceConstraints>
+                <MD_Constraints>
+                    <useLimitation>
+                        <gco:CharacterString>The National Wildfire Coordinating Group (NWCG) makes no claims, promises, or guarantees about the accuracy, completeness, or adequacy of the content; and expressly disclaims liability for errors and omissions. No warranty of any kind, implied, expressed or statutory is given with respect to the contents. </gco:CharacterString>
+                    </useLimitation>
+                </MD_Constraints>
+            </resourceConstraints>
+            <spatialRepresentationType>
+                <MD_SpatialRepresentationTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_SpatialRepresentationTypeCode" codeListValue="vector" codeSpace="ISOTC211/19115">vector</MD_SpatialRepresentationTypeCode>
+            </spatialRepresentationType>
+            <language>
+                <LanguageCode codeList="http://www.loc.gov/standards/iso639-2/php/code_list.php" codeListValue="eng" codeSpace="ISO639-2">eng</LanguageCode>
+            </language>
+            <characterSet>
+                <MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8" codeSpace="ISOTC211/19115">utf8</MD_CharacterSetCode>
+            </characterSet>
+            <environmentDescription>
+                <gco:CharacterString>Esri ArcGIS 12.9.4.32739</gco:CharacterString>
+            </environmentDescription>
+            <extent>
+                <EX_Extent>
+                    <geographicElement>
+                        <EX_GeographicBoundingBox>
+                            <extentTypeCode>
+                                <gco:Boolean>true</gco:Boolean>
+                            </extentTypeCode>
+                            <westBoundLongitude>
+                                <gco:Decimal>-179.231086</gco:Decimal>
+                            </westBoundLongitude>
+                            <eastBoundLongitude>
+                                <gco:Decimal>179.859681</gco:Decimal>
+                            </eastBoundLongitude>
+                            <southBoundLatitude>
+                                <gco:Decimal>-14.601813</gco:Decimal>
+                            </southBoundLatitude>
+                            <northBoundLatitude>
+                                <gco:Decimal>71.439786</gco:Decimal>
+                            </northBoundLatitude>
+                        </EX_GeographicBoundingBox>
+                    </geographicElement>
+                </EX_Extent>
+            </extent>
+        </MD_DataIdentification>
+    </identificationInfo>
+    <distributionInfo>
+        <MD_Distribution>
+            <distributionFormat>
+                <MD_Format>
+                    <name>
+                        <gco:CharacterString>File Geodatabase Feature Class</gco:CharacterString>
+                    </name>
+                    <version gco:nilReason="missing"/>
+                </MD_Format>
+            </distributionFormat>
+        </MD_Distribution>
+    </distributionInfo>
+</MD_Metadata>

@@ -1,4 +1,0 @@
-import firewxpy
-
-#nws_temperature_forecast.plot_maximum_temperature_forecast()
-#nws_relative_humidity_forecast.plot_minimum_relative_humidity_forecast()

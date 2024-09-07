@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?><MD_Metadata xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:xalan="http://xml.apache.org/xalan" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.isotc211.org/2005/gmd">
+    <language>
+        <LanguageCode codeList="http://www.loc.gov/standards/iso639-2/php/code_list.php" codeListValue="eng" codeSpace="ISO639-2">eng</LanguageCode>
+    </language>
+    <characterSet>
+        <MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8" codeSpace="ISOTC211/19115">utf8</MD_CharacterSetCode>
+    </characterSet>
+    <hierarchyLevel>
+        <MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset" codeSpace="ISOTC211/19115">dataset</MD_ScopeCode>
+    </hierarchyLevel>
+    <hierarchyLevelName>
+        <gco:CharacterString>dataset</gco:CharacterString>
+    </hierarchyLevelName>
+    <contact gco:nilReason="missing"/>
+    <dateStamp>
+        <gco:Date>2023-01-12</gco:Date>
+    </dateStamp>
+    <metadataStandardName>
+        <gco:CharacterString>ISO 19139 Geographic Information - Metadata - Implementation Specification</gco:CharacterString>
+    </metadataStandardName>
+    <metadataStandardVersion>
+        <gco:CharacterString>2007</gco:CharacterString>
+    </metadataStandardVersion>
+    <spatialRepresentationInfo>
+        <MD_VectorSpatialRepresentation>
+            <topologyLevel>
+                <MD_TopologyLevelCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopologyLevelCode" codeListValue="geometryOnly" codeSpace="ISOTC211/19115">geometryOnly</MD_TopologyLevelCode>
+            </topologyLevel>
+            <geometricObjects>
+                <MD_GeometricObjects>
+                    <geometricObjectType>
+                        <MD_GeometricObjectTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_GeometricObjectTypeCode" codeListValue="composite" codeSpace="ISOTC211/19115">composite</MD_GeometricObjectTypeCode>
+                    </geometricObjectType>
+                    <geometricObjectCount>
+                        <gco:Integer>137</gco:Integer>
+                    </geometricObjectCount>
+                </MD_GeometricObjects>
+            </geometricObjects>
+        </MD_VectorSpatialRepresentation>
+    </spatialRepresentationInfo>
+    <referenceSystemInfo>
+        <MD_ReferenceSystem>
+            <referenceSystemIdentifier>
+                <RS_Identifier>
+                    <code>
+                        <gco:CharacterString>4269</gco:CharacterString>
+                    </code>
+                    <codeSpace>
+                        <gco:CharacterString>EPSG</gco:CharacterString>
+                    </codeSpace>
+                    <version>
+                        <gco:CharacterString>6.12(3.0.1)</gco:CharacterString>
+                    </version>
+                </RS_Identifier>
+            </referenceSystemIdentifier>
+        </MD_ReferenceSystem>
+    </referenceSystemInfo>
+    <identificationInfo>
+        <MD_DataIdentification>
+            <citation>
+                <CI_Citation>
+                    <title>
+                        <gco:CharacterString>Predictive Service Area (PSA) Boundaries </gco:CharacterString>
+                    </title>
+                    <date gco:nilReason="missing"/>
+                    <presentationForm>
+                        <CI_PresentationFormCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_PresentationFormCode" codeListValue="mapDigital" codeSpace="ISOTC211/19115">mapDigital</CI_PresentationFormCode>
+                    </presentationForm>
+                </CI_Citation>
+            </citation>
+            <abstract>
+                <gco:CharacterString>Predictive Service Areas (PSAs) are geographic areas for which national-level fire weather or fire danger services and products are produced by wildland fire agency meteorologists and intelligence staffs in support of resource allocation and prioritization. A PSA boundary defines areas where 2 or more weather elements or National Fire Danger Rating System (NFDRS) indices exist with a high correlation to historical significant fire size. "Significant fires" are the 95th percentile fire size for the PSA. 1/9/2023 - Spatial and tabular changes made at request of Basil Newmerzhycky (Great Basin), and Gina McGuire (Fire Meterologist).  PSA boundaries between Great Basin (GB14) and Northern California (NC08) GACCs aligned to follow GACC boundary in area of East Fork High Rock Canyon Wilderness and Grassy Canyon.  Edits by JKuenzi.  8/29/2022 - 8/30/2022 - Spatial and tabular changes made at request of Southern Area GACC (submitted by Dana "Nancy" Ellsworth and Subject Matter Experts).  Edits by JKuenzi.  Specific changes include:Puerto Rico changed from 6 PSAs to 1 PSA.  PSAName changed to PR for all areas.  PSANationalCode changed to "SA52A" for all areas.  PSANames and PSANationalCodes = "PR Northwest (number SA52A remains active), PR Southwest (SA52B), PR North (SA53), PR Central (SA54), PR South (SA55), and PR East (SA56)" were all removed.   Florida changed from 10 PSAs to 4 PSAs.  PSANames and PSANationalCodes = "FL North Coast (SA44), FL Northeast (SA45A), FL Northeast Coast (SA45B), FL Pan (SA43), FL SE Coast (SA51B), and FL SW Coast (SA51A)" were all removed.  Remaining PSAs realigned using linework by AHepworth, and authoritative datasets (Census Counties, and PADUS Modified Jurisdictional Boundaries) to cover all of Florida.   Louisiana changed PSAName from "MS South" to "LA East" where PSANationalCode = "SA22B" .1/12/2022 - Spatial and tabular changes made while assigning PSAs to islands and merging a handful of small slivers with larger areas  Islands identified by Geographic Area Coordination Center (GACC) PSA representatives, Heidi Strader, Julia Rutherford, Dana "Nancy"  Ellsworth, and Matt Shameson.  Edits by JKuenzi.1/10/2022 - Spatial and tabular changes made as part of the request to replace all PSAs in the Rocky Mountain Geographic Area Coordination Center (GACC) by Valerie Meyers and Coleen Haskell, both Predictive Services Fire Weather Meteorologists. The total number of PSAs within the Rocky Mountain area went from 74 to 28. Along with new linework, PSAs were re-numbered and named. Topology was used to find and remove gaps and overlaps.Edits by JKuenzi.10/29/2021 - Spatial changes made. Coastlines matched to other base data layers including: Geographic Area Coordination Centers (GACCs), Dispatch Areas, and Initial Attach Frequency Zones. Process completed with approval from the PSA representatives in each GACC, in order to begin process of vertical integration of PSA data, where appropriate, with other wildland fire base data layers. No interior lines moved except along coast. A few island areas were not specifically labeled with a PSA and have been assigned a PSANationalCode = "None" and "PSAName = "No PSA Assigned". Edits by JKuenzi, 10/25/2021 - Spatial and tabular changes made resulting from proposed change between Southwest and Southern Geographic Area Coordination Centers (GACCs) for use starting 1/10/2022. Seven Predictive Service Areas re-aligned boundaries as described by Charles Maxwell (USFS) Predictive Services Meteorologist, in conjunction with Rich Naden (NPS), Basil Newmerzhycky (BLM), Dana Ellsworth (USFS), and Calvin Miller (USFS). Edits by JKuenzi, USFS. Specific changes made include:SW13 - split at Texas/New Mexico state line. Area in NM remains SW13. Area in TX/OK becomes SA01.SW14N - split at Texas/New Mexico state line. Area in NM remains SW14N. Area in TX is split into SA04 and SA09SW14S - split at Texas/New Mexico state line. Area in NM absorbed by SW14N. Area in TX is split into SA09 and SA08 along county lines.SW09 - split at Texas/New Mexico state line. Area in NM remains SW09 or is absorbed by SW12. Area in TX is absorbed by SA08. SW12 - absorbs sliver of SW09 along TX/NM border and the Guadalupe Mtns in TX. 10/20/2021-10/21/2021 - Spatial and tabular changes made while completing topology checks for overlaps and gaps. Over 3400 errors found, but most were because of islands. 1367 errors remain, but are all marked as exceptions. Only major changes, such as complete deletion and re-creation of polygons were noted in the Comments or DateCurrent field. Edits by JKuenzi, USFS. 2/3/2021 - Tabular change made in Alaska to the peninsula where the St. Michael Airport is located. PSA National Code changed from AK14 to AK08 per Nicholas Nauslar, BLM, and Heidi Strader, Fire Weather Program Mgr at Alaska Interagency Coordination Center. Edits by JKuenzi, USFS. 6/20/2020 - PSA dataset attribute table brought into alignment with NWCG Data Standards for Predictive Service Areas. Edits by JKuenzi, USFS.8/3/2019 - Great Basin updated. Edits by DSampson, BLM.</gco:CharacterString>
+            </abstract>
+            <purpose>
+                <gco:CharacterString>Polygon boundaries depicting Predictive Service Area (PSA) boundaries within the USA including the lower 48 states, Alaska, and Puerto Rico.  The intended use of data is wildland fire weather decision support, and resource allocation and prioritization.  Polygons have been dissolved to multi-part polygons.</gco:CharacterString>
+            </purpose>
+            <credit>
+                <gco:CharacterString>National Wildfire Coordinating Group 
+Geospatial Subcommittee
+National Interagency Fire Center
+Boise, ID  83705</gco:CharacterString>
+            </credit>
+            <resourceMaintenance>
+                <MD_MaintenanceInformation>
+                    <maintenanceAndUpdateFrequency>
+                        <MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="asNeeded" codeSpace="ISOTC211/19115">asNeeded</MD_MaintenanceFrequencyCode>
+                    </maintenanceAndUpdateFrequency>
+                </MD_MaintenanceInformation>
+            </resourceMaintenance>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Downloadable Data</gco:CharacterString>
+                    </keyword>
+                    <thesaurusName uuidref="723f6998-058e-11dc-8314-0800200c9a66"/>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Predictive Services</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>GACC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geographic Area Coordination Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Wildland Fire</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NWCG</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Wildfire Coordinating Group</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geospatial Subcommittee</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Interagency Fire Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC Open Data</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Boundary Open Data</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Predictive Services</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>GACC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geographic Area Coordination Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Wildland Fire</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NWCG</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Wildfire Coordinating Group</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geospatial Subcommittee</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Interagency Fire Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC Open Data</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Boundary Open Data</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Predictive Services</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>GACC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geographic Area Coordination Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Wildland Fire</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NWCG</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Wildfire Coordinating Group</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geospatial Subcommittee</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Interagency Fire Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC Open Data</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Boundary Open Data</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Predictive Services</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>GACC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geographic Area Coordination Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Wildland Fire</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NWCG</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Wildfire Coordinating Group</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geospatial Subcommittee</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Interagency Fire Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC Open Data</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Boundary Open Data</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Predictive Services</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>GACC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geographic Area Coordination Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Wildland Fire</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NWCG</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Wildfire Coordinating Group</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geospatial Subcommittee</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Interagency Fire Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC Open Data</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Boundary Open Data</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Predictive Services</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>GACC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geographic Area Coordination Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Wildland Fire</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NWCG</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Wildfire Coordinating Group</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geospatial Subcommittee</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Interagency Fire Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC Open Data</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Boundary Open Data</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Predictive Services</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>GACC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geographic Area Coordination Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Wildland Fire</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NWCG</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Wildfire Coordinating Group</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geospatial Subcommittee</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Interagency Fire Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC Open Data</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Boundary Open Data</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Predictive Services</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>GACC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geographic Area Coordination Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Wildland Fire</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NWCG</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Wildfire Coordinating Group</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geospatial Subcommittee</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Interagency Fire Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC Open Data</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Boundary Open Data</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Predictive Services</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>GACC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geographic Area Coordination Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Wildland Fire</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NWCG</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Wildfire Coordinating Group</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geospatial Subcommittee</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Interagency Fire Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC Open Data</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Boundary Open Data</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Predictive Services</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>GACC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geographic Area Coordination Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Wildland Fire</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NWCG</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Wildfire Coordinating Group</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geospatial Subcommittee</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Interagency Fire Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC Open Data</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Boundary Open Data</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Predictive Services</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>GACC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geographic Area Coordination Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Wildland Fire</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NWCG</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Wildfire Coordinating Group</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Geospatial Subcommittee</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>National Interagency Fire Center</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>NIFC Open Data</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Boundary Open Data</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <resourceConstraints>
+                <MD_Constraints>
+                    <useLimitation>
+                        <gco:CharacterString>The National Wildfire Coordinating Group (NWCG) makes no claims, promises, or guarantees about the accuracy, completeness, or adequacy of the content; and expressly disclaims liability for errors and omissions. No warranty of any kind, implied, expressed or statutory is given with respect to the contents. </gco:CharacterString>
+                    </useLimitation>
+                </MD_Constraints>
+            </resourceConstraints>
+            <spatialRepresentationType>
+                <MD_SpatialRepresentationTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_SpatialRepresentationTypeCode" codeListValue="vector" codeSpace="ISOTC211/19115">vector</MD_SpatialRepresentationTypeCode>
+            </spatialRepresentationType>
+            <language>
+                <LanguageCode codeList="http://www.loc.gov/standards/iso639-2/php/code_list.php" codeListValue="eng" codeSpace="ISO639-2">eng</LanguageCode>
+            </language>
+            <characterSet>
+                <MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8" codeSpace="ISOTC211/19115">utf8</MD_CharacterSetCode>
+            </characterSet>
+            <environmentDescription>
+                <gco:CharacterString> Version 6.2 (Build 9200) ; Esri ArcGIS 10.7.1.11595</gco:CharacterString>
+            </environmentDescription>
+            <extent>
+                <EX_Extent>
+                    <geographicElement>
+                        <EX_GeographicBoundingBox>
+                            <extentTypeCode>
+                                <gco:Boolean>true</gco:Boolean>
+                            </extentTypeCode>
+                            <westBoundLongitude>
+                                <gco:Decimal>-179.231086</gco:Decimal>
+                            </westBoundLongitude>
+                            <eastBoundLongitude>
+                                <gco:Decimal>179.859681</gco:Decimal>
+                            </eastBoundLongitude>
+                            <southBoundLatitude>
+                                <gco:Decimal>-14.601813</gco:Decimal>
+                            </southBoundLatitude>
+                            <northBoundLatitude>
+                                <gco:Decimal>71.439786</gco:Decimal>
+                            </northBoundLatitude>
+                        </EX_GeographicBoundingBox>
+                    </geographicElement>
+                </EX_Extent>
+            </extent>
+        </MD_DataIdentification>
+    </identificationInfo>
+    <distributionInfo>
+        <MD_Distribution>
+            <distributionFormat>
+                <MD_Format>
+                    <name>
+                        <gco:CharacterString>File Geodatabase Feature Class</gco:CharacterString>
+                    </name>
+                    <version gco:nilReason="missing"/>
+                </MD_Format>
+            </distributionFormat>
+        </MD_Distribution>
+    </distributionInfo>
+    <metadataMaintenance>
+        <MD_MaintenanceInformation>
+            <maintenanceAndUpdateFrequency>
+                <MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="asNeeded" codeSpace="ISOTC211/19115">asNeeded</MD_MaintenanceFrequencyCode>
+            </maintenanceAndUpdateFrequency>
+        </MD_MaintenanceInformation>
+    </metadataMaintenance>
+</MD_Metadata>
