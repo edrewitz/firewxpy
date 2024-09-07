@@ -23,3 +23,4 @@ firewxpy.egg-info/SOURCES.txt
 firewxpy.egg-info/dependency_links.txt
 firewxpy.egg-info/requires.txt
 firewxpy.egg-info/top_level.txt
+test/test.py
