@@ -6,6 +6,10 @@ def temperature_colormap():
 
     return temperature_colormap
 
+def temperature_change_colormap():
+    temperature_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("temperature change", ["darkblue", "blue", "deepskyblue", "white", "white", "orangered", "red", "darkred"])
+
+    return temperature_change_colormap
 
 def wind_speed_change_colormap():
     wind_speed_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("wind speed", ["darkgreen", "green", "white", "white", "red", "darkred"])
