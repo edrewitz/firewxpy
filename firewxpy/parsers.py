@@ -11,7 +11,7 @@
 
 import pygrib
 import numpy as np
-import data_access as da
+import firewxpy.data_access as da
 import matplotlib.pyplot as plt
 import firewxpy.calc as calc
 import os
