@@ -1,1 +1,1 @@
-import src.firewxpy
+import firewxpy
