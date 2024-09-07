@@ -1,1 +1,1 @@
-import __init__
+import firewxpy

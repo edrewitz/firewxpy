@@ -1,1 +1,1 @@
-import firewxpy
+import firewxpy.NWS_Forecast_Graphics.temperature as nws_temperature_forecast

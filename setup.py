@@ -6,8 +6,8 @@ if sys.version_info[0] < 3:
 
 setup(
     name = "firewxpy",
-    version = "1.0.0.2",
-    packages = find_packages(),
+    version = "1.0.0.3",
+    packages = find_packages('firewxpy'),
     install_requires=[
         "matplotlib>=3.7",
         "metpy>=1.5.1",
