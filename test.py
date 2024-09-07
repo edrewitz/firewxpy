@@ -1,3 +1,0 @@
-from firewxpy import nws_temperature_forecast
-
-nws_temperature_forecast.plot_maximum_temperature_forecast()
