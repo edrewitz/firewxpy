@@ -334,37 +334,53 @@ class relative_humidity:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -373,9 +389,11 @@ class relative_humidity:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -386,7 +404,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -545,15 +563,16 @@ class relative_humidity:
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        fig1.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 1]', fontsize=title_fontsize, fontweight='bold')
-    
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+    
         if show_gacc_borders == True:
             ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
         else:
@@ -570,8 +589,22 @@ class relative_humidity:
             ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-            
-        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax1.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax1.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+        ax1.set_title('National Weather Service Forecast [Night 1]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+
+        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
@@ -591,8 +624,6 @@ class relative_humidity:
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig2.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 2]', fontsize=title_fontsize, fontweight='bold')
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -600,7 +631,10 @@ class relative_humidity:
         ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+    
         if show_gacc_borders == True:
             ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
         else:
@@ -617,7 +651,22 @@ class relative_humidity:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+        ax2.set_title('National Weather Service Forecast [Night 2]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+     
+        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
@@ -638,15 +687,16 @@ class relative_humidity:
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        fig3.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 3]', fontsize=title_fontsize, fontweight='bold')
-    
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
         ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
         if show_rivers == True:
-            ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+            ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        else:
+            pass
+    
         if show_gacc_borders == True:
             ax3.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
         else:
@@ -663,7 +713,22 @@ class relative_humidity:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax3.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax3.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+        ax3.set_title('National Weather Service Forecast [Night 3]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+
+        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
@@ -683,8 +748,6 @@ class relative_humidity:
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig4.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 4]', fontsize=title_fontsize, fontweight='bold')
         
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -709,7 +772,22 @@ class relative_humidity:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+        ax4.set_title('National Weather Service Forecast [Night 4]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+
+        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
@@ -729,8 +807,6 @@ class relative_humidity:
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig5.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 5]', fontsize=title_fontsize, fontweight='bold')
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -755,7 +831,23 @@ class relative_humidity:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+
+        ax5.set_title('National Weather Service Forecast [Night 5]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+
+        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
@@ -775,8 +867,6 @@ class relative_humidity:
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
         fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig6.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 6]', fontsize=title_fontsize, fontweight='bold')
         
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -801,7 +891,23 @@ class relative_humidity:
             ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax6.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax6.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax6.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+
+        ax6.set_title('National Weather Service Forecast [Night 6]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+
+        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
@@ -823,8 +929,6 @@ class relative_humidity:
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig7.suptitle('National Weather Service Forecast\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%) [Night 7]', fontsize=title_fontsize, fontweight='bold')
             
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -849,7 +953,19 @@ class relative_humidity:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax7.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax7.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+
                 
             cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2)
     
@@ -862,6 +978,10 @@ class relative_humidity:
     
             else:
                 pass   
+
+            ax7.set_title('National Weather Service Forecast [Night 7]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+
+            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
             cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
             cbar7.set_label(label="Relative Humidity (%)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -1145,37 +1265,53 @@ class relative_humidity:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -1184,9 +1320,11 @@ class relative_humidity:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -1197,7 +1335,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -1351,8 +1489,6 @@ class relative_humidity:
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        fig1.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 1]', fontsize=title_fontsize, fontweight='bold')
-    
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -1376,7 +1512,23 @@ class relative_humidity:
             ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax1.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax1.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+
+        ax1.set_title('National Weather Service Forecast [Night 1]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+
+        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
     
@@ -1396,9 +1548,7 @@ class relative_humidity:
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig2.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 2]', fontsize=title_fontsize, fontweight='bold')
-        
+
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -1422,7 +1572,23 @@ class relative_humidity:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+
+        ax2.set_title('National Weather Service Forecast [Night 2]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
     
@@ -1442,9 +1608,7 @@ class relative_humidity:
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig3.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 3]', fontsize=title_fontsize, fontweight='bold')
-    
+
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -1468,7 +1632,23 @@ class relative_humidity:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax3.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax3.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+
+        ax3.set_title('National Weather Service Forecast [Night 3]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
     
@@ -1488,9 +1668,7 @@ class relative_humidity:
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig4.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 4]', fontsize=title_fontsize, fontweight='bold')
-        
+
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -1514,7 +1692,23 @@ class relative_humidity:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+
+        ax4.set_title('National Weather Service Forecast [Night 4]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
     
@@ -1534,8 +1728,6 @@ class relative_humidity:
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig5.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 5]', fontsize=title_fontsize, fontweight='bold')
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1560,6 +1752,22 @@ class relative_humidity:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
+        if show_cwa_borders == True:
+            ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+
+        ax5.set_title('National Weather Service Forecast [Night 5]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
         ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
         cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
@@ -1581,8 +1789,6 @@ class relative_humidity:
         fig6.set_facecolor('aliceblue')
         fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        fig6.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 6]', fontsize=title_fontsize, fontweight='bold')
-        
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -1606,7 +1812,23 @@ class relative_humidity:
             ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax6.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax6.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax6.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+
+        ax6.set_title('National Weather Service Forecast [Night 6]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
     
@@ -1628,8 +1850,6 @@ class relative_humidity:
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig7.suptitle('National Weather Service Forecast\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%) [Night 7]', fontsize=title_fontsize, fontweight='bold')
             
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1654,7 +1874,23 @@ class relative_humidity:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax7.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax7.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+
+
+            ax7.set_title('National Weather Service Forecast [Night 7]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='max')
     
@@ -1938,37 +2174,53 @@ class relative_humidity:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -1977,9 +2229,11 @@ class relative_humidity:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -1990,7 +2244,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -2143,9 +2397,7 @@ class relative_humidity:
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig1.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 1]', fontsize=title_fontsize, fontweight='bold')
-    
+
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -2169,7 +2421,23 @@ class relative_humidity:
             ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax1.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax1.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+
+        ax1.set_title('National Weather Service Forecast [Night 1]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -2189,8 +2457,6 @@ class relative_humidity:
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig2.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 2]', fontsize=title_fontsize, fontweight='bold')
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2215,7 +2481,23 @@ class relative_humidity:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+            
+        ax2.set_title('National Weather Service Forecast [Night 2]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -2235,9 +2517,7 @@ class relative_humidity:
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig3.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 3]', fontsize=title_fontsize, fontweight='bold')
-    
+
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -2261,7 +2541,23 @@ class relative_humidity:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax3.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax3.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+            
+        ax3.set_title('National Weather Service Forecast [Night 3]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -2281,8 +2577,6 @@ class relative_humidity:
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig4.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 4]', fontsize=title_fontsize, fontweight='bold')
         
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2307,7 +2601,23 @@ class relative_humidity:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+            
+        ax4.set_title('National Weather Service Forecast [Night 4]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -2327,8 +2637,6 @@ class relative_humidity:
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig5.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 5]', fontsize=title_fontsize, fontweight='bold')
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2353,7 +2661,23 @@ class relative_humidity:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+        
+        ax5.set_title('National Weather Service Forecast [Night 5]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -2373,8 +2697,6 @@ class relative_humidity:
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
         fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig6.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 6]', fontsize=title_fontsize, fontweight='bold')
         
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2399,7 +2721,23 @@ class relative_humidity:
             ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax6.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax6.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax6.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+
+        ax6.set_title('National Weather Service Forecast [Night 6]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -2421,9 +2759,7 @@ class relative_humidity:
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig7.suptitle('National Weather Service Forecast\nMaximum Relative Humidity [Night 7]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -2447,7 +2783,24 @@ class relative_humidity:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+            if show_cwa_borders == True:
+                ax7.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax7.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+
+            
+            ax7.set_title('National Weather Service Forecast [Night 7]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -2731,37 +3084,53 @@ class relative_humidity:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -2770,9 +3139,11 @@ class relative_humidity:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -2783,7 +3154,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -2951,8 +3322,6 @@ class relative_humidity:
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        fig1.suptitle('National Weather Service Forecast\nMaximum Relative Humidity Trend [Night 2]', fontsize=title_fontsize, fontweight='bold')
-    
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -2988,7 +3357,10 @@ class relative_humidity:
             ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
         else:
             pass
-        ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        ax1.set_title('National Weather Service Forecast [Night 2]\nMaximum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=levels, cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
     
@@ -3008,8 +3380,6 @@ class relative_humidity:
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig2.suptitle('National Weather Service Forecast\nMaximum Relative Humidity Trend [Night 3]', fontsize=title_fontsize, fontweight='bold')
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -3046,7 +3416,10 @@ class relative_humidity:
             ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
         else:
             pass
-        ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        ax2.set_title('National Weather Service Forecast [Night 3]\nMaximum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=levels, cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
     
@@ -3066,8 +3439,6 @@ class relative_humidity:
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig3.suptitle('National Weather Service Forecast\nMaximum Relative Humidity Trend [Night 4]', fontsize=title_fontsize, fontweight='bold')
     
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -3104,7 +3475,10 @@ class relative_humidity:
             ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
         else:
             pass
-        ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        ax3.set_title('National Weather Service Forecast [Night 4]\nMaximum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=levels, cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
     
@@ -3124,9 +3498,7 @@ class relative_humidity:
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig4.suptitle('National Weather Service Forecast\nMaximum Relative Humidity Trend [Night 5]', fontsize=title_fontsize, fontweight='bold')
-        
+
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -3162,7 +3534,10 @@ class relative_humidity:
             ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
         else:
             pass
-        ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        ax4.set_title('National Weather Service Forecast [Night 5]\nMaximum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=levels, cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
     
@@ -3182,8 +3557,6 @@ class relative_humidity:
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig5.suptitle('National Weather Service Forecast\nMaximum Relative Humidity Trend [Night 6]', fontsize=title_fontsize, fontweight='bold')
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -3220,7 +3593,10 @@ class relative_humidity:
             ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
         else:
             pass
-        ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        ax5.set_title('National Weather Service Forecast [Night 6]\nMaximum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=levels, cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
     
@@ -3242,9 +3618,7 @@ class relative_humidity:
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig7.suptitle('National Weather Service Forecast\nMaximum Relative Humidity Trend [Night 7]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -3280,7 +3654,10 @@ class relative_humidity:
                 ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
             else:
                 pass
-            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+            ax7.set_title('National Weather Service Forecast [Night 7]\nMaximum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=levels, cmap=cmap, transform=datacrs, zorder=2, extend='both', alpha=alpha)
     
@@ -3581,37 +3958,53 @@ class relative_humidity:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -3620,9 +4013,11 @@ class relative_humidity:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -3633,7 +4028,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -3813,8 +4208,6 @@ class relative_humidity:
             fig1.set_facecolor('aliceblue')
             fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-            fig1.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 1]', fontsize=title_fontsize, fontweight='bold')
-    
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -3838,7 +4231,23 @@ class relative_humidity:
                 ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax1.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax1.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+
+    
+            ax1.set_title('National Weather Service Forecast [Day 1]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -3858,9 +4267,7 @@ class relative_humidity:
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
             fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig2.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 2]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -3884,7 +4291,22 @@ class relative_humidity:
                 ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+    
+            ax2.set_title('National Weather Service Forecast [Day 2]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -3904,9 +4326,7 @@ class relative_humidity:
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
             fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig3.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 3]', fontsize=title_fontsize, fontweight='bold')
-        
+            
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -3930,7 +4350,22 @@ class relative_humidity:
                 ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax3.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax3.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+    
+            ax3.set_title('National Weather Service Forecast [Day 3]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -3950,9 +4385,7 @@ class relative_humidity:
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
             fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig4.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 4]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -3976,7 +4409,22 @@ class relative_humidity:
                 ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+    
+            ax4.set_title('National Weather Service Forecast [Day 4]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -3996,8 +4444,6 @@ class relative_humidity:
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
             fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig5.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 5]', fontsize=title_fontsize, fontweight='bold')
             
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4022,7 +4468,22 @@ class relative_humidity:
                 ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+    
+            ax5.set_title('National Weather Service Forecast [Day 5]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -4042,9 +4503,7 @@ class relative_humidity:
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
             fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig6.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 6]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -4068,7 +4527,22 @@ class relative_humidity:
                 ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax6.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax6.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax6.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+    
+            ax6.set_title('National Weather Service Forecast [Day 6]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -4090,8 +4564,6 @@ class relative_humidity:
                 fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig7.set_facecolor('aliceblue')
                 fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-                fig7.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 7]', fontsize=title_fontsize, fontweight='bold')
                 
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4116,7 +4588,22 @@ class relative_humidity:
                     ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
                 else:
                     pass
-                ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                if show_cwa_borders == True:
+                    ax7.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_firewx_zones == True:
+                    ax7.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_public_zones == True:
+                    ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                else:
+                    pass
+    
+                ax7.set_title('National Weather Service Forecast [Day 7]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+                
+                ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                     
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -4155,8 +4642,6 @@ class relative_humidity:
             fig1.set_facecolor('aliceblue')
             fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-            fig1.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 1]', fontsize=title_fontsize, fontweight='bold')
-    
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -4180,7 +4665,22 @@ class relative_humidity:
                 ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax1.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax1.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+    
+            ax1.set_title('National Weather Service Forecast [Day 1]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -4200,8 +4700,6 @@ class relative_humidity:
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
             fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig2.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 2]', fontsize=title_fontsize, fontweight='bold')
             
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4226,7 +4724,22 @@ class relative_humidity:
                 ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+    
+            ax2.set_title('National Weather Service Forecast [Day 2]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -4246,9 +4759,7 @@ class relative_humidity:
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
             fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig3.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 3]', fontsize=title_fontsize, fontweight='bold')
-        
+
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -4272,7 +4783,22 @@ class relative_humidity:
                 ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax3.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax3.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+    
+            ax3.set_title('National Weather Service Forecast [Day 3]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -4292,9 +4818,7 @@ class relative_humidity:
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
             fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig4.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 4]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -4318,7 +4842,22 @@ class relative_humidity:
                 ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+    
+            ax4.set_title('National Weather Service Forecast [Day 4]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -4338,9 +4877,7 @@ class relative_humidity:
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
             fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig5.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 5]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -4364,7 +4901,22 @@ class relative_humidity:
                 ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+    
+            ax5.set_title('National Weather Service Forecast [Day 5]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -4384,9 +4936,7 @@ class relative_humidity:
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
             fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig6.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 6]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -4410,7 +4960,22 @@ class relative_humidity:
                 ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax6.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax6.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax6.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+    
+            ax6.set_title('National Weather Service Forecast [Day 6]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -4432,9 +4997,7 @@ class relative_humidity:
                 fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig7.set_facecolor('aliceblue')
                 fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-                fig7.suptitle('National Weather Service Forecast\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%) [Day 7]', fontsize=title_fontsize, fontweight='bold')
-                
+
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -4458,7 +5021,22 @@ class relative_humidity:
                     ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
                 else:
                     pass
-                ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                if show_cwa_borders == True:
+                    ax7.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_firewx_zones == True:
+                    ax7.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_public_zones == True:
+                    ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                else:
+                    pass
+    
+                ax7.set_title('National Weather Service Forecast [Day 7]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+                
+                ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                     
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -4740,37 +5318,53 @@ class relative_humidity:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -4779,9 +5373,11 @@ class relative_humidity:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -4792,7 +5388,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -4970,9 +5566,7 @@ class relative_humidity:
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
             fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig1.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 1]', fontsize=title_fontsize, fontweight='bold')
-    
+
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -4996,7 +5590,22 @@ class relative_humidity:
                 ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax1.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax1.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+
+            ax1.set_title('National Weather Service Forecast [Day 1]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5016,9 +5625,7 @@ class relative_humidity:
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
             fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig2.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 2]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -5042,7 +5649,22 @@ class relative_humidity:
                 ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+            
+            ax2.set_title('National Weather Service Forecast [Day 2]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5062,9 +5684,7 @@ class relative_humidity:
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
             fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig3.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 3]', fontsize=title_fontsize, fontweight='bold')
-        
+
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -5088,7 +5708,22 @@ class relative_humidity:
                 ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax3.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax3.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+                
+            ax3.set_title('National Weather Service Forecast [Day 3]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5108,9 +5743,7 @@ class relative_humidity:
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
             fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig4.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 4]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -5134,7 +5767,22 @@ class relative_humidity:
                 ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+                
+            ax4.set_title('National Weather Service Forecast [Day 4]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5154,9 +5802,7 @@ class relative_humidity:
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
             fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig5.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 5]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -5180,7 +5826,22 @@ class relative_humidity:
                 ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+                
+            ax5.set_title('National Weather Service Forecast [Day 5]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5200,9 +5861,7 @@ class relative_humidity:
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
             fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig6.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 6]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -5226,7 +5885,22 @@ class relative_humidity:
                 ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax6.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax6.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax6.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+                
+            ax6.set_title('National Weather Service Forecast [Day 6]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5248,9 +5922,7 @@ class relative_humidity:
                 fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig7.set_facecolor('aliceblue')
                 fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-                fig7.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 7]', fontsize=title_fontsize, fontweight='bold')
-                
+
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -5274,7 +5946,22 @@ class relative_humidity:
                     ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
                 else:
                     pass
-                ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                if show_cwa_borders == True:
+                    ax7.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_firewx_zones == True:
+                    ax7.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_public_zones == True:
+                    ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                else:
+                    pass
+                
+                ax7.set_title('National Weather Service Forecast [Day 7]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+                
+                ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                     
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5312,9 +5999,7 @@ class relative_humidity:
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
             fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig1.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 1]', fontsize=title_fontsize, fontweight='bold')
-    
+
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -5338,7 +6023,22 @@ class relative_humidity:
                 ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax1.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax1.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+                
+            ax1.set_title('National Weather Service Forecast [Day 1]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5358,9 +6058,7 @@ class relative_humidity:
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
             fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig2.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 2]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -5384,7 +6082,22 @@ class relative_humidity:
                 ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+                
+            ax2.set_title('National Weather Service Forecast [Day 2]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5404,9 +6117,7 @@ class relative_humidity:
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
             fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig3.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 3]', fontsize=title_fontsize, fontweight='bold')
-        
+
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -5430,7 +6141,22 @@ class relative_humidity:
                 ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax3.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax3.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+                
+            ax3.set_title('National Weather Service Forecast [Day 3]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5450,9 +6176,7 @@ class relative_humidity:
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
             fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig4.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 4]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -5476,7 +6200,22 @@ class relative_humidity:
                 ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+                
+            ax4.set_title('National Weather Service Forecast [Day 4]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5496,9 +6235,7 @@ class relative_humidity:
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
             fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig5.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 5]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -5522,7 +6259,22 @@ class relative_humidity:
                 ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+                
+            ax5.set_title('National Weather Service Forecast [Day 5]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5542,9 +6294,7 @@ class relative_humidity:
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
             fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig6.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 6]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -5568,7 +6318,22 @@ class relative_humidity:
                 ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax6.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax6.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax6.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+                
+            ax6.set_title('National Weather Service Forecast [Day 6]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5590,9 +6355,7 @@ class relative_humidity:
                 fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig7.set_facecolor('aliceblue')
                 fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-                fig7.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Forecast [Day 7]', fontsize=title_fontsize, fontweight='bold')
-                
+
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
                 ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -5616,7 +6379,22 @@ class relative_humidity:
                     ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
                 else:
                     pass
-                ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+                if show_cwa_borders == True:
+                    ax7.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_firewx_zones == True:
+                    ax7.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_public_zones == True:
+                    ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                else:
+                    pass
+                
+                ax7.set_title('National Weather Service Forecast [Day 7]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+                
+                ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                     
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha)
     
@@ -5901,37 +6679,53 @@ class relative_humidity:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -5940,9 +6734,11 @@ class relative_humidity:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -5953,7 +6749,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -6156,8 +6952,6 @@ class relative_humidity:
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        fig1.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Trend [Day 2]', fontsize=title_fontsize, fontweight='bold')
-    
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -6181,7 +6975,22 @@ class relative_humidity:
             ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax1.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax1.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+        ax1.set_title('National Weather Service Forecast [Day 2]\nMinimum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='both')
     
@@ -6201,9 +7010,7 @@ class relative_humidity:
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig2.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Trend [Day 3]', fontsize=title_fontsize, fontweight='bold')
-        
+
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -6227,7 +7034,21 @@ class relative_humidity:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+        ax2.set_title('National Weather Service Forecast [Day 3]\nMinimum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='both')
     
@@ -6247,9 +7068,7 @@ class relative_humidity:
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig3.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Trend [Day 4]', fontsize=title_fontsize, fontweight='bold')
-    
+
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -6273,7 +7092,21 @@ class relative_humidity:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax3.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax3.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+        ax3.set_title('National Weather Service Forecast [Day 4]\nMinimum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='both')
     
@@ -6293,9 +7126,7 @@ class relative_humidity:
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig4.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Trend [Day 5]', fontsize=title_fontsize, fontweight='bold')
-        
+
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -6319,7 +7150,21 @@ class relative_humidity:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+        ax4.set_title('National Weather Service Forecast [Day 5]\nMinimum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='both')
     
@@ -6339,9 +7184,7 @@ class relative_humidity:
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig5.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Trend [Day 6]', fontsize=title_fontsize, fontweight='bold')
-        
+
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -6365,7 +7208,21 @@ class relative_humidity:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+        ax5.set_title('National Weather Service Forecast [Day 6]\nMinimum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='both')
     
@@ -6387,9 +7244,7 @@ class relative_humidity:
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig7.suptitle('National Weather Service Forecast\nMinimum Relative Humidity Trend [Day 7]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -6413,7 +7268,21 @@ class relative_humidity:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax7.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax7.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+            ax7.set_title('National Weather Service Forecast [Day 7]\nMinimum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=levels, cmap=cmap, transform=datacrs, zorder=2, alpha=alpha, extend='both')
     
@@ -6765,37 +7634,53 @@ class temperature:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -6804,9 +7689,11 @@ class temperature:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -6817,7 +7704,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -6989,12 +7876,6 @@ class temperature:
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig1.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 1]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig1.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 1]", fontsize=title_fontsize, fontweight='bold')
-    
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -7018,8 +7899,26 @@ class temperature:
             ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
+        if show_cwa_borders == True:
+            ax1.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax1.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+    
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax1.set_title("National Weather Service Forecast [Day 1]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax1.set_title("National Weather Service Forecast [Day 1]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
-        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if show_sample_points == True and no_vals == False:
     
@@ -7045,12 +7944,6 @@ class temperature:
         fig2.set_facecolor('aliceblue')
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig2.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 2]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig2.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 2]", fontsize=title_fontsize, fontweight='bold')
-    
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -7074,7 +7967,26 @@ class temperature:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+            
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax2.set_title("National Weather Service Forecast [Day 2]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax2.set_title("National Weather Service Forecast [Day 2]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if show_sample_points == True and no_vals == False:
     
@@ -7100,13 +8012,6 @@ class temperature:
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig3.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 3]", fontsize=title_fontsize, fontweight='bold')
-    
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig3.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 3]", fontsize=title_fontsize, fontweight='bold')
-    
         ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -7130,7 +8035,25 @@ class temperature:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax3.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax3.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax3.set_title("National Weather Service Forecast [Day 3]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax3.set_title("National Weather Service Forecast [Day 3]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if show_sample_points == True and no_vals == False:
     
@@ -7156,12 +8079,6 @@ class temperature:
         fig4.set_facecolor('aliceblue')
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig4.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 4]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig4.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 4]", fontsize=title_fontsize, fontweight='bold')
-    
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -7185,7 +8102,25 @@ class temperature:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax4.set_title("National Weather Service Forecast [Day 4]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax4.set_title("National Weather Service Forecast [Day 4]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if show_sample_points == True and no_vals == False:
     
@@ -7210,12 +8145,6 @@ class temperature:
         fig5.set_facecolor('aliceblue')
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig5.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 5]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig5.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 5]", fontsize=title_fontsize, fontweight='bold')
-    
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -7239,7 +8168,25 @@ class temperature:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax5.set_title("National Weather Service Forecast [Day 5]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax5.set_title("National Weather Service Forecast [Day 5]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if show_sample_points == True and no_vals == False:
     
@@ -7264,12 +8211,6 @@ class temperature:
         fig6.set_facecolor('aliceblue')
         fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig6.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 6]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig6.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 6]", fontsize=title_fontsize, fontweight='bold')
-    
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -7293,7 +8234,25 @@ class temperature:
             ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax6.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax6.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax6.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax6.set_title("National Weather Service Forecast [Day 6]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax6.set_title("National Weather Service Forecast [Day 6]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if show_sample_points == True and no_vals == False:
     
@@ -7319,12 +8278,6 @@ class temperature:
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                fig7.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Day 7]", fontsize=title_fontsize, fontweight='bold')
-    
-            if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-                fig7.suptitle("National Weather Service Forecast\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Day 7]", fontsize=title_fontsize, fontweight='bold')
         
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7349,7 +8302,25 @@ class temperature:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax7.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax7.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+            if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+                ax7.set_title("National Weather Service Forecast [Day 7]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+            if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+                ax7.set_title("National Weather Service Forecast [Day 7]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
             if show_sample_points == True and no_vals == False:
     
@@ -7689,37 +8660,53 @@ class temperature:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -7728,9 +8715,11 @@ class temperature:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -7741,7 +8730,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -7913,12 +8902,6 @@ class temperature:
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig1.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 1]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig1.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 1]", fontsize=title_fontsize, fontweight='bold')
-    
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -7942,8 +8925,26 @@ class temperature:
             ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
+        if show_cwa_borders == True:
+            ax1.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax1.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax1.set_title("National Weather Service Forecast [Night 1]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax1.set_title("National Weather Service Forecast [Night 1]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
-        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if show_sample_points == True and no_vals == False:
     
@@ -7969,12 +8970,6 @@ class temperature:
         fig2.set_facecolor('aliceblue')
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig2.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 2]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig2.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 2]", fontsize=title_fontsize, fontweight='bold')
-    
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -7998,7 +8993,25 @@ class temperature:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax2.set_title("National Weather Service Forecast [Night 2]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax2.set_title("National Weather Service Forecast [Night 2]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if show_sample_points == True and no_vals == False:
     
@@ -8024,13 +9037,6 @@ class temperature:
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig3.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 3]", fontsize=title_fontsize, fontweight='bold')
-    
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig3.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 3]", fontsize=title_fontsize, fontweight='bold')
-    
         ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -8054,7 +9060,25 @@ class temperature:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax3.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax3.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax3.set_title("National Weather Service Forecast [Night 3]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax3.set_title("National Weather Service Forecast [Night 3]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if show_sample_points == True and no_vals == False:
     
@@ -8079,13 +9103,7 @@ class temperature:
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig4.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 4]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig4.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 4]", fontsize=title_fontsize, fontweight='bold')
-    
+
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -8109,7 +9127,25 @@ class temperature:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax4.set_title("National Weather Service Forecast [Night 4]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax4.set_title("National Weather Service Forecast [Night 4]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if show_sample_points == True and no_vals == False:
     
@@ -8133,13 +9169,7 @@ class temperature:
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig5.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 5]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig5.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 5]", fontsize=title_fontsize, fontweight='bold')
-    
+
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -8163,7 +9193,25 @@ class temperature:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax5.set_title("National Weather Service Forecast [Night 5]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax5.set_title("National Weather Service Forecast [Night 5]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if show_sample_points == True and no_vals == False:
     
@@ -8188,12 +9236,6 @@ class temperature:
         fig6.set_facecolor('aliceblue')
         fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig6.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 6]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig6.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 6]", fontsize=title_fontsize, fontweight='bold')
-    
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -8217,7 +9259,25 @@ class temperature:
             ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax6.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax6.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax6.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax6.set_title("National Weather Service Forecast [Night 6]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax6.set_title("National Weather Service Forecast [Night 6]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if show_sample_points == True and no_vals == False:
     
@@ -8243,12 +9303,6 @@ class temperature:
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                fig7.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F)) [Night 7]", fontsize=title_fontsize, fontweight='bold')
-    
-            if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-                fig7.suptitle("National Weather Service Forecast\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F)) [Night 7]", fontsize=title_fontsize, fontweight='bold')
         
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8273,7 +9327,25 @@ class temperature:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax7.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax7.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+            if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+                ax7.set_title("National Weather Service Forecast [Night 7]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+            if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+                ax7.set_title("National Weather Service Forecast [Night 7]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
             if show_sample_points == True and no_vals == False:
     
@@ -8591,37 +9663,53 @@ class temperature:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -8630,9 +9718,11 @@ class temperature:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -8643,7 +9733,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -8810,9 +9900,7 @@ class temperature:
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig1.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F)) [Night 1]", fontsize=title_fontsize, fontweight='bold')
-    
+
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -8836,7 +9924,22 @@ class temperature:
             ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax1.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax1.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+        ax1.set_title("National Weather Service Forecast [Night 1]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
@@ -8856,9 +9959,7 @@ class temperature:
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig2.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F)) [Night 2]", fontsize=title_fontsize, fontweight='bold')
-    
+        
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -8882,7 +9983,22 @@ class temperature:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+        ax2.set_title("National Weather Service Forecast [Night 2]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
@@ -8902,9 +10018,7 @@ class temperature:
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig3.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F)) [Night 3]", fontsize=title_fontsize, fontweight='bold')
-    
+
         ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -8928,7 +10042,22 @@ class temperature:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax3.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax3.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+        ax3.set_title("National Weather Service Forecast [Night 3]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
@@ -8948,9 +10077,7 @@ class temperature:
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig4.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F)) [Night 4]", fontsize=title_fontsize, fontweight='bold')
-    
+
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -8974,7 +10101,22 @@ class temperature:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+        ax4.set_title("National Weather Service Forecast [Night 4]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
@@ -8994,9 +10136,7 @@ class temperature:
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig5.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F)) [Night 5]", fontsize=title_fontsize, fontweight='bold')
-        
+
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -9020,7 +10160,22 @@ class temperature:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+        ax5.set_title("National Weather Service Forecast [Night 5]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
@@ -9040,9 +10195,7 @@ class temperature:
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
         fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig6.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F)) [Night 6]", fontsize=title_fontsize, fontweight='bold')
-    
+
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -9066,7 +10219,22 @@ class temperature:
             ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        if show_cwa_borders == True:
+            ax6.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_firewx_zones == True:
+            ax6.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+        else:
+            pass
+        if show_nws_public_zones == True:
+            ax6.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+        else:
+            pass
+
+        ax6.set_title("National Weather Service Forecast [Night 6]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
@@ -9088,9 +10256,7 @@ class temperature:
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig7.suptitle("National Weather Service Forecast\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F) [Night 7]", fontsize=title_fontsize, fontweight='bold')
-        
+
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -9114,7 +10280,22 @@ class temperature:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            if show_cwa_borders == True:
+                ax7.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax7.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+
+            ax7.set_title("National Weather Service Forecast [Night 7]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
             cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
     
@@ -9447,37 +10628,53 @@ class temperature:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -9486,9 +10683,11 @@ class temperature:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -9499,7 +10698,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -9671,12 +10870,6 @@ class temperature:
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig1.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 1]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig1.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 1]", fontsize=title_fontsize, fontweight='bold')
-    
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -9700,7 +10893,14 @@ class temperature:
             ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax1.set_title("National Weather Service Forecast [Day 1]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax1.set_title("National Weather Service Forecast [Day 1]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -9724,12 +10924,6 @@ class temperature:
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig2.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 2]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig2.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 2]", fontsize=title_fontsize, fontweight='bold')
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9754,7 +10948,14 @@ class temperature:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax2.set_title("National Weather Service Forecast [Day 2]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax2.set_title("National Weather Service Forecast [Day 2]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -9779,12 +10980,6 @@ class temperature:
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig3.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 3]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig3.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 3]", fontsize=title_fontsize, fontweight='bold')
-    
         ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -9808,7 +11003,14 @@ class temperature:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax3.set_title("National Weather Service Forecast [Day 3]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax3.set_title("National Weather Service Forecast [Day 3]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -9832,13 +11034,7 @@ class temperature:
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig4.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 4]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig4.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 4]", fontsize=title_fontsize, fontweight='bold')
-    
+
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -9862,7 +11058,14 @@ class temperature:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax4.set_title("National Weather Service Forecast [Day 4]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax4.set_title("National Weather Service Forecast [Day 4]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -9887,12 +11090,6 @@ class temperature:
         fig5.set_facecolor('aliceblue')
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig5.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 5]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig5.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 5]", fontsize=title_fontsize, fontweight='bold')
-    
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -9916,7 +11113,14 @@ class temperature:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax5.set_title("National Weather Service Forecast [Day 5]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax5.set_title("National Weather Service Forecast [Day 5]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -9940,13 +11144,7 @@ class temperature:
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
         fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig6.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 6]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig6.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 6]", fontsize=title_fontsize, fontweight='bold')
-    
+
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -9970,7 +11168,14 @@ class temperature:
             ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax6.set_title("National Weather Service Forecast [Day 6]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax6.set_title("National Weather Service Forecast [Day 6]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -9996,13 +11201,7 @@ class temperature:
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                fig7.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 7]", fontsize=title_fontsize, fontweight='bold')
-    
-            if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-                fig7.suptitle("National Weather Service Forecast\nMaximum Temperature (\N{DEGREE SIGN}F) [Day 7]", fontsize=title_fontsize, fontweight='bold')
-        
+
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -10026,7 +11225,14 @@ class temperature:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+            if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+                ax7.set_title("National Weather Service Forecast [Day 7]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+            if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+                ax7.set_title("National Weather Service Forecast [Day 7]\nMaximum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+                
+            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
             if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -10363,37 +11569,53 @@ class temperature:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -10402,9 +11624,11 @@ class temperature:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -10415,7 +11639,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -10587,12 +11811,6 @@ class temperature:
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig1.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 1]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig1.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 1]", fontsize=title_fontsize, fontweight='bold')
-    
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -10616,7 +11834,14 @@ class temperature:
             ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax1.set_title("National Weather Service Forecast [Night 1]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax1.set_title("National Weather Service Forecast [Night 1]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -10640,13 +11865,7 @@ class temperature:
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig2.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 2]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig2.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 2]", fontsize=title_fontsize, fontweight='bold')
-    
+
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -10670,7 +11889,14 @@ class temperature:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax2.set_title("National Weather Service Forecast [Night 2]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax2.set_title("National Weather Service Forecast [Night 2]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -10694,13 +11920,7 @@ class temperature:
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig3.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 3]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig3.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 3]", fontsize=title_fontsize, fontweight='bold')
-    
+
         ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -10724,7 +11944,14 @@ class temperature:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax3.set_title("National Weather Service Forecast [Night 3]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax3.set_title("National Weather Service Forecast [Night 3]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -10748,13 +11975,7 @@ class temperature:
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig4.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 4]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig4.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 4]", fontsize=title_fontsize, fontweight='bold')
-    
+
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -10778,7 +11999,14 @@ class temperature:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax4.set_title("National Weather Service Forecast [Night 4]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax4.set_title("National Weather Service Forecast [Night 4]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -10802,13 +12030,7 @@ class temperature:
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig5.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 5]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig5.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 5]", fontsize=title_fontsize, fontweight='bold')
-    
+
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -10832,7 +12054,14 @@ class temperature:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax5.set_title("National Weather Service Forecast [Night 5]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax5.set_title("National Weather Service Forecast [Night 5]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -10856,13 +12085,7 @@ class temperature:
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
         fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            fig6.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 6]", fontsize=title_fontsize, fontweight='bold')
-    
-        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            fig6.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 6]", fontsize=title_fontsize, fontweight='bold')
-    
+
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -10886,7 +12109,14 @@ class temperature:
             ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+            ax6.set_title("National Weather Service Forecast [Night 6]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+            ax6.set_title("National Weather Service Forecast [Night 6]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -10912,12 +12142,6 @@ class temperature:
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                fig7.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 7]", fontsize=title_fontsize, fontweight='bold')
-    
-            if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-                fig7.suptitle("National Weather Service Forecast\nMinimum Temperature (\N{DEGREE SIGN}F) [Night 7]", fontsize=title_fontsize, fontweight='bold')
         
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -10942,7 +12166,14 @@ class temperature:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+            if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+                ax7.set_title("National Weather Service Forecast [Night 7]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+            if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+                ax7.set_title("National Weather Service Forecast [Night 7]\nMinimum Temperature (\N{DEGREE SIGN}F)", fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
             if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
                 cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=temp_scale_warm, cmap=cmap, alpha=alpha, transform=datacrs, extend='both')
@@ -11242,37 +12473,53 @@ class temperature:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -11281,9 +12528,11 @@ class temperature:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -11294,7 +12543,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -11468,9 +12717,7 @@ class temperature:
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig1.suptitle('National Weather Service Forecast\nMinimum Temperature Trend [Night 2]', fontsize=title_fontsize, fontweight='bold')
-    
+
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -11494,7 +12741,10 @@ class temperature:
             ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        ax1.set_title('National Weather Service Forecast [Night 2]\nMinimum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
@@ -11514,9 +12764,7 @@ class temperature:
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig2.suptitle('National Weather Service Forecast\nMinimum Temperature Trend [Night 3]', fontsize=title_fontsize, fontweight='bold')
-        
+
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -11540,7 +12788,10 @@ class temperature:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        ax2.set_title('National Weather Service Forecast [Night 3]\nMinimum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
@@ -11560,9 +12811,7 @@ class temperature:
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig3.suptitle('National Weather Service Forecast\nMinimum Temperature Trend [Night 4]', fontsize=title_fontsize, fontweight='bold')
-    
+
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -11586,7 +12835,10 @@ class temperature:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        ax3.set_title('National Weather Service Forecast [Night 4]\nMinimum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
@@ -11607,8 +12859,6 @@ class temperature:
         fig4.set_facecolor('aliceblue')
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        fig4.suptitle('National Weather Service Forecast\nMinimum Temperature Trend [Night 5]', fontsize=title_fontsize, fontweight='bold')
-        
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -11632,7 +12882,10 @@ class temperature:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        ax4.set_title('National Weather Service Forecast [Night 5]\nMinimum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
@@ -11652,8 +12905,6 @@ class temperature:
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig5.suptitle('National Weather Service Forecast\nMinimum Temperature Trend [Night 6]', fontsize=title_fontsize, fontweight='bold')
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -11678,7 +12929,10 @@ class temperature:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+        ax5.set_title('National Weather Service Forecast [Night 6]\nMinimum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
@@ -11700,9 +12954,7 @@ class temperature:
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig7.suptitle('National Weather Service Forecast\nMinimum Temperature Trend [Night 7]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -11726,7 +12978,10 @@ class temperature:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    
+            ax7.set_title('National Weather Service Forecast [Night 7]\nMinimum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
@@ -12020,37 +13275,53 @@ class temperature:
             if reference_system == 'States and Counties':
                 show_state_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
             if reference_system == 'GACC and PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
             if reference_system == 'CWA and Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
             if reference_system == 'CWA and Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
             if reference_system == 'CWA and Counties':
                 show_cwa_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
             if reference_system == 'GACC with PSA and Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
             if reference_system == 'GACC with PSA and Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
@@ -12059,9 +13330,11 @@ class temperature:
             if reference_system == 'GACC and Counties':
                 show_gacc_borders = True
                 show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -12072,7 +13345,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, True)
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -12248,8 +13521,6 @@ class temperature:
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        fig1.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Day 2]', fontsize=title_fontsize, fontweight='bold')
-    
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -12273,7 +13544,10 @@ class temperature:
             ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            
+        ax1.set_title('National Weather Service Forecast [Day 2]\nMaximum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
@@ -12293,9 +13567,7 @@ class temperature:
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig2.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Day 3]', fontsize=title_fontsize, fontweight='bold')
-        
+
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -12319,7 +13591,9 @@ class temperature:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax2.set_title('National Weather Service Forecast [Day 3]\nMaximum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
@@ -12339,9 +13613,7 @@ class temperature:
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig3.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Day 4]', fontsize=title_fontsize, fontweight='bold')
-    
+
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -12365,7 +13637,9 @@ class temperature:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax3.set_title('National Weather Service Forecast [Day 4]\nMaximum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
@@ -12385,9 +13659,7 @@ class temperature:
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig4.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Day 5]', fontsize=title_fontsize, fontweight='bold')
-        
+
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -12411,7 +13683,9 @@ class temperature:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax4.set_title('National Weather Service Forecast [Day 5]\nMaximum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
@@ -12431,9 +13705,7 @@ class temperature:
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-        fig5.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Day 6]', fontsize=title_fontsize, fontweight='bold')
-        
+
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -12457,7 +13729,9 @@ class temperature:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+        ax5.set_title('National Weather Service Forecast [Day 6]\nMaximum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
@@ -12479,9 +13753,7 @@ class temperature:
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
-            fig7.suptitle('National Weather Service Forecast\nMaximum Temperature Trend [Day 7]', fontsize=title_fontsize, fontweight='bold')
-            
+
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
             ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -12505,7 +13777,9 @@ class temperature:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+            ax7.set_title('National Weather Service Forecast [Day 7]\nMaximum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+            
+            ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
             cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
