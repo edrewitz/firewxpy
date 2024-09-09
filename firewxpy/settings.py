@@ -105,13 +105,12 @@ def get_sample_point_color_by_state(state, plot_type):
     return color
 
 
-def get_state_data_and_coords(state, ndfd_grids):
+def get_state_data_and_coords(state, plot_type):
 
     state = state
-    ndfd_grids = ndfd_grids
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
-    shrink = 0.7
+    color_table_shrink = 0.7
     legend_fontsize = 14
     directory_name = None
     state_border_linewidth=1
@@ -119,27 +118,29 @@ def get_state_data_and_coords(state, ndfd_grids):
     title_x_position = 0.5
     aspect=30
     tick = 9
+    title_fontsize = 8
+    subplot_title_fontsize=7
 
     if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-        if ndfd_grids == True:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -126
         eastern_bound = -66
         southern_bound = 24
         northern_bound = 50   
         fig_x_length = 14
-        fig_y_length = 8
-        signature_x_position = 0.13
-        signature_y_position = 0.26
-        title_fontsize = 20
-        subplot_title_fontsize=14 
+        fig_y_length = 12
+        title_fontsize = 10
+        subplot_title_fontsize=9
         signature_fontsize=10
         sample_point_fontsize=8
         colorbar_fontsize=12
         legend_fontsize = 12
-        state_border_linewidth=1
-        county_border_linewidth=0.2
-
+        if plot_type == 'nws':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.13
+            signature_y_position = 0.26
+        if plot_type == 'rtma':
+            signature_x_position = 0.01
+            signature_y_position = 0.13
 
     if state == 'AK' or state == 'ak':
         if ndfd_grids == True:
@@ -210,14 +211,13 @@ def get_state_data_and_coords(state, ndfd_grids):
         northern_bound = 47.6
         fig_x_length = 10
         fig_y_length = 10
-        title_fontsize = 18
         signature_x_position = 0.255
         signature_y_position = 0.25
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        subplot_title_fontsize=13 
         legend_fontsize = 30
+        color_table_shrink = 0.65
 
             
 
@@ -2427,7 +2427,7 @@ def get_state_data_and_coords(state, ndfd_grids):
     return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick
     
 
-def get_gacc_region_data_and_coords(gacc_region, ndfd_grids):
+def get_gacc_region_data_and_coords(gacc_region, plot_type):
 
     gacc_region = gacc_region
     ndfd_grids = ndfd_grids
