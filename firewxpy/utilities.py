@@ -25,6 +25,22 @@ class file_functions:
         path = path
         GIF_path = GIF_path
 
+        if plot_type == 'RTMA RH':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA RH.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA RH.png")
+
+        if plot_type == '24HR RTMA RH COMPARISON':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/24HR RTMA RH COMPARISON.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/24HR RTMA RH COMPARISON.png")
+
         if plot_type == 'NWS Maximum RH Trend':
 
             file_path_1 = path+"/Night 2.png" 
@@ -302,6 +318,60 @@ class file_functions:
 
             os.mkdir("Weather Data")
 
+        if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON':
+
+            if state != None and gacc_region == None:
+
+                state = state.upper()
+
+                full_path = 'f:Weather Data/RTMA/'+plot_type+'/'+state+'/'+reference_system
+                state_path = 'f:Weather Data/RTMA/'+plot_type+'/'+state
+                type_path = 'f:Weather Data/RTMA/'+plot_type
+
+                if os.path.exists(f"Weather Data/RTMA"):
+                    print("Already Satisfied: RTMA Directory exists.")
+
+                    if os.path.exists(f"Weather Data/RTMA/{plot_type}"):
+                        print('Already Satisfied: '+type_path+ ' exists.')
+                        
+                        if os.path.exists(f"Weather Data/RTMA/{plot_type}/{state}"):
+                            print('Already Satisfied: '+state_path+' exists.')
+
+                            if os.path.exists(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}"):
+                                print('Already Satisfied: '+full_path+' exists')
+
+                            else:
+                                print(full_path+' not found. Automatically building new branch to directory...')
+                                os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}")
+                                print("Successfully built new branch to directory!")                                
+
+                        else:
+                            print(state_path+' not found. Automatically building new branch to directory...')
+                            os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}")
+                            os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}")
+                            print("Successfully built new branch to directory!")
+                            
+                    else:
+                        print(type_path+' not found. Automatically building new branch to directory...')
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}")
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}")
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}")
+                        print("Successfully built new branch to directory!")
+                        
+                else:
+                    print("RTMA Directory does not exist.\nAutomatically building RTMA directory...")
+                    
+                    # Building directory for images
+                    os.mkdir(f"Weather Data/RTMA")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}")
+
+                    print("Successfully built new directory!") 
+
+                path = f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}"
+                GIF_path = None
+
         if plot_type == 'NWS Low Minimum RH' or plot_type == 'NWS Poor Overnight Recovery' or plot_type == 'NWS Excellent Overnight Recovery' or plot_type == 'NWS Maximum RH' or plot_type == 'NWS Maximum RH Trend' or plot_type == 'NWS Minimum RH' or plot_type == 'NWS Minimum RH Trend' or plot_type == 'NWS Extreme Heat' or plot_type == 'NWS Max T Trend' or plot_type == 'NWS Warm Min T' or plot_type == 'NWS Frost Freeze' or plot_type == 'NWS Max T' or plot_type == 'NWS Min T' or plot_type == 'NWS Min T Trend':
 
             if state != None and gacc_region == None:
@@ -539,6 +609,7 @@ class file_functions:
 
                 path = f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}"
                 GIF_path = f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}/{reference_system}"
+                    
 
         return path, GIF_path
 
