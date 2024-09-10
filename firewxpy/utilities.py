@@ -25,6 +25,38 @@ class file_functions:
         path = path
         GIF_path = GIF_path
 
+        if plot_type == 'RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS.png")  
+
+        if plot_type == 'RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS.png")     
+
+        if plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS.png")              
+
+        if plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS.png")             
+
         if plot_type == 'RTMA WIND SPEED':
 
             fig = figure_list
@@ -383,7 +415,7 @@ class file_functions:
 
             os.mkdir("Weather Data")
 
-        if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON' or plot_type == 'RTMA TEMPERATURE' or plot_type == '24HR RTMA TEMPERATURE COMPARISON' or plot_type == '24HR RTMA TOTAL CLOUD COVER COMPARISON' or plot_type == 'RTMA TOTAL CLOUD COVER' or plot_type == '24HR RTMA DEW POINT COMPARISON' or plot_type == 'RTMA DEW POINT' or plot_type == 'RTMA WIND SPEED' or plot_type == '24HR RTMA WIND SPEED COMPARISON':
+        if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON' or plot_type == 'RTMA TEMPERATURE' or plot_type == '24HR RTMA TEMPERATURE COMPARISON' or plot_type == '24HR RTMA TOTAL CLOUD COVER COMPARISON' or plot_type == 'RTMA TOTAL CLOUD COVER' or plot_type == '24HR RTMA DEW POINT COMPARISON' or plot_type == 'RTMA DEW POINT' or plot_type == 'RTMA WIND SPEED' or plot_type == '24HR RTMA WIND SPEED COMPARISON' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS':
 
             if state != None and gacc_region == None:
 
