@@ -25,6 +25,71 @@ class file_functions:
         path = path
         GIF_path = GIF_path
 
+        if plot_type == 'RTMA WIND SPEED':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA WIND SPEED.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA WIND SPEED.png")              
+
+        if plot_type == '24HR RTMA WIND SPEED COMPARISON':
+            
+            fig = figure_list
+
+            fig = fig.savefig(path+'/24HR RTMA WIND SPEED COMPARISON.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/24HR RTMA WIND SPEED COMPARISON.png")  
+            
+        if plot_type == '24HR RTMA DEW POINT COMPARISON':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/24HR RTMA DEW POINT COMPARISON.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/24HR RTMA DEW POINT COMPARISON.png")              
+
+        if plot_type == 'RTMA DEW POINT':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA DEW POINT.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA DEW POINT.png")  
+            
+
+        if plot_type == '24HR RTMA TOTAL CLOUD COVER COMPARISON':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/24HR RTMA TOTAL CLOUD COVER COMPARISON.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/24HR RTMA TOTAL CLOUD COVER COMPARISON.png")           
+
+        if plot_type == 'RTMA TOTAL CLOUD COVER':
+            
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA TOTAL CLOUD COVER.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA TOTAL CLOUD COVER.png")
+
+        if plot_type == '24HR RTMA TEMPERATURE COMPARISON':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/24HR RTMA TEMPERATURE COMPARISON.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/24HR RTMA TEMPERATURE COMPARISON.png")
+
+        if plot_type == 'RTMA TEMPERATURE':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA TEMPERATURE.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA TEMPERATURE.png")
+
         if plot_type == 'RTMA RH':
 
             fig = figure_list
@@ -318,7 +383,7 @@ class file_functions:
 
             os.mkdir("Weather Data")
 
-        if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON':
+        if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON' or plot_type == 'RTMA TEMPERATURE' or plot_type == '24HR RTMA TEMPERATURE COMPARISON' or plot_type == '24HR RTMA TOTAL CLOUD COVER COMPARISON' or plot_type == 'RTMA TOTAL CLOUD COVER' or plot_type == '24HR RTMA DEW POINT COMPARISON' or plot_type == 'RTMA DEW POINT' or plot_type == 'RTMA WIND SPEED' or plot_type == '24HR RTMA WIND SPEED COMPARISON':
 
             if state != None and gacc_region == None:
 
