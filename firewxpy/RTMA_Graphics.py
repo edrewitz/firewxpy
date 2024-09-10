@@ -291,7 +291,7 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
     ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
     ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
     ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-    ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+    ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=8)
     ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
     if show_rivers == True:
         ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -338,20 +338,21 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
     cs = ax.contourf(lon, lat, rtma_data[0, :, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha)
 
-    plt.rcParams["font.weight"] = "bold"
-
     cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=labels)
     cbar.set_label(label="Relative Humidity (%)", size=colorbar_fontsize, fontweight='bold')
 
-    if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-        gaussian = mpcalc.smooth_gaussian(rtma_data[0, :, :], n=20)
-    else:
-        gaussian = mpcalc.smooth_gaussian(rtma_data[0, :, :], n=8)
+    decimate = scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, True)
 
-    norm_con = ax.contour(lon, lat, gaussian, levels=contours, linewidths=linewidths, line_styles='dotted', cmap=cmap_c,
-               transform=ccrs.PlateCarree())
-    
-    ax.clabel(norm_con, fontsize=clabel_fontsize, fmt="%.2s", rightside_up=True, zorder=3)
+    plot_lon, plot_lat = np.meshgrid(lon[::decimate], lat[::decimate])
+
+    stn = mpplots.StationPlot(ax, plot_lon.flatten(), plot_lat.flatten(),
+                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+
+    rtma_data = rtma_data[0, ::decimate, ::decimate].to_numpy().flatten()
+
+    mpl.rcParams['font.weight'] = 'bold'
+
+    stn.plot_parameter('C', rtma_data, color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
 
     path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA RH', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA RH')
@@ -428,8 +429,6 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
     datacrs = ccrs.PlateCarree()
 
     contourf = np.arange(-50, 51, 1)
-
-    contours = [-75, -50, -30, -15, 15, 30, 50, 75] 
 
     linewidths = 1
 
@@ -620,7 +619,7 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
             rtma_data = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
             rtma_data_24 = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_24, dwpt_24)
 
-            diff = rtma_data[0, :, :] - rtma_data_24[0, :, :]
+            diff = rtma_data - rtma_data_24
 
             print("Unpacked the data successfully!")
         except Exception as e:
@@ -638,7 +637,7 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
     
     rtma_time_24 = rtma_time_24.replace(tzinfo=from_zone)
     rtma_time_24 = rtma_time_24.astimezone(to_zone)
-    rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)
+    rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)   
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -647,10 +646,10 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
     ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
     ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
     ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-    ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+    ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=8)
     ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
     if show_rivers == True:
-        ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+        ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
     else:
         pass
 
@@ -691,23 +690,24 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
 
     ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
-    cs = ax.contourf(lon, lat, diff, 
+    cs = ax.contourf(lon, lat, diff[:, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, extend='both')
 
-    plt.rcParams["font.weight"] = "bold"
+    decimate = scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, True)
+
+    plot_lon, plot_lat = np.meshgrid(lon[::decimate], lat[::decimate])
+
+    stn = mpplots.StationPlot(ax, plot_lon.flatten(), plot_lat.flatten(),
+                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+
+    diff = diff[::decimate, ::decimate].to_numpy().flatten()
+
+    mpl.rcParams['font.weight'] = 'bold'
+
+    stn.plot_parameter('C', diff, color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
 
     cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=labels)
     cbar.set_label(label="Relative Humidity Trend (%)", size=colorbar_fontsize, fontweight='bold')
-
-    if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-        gaussian = mpcalc.smooth_gaussian(diff, n=20)
-    else:
-        gaussian = mpcalc.smooth_gaussian(diff, n=8)
-
-    norm_con = ax.contour(lon, lat, gaussian, levels=contours, linewidths=linewidths, linestyles='dotted', cmap=cmap_c,
-               transform=ccrs.PlateCarree())
-    
-    ax.clabel(norm_con, fontsize=clabel_fontsize, fmt="%.2s", rightside_up=True, zorder=3)
 
     path, gif_path = file_functions.check_file_paths(state, gacc_region, '24HR RTMA RH COMPARISON', reference_system)
     file_functions.update_images(fig, path, gif_path, '24HR RTMA RH COMPARISON')
