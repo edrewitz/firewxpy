@@ -11,11 +11,30 @@ def temperature_change_colormap():
 
     return temperature_change_colormap
 
+def dew_point_colormap():
+    dew_point_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("dew point", ["darkorange", "orange", "darkkhaki", "forestgreen", "lime", "aqua"])
+
+    return dew_point_colormap
+
+def dew_point_change_colormap():
+    dew_point_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("dew point change", ["darkorange", "darkkhaki", "white", "white", "forestgreen", "aqua"])
+
+    return dew_point_change_colormap
+
+def wind_speed_colormap():
+    wind_speed_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("wind speed", ["magenta", "purple", "blue", "cyan", "goldenrod", "darkgoldenrod", "orange", "darkorange"])
+
+    return wind_speed_colormap
+
 def wind_speed_change_colormap():
-    wind_speed_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("wind speed", ["darkgreen", "green", "white", "white", "red", "darkred"])
+    wind_speed_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("wind speed change", ["magenta", "blue", "white", "white", "darkgoldenrod", "darkorange"])
 
     return wind_speed_change_colormap
 
+def thresh_contour_line_relative_humidity_colormap():
+    thresh_contour_line_relative_humidity_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("relative humidity thresh", ["black"])
+    
+    return thresh_contour_line_relative_humidity_colormap
 
 def relative_humidity_colormap():
     relative_humidity_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("relative humidity", ["saddlebrown", "darkorange", "gold", "lightgoldenrodyellow", "yellowgreen", "lawngreen", "springgreen", "lime"])
