@@ -92,6 +92,80 @@ def check_NDFD_directory_name(directory_name):
 
     return directory_name
 
+def get_gridspec_dims(state, gacc_region):
+
+    if state != None and gacc_region == None:
+
+        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+
+            row1 = 0
+            row2 = 8 
+            col1 = 0
+            col2 = 10
+
+            row3 = 5
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 5
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'CA' or state == 'ca':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 6
+
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
+
+    return row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 
+
+def get_label_coords(state, gacc_region):
+
+    if state != None and gacc_region == None:
+
+        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+
+            x_coord = 0.85
+            y_coord = 0.9
+
+        if state == 'CA' or state == 'ca':
+
+            x_coord = 0.73
+            y_coord = 0.92
+
+    return x_coord, y_coord
+
+def get_quiver_dims(state, gacc_region):
+
+    if state != None and gacc_region == None:
+
+        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+
+            minshaft=0.000005 
+            headlength=5 
+            headwidth=3
+
+        if state == 'CA' or state == 'ca':
+
+            minshaft=0.000005 
+            headlength=9 
+            headwidth=7
+
+    return minshaft, headlength, headwidth
+    
 
 def get_sample_point_color_by_state(state, plot_type):
 
@@ -105,19 +179,19 @@ def get_sample_point_color_by_state(state, plot_type):
     return color
 
 
-def get_state_data_and_coords(state, plot_type):
+def get_state_data_and_coords(state, plot_type, gridspec):
 
     state = state
+    gridspec=gridspec
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
-    color_table_shrink = 0.7
+    color_table_shrink = 1
     legend_fontsize = 14
     directory_name = None
     state_border_linewidth=1
     county_border_linewidth=0.5
     title_x_position = 0.5
     aspect=30
-    tick = 9
     title_fontsize = 8
     subplot_title_fontsize=7
 
@@ -125,22 +199,58 @@ def get_state_data_and_coords(state, plot_type):
         western_bound = -126
         eastern_bound = -66
         southern_bound = 24
-        northern_bound = 50   
+        northern_bound = 50.5   
         fig_x_length = 14
         fig_y_length = 12
         title_fontsize = 10
         subplot_title_fontsize=9
-        signature_fontsize=10
-        sample_point_fontsize=8
+        signature_fontsize=9
         colorbar_fontsize=12
         legend_fontsize = 12
+        y_loc = 1 
+        x_loc = 0.75
+        sample_point_fontsize=8
+        tick = 9
+        aspect=40
         if plot_type == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.26
         if plot_type == 'rtma':
             signature_x_position = 0.01
-            signature_y_position = 0.13
+            signature_y_position = 0.14
+
+
+    if state == 'CA' or state == 'ca':
+        western_bound = -124.61
+        eastern_bound = -113.93
+        southern_bound = 30
+        northern_bound = 42.5
+        fig_x_length = 10
+        fig_y_length = 10
+        if gridspec == True:
+            fig_x_length = 10
+            fig_y_length = 7
+        signature_x_position = 0.01
+        signature_y_position = 0.14
+        subplot_title_fontsize=6
+        title_fontsize = 7
+        signature_fontsize=9
+        color_table_shrink = 0.7
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 12
+        tick = 6
+        y_loc = 1 
+        x_loc = 0.5
+        if plot_type == 'nws':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.13
+            signature_y_position = 0.26
+        if plot_type == 'rtma':
+            signature_x_position = 0.01
+            signature_y_position = 0.12
+
 
     if state == 'AK' or state == 'ak':
         if ndfd_grids == True:
@@ -1467,53 +1577,6 @@ def get_state_data_and_coords(state, plot_type):
             signature_fontsize=18
         if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
             colorbar_fontsize=8
-           
-
-    if state == 'CA' or state == 'ca':
-        if ndfd_grids == True:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
-        western_bound = -124.61
-        eastern_bound = -113.93
-        southern_bound = 32.1
-        northern_bound = 42.2
-        fig_x_length = 25
-        fig_y_length = 25
-        signature_x_position = 0.10
-        signature_y_position = 0.05
-        subplot_title_fontsize=35
-        title_fontsize = 55
-        signature_fontsize=22
-        sample_point_fontsize=10
-        colorbar_fontsize=12
-        legend_fontsize = 30
-        tick=12
-        aspect=30
-        if plot_type == 'minrh':
-            title_fontsize=17 
-        if plot_type == 'poor recovery':
-            title_fontsize=15 
-        if plot_type == 'excellent recovery' or plot_type == 'warm lows':
-            title_fontsize=14
-        if plot_type == 'maxrh':
-            title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend' or plot_type == 'mint trend' or plot_type == 'maxt trend':
-            title_fontsize=15
-        if plot_type == 'low minrh':
-            title_fontsize=15
-        if plot_type == 'extreme heat':
-            title_fontsize=15
-        if plot_type == 'warm lows':
-            title_fontsize=12
-        if plot_type == 'frost freeze':
-            title_fontsize=15
-        if plot_type == 'maxt' or plot_type == 'mint':
-            title_fontsize=15
-        if plot_type == 'critical fire' or plot_type == 'dry lightning':
-            signature_x_position = 0.19
-            signature_y_position = 0.25
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
-            colorbar_fontsize=8
-        
 
     if state == 'NV' or state == 'nv':
         if ndfd_grids == True:
@@ -2542,7 +2605,7 @@ def get_gacc_region_data_and_coords(gacc_region, plot_type):
         signature_y_position = 0.255
 
 
-    return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick
+    return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick, x_loc, y_loc
 
 def get_colorbar_label_coords(state, plot_type):
 
