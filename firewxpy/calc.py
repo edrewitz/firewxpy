@@ -7,6 +7,10 @@ class unit_conversion:
     THIS CLASS HOSTS A VARIETY OF FUNCTIONS TO CONVERT UNITS
     '''
 
+    def meters_per_second_to_mph(rtma_wind):
+
+        return rtma_wind * 2.23694
+
     def knots_to_mph(wind_speed):
 
         r'''
