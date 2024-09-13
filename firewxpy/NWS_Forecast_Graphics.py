@@ -42,6 +42,8 @@ from matplotlib.patheffects import withStroke
 from firewxpy.calc import scaling, unit_conversion, contouring
 from firewxpy.utilities import file_functions
 
+mpl.rcParams['font.weight'] = 'bold'
+
 class relative_humidity:
 
     '''
