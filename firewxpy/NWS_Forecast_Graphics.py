@@ -64,7 +64,7 @@ class relative_humidity:
 
     '''
 
-    def plot_poor_overnight_recovery_relative_humidity_forecast(poor_overnight_recovery_rh_threshold=30, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
+    def plot_poor_overnight_recovery_relative_humidity_forecast(poor_overnight_recovery_rh_threshold=30, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. 
@@ -331,69 +331,69 @@ class relative_humidity:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -404,7 +404,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -561,7 +561,7 @@ class relative_humidity:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -623,7 +623,7 @@ class relative_humidity:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -685,7 +685,7 @@ class relative_humidity:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -747,7 +747,7 @@ class relative_humidity:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -806,7 +806,7 @@ class relative_humidity:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -866,7 +866,7 @@ class relative_humidity:
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -928,7 +928,7 @@ class relative_humidity:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
             
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1007,7 +1007,7 @@ class relative_humidity:
     
     
     
-    def plot_excellent_overnight_recovery_relative_humidity_forecast(excellent_overnight_recovery_rh_threshold=80, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
+    def plot_excellent_overnight_recovery_relative_humidity_forecast(excellent_overnight_recovery_rh_threshold=80, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Excellent Overnight Recovery RH Forecast. 
@@ -1262,69 +1262,69 @@ class relative_humidity:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -1335,7 +1335,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -1487,7 +1487,7 @@ class relative_humidity:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1547,7 +1547,7 @@ class relative_humidity:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1607,7 +1607,7 @@ class relative_humidity:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1667,7 +1667,7 @@ class relative_humidity:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1727,7 +1727,7 @@ class relative_humidity:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1787,7 +1787,7 @@ class relative_humidity:
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1849,7 +1849,7 @@ class relative_humidity:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
             
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1927,7 +1927,7 @@ class relative_humidity:
         file_functions.update_images(figs, path, gif_path, 'NWS Excellent Overnight Recovery')
     
     
-    def plot_maximum_relative_humidity_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
+    def plot_maximum_relative_humidity_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Maximum RH Forecast. 
@@ -2171,69 +2171,69 @@ class relative_humidity:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -2244,7 +2244,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -2396,7 +2396,7 @@ class relative_humidity:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2456,7 +2456,7 @@ class relative_humidity:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2516,7 +2516,7 @@ class relative_humidity:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2576,7 +2576,7 @@ class relative_humidity:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2636,7 +2636,7 @@ class relative_humidity:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2696,7 +2696,7 @@ class relative_humidity:
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2758,7 +2758,7 @@ class relative_humidity:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -2838,7 +2838,7 @@ class relative_humidity:
     
     
     
-    def plot_maximum_relative_humidity_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
+    def plot_maximum_relative_humidity_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Maximum RH Trend Forecast. 
@@ -3081,69 +3081,69 @@ class relative_humidity:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -3154,7 +3154,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -3320,7 +3320,7 @@ class relative_humidity:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -3379,7 +3379,7 @@ class relative_humidity:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -3438,7 +3438,7 @@ class relative_humidity:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -3497,7 +3497,7 @@ class relative_humidity:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -3556,7 +3556,7 @@ class relative_humidity:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -3617,7 +3617,7 @@ class relative_humidity:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -3693,7 +3693,7 @@ class relative_humidity:
     
         
     
-    def plot_low_minimum_relative_humidity_forecast(low_minimum_rh_threshold=15, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
+    def plot_low_minimum_relative_humidity_forecast(low_minimum_rh_threshold=15, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Low Minimum RH Forecast. 
@@ -3955,69 +3955,69 @@ class relative_humidity:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -4028,7 +4028,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -4206,7 +4206,7 @@ class relative_humidity:
         try:
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4266,7 +4266,7 @@ class relative_humidity:
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4325,7 +4325,7 @@ class relative_humidity:
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
             
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4384,7 +4384,7 @@ class relative_humidity:
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4443,7 +4443,7 @@ class relative_humidity:
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
-            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
             
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4502,7 +4502,7 @@ class relative_humidity:
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
-            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4563,7 +4563,7 @@ class relative_humidity:
     
                 fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig7.set_facecolor('aliceblue')
-                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
                 
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4640,7 +4640,7 @@ class relative_humidity:
     
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4699,7 +4699,7 @@ class relative_humidity:
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
             
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4758,7 +4758,7 @@ class relative_humidity:
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4817,7 +4817,7 @@ class relative_humidity:
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4876,7 +4876,7 @@ class relative_humidity:
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
-            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4935,7 +4935,7 @@ class relative_humidity:
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
-            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -4996,7 +4996,7 @@ class relative_humidity:
     
                 fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig7.set_facecolor('aliceblue')
-                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5073,7 +5073,7 @@ class relative_humidity:
         file_functions.update_images(figs, path, gif_path, 'NWS Low Minimum RH')
     
     
-    def plot_minimum_relative_humidity_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
+    def plot_minimum_relative_humidity_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Minimum RH Forecast. 
@@ -5315,69 +5315,69 @@ class relative_humidity:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -5388,7 +5388,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -5565,7 +5565,7 @@ class relative_humidity:
         try:
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5624,7 +5624,7 @@ class relative_humidity:
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5683,7 +5683,7 @@ class relative_humidity:
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5742,7 +5742,7 @@ class relative_humidity:
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5801,7 +5801,7 @@ class relative_humidity:
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
-            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5860,7 +5860,7 @@ class relative_humidity:
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
-            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5921,7 +5921,7 @@ class relative_humidity:
     
                 fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig7.set_facecolor('aliceblue')
-                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -5998,7 +5998,7 @@ class relative_humidity:
     
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
-            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
             ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -6057,7 +6057,7 @@ class relative_humidity:
             
             fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig2.set_facecolor('aliceblue')
-            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
             ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -6116,7 +6116,7 @@ class relative_humidity:
             
             fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig3.set_facecolor('aliceblue')
-            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
             ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -6175,7 +6175,7 @@ class relative_humidity:
             
             fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig4.set_facecolor('aliceblue')
-            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
             ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -6234,7 +6234,7 @@ class relative_humidity:
     
             fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig5.set_facecolor('aliceblue')
-            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
             ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -6293,7 +6293,7 @@ class relative_humidity:
     
             fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig6.set_facecolor('aliceblue')
-            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
             ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -6354,7 +6354,7 @@ class relative_humidity:
     
                 fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
                 fig7.set_facecolor('aliceblue')
-                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+                fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
                 ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
                 ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -6432,7 +6432,7 @@ class relative_humidity:
     
     
     
-    def plot_minimum_relative_humidity_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
+    def plot_minimum_relative_humidity_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Minimum RH Trend Forecast. 
@@ -6676,69 +6676,69 @@ class relative_humidity:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -6749,7 +6749,7 @@ class relative_humidity:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -6950,7 +6950,7 @@ class relative_humidity:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7009,7 +7009,7 @@ class relative_humidity:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7067,7 +7067,7 @@ class relative_humidity:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7125,7 +7125,7 @@ class relative_humidity:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7183,7 +7183,7 @@ class relative_humidity:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7243,7 +7243,7 @@ class relative_humidity:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7338,7 +7338,7 @@ class temperature:
     '''
 
 
-    def plot_extreme_heat_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=100, temp_scale_warm_stop=120, temp_scale_cool_start=90, temp_scale_cool_stop=110, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
+    def plot_extreme_heat_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=100, temp_scale_warm_stop=120, temp_scale_cool_start=90, temp_scale_cool_stop=110, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Extreme Heat Forecast. 
@@ -7631,69 +7631,69 @@ class temperature:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -7704,7 +7704,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -7874,7 +7874,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -7942,7 +7942,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8010,7 +8010,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8077,7 +8077,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8143,7 +8143,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8209,7 +8209,7 @@ class temperature:
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8277,7 +8277,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8362,7 +8362,7 @@ class temperature:
         path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Extreme Heat', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Extreme Heat')
 
-    def plot_extremely_warm_low_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=70, temp_scale_warm_stop=90, temp_scale_cool_start=60, temp_scale_cool_stop=80, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
+    def plot_extremely_warm_low_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=70, temp_scale_warm_stop=90, temp_scale_cool_start=60, temp_scale_cool_stop=80, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Extremely Warm Low Temperature Forecast. 
@@ -8657,69 +8657,69 @@ class temperature:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -8730,7 +8730,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -8900,7 +8900,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -8968,7 +8968,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9035,7 +9035,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9102,7 +9102,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9168,7 +9168,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9234,7 +9234,7 @@ class temperature:
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9302,7 +9302,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9387,7 +9387,7 @@ class temperature:
         path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Warm Min T', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Warm Min T')
     
-    def plot_frost_freeze_forecast(temperature_bottom_bound=-10, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
+    def plot_frost_freeze_forecast(temperature_bottom_bound=-10, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Frost/Freeze Forecast. 
@@ -9660,69 +9660,69 @@ class temperature:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -9733,7 +9733,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -9899,7 +9899,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -9958,7 +9958,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -10017,7 +10017,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -10076,7 +10076,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -10135,7 +10135,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -10194,7 +10194,7 @@ class temperature:
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -10255,7 +10255,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -10332,7 +10332,7 @@ class temperature:
         file_functions.update_images(figs, path, gif_path, 'NWS Frost Freeze')
     
     
-    def plot_maximum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=50, temp_scale_warm_stop=110, temp_scale_cool_start=10, temp_scale_cool_stop=80, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
+    def plot_maximum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=50, temp_scale_warm_stop=110, temp_scale_cool_start=10, temp_scale_cool_stop=80, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Maximum Temperature Forecast. 
@@ -10625,69 +10625,69 @@ class temperature:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -10698,7 +10698,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -10868,7 +10868,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -10923,7 +10923,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -10978,7 +10978,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -11033,7 +11033,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -11088,7 +11088,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -11143,7 +11143,7 @@ class temperature:
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -11200,7 +11200,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -11272,7 +11272,7 @@ class temperature:
         path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Max T', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Max T')
     
-    def plot_minimum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=30, temp_scale_warm_stop=90, temp_scale_cool_start=-10, temp_scale_cool_stop=60, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
+    def plot_minimum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=30, temp_scale_warm_stop=90, temp_scale_cool_start=-10, temp_scale_cool_stop=60, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Minimum Temperature Forecast. 
@@ -11566,69 +11566,69 @@ class temperature:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -11639,7 +11639,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -11809,7 +11809,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -11864,7 +11864,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -11919,7 +11919,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -11974,7 +11974,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -12029,7 +12029,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -12084,7 +12084,7 @@ class temperature:
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -12141,7 +12141,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -12214,7 +12214,7 @@ class temperature:
         file_functions.update_images(figs, path, gif_path, 'NWS Min T')
     
     
-    def plot_minimum_temperature_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
+    def plot_minimum_temperature_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Minimum Temperature Trend Forecast. 
@@ -12470,69 +12470,69 @@ class temperature:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -12543,7 +12543,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -12716,7 +12716,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -12763,7 +12763,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -12810,7 +12810,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -12857,7 +12857,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -12904,7 +12904,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -12953,7 +12953,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -13016,7 +13016,7 @@ class temperature:
         file_functions.update_images(figs, path, gif_path, 'NWS Min T Trend')
     
     
-    def plot_maximum_temperature_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States and Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
+    def plot_maximum_temperature_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Maximum Temperature Trend Forecast. 
@@ -13272,69 +13272,69 @@ class temperature:
     
             if reference_system == 'States Only':
                 show_state_borders = True
-            if reference_system == 'States and Counties':
+            if reference_system == 'States & Counties':
                 show_state_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
             if reference_system == 'GACC Only':
                 show_gacc_borders = True
-            if reference_system == 'GACC and PSA':
+            if reference_system == 'GACC & PSA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.25
             if reference_system == 'CWA Only':
                 show_cwa_borders = True
-            if reference_system == 'CWA and Public Zones':
+            if reference_system == 'NWS CWAs & NWS Public Zones':
                 show_cwa_borders = True
                 show_nws_public_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_public_zones_linewidth=0.25
-            if reference_system == 'CWA and Fire Weather Zones':
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
                 show_cwa_borders = True
                 show_nws_firewx_zones = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     nws_firewx_zones_linewidth=0.25
-            if reference_system == 'CWA and Counties':
+            if reference_system == 'NWS CWAs & Counties':
                 show_cwa_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-            if reference_system == 'GACC with PSA and Fire Weather Zones':
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_firewx_zones = True
                 nws_firewx_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Public Zones':
+            if reference_system == 'GACC & PSA & NWS Public Zones':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_nws_public_zones = True
                 nws_public_zones_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and CWA':
+            if reference_system == 'GACC & PSA & NWS CWA':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_cwa_borders = True
                 cwa_border_linewidth=0.25
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     psa_border_linewidth=0.5
-            if reference_system == 'GACC with PSA and Counties':
+            if reference_system == 'GACC & PSA & Counties':
                 show_gacc_borders = True
                 show_psa_borders = True
                 show_county_borders = True
                 county_border_linewidth=0.25
-            if reference_system == 'GACC and Counties':
+            if reference_system == 'GACC & Counties':
                 show_gacc_borders = True
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
         if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
     
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -13345,7 +13345,7 @@ class temperature:
                 decimate = decimate
     
         if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws')
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
@@ -13519,7 +13519,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -13566,7 +13566,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -13612,7 +13612,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -13658,7 +13658,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -13704,7 +13704,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -13752,7 +13752,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
