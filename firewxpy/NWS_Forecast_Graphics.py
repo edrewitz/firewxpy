@@ -2437,7 +2437,7 @@ class relative_humidity:
             pass
 
 
-        ax1.set_title('National Weather Service Forecast [Night 1]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax1.set_title('National Weather Service Forecast [Night 1]\nMaximum Relative Humidity [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -2497,7 +2497,7 @@ class relative_humidity:
             pass
 
             
-        ax2.set_title('National Weather Service Forecast [Night 2]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax2.set_title('National Weather Service Forecast [Night 2]\nMaximum Relative Humidity [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -2557,7 +2557,7 @@ class relative_humidity:
             pass
 
             
-        ax3.set_title('National Weather Service Forecast [Night 3]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax3.set_title('National Weather Service Forecast [Night 3]\nMaximum Relative Humidity [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -2617,7 +2617,7 @@ class relative_humidity:
             pass
 
             
-        ax4.set_title('National Weather Service Forecast [Night 4]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax4.set_title('National Weather Service Forecast [Night 4]\nMaximum Relative Humidity [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -2677,7 +2677,7 @@ class relative_humidity:
             pass
 
         
-        ax5.set_title('National Weather Service Forecast [Night 5]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax5.set_title('National Weather Service Forecast [Night 5]\nMaximum Relative Humidity [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -2737,7 +2737,7 @@ class relative_humidity:
             pass
 
 
-        ax6.set_title('National Weather Service Forecast [Night 6]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax6.set_title('National Weather Service Forecast [Night 6]\nMaximum Relative Humidity [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -2800,7 +2800,7 @@ class relative_humidity:
                 pass
 
             
-            ax7.set_title('National Weather Service Forecast [Night 7]\nMaximum Relative Humidity', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax7.set_title('National Weather Service Forecast [Night 7]\nMaximum Relative Humidity [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -3360,7 +3360,7 @@ class relative_humidity:
         else:
             pass
     
-        ax1.set_title('National Weather Service Forecast [Night 2]\nMaximum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax1.set_title('National Weather Service Forecast [Night 2]\nMaximum Relative Humidity Trend [Δ%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -3377,7 +3377,7 @@ class relative_humidity:
             pass     
     
         cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar1.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar1.set_label(label="Maximum Relative Humidity Trend (Δ%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
@@ -3419,7 +3419,7 @@ class relative_humidity:
         else:
             pass
     
-        ax2.set_title('National Weather Service Forecast [Night 3]\nMaximum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax2.set_title('National Weather Service Forecast [Night 3]\nMaximum Relative Humidity Trend [Δ%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -3436,7 +3436,7 @@ class relative_humidity:
             pass 
     
         cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar2.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar2.set_label(label="Maximum Relative Humidity Trend (Δ%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
@@ -3478,7 +3478,7 @@ class relative_humidity:
         else:
             pass
     
-        ax3.set_title('National Weather Service Forecast [Night 4]\nMaximum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax3.set_title('National Weather Service Forecast [Night 4]\nMaximum Relative Humidity Trend [Δ%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -3495,7 +3495,7 @@ class relative_humidity:
             pass 
     
         cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar3.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar3.set_label(label="Maximum Relative Humidity Trend (Δ%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
@@ -3537,7 +3537,7 @@ class relative_humidity:
         else:
             pass
     
-        ax4.set_title('National Weather Service Forecast [Night 5]\nMaximum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax4.set_title('National Weather Service Forecast [Night 5]\nMaximum Relative Humidity Trend [Δ%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -3554,7 +3554,7 @@ class relative_humidity:
             pass 
     
         cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar4.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar4.set_label(label="Maximum Relative Humidity Trend (Δ%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
@@ -3596,7 +3596,7 @@ class relative_humidity:
         else:
             pass
     
-        ax5.set_title('National Weather Service Forecast [Night 6]\nMaximum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax5.set_title('National Weather Service Forecast [Night 6]\nMaximum Relative Humidity Trend [Δ%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -3613,7 +3613,7 @@ class relative_humidity:
             pass 
     
         cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar5.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar5.set_label(label="Maximum Relative Humidity Trend (Δ%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
@@ -3657,7 +3657,7 @@ class relative_humidity:
             else:
                 pass
     
-            ax7.set_title('National Weather Service Forecast [Night 7]\nMaximum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax7.set_title('National Weather Service Forecast [Night 7]\nMaximum Relative Humidity Trend [Δ%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -3674,7 +3674,7 @@ class relative_humidity:
                 pass 
     
             cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-            cbar7.set_label(label="Maximum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
+            cbar7.set_label(label="Maximum Relative Humidity Trend (Δ%)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
             figs.append(fig2)
@@ -5605,7 +5605,7 @@ class relative_humidity:
             else:
                 pass
 
-            ax1.set_title('National Weather Service Forecast [Day 1]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax1.set_title('National Weather Service Forecast [Day 1]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -5664,7 +5664,7 @@ class relative_humidity:
             else:
                 pass
             
-            ax2.set_title('National Weather Service Forecast [Day 2]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax2.set_title('National Weather Service Forecast [Day 2]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -5723,7 +5723,7 @@ class relative_humidity:
             else:
                 pass
                 
-            ax3.set_title('National Weather Service Forecast [Day 3]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax3.set_title('National Weather Service Forecast [Day 3]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -5782,7 +5782,7 @@ class relative_humidity:
             else:
                 pass
                 
-            ax4.set_title('National Weather Service Forecast [Day 4]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax4.set_title('National Weather Service Forecast [Day 4]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -5841,7 +5841,7 @@ class relative_humidity:
             else:
                 pass
                 
-            ax5.set_title('National Weather Service Forecast [Day 5]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax5.set_title('National Weather Service Forecast [Day 5]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -5900,7 +5900,7 @@ class relative_humidity:
             else:
                 pass
                 
-            ax6.set_title('National Weather Service Forecast [Day 6]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax6.set_title('National Weather Service Forecast [Day 6]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -5961,7 +5961,7 @@ class relative_humidity:
                 else:
                     pass
                 
-                ax7.set_title('National Weather Service Forecast [Day 7]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+                ax7.set_title('National Weather Service Forecast [Day 7]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
                 
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                     
@@ -6038,7 +6038,7 @@ class relative_humidity:
             else:
                 pass
                 
-            ax1.set_title('National Weather Service Forecast [Day 1]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax1.set_title('National Weather Service Forecast [Day 1]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -6097,7 +6097,7 @@ class relative_humidity:
             else:
                 pass
                 
-            ax2.set_title('National Weather Service Forecast [Day 2]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax2.set_title('National Weather Service Forecast [Day 2]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -6156,7 +6156,7 @@ class relative_humidity:
             else:
                 pass
                 
-            ax3.set_title('National Weather Service Forecast [Day 3]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax3.set_title('National Weather Service Forecast [Day 3]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -6215,7 +6215,7 @@ class relative_humidity:
             else:
                 pass
                 
-            ax4.set_title('National Weather Service Forecast [Day 4]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax4.set_title('National Weather Service Forecast [Day 4]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -6274,7 +6274,7 @@ class relative_humidity:
             else:
                 pass
                 
-            ax5.set_title('National Weather Service Forecast [Day 5]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax5.set_title('National Weather Service Forecast [Day 5]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -6333,7 +6333,7 @@ class relative_humidity:
             else:
                 pass
                 
-            ax6.set_title('National Weather Service Forecast [Day 6]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax6.set_title('National Weather Service Forecast [Day 6]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -6394,7 +6394,7 @@ class relative_humidity:
                 else:
                     pass
                 
-                ax7.set_title('National Weather Service Forecast [Day 7]\nMinimum Relative Humidity Forecast', fontsize=title_fontsize, fontweight='bold', loc='left')
+                ax7.set_title('National Weather Service Forecast [Day 7]\nMinimum Relative Humidity Forecast [%]', fontsize=title_fontsize, fontweight='bold', loc='left')
                 
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                     
@@ -6990,7 +6990,7 @@ class relative_humidity:
         else:
             pass
 
-        ax1.set_title('National Weather Service Forecast [Day 2]\nMinimum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax1.set_title('National Weather Service Forecast [Day 2]\nMinimum Relative Humidity Trend [Δ%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -7007,7 +7007,7 @@ class relative_humidity:
             pass   
     
         cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar1.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar1.set_label(label="Minimum Relative Humidity Trend (Δ%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
@@ -7048,7 +7048,7 @@ class relative_humidity:
             ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
         else:
             pass
-        ax2.set_title('National Weather Service Forecast [Day 3]\nMinimum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax2.set_title('National Weather Service Forecast [Day 3]\nMinimum Relative Humidity Trend [Δ%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -7065,7 +7065,7 @@ class relative_humidity:
             pass   
     
         cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar2.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar2.set_label(label="Minimum Relative Humidity Trend (Δ%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
@@ -7106,7 +7106,7 @@ class relative_humidity:
             ax3.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
         else:
             pass
-        ax3.set_title('National Weather Service Forecast [Day 4]\nMinimum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax3.set_title('National Weather Service Forecast [Day 4]\nMinimum Relative Humidity Trend [Δ%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -7123,7 +7123,7 @@ class relative_humidity:
             pass   
     
         cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar3.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar3.set_label(label="Minimum Relative Humidity Trend (Δ%)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
@@ -7164,7 +7164,7 @@ class relative_humidity:
             ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
         else:
             pass
-        ax4.set_title('National Weather Service Forecast [Day 5]\nMinimum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax4.set_title('National Weather Service Forecast [Day 5]\nMinimum Relative Humidity Trend [Δ%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -7181,7 +7181,7 @@ class relative_humidity:
             pass   
     
         cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar4.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar4.set_label(label="Minimum Relative Humidity Trend (Δ%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
@@ -7222,7 +7222,7 @@ class relative_humidity:
             ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
         else:
             pass
-        ax5.set_title('National Weather Service Forecast [Day 6]\nMinimum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax5.set_title('National Weather Service Forecast [Day 6]\nMinimum Relative Humidity Trend [Δ%]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -7239,7 +7239,7 @@ class relative_humidity:
             pass   
     
         cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar5.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar5.set_label(label="Minimum Relative Humidity Trend (Δ%)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
@@ -7282,7 +7282,7 @@ class relative_humidity:
                 ax7.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
             else:
                 pass
-            ax7.set_title('National Weather Service Forecast [Day 7]\nMinimum Relative Humidity Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax7.set_title('National Weather Service Forecast [Day 7]\nMinimum Relative Humidity Trend [Δ%]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -7299,7 +7299,7 @@ class relative_humidity:
                 pass   
     
             cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-            cbar7.set_label(label="Minimum Relative Humidity Trend (%)", fontsize=colorbar_fontsize, fontweight='bold')
+            cbar7.set_label(label="Minimum Relative Humidity Trend (Δ%)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
             figs.append(fig2)
@@ -12744,7 +12744,7 @@ class temperature:
         else:
             pass
     
-        ax1.set_title('National Weather Service Forecast [Night 2]\nMinimum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax1.set_title('National Weather Service Forecast [Night 2]\nMinimum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -12761,7 +12761,7 @@ class temperature:
             pass
     
         cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar1.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar1.set_label(label="Minimum Temperature Trend (Δ\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
@@ -12791,7 +12791,7 @@ class temperature:
         else:
             pass
     
-        ax2.set_title('National Weather Service Forecast [Night 3]\nMinimum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax2.set_title('National Weather Service Forecast [Night 3]\nMinimum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -12808,7 +12808,7 @@ class temperature:
             pass
     
         cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar2.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar2.set_label(label="Minimum Temperature Trend (Δ\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
@@ -12838,7 +12838,7 @@ class temperature:
         else:
             pass
     
-        ax3.set_title('National Weather Service Forecast [Night 4]\nMinimum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax3.set_title('National Weather Service Forecast [Night 4]\nMinimum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -12855,7 +12855,7 @@ class temperature:
             pass
     
         cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar3.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar3.set_label(label="Minimum Temperature Trend (Δ\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
@@ -12885,7 +12885,7 @@ class temperature:
         else:
             pass
     
-        ax4.set_title('National Weather Service Forecast [Night 5]\nMinimum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax4.set_title('National Weather Service Forecast [Night 5]\nMinimum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -12902,7 +12902,7 @@ class temperature:
             pass
     
         cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar4.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar4.set_label(label="Minimum Temperature Trend (Δ\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
@@ -12932,7 +12932,7 @@ class temperature:
         else:
             pass
     
-        ax5.set_title('National Weather Service Forecast [Night 6]\nMinimum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax5.set_title('National Weather Service Forecast [Night 6]\nMinimum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -12949,7 +12949,7 @@ class temperature:
             pass
     
         cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar5.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar5.set_label(label="Minimum Temperature Trend (Δ\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
@@ -12981,7 +12981,7 @@ class temperature:
             else:
                 pass
     
-            ax7.set_title('National Weather Service Forecast [Night 7]\nMinimum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax7.set_title('National Weather Service Forecast [Night 7]\nMinimum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -12998,7 +12998,7 @@ class temperature:
                 pass
     
             cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-            cbar7.set_label(label="Minimum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
+            cbar7.set_label(label="Minimum Temperature Trend (Δ\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
             figs.append(fig2)
@@ -13547,7 +13547,7 @@ class temperature:
         else:
             pass
             
-        ax1.set_title('National Weather Service Forecast [Day 2]\nMaximum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax1.set_title('National Weather Service Forecast [Day 2]\nMaximum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -13564,7 +13564,7 @@ class temperature:
             pass
     
         cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar1.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar1.set_label(label="Maximum Temperature Trend (Δ\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
@@ -13593,7 +13593,7 @@ class temperature:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax2.set_title('National Weather Service Forecast [Day 3]\nMaximum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax2.set_title('National Weather Service Forecast [Day 3]\nMaximum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -13610,7 +13610,7 @@ class temperature:
             pass
     
         cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar2.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar2.set_label(label="Maximum Temperature Trend (Δ\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
@@ -13639,7 +13639,7 @@ class temperature:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax3.set_title('National Weather Service Forecast [Day 4]\nMaximum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax3.set_title('National Weather Service Forecast [Day 4]\nMaximum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -13656,7 +13656,7 @@ class temperature:
             pass
     
         cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar3.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar3.set_label(label="Maximum Temperature Trend (Δ\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
@@ -13685,7 +13685,7 @@ class temperature:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax4.set_title('National Weather Service Forecast [Day 5]\nMaximum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax4.set_title('National Weather Service Forecast [Day 5]\nMaximum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -13702,7 +13702,7 @@ class temperature:
             pass
     
         cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar4.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar4.set_label(label="Maximum Temperature Trend (Δ\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
@@ -13731,7 +13731,7 @@ class temperature:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax5.set_title('National Weather Service Forecast [Day 6]\nMaximum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax5.set_title('National Weather Service Forecast [Day 6]\nMaximum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -13748,7 +13748,7 @@ class temperature:
             pass
     
         cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-        cbar5.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
+        cbar5.set_label(label="Maximum Temperature Trend (Δ\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
     
         if files == 7:
     
@@ -13779,7 +13779,7 @@ class temperature:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
-            ax7.set_title('National Weather Service Forecast [Day 7]\nMaximum Temperature Trend', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax7.set_title('National Weather Service Forecast [Day 7]\nMaximum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -13796,7 +13796,7 @@ class temperature:
                 pass
     
             cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
-            cbar7.set_label(label="Maximum Temperature Trend (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
+            cbar7.set_label(label="Maximum Temperature Trend (Δ\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
         
             figs.append(fig1)
             figs.append(fig2)
