@@ -11,6 +11,17 @@ This file hosts all the functions that return the settings for each plot for eac
 
 import cartopy.crs as ccrs
 
+def get_metar_mask(state, gacc_region):
+
+    if state != None and gacc_region == None:
+        
+        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+            mask = 300000
+        if state == 'CA' or state == 'ca':
+            mask = 80000
+
+    return mask
+
 
 def check_NDFD_directory_name(directory_name):
 
@@ -118,7 +129,7 @@ def get_gridspec_dims(state, gacc_region):
             row1 = 0
             row2 = 10 
             col1 = 0
-            col2 = 6
+            col2 = 7
 
             row3 = 0
             row4 = 5
@@ -131,6 +142,53 @@ def get_gridspec_dims(state, gacc_region):
             col6 = 10
 
     return row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 
+
+def get_gridspec_barb_dims(state, gacc_region):
+
+    if state != None and gacc_region == None:
+
+        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+            barb_fontsize = 10
+        if state == 'CA' or state == 'ca':
+            barb_fontsize = 8
+
+    return barb_fontsize
+
+def get_quiver_dims(state, gacc_region, gridspec):
+
+    if gridspec == False:
+
+        if state != None and gacc_region == None:
+    
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+    
+                minshaft=0.000005 
+                headlength=5 
+                headwidth=3
+    
+            if state == 'CA' or state == 'ca':
+    
+                minshaft=0.000005 
+                headlength=9 
+                headwidth=7
+
+    if gridspec == True:
+        
+        if state != None and gacc_region == None:
+    
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+    
+                minshaft=0.000005 
+                headlength=5 
+                headwidth=3
+    
+            if state == 'CA' or state == 'ca':
+    
+                minshaft=0.00000000005 
+                headlength=9 
+                headwidth=7
+        
+    return minshaft, headlength, headwidth
 
 def get_label_coords(state, gacc_region):
 
@@ -147,24 +205,6 @@ def get_label_coords(state, gacc_region):
             y_coord = 0.92
 
     return x_coord, y_coord
-
-def get_quiver_dims(state, gacc_region):
-
-    if state != None and gacc_region == None:
-
-        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-
-            minshaft=0.000005 
-            headlength=5 
-            headwidth=3
-
-        if state == 'CA' or state == 'ca':
-
-            minshaft=0.000005 
-            headlength=9 
-            headwidth=7
-
-    return minshaft, headlength, headwidth
     
 
 def get_sample_point_color_by_state(state, plot_type):
@@ -212,6 +252,9 @@ def get_state_data_and_coords(state, plot_type, gridspec):
         sample_point_fontsize=8
         tick = 9
         aspect=40
+        if gridspec == True:
+            sample_point_fontsize=15
+            tick = 8
         if plot_type == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
@@ -228,21 +271,24 @@ def get_state_data_and_coords(state, plot_type, gridspec):
         northern_bound = 42.5
         fig_x_length = 10
         fig_y_length = 10
-        if gridspec == True:
-            fig_x_length = 10
-            fig_y_length = 7
+        color_table_shrink = 0.7
+        colorbar_fontsize=12
+        sample_point_fontsize=10
         signature_x_position = 0.01
         signature_y_position = 0.14
         subplot_title_fontsize=6
         title_fontsize = 7
         signature_fontsize=9
-        color_table_shrink = 0.7
-        sample_point_fontsize=10
-        colorbar_fontsize=12
         legend_fontsize = 12
         tick = 6
         y_loc = 1 
         x_loc = 0.5
+        if gridspec == True:
+            fig_x_length = 10
+            fig_y_length = 7
+            color_table_shrink = 0.65
+            colorbar_fontsize = 8
+            sample_point_fontsize=12
         if plot_type == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
@@ -2490,10 +2536,11 @@ def get_state_data_and_coords(state, plot_type, gridspec):
     return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick
     
 
-def get_gacc_region_data_and_coords(gacc_region, plot_type):
+def get_gacc_region_data_and_coords(gacc_region, plot_type, gridspec):
 
     gacc_region = gacc_region
     ndfd_grids = ndfd_grids
+    gridspec = gridspec
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     color_table_shrink = 0.7
