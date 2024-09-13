@@ -25,6 +25,62 @@ class file_functions:
         path = path
         GIF_path = GIF_path
 
+        if plot_type == 'RTMA EXTREME HEAT':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA EXTREME HEAT.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA EXTREME HEAT.png")     
+
+        if plot_type == 'RTMA FROST FREEZE':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA FROST FREEZE.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA FROST FREEZE.png")            
+
+        if plot_type == 'RTMA LOW RH & METAR':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA LOW RH & METAR.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA LOW RH & METAR.png")
+
+        if plot_type == 'RTMA RH & METAR':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA RH & METAR.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA RH & METAR.png")
+
+        if plot_type == 'RTMA DRY & WINDY AREAS WIND VECTORS':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA DRY & WINDY AREAS WIND VECTORS.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA DRY & WINDY AREAS WIND VECTORS.png")
+
+        if plot_type == 'RTMA DRY & WINDY AREAS WIND BARBS':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA DRY & WINDY AREAS WIND BARBS.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA DRY & WINDY AREAS WIND BARBS.png")
+
+        if plot_type == 'RTMA DRY & WINDY AREAS SAMPLE POINTS':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA DRY & WINDY AREAS SAMPLE POINTS.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA DRY & WINDY AREAS SAMPLE POINTS.png")  
+
         if plot_type == 'RTMA DRY & GUSTY AREAS':
 
             fig = figure_list
@@ -32,14 +88,7 @@ class file_functions:
             fig = fig.savefig(path+'/RTMA DRY & GUSTY AREAS.png', bbox_inches='tight')
 
             print("Image saved to: "+path+"/RTMA DRY & GUSTY AREAS.png")    
-
-        if plot_type == 'RTMA DRY & WINDY AREAS':
-
-            fig = figure_list
-
-            fig = fig.savefig(path+'/RTMA DRY & WINDY AREAS.png', bbox_inches='tight')
-
-            print("Image saved to: "+path+"/RTMA DRY & WINDY AREAS.png")              
+           
 
         if plot_type == 'RTMA WIND SPEED & DIRECTION WIND VECTORS':
 
@@ -431,7 +480,7 @@ class file_functions:
 
             os.mkdir("Weather Data")
 
-        if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON' or plot_type == 'RTMA TEMPERATURE' or plot_type == '24HR RTMA TEMPERATURE COMPARISON' or plot_type == '24HR RTMA TOTAL CLOUD COVER COMPARISON' or plot_type == 'RTMA TOTAL CLOUD COVER' or plot_type == '24HR RTMA DEW POINT COMPARISON' or plot_type == 'RTMA DEW POINT' or plot_type == 'RTMA WIND SPEED' or plot_type == '24HR RTMA WIND SPEED COMPARISON' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND BARBS' or plot_type == 'RTMA DRY & WINDY AREAS' or plot_type == 'RTMA DRY & GUSTY AREAS':
+        if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON' or plot_type == 'RTMA TEMPERATURE' or plot_type == '24HR RTMA TEMPERATURE COMPARISON' or plot_type == '24HR RTMA TOTAL CLOUD COVER COMPARISON' or plot_type == 'RTMA TOTAL CLOUD COVER' or plot_type == '24HR RTMA DEW POINT COMPARISON' or plot_type == 'RTMA DEW POINT' or plot_type == 'RTMA WIND SPEED' or plot_type == '24HR RTMA WIND SPEED COMPARISON' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND BARBS' or plot_type == 'RTMA DRY & WINDY AREAS SAMPLE POINTS' or plot_type == 'RTMA DRY & WINDY AREAS WIND BARBS' or plot_type == 'RTMA DRY & WINDY AREAS WIND VECTORS' or plot_type == 'RTMA DRY & GUSTY AREAS' or plot_type == 'RTMA RH & METAR' or plot_type == 'RTMA LOW RH & METAR' or plot_type == 'RTMA FROST FREEZE' or plot_type == 'RTMA EXTREME HEAT':
 
             if state != None and gacc_region == None:
 
