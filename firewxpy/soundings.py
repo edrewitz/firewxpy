@@ -8,7 +8,7 @@ import metpy.calc as mpcalc
 import math
 import numpy as np
 import metpy.calc as mpcalc
-import firewxpy.standard
+import firewxpy.standard as standard
 import firewxpy.colormaps
 import time
 
