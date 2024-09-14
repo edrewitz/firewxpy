@@ -1,6 +1,5 @@
 import matplotlib.colors
 
-
 def temperature_colormap():
     temperature_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("temperature", ["darkviolet", "blue", "deepskyblue", "white", "orangered", "red", "darkred"])
 
@@ -63,6 +62,11 @@ def SPC_Critical_Fire_Weather_Risk_Outlook_colormap():
     
     return SPC_Critical_Fire_Weather_Risk_Outlook_colormap
 
+def SPC_Dry_Lightning_Risk_Outlook_colormap():
+    SPC_Dry_Lightning_Risk_Outlook_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("SPC Dry Lightning Outlook", ["darkorange", "red"])
+    
+    return SPC_Dry_Lightning_Risk_Outlook_colormap
+
 
 def red_flag_warning_alaska_temperature_parameter_colormap():
     red_flag_warning_alaska_temperature_parameter_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("temperature", ["pink", "lightcoral", "red", "darkred"])
@@ -116,4 +120,6 @@ def colorblind_mode_divergent_colormap():
     colorblind_mode_divergent_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("colorblind mode divergent", ["indigo", "darkviolet", "white", "white", "orange", "darkorange"])
     
     return colorblind_mode_divergent_colormap
+
+
 
