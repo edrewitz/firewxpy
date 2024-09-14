@@ -25,7 +25,7 @@ import firewxpy.colormaps
 import pandas as pd
 import matplotlib.gridspec as gridspec
 import matplotlib.dates as md
-import firewxpy.standard
+import firewxpy.standard as standard
 
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
