@@ -465,6 +465,102 @@ class file_functions:
             print("Individual images saved to: "+path)
             print("GIF saved to "+GIF_path)
 
+        if plot_type == 'SPC CRITICAL FIRE WEATHER OUTLOOK':
+
+            file_path_1 = path+"/Day 1.png" 
+            file_path_2 = path+"/Day 2.png" 
+            file_path_3 = path+"/Day 3.png" 
+            file_path_4 = path+"/Day 4.png" 
+            file_path_5 = path+"/Day 5.png" 
+            file_path_6 = path+"/Day 6.png" 
+            file_path_7 = path+"/Day 7.png" 
+
+            GIF = GIF_path+"/SPC CRITICAL FIRE WEATHER OUTLOOK.gif"
+
+            save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)
+
+            save.make_NDFD_Outlook_GIF(GIF, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, None)
+
+            print("Individual images saved to: "+path)
+            print("GIF saved to "+GIF_path)
+
+        if plot_type == 'SPC DRY LIGHTNING OUTLOOK':
+
+            file_path_1 = path+"/Day 1.png" 
+            file_path_2 = path+"/Day 2.png" 
+            file_path_3 = path+"/Day 3.png" 
+            file_path_4 = path+"/Day 4.png" 
+            file_path_5 = path+"/Day 5.png" 
+            file_path_6 = path+"/Day 6.png" 
+            file_path_7 = path+"/Day 7.png" 
+
+            GIF = GIF_path+"/SPC DRY LIGHTNING OUTLOOK.gif"
+
+            save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)
+
+            save.make_NDFD_Outlook_GIF(GIF, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, None)
+
+            print("Individual images saved to: "+path)
+            print("GIF saved to "+GIF_path)
+
+    def save_daily_sounding_graphic(figure, station_id):
+
+        station_id = station_id
+        station_id = station_id.upper()
+        fig = figure
+
+        if os.path.exists(f"Weather Data"):
+            print("Already Satisfied: Weather Data folder exists.")
+            if os.path.exists(f"Weather Data/Soundings"):
+                print("Already Satisfied: Daily Weather Summary folder exists.")
+                path = f"Weather Data/Soundings/{station_id}.png"
+                fig.savefig(path, bbox_inches='tight')
+                print(station_id+" Sounding Saved to "+path)
+            else:
+                print("f:Weather Data/Soundings does not exist.\nBuilding Soundings branch...")
+                os.mkdir(f"Weather Data/Soundings")
+                print("Successfully built new branch to directory!")
+                path = f"Weather Data/Soundings/{station_id}.png"
+                fig.savefig(path, bbox_inches='tight')
+                print(station_id+" Sounding Saved to "+path)
+        else:
+            print("Setting up the Soundings folder and the rest of the file structure...")
+            os.mkdir("Weather Data")        
+            os.mkdir(f"Weather Data/Soundings")
+            os.mkdir(f"Weather Data/Soundings")
+            path = f"Weather Data/Soundings/{station_id}.png"
+            fig.savefig(path, bbox_inches='tight')
+            print(station_id+" Sounding Saved to "+path)
+    
+
+    def save_daily_weather_summary(figure, station_id):
+
+        station_id = station_id
+        station_id = station_id.upper()
+        fig = figure
+
+        if os.path.exists(f"Weather Data"):
+            print("Already Satisfied: Weather Data folder exists.")
+            if os.path.exists(f"Weather Data/Daily Weather Summary"):
+                print("Already Satisfied: Daily Weather Summary folder exists.")
+                path = f"Weather Data/Daily Weather Summary/{station_id}.png"
+                fig.savefig(path, bbox_inches='tight')
+                print(station_id+" Daily Weather Summary Saved to "+path)
+            else:
+                print("f:Weather Data/Daily Weather Summary does not exist.\nBuilding Daily Weather Summary branch...")
+                os.mkdir(f"Weather Data/Daily Weather Summary")
+                print("Successfully built new branch to directory!")
+                path = f"Weather Data/Daily Weather Summary/{station_id}.png"
+                fig.savefig(path, bbox_inches='tight')
+                print(station_id+" Daily Weather Summary Saved to "+path)
+        else:
+            print("Setting up the Weather Data folder and the rest of the file structure...")
+            os.mkdir("Weather Data")        
+            os.mkdir(f"Weather Data/Daily Weather Summary")
+            os.mkdir(f"Weather Data/Daily Weather Summary")
+            path = f"Weather Data/Daily Weather Summary/{station_id}.png"
+            fig.savefig(path, bbox_inches='tight')
+            print(station_id+" Daily Weather Summary Saved to "+path)
             
     def check_file_paths(state, gacc_region, plot_type, reference_system):
 
@@ -477,8 +573,239 @@ class file_functions:
             print("Already Satisfied: Weather Data folder exists.")
         else:
             print("Setting up the Weather Data folder and the rest of the file structure...")
-
             os.mkdir("Weather Data")
+
+        if plot_type == 'SPC CRITICAL FIRE WEATHER OUTLOOK' or plot_type == 'SPC DRY LIGHTNING OUTLOOK':
+            
+            if state != None and gacc_region == None:
+
+                state = state.upper()
+
+                full_path = 'f:Weather Data/SPC Outlooks/'+plot_type+'/'+state+'/'+reference_system
+                state_path = 'f:Weather Data/SPC Outlooks/'+plot_type+'/'+state
+                type_path = 'f:Weather Data/SPC Outlooks/'+plot_type 
+
+                full_path_gif = 'f:Weather Data/SPC Outlooks/GIFs/'+plot_type+'/'+state+'/'+reference_system
+                state_path_gif = 'f:Weather Data/SPC Outlooks/GIFs/'+plot_type+'/'+state
+                type_path_gif = 'f:Weather Data/SPC Outlooks/GIFs/'+plot_type
+
+                if os.path.exists(f"Weather Data/SPC Outlooks"):
+                    print("Already Satisfied: SPC Outlooks Directory exists.")
+
+                    if os.path.exists(f"Weather Data/SPC Outlooks/{plot_type}"):
+                        print('Already Satisfied: '+type_path+ ' exists.')
+                        
+                        if os.path.exists(f"Weather Data/SPC Outlooks/{plot_type}/{state}"):
+                            print('Already Satisfied: '+state_path+' exists.')
+
+                            if os.path.exists(f"Weather Data/SPC Outlooks/{plot_type}/{state}/{reference_system}"):
+                                print('Already Satisfied: '+full_path+' exists')
+
+                            else:
+                                print(full_path+' not found. Automatically building new branch to directory...')
+                                os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{state}/{reference_system}")
+                                print("Successfully built new branch to directory!")                                
+
+                        else:
+                            print(state_path+' not found. Automatically building new branch to directory...')
+                            os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{state}")
+                            os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{state}/{reference_system}")
+                            print("Successfully built new branch to directory!")
+                            
+                    else:
+                        print(type_path+' not found. Automatically building new branch to directory...')
+                        os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}")
+                        os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{state}")
+                        os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{state}/{reference_system}")
+                        print("Successfully built new branch to directory!")
+                        
+                else:
+                    print("SPC Outlooks Directory does not exist.\nAutomatically building SPC Outlooks directory...")
+                    
+                    # Building directory for still images
+                    os.mkdir(f"Weather Data/SPC Outlooks")
+                    os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}")
+                    os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{state}")
+                    os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{state}/{reference_system}")
+
+                    print("Successfully built new directory!")
+
+                ########################
+                # GIF IMAGES DIRECTORY #
+                ########################
+                    
+                if os.path.exists(f"Weather Data/SPC Outlooks"):
+                    print("Already Satisfied: SPC Outlooks Directory exists.")
+
+                    if os.path.exists(f"Weather Data/SPC Outlooks/GIFs/"):
+                        print('Already Satisfied: SPC Outlooks GIFs Directory exists.')
+
+                        if os.path.exists(f"Weather Data/SPC Outlooks/GIFs/{plot_type}"):
+                            print('Already Satisfied: '+type_path_gif+ ' exists.')
+
+                            if os.path.exists(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{state}"):
+                                print('Already Satisfied: '+state_path_gif+ ' exists.')
+
+                                if os.path.exists(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{state}/{reference_system}"):
+                                    print('Already Satisfied: '+full_path_gif+ ' exists.')
+                                else:
+                                    os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{state}/{reference_system}")
+                                    print("Successfully built new branch to directory!")   
+
+                            else:
+                                print(state_path_gif+' not found. Building branch to directory.')
+                                os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{state}")
+                                os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{state}/{reference_system}")
+                                print("Successfully built new branch to directory!")                                
+
+                        else:
+                            print(type_path_gif+' not found. Building branch to directory.')
+                            os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}")
+                            os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{state}")
+                            os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{state}/{reference_system}")
+                            print("Successfully built new branch to directory!")
+                            
+
+                    else:
+                        print('NWS Forecasts GIFs Directory not found. Building directory...')
+                        os.mkdir(f"Weather Data/SPC Outlooks/GIFs/")
+                        os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}")
+                        os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{state}")
+                        os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{state}/{reference_system}")
+                            
+                        
+                else:
+                    print("SPC Outlooks Directory does not exist.\nAutomatically building SPC Outlooks directory...")
+                    
+                    # Building directory for still images
+                    os.mkdir(f"Weather Data/SPC Outlooks")
+                    os.mkdir(f"Weather Data/SPC Outlooks/GIFs/")
+                    os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}")
+                    os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{state}")
+                    os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{state}/{reference_system}")
+
+                    print("Successfully built new directory!")
+
+                path = f"Weather Data/SPC Outlooks/{plot_type}/{state}/{reference_system}"
+                GIF_path = f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{state}/{reference_system}"
+
+            if state == None and gacc_region != None:
+
+                gacc_region = gacc_region.upper()
+            
+                full_path = 'f:Weather Data/SPC Outlooks/'+plot_type+'/'+gacc_region+'/'+reference_system
+                gacc_path = 'f:Weather Data/SPC Outlooks/'+plot_type+'/'+gacc_region
+                type_path = 'f:Weather Data/SPC Outlooks/'+plot_type
+
+                full_path_gif = 'f:Weather Data/SPC Outlooks/GIFs/'+plot_type+'/'+gacc_region+'/'+reference_system
+                gacc_path_gif = 'f:Weather Data/SPC Outlooks/GIFs/'+plot_type+'/'+gacc_region
+                type_path_gif = 'f:Weather Data/SPC Outlooks/GIFs/'+plot_type
+
+
+                ##########################
+                # STILL IMAGES DIRECTORY #
+                ##########################
+
+
+                if os.path.exists(f"Weather Data/SPC Outlooks"):
+                    print("Already Satisfied: SPC Outlooks Directory exists.")
+
+                    if os.path.exists(f"Weather Data/SPC Outlooks/{plot_type}"):
+                        print('Already Satisfied: '+type_path+ ' exists.')
+                        
+                        if os.path.exists(f"Weather Data/SPC Outlooks/{plot_type}/{gacc_region}"):
+                            print('Already Satisfied: '+gacc_path+' exists.')
+
+                            if os.path.exists(f"Weather Data/SPC Outlooks/{plot_type}/{gacc_region}/{reference_system}"):
+                                print('Already Satisfied: '+full_path+' exists')
+
+                            else:
+                                print(full_path+' not found. Automatically building new branch to directory...')
+                                os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{gacc_region}/{reference_system}")
+                                print("Successfully built new branch to directory!")                                
+
+                        else:
+                            print(gacc_path+' not found. Automatically building new branch to directory...')
+                            os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{gacc_region}")
+                            os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{gacc_region}/{reference_system}")
+                            print("Successfully built new branch to directory!")
+                            
+                    else:
+                        print(type_path+' not found. Automatically building new branch to directory...')
+                        os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}")
+                        os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{gacc_region}")
+                        os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{gacc_region}/{reference_system}")
+                        print("Successfully built new branch to directory!")
+                        
+                else:
+                    print("SPC Outlooks Directory does not exist.\nAutomatically building SPC Outlooks directory...")
+                    
+                    # Building directory for still images
+                    os.mkdir(f"Weather Data/SPC Outlooks")
+                    os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}")
+                    os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{gacc_region}")
+                    os.mkdir(f"Weather Data/SPC Outlooks/{plot_type}/{gacc_region}/{reference_system}")
+
+                    print("Successfully built new directory!")
+
+                ########################
+                # GIF IMAGES DIRECTORY #
+                ########################
+                    
+                if os.path.exists(f"Weather Data/SPC Outlooks"):
+                    print("Already Satisfied: SPC Outlooks Directory exists.")
+
+                    if os.path.exists(f"Weather Data/SPC Outlooks/GIFs/"):
+                        print('Already Satisfied: SPC Outlooks GIFs Directory exists.')
+
+                        if os.path.exists(f"Weather Data/SPC Outlooks/GIFs/{plot_type}"):
+                            print('Already Satisfied: '+type_path_gif+ ' exists.')
+
+                            if os.path.exists(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{gacc_region}"):
+                                print('Already Satisfied: '+gacc_path_gif+ ' exists.')
+
+                                if os.path.exists(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{gacc_region}/{reference_system}"):
+                                    print('Already Satisfied: '+full_path_gif+ ' exists.')
+                                else:
+                                    os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+                                    print("Successfully built new branch to directory!")   
+
+                            else:
+                                print(gacc_path_gif+' not found. Building branch to directory.')
+                                os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{gacc_region}")
+                                os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+                                print("Successfully built new branch to directory!")                                
+
+                        else:
+                            print(type_path_gif+' not found. Building branch to directory.')
+                            os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}")
+                            os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{gacc_region}")
+                            os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+                            print("Successfully built new branch to directory!")
+                            
+
+                    else:
+                        print('SPC Outlooks GIFs Directory not found. Building directory...')
+                        os.mkdir(f"Weather Data/SPC Outlooks/GIFs/")
+                        os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}")
+                        os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{gacc_region}")
+                        os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+                            
+                        
+                else:
+                    print("SPC Outlooks Directory does not exist.\nAutomatically building SPC Outlooks directory...")
+                    
+                    # Building directory for still images
+                    os.mkdir(f"Weather Data/SPC Outlooks")
+                    os.mkdir(f"Weather Data/SPC Outlooks/GIFs/")
+                    os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}")
+                    os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{gacc_region}")
+                    os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+
+                    print("Successfully built new directory!")
+
+                path = f"Weather Data/SPC Outlooks/{plot_type}/{gacc_region}/{reference_system}"
+                GIF_path = f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{gacc_region}/{reference_system}"
 
         if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON' or plot_type == 'RTMA TEMPERATURE' or plot_type == '24HR RTMA TEMPERATURE COMPARISON' or plot_type == '24HR RTMA TOTAL CLOUD COVER COMPARISON' or plot_type == 'RTMA TOTAL CLOUD COVER' or plot_type == '24HR RTMA DEW POINT COMPARISON' or plot_type == 'RTMA DEW POINT' or plot_type == 'RTMA WIND SPEED' or plot_type == '24HR RTMA WIND SPEED COMPARISON' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND BARBS' or plot_type == 'RTMA DRY & WINDY AREAS SAMPLE POINTS' or plot_type == 'RTMA DRY & WINDY AREAS WIND BARBS' or plot_type == 'RTMA DRY & WINDY AREAS WIND VECTORS' or plot_type == 'RTMA DRY & GUSTY AREAS' or plot_type == 'RTMA RH & METAR' or plot_type == 'RTMA LOW RH & METAR' or plot_type == 'RTMA FROST FREEZE' or plot_type == 'RTMA EXTREME HEAT':
 
@@ -532,6 +859,58 @@ class file_functions:
                     print("Successfully built new directory!") 
 
                 path = f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}"
+                GIF_path = None
+
+            if state == None and gacc_region != None:
+
+                gacc_region = gacc_region.upper()
+
+                full_path = 'f:Weather Data/RTMA/'+plot_type+'/'+gacc_region+'/'+reference_system
+                gacc_path = 'f:Weather Data/RTMA/'+plot_type+'/'+gacc_region
+                type_path = 'f:Weather Data/RTMA/'+plot_type
+
+                if os.path.exists(f"Weather Data/RTMA"):
+                    print("Already Satisfied: RTMA Directory exists.")
+
+                    if os.path.exists(f"Weather Data/RTMA/{plot_type}"):
+                        print('Already Satisfied: '+type_path+ ' exists.')
+                        
+                        if os.path.exists(f"Weather Data/RTMA/{plot_type}/{gacc_region}"):
+                            print('Already Satisfied: '+gacc_path+' exists.')
+
+                            if os.path.exists(f"Weather Data/RTMA/{plot_type}/{gacc_region}/{reference_system}"):
+                                print('Already Satisfied: '+full_path+' exists')
+
+                            else:
+                                print(full_path+' not found. Automatically building new branch to directory...')
+                                os.mkdir(f"Weather Data/RTMA/{plot_type}/{gacc_region}/{reference_system}")
+                                print("Successfully built new branch to directory!")                                
+
+                        else:
+                            print(gacc_path+' not found. Automatically building new branch to directory...')
+                            os.mkdir(f"Weather Data/RTMA/{plot_type}/{gacc_region}")
+                            os.mkdir(f"Weather Data/RTMA/{plot_type}/{gacc_region}/{reference_system}")
+                            print("Successfully built new branch to directory!")
+                            
+                    else:
+                        print(type_path+' not found. Automatically building new branch to directory...')
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}")
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}/{gacc_region}")
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}/{gacc_region}/{reference_system}")
+                        print("Successfully built new branch to directory!")
+                        
+                else:
+                    print("RTMA Directory does not exist.\nAutomatically building RTMA directory...")
+                    
+                    # Building directory for images
+                    os.mkdir(f"Weather Data/RTMA")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}/{gacc_region}")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}/{gacc_region}/{reference_system}")
+
+                    print("Successfully built new directory!") 
+
+                path = f"Weather Data/RTMA/{plot_type}/{gacc_region}/{reference_system}"
                 GIF_path = None
 
         if plot_type == 'NWS Low Minimum RH' or plot_type == 'NWS Poor Overnight Recovery' or plot_type == 'NWS Excellent Overnight Recovery' or plot_type == 'NWS Maximum RH' or plot_type == 'NWS Maximum RH Trend' or plot_type == 'NWS Minimum RH' or plot_type == 'NWS Minimum RH Trend' or plot_type == 'NWS Extreme Heat' or plot_type == 'NWS Max T Trend' or plot_type == 'NWS Warm Min T' or plot_type == 'NWS Frost Freeze' or plot_type == 'NWS Max T' or plot_type == 'NWS Min T' or plot_type == 'NWS Min T Trend':
