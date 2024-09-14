@@ -9,7 +9,6 @@ import math
 import numpy as np
 import metpy.calc as mpcalc
 import firewxpy.standard as standard
-import firewxpy.colormaps
 import time
 
 from firewxpy.calc import Thermodynamics
@@ -31,9 +30,7 @@ def plot_observed_sounding(station_id):
 
     station_id = station_id
     station_id = station_id.upper()
-    
-    cmap = colormaps.wind_speed_colormap()
-    
+
     year = utc_time.year
     month = utc_time.month
     day = utc_time.day
