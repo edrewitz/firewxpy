@@ -15,6 +15,7 @@ This file hosts standard functions which are used across all plotting functions:
 
 import pytz
 from datetime import datetime, timedelta
+from matplotlib import pyplot as plt
 import time as t
 
 
@@ -106,6 +107,30 @@ def no_data_graphic():
     plt.axis('off')
     fig.text(0.04, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024 | Image Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontsize=20, fontweight='bold')
     ax.text(0.1, 0.6, 'NO DATA FOR: ' + utc_time.strftime('%m/%d/%Y %HZ'), fontsize=60, fontweight='bold')
+
+    return fig
+
+def no_sounding_graphic(date):
+
+    r'''
+    This function creates a default graphic for when there is no sounding data present. 
+    On the image, it shows the time at which the image was created and that there is
+    no data availiable at this time. 
+
+    There are no variables to pass into this function. 
+
+    Returns: 1) A standard graphic stating there is no data available and the time at which the graphic was created. 
+
+    '''
+    date = date
+    local_time, utc_time = plot_creation_time()
+    props = dict(boxstyle='round', facecolor='bisque', alpha=1)
+    
+    fig = plt.figure(figsize=(5,2))
+    ax = plt.subplot(1, 1, 1)
+    plt.axis('off')
+    fig.text(0.25, 0.08, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nImage Created: ' + local_time.strftime('%m/%d/%Y %H:%M Local') + ' | ' + utc_time.strftime('%m/%d/%Y %H:%M UTC'), fontsize=10, fontweight='bold', bbox=props)
+    ax.text(0.1, 0.6, 'NO DATA FOR: ' + date.strftime('%m/%d/%Y %H:00 UTC'), fontsize=20, fontweight='bold')
 
     return fig
 
