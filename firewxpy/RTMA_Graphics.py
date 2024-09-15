@@ -4752,9 +4752,6 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
     if state != None and gacc_region == None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize - 2
-            subplot_title_fontsize = subplot_title_fontsize - 1
 
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
