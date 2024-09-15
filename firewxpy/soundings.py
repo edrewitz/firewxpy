@@ -223,13 +223,27 @@ def plot_observed_sounding(station_id):
         
         ax2 = fig.add_subplot(gs[0:3, 1:3])
         ax2.tick_params(axis="y",direction="in", pad=-25)
-        xloc = -3
         x_clip_radius=0.1
         y_clip_radius=0.08
         u = u.m * 1.15078
         v = v.m * 1.15078
         ax2.set_ylim(ft[0], 5500)
-        ax2.set_xlim(-75, 75)
+        umin = np.nanmin(u)
+        umax = np.nanmax(u)
+        vmin = np.nanmin(v)
+        vmax = np.nanmax(v)
+        if umin < vmin:
+            xmin = umin - 10
+        else:
+            xmin = vmin - 10
+
+        if umax > vmax:
+            xmax = umax + 10
+        else:
+            xmax = vmax + 10
+        ax2.set_xlim(xmin, xmax)
+        mean = ((xmin + xmax)/2)
+        xloc = int(round(mean, 0))
         x = np.empty_like(ft)
         x.fill(xloc)
         
