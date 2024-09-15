@@ -223,15 +223,16 @@ def plot_observed_sounding(station_id):
         
         ax2 = fig.add_subplot(gs[0:3, 1:3])
         ax2.tick_params(axis="y",direction="in", pad=-25)
+
         x_clip_radius=0.1
         y_clip_radius=0.08
         u = u.m * 1.15078
         v = v.m * 1.15078
         ax2.set_ylim(ft[0], 5500)
-        umin = np.nanmin(u)
-        umax = np.nanmax(u)
-        vmin = np.nanmin(v)
-        vmax = np.nanmax(v)
+        umin = np.nanmin(u[hgt_mask])
+        umax = np.nanmax(u[hgt_mask])
+        vmin = np.nanmin(v[hgt_mask])
+        vmax = np.nanmax(v[hgt_mask])
         if umin < vmin:
             xmin = umin - 10
         else:
@@ -251,6 +252,9 @@ def plot_observed_sounding(station_id):
         ax2.plot(u, ft, label='u-wind', color='darkorange', alpha=0.5)
         ax2.plot(v, ft, label='v-wind', color='indigo', alpha=0.5)
         ax2.legend(loc=(0.58, 0.9), prop={'size': 5})
+        bbox_props = dict(boxstyle='round', facecolor='bisque', alpha=1)
+        ax2.text(1.01, 0.815, 'u-max: '+str(int(round(umax, 0)))+' [MPH]\nu-min: ' +str(int(round(umin, 0)))+' [MPH]\nv-max: ' +str(int(round(vmax, 0)))+' [MPH]\nv-min: ' +str(int(round(vmin, 0)))+' [MPH]', fontsize=6, fontweight='bold', bbox=bbox_props, transform=ax2.transAxes)
+        
         ax2.set_xlabel("Wind Velocity [MPH]", fontsize=9, fontweight='bold')
         ax2.set_ylabel("Height [ft AGL]", fontsize=9, fontweight='bold')
         
