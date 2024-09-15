@@ -229,7 +229,7 @@ def plot_observed_sounding(station_id):
         u = u.m * 1.15078
         v = v.m * 1.15078
         ax2.set_ylim(ft[0], 5500)
-        ax2.set_xlim(-20, 20)
+        ax2.set_xlim(-75, 75)
         x = np.empty_like(ft)
         x.fill(xloc)
         
