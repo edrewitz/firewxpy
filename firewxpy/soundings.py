@@ -34,17 +34,12 @@ def plot_observed_sounding(station_id):
     year = utc_time.year
     month = utc_time.month
     day = utc_time.day
-    hour = utc_time.hour
     
-    if hour >= 2 and hour < 15:
+    if utc_time.hour >= 1 and utc_time.hour < 13:
         hour = 0
-    if hour < 2 or hour >= 15:
-        if utc_time.day != local_time.day:
-            day = local_time.day
-            hour = 12
-        else:
-            hour = 12
-    
+    else:
+        hour = 12
+
     date = datetime(year, month, day, hour)
 
     # pings the server to request data
@@ -60,8 +55,15 @@ def plot_observed_sounding(station_id):
             print(station_id+" data retrieved successfully!")
             sounding = True
         except Exception as b:
-            print("ERROR! User entered an invalid date or station ID")
-            sounding = False
+            try:
+                print("Trying one last time! - This server can be glitchy.")
+                time.sleep(10)
+                df = WyomingUpperAir.request_data(date, station_id)
+                print(station_id+" data retrieved successfully!")
+                sounding = True                
+            except Exception as c:
+                print("ERROR! User entered an invalid date or station ID")
+                sounding = False
 
     if sounding == True:
 
@@ -90,7 +92,14 @@ def plot_observed_sounding(station_id):
         ft = ft - elevation
         hgts = hgt
         hgt = hgt - elevation
-        mheight = Thermodynamics.find_mixing_height(temps, hgts)
+
+        if len(temps) > len(hgts):
+            df_len = len(hgts)
+        elif len(temps) < len(hgts):
+            df_len = len(temps)
+        else:
+            df_len = len(temps)
+        mheight = Thermodynamics.find_mixing_height(temps, hgts, df_len)
         mheight = mheight - elevation
         mheight = int(round(mheight[0], 0))
         theta = mpcalc.potential_temperature(pressure, temperature)
@@ -248,5 +257,5 @@ def plot_observed_sounding(station_id):
 
     fname = station_id+" VERTICAL PROFILES"
     
-    file_functions.save_daily_sounding_graphic(fig, station_id)
+    file_functions.save_daily_sounding_graphic(fig, station_id)  
         
