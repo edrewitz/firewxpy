@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "firewxpy"
-version = "1.0.0.5"
+version = "1.0.0.6.3"
 authors = [
   { name="Eric J Drewitz, USDA/USFS"},
 ]
@@ -35,3 +35,4 @@ dependencies = [
     	"cartopy>=0.21.0",
      	"imageio>=2.34.0"
 ]
+
