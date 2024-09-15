@@ -604,7 +604,7 @@ class relative_humidity:
         else:
             pass
 
-        ax1.set_title('National Weather Service Forecast [Night 1]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax1.set_title('National Weather Service Forecast [Night 1]\nPoor Overnight RH Recovery\n(Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
 
         ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -666,7 +666,7 @@ class relative_humidity:
         else:
             pass
 
-        ax2.set_title('National Weather Service Forecast [Night 2]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax2.set_title('National Weather Service Forecast [Night 2]\nPoor Overnight RH Recovery\n(Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
      
         ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -728,7 +728,7 @@ class relative_humidity:
         else:
             pass
 
-        ax3.set_title('National Weather Service Forecast [Night 3]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax3.set_title('National Weather Service Forecast [Night 3]\nPoor Overnight RH Recovery\n(Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
 
         ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -787,7 +787,7 @@ class relative_humidity:
         else:
             pass
 
-        ax4.set_title('National Weather Service Forecast [Night 4]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax4.set_title('National Weather Service Forecast [Night 4]\nPoor Overnight RH Recovery\n(Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
 
         ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -847,7 +847,7 @@ class relative_humidity:
             pass
 
 
-        ax5.set_title('National Weather Service Forecast [Night 5]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax5.set_title('National Weather Service Forecast [Night 5]\nPoor Overnight RH Recovery\n(Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
 
         ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -907,7 +907,7 @@ class relative_humidity:
             pass
 
 
-        ax6.set_title('National Weather Service Forecast [Night 6]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax6.set_title('National Weather Service Forecast [Night 6]\nPoor Overnight RH Recovery\n(Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
 
         ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -981,7 +981,7 @@ class relative_humidity:
             else:
                 pass   
 
-            ax7.set_title('National Weather Service Forecast [Night 7]\nPoor Overnight RH Recovery (Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax7.set_title('National Weather Service Forecast [Night 7]\nPoor Overnight RH Recovery\n(Max RH <= ' +str(poor_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
 
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -1528,7 +1528,7 @@ class relative_humidity:
             pass
 
 
-        ax1.set_title('National Weather Service Forecast [Night 1]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax1.set_title('National Weather Service Forecast [Night 1]\nExcellent Overnight RH Recovery\n(Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
 
         ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -1588,7 +1588,7 @@ class relative_humidity:
             pass
 
 
-        ax2.set_title('National Weather Service Forecast [Night 2]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax2.set_title('National Weather Service Forecast [Night 2]\nExcellent Overnight RH Recovery\n(Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -1648,7 +1648,7 @@ class relative_humidity:
             pass
 
 
-        ax3.set_title('National Weather Service Forecast [Night 3]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax3.set_title('National Weather Service Forecast [Night 3]\nExcellent Overnight RH Recovery\n(Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -1708,7 +1708,7 @@ class relative_humidity:
             pass
 
 
-        ax4.set_title('National Weather Service Forecast [Night 4]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax4.set_title('National Weather Service Forecast [Night 4]\nExcellent Overnight RH Recovery\n(Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -1768,7 +1768,7 @@ class relative_humidity:
             pass
 
 
-        ax5.set_title('National Weather Service Forecast [Night 5]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax5.set_title('National Weather Service Forecast [Night 5]\nExcellent Overnight RH Recovery\n(Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
             
@@ -1828,7 +1828,7 @@ class relative_humidity:
             pass
 
 
-        ax6.set_title('National Weather Service Forecast [Night 6]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax6.set_title('National Weather Service Forecast [Night 6]\nExcellent Overnight RH Recovery\n(Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
@@ -1890,7 +1890,7 @@ class relative_humidity:
                 pass
 
 
-            ax7.set_title('National Weather Service Forecast [Night 7]\nExcellent Overnight RH Recovery (Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax7.set_title('National Weather Service Forecast [Night 7]\nExcellent Overnight RH Recovery\n(Max RH >= ' +str(excellent_overnight_recovery_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -4247,7 +4247,7 @@ class relative_humidity:
                 pass
 
     
-            ax1.set_title('National Weather Service Forecast [Day 1]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax1.set_title('National Weather Service Forecast [Day 1]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -4306,7 +4306,7 @@ class relative_humidity:
             else:
                 pass
     
-            ax2.set_title('National Weather Service Forecast [Day 2]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax2.set_title('National Weather Service Forecast [Day 2]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -4365,7 +4365,7 @@ class relative_humidity:
             else:
                 pass
     
-            ax3.set_title('National Weather Service Forecast [Day 3]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax3.set_title('National Weather Service Forecast [Day 3]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -4424,7 +4424,7 @@ class relative_humidity:
             else:
                 pass
     
-            ax4.set_title('National Weather Service Forecast [Day 4]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax4.set_title('National Weather Service Forecast [Day 4]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -4483,7 +4483,7 @@ class relative_humidity:
             else:
                 pass
     
-            ax5.set_title('National Weather Service Forecast [Day 5]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax5.set_title('National Weather Service Forecast [Day 5]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -4542,7 +4542,7 @@ class relative_humidity:
             else:
                 pass
     
-            ax6.set_title('National Weather Service Forecast [Day 6]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax6.set_title('National Weather Service Forecast [Day 6]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -4603,7 +4603,7 @@ class relative_humidity:
                 else:
                     pass
     
-                ax7.set_title('National Weather Service Forecast [Day 7]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+                ax7.set_title('National Weather Service Forecast [Day 7]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
                 
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                     
@@ -4680,7 +4680,7 @@ class relative_humidity:
             else:
                 pass
     
-            ax1.set_title('National Weather Service Forecast [Day 1]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax1.set_title('National Weather Service Forecast [Day 1]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -4739,7 +4739,7 @@ class relative_humidity:
             else:
                 pass
     
-            ax2.set_title('National Weather Service Forecast [Day 2]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax2.set_title('National Weather Service Forecast [Day 2]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -4798,7 +4798,7 @@ class relative_humidity:
             else:
                 pass
     
-            ax3.set_title('National Weather Service Forecast [Day 3]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax3.set_title('National Weather Service Forecast [Day 3]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -4857,7 +4857,7 @@ class relative_humidity:
             else:
                 pass
     
-            ax4.set_title('National Weather Service Forecast [Day 4]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax4.set_title('National Weather Service Forecast [Day 4]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -4916,7 +4916,7 @@ class relative_humidity:
             else:
                 pass
     
-            ax5.set_title('National Weather Service Forecast [Day 5]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax5.set_title('National Weather Service Forecast [Day 5]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -4975,7 +4975,7 @@ class relative_humidity:
             else:
                 pass
     
-            ax6.set_title('National Weather Service Forecast [Day 6]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax6.set_title('National Weather Service Forecast [Day 6]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
@@ -5036,7 +5036,7 @@ class relative_humidity:
                 else:
                     pass
     
-                ax7.set_title('National Weather Service Forecast [Day 7]\nExceptionally Low Minimum RH (Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
+                ax7.set_title('National Weather Service Forecast [Day 7]\nExceptionally Low Minimum RH\n(Min RH <= ' +str(low_minimum_rh_threshold) + '%)', fontsize=title_fontsize, fontweight='bold', loc='left')
                 
                 ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                     
@@ -7915,10 +7915,10 @@ class temperature:
             pass
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            ax1.set_title("National Weather Service Forecast [Day 1]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax1.set_title("National Weather Service Forecast [Day 1]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            ax1.set_title("National Weather Service Forecast [Day 1]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax1.set_title("National Weather Service Forecast [Day 1]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -7983,10 +7983,10 @@ class temperature:
             pass
             
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            ax2.set_title("National Weather Service Forecast [Day 2]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax2.set_title("National Weather Service Forecast [Day 2]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            ax2.set_title("National Weather Service Forecast [Day 2]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax2.set_title("National Weather Service Forecast [Day 2]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -8050,10 +8050,10 @@ class temperature:
         else:
             pass
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            ax3.set_title("National Weather Service Forecast [Day 3]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax3.set_title("National Weather Service Forecast [Day 3]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            ax3.set_title("National Weather Service Forecast [Day 3]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax3.set_title("National Weather Service Forecast [Day 3]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -8117,10 +8117,10 @@ class temperature:
         else:
             pass
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            ax4.set_title("National Weather Service Forecast [Day 4]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax4.set_title("National Weather Service Forecast [Day 4]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            ax4.set_title("National Weather Service Forecast [Day 4]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax4.set_title("National Weather Service Forecast [Day 4]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -8183,10 +8183,10 @@ class temperature:
         else:
             pass
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            ax5.set_title("National Weather Service Forecast [Day 5]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax5.set_title("National Weather Service Forecast [Day 5]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            ax5.set_title("National Weather Service Forecast [Day 5]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax5.set_title("National Weather Service Forecast [Day 5]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -8249,10 +8249,10 @@ class temperature:
         else:
             pass
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            ax6.set_title("National Weather Service Forecast [Day 6]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax6.set_title("National Weather Service Forecast [Day 6]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            ax6.set_title("National Weather Service Forecast [Day 6]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax6.set_title("National Weather Service Forecast [Day 6]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -8317,10 +8317,10 @@ class temperature:
             else:
                 pass
             if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                ax7.set_title("National Weather Service Forecast [Day 7]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+                ax7.set_title("National Weather Service Forecast [Day 7]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
             if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-                ax7.set_title("National Weather Service Forecast [Day 7]\nExtreme Heat (Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+                ax7.set_title("National Weather Service Forecast [Day 7]\nExtreme Heat\n(Maximum Temperature >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -8941,10 +8941,10 @@ class temperature:
             pass
 
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            ax1.set_title("National Weather Service Forecast [Night 1]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax1.set_title("National Weather Service Forecast [Night 1]\nExtremely Warm Low Temperatures\n(Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            ax1.set_title("National Weather Service Forecast [Night 1]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax1.set_title("National Weather Service Forecast [Night 1]\nExtremely Warm Low Temperatures\n(Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -9008,10 +9008,10 @@ class temperature:
         else:
             pass
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            ax2.set_title("National Weather Service Forecast [Night 2]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax2.set_title("National Weather Service Forecast [Night 2]\nExtremely Warm Low Temperatures\n(Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            ax2.set_title("National Weather Service Forecast [Night 2]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax2.set_title("National Weather Service Forecast [Night 2]\nExtremely Warm Low Temperatures\n(Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -9075,10 +9075,10 @@ class temperature:
         else:
             pass
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            ax3.set_title("National Weather Service Forecast [Night 3]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax3.set_title("National Weather Service Forecast [Night 3]\nExtremely Warm Low Temperatures\n(Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            ax3.set_title("National Weather Service Forecast [Night 3]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax3.set_title("National Weather Service Forecast [Night 3]\nExtremely Warm Low Temperatures\n(Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -9142,10 +9142,10 @@ class temperature:
         else:
             pass
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            ax4.set_title("National Weather Service Forecast [Night 4]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax4.set_title("National Weather Service Forecast [Night 4]\nExtremely Warm Low Temperatures\n(Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            ax4.set_title("National Weather Service Forecast [Night 4]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax4.set_title("National Weather Service Forecast [Night 4]\nExtremely Warm Low Temperatures\n(Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -9274,10 +9274,10 @@ class temperature:
         else:
             pass
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            ax6.set_title("National Weather Service Forecast [Night 6]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax6.set_title("National Weather Service Forecast [Night 6]\nExtremely Warm Low Temperatures\n(Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            ax6.set_title("National Weather Service Forecast [Night 6]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax6.set_title("National Weather Service Forecast [Night 6]\nExtremely Warm Low Temperatures\n(Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -9342,10 +9342,10 @@ class temperature:
             else:
                 pass
             if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                ax7.set_title("National Weather Service Forecast [Night 7]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+                ax7.set_title("National Weather Service Forecast [Night 7]\nExtremely Warm Low Temperatures\n(Min T >= " +str(temp_scale_warm_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
             if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-                ax7.set_title("National Weather Service Forecast [Night 7]\nExtremely Warm Low Temperatures (Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+                ax7.set_title("National Weather Service Forecast [Night 7]\nExtremely Warm Low Temperatures\n(Min T >= " +str(temp_scale_cool_start)+ " (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -9939,7 +9939,7 @@ class temperature:
         else:
             pass
 
-        ax1.set_title("National Weather Service Forecast [Night 1]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax1.set_title("National Weather Service Forecast [Night 1]\nFreeze Areas\n(Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -9998,7 +9998,7 @@ class temperature:
         else:
             pass
 
-        ax2.set_title("National Weather Service Forecast [Night 2]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax2.set_title("National Weather Service Forecast [Night 2]\nFreeze Areas\n(Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -10057,7 +10057,7 @@ class temperature:
         else:
             pass
 
-        ax3.set_title("National Weather Service Forecast [Night 3]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax3.set_title("National Weather Service Forecast [Night 3]\nFreeze Areas\n(Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -10116,7 +10116,7 @@ class temperature:
         else:
             pass
 
-        ax4.set_title("National Weather Service Forecast [Night 4]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax4.set_title("National Weather Service Forecast [Night 4]\nFreeze Areas\n(Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -10175,7 +10175,7 @@ class temperature:
         else:
             pass
 
-        ax5.set_title("National Weather Service Forecast [Night 5]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax5.set_title("National Weather Service Forecast [Night 5]\nFreeze Areas\n(Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -10234,7 +10234,7 @@ class temperature:
         else:
             pass
 
-        ax6.set_title("National Weather Service Forecast [Night 6]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+        ax6.set_title("National Weather Service Forecast [Night 6]\nFreeze Areas\n(Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
@@ -10295,7 +10295,7 @@ class temperature:
             else:
                 pass
 
-            ax7.set_title("National Weather Service Forecast [Night 7]\nFreeze Areas (Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax7.set_title("National Weather Service Forecast [Night 7]\nFreeze Areas\n(Minimum Temperature <= 32 (\N{DEGREE SIGN}F))", fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
