@@ -27,6 +27,8 @@ from firewxpy.utilities import file_functions
 
 mpl.rcParams['font.weight'] = 'bold'
 
+mpl.rcParams['font.weight'] = 'bold'
+
 def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8):
 
     r'''
@@ -95,8 +97,6 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
     gacc_region = gacc_region
 
     reference_system = reference_system
-    mapcrs = ccrs.PlateCarree()
-    datacrs = ccrs.PlateCarree()
 
     if sample_point_fontsize != 8:
         sp_font_default = False
@@ -249,6 +249,8 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -272,7 +274,7 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
 
             temp = ds['tmp2m']
@@ -441,6 +443,8 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
     datacrs = ccrs.PlateCarree()
     data = data
     time = time
+    data_24 = data_24
+    time_24 = time_24
     state = state
     gacc_region = gacc_region
 
@@ -589,6 +593,8 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -622,18 +628,18 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
-            ds_24 = data_24[0]
+            ds_24 = data_24
             rtma_time_24 = time_24
-
+    
             temp = ds['tmp2m']
             dwpt = ds['dpt2m']
             lat = ds['lat']
             lon = ds['lon']
             temp = temp - 273.15
             dwpt = dwpt - 273.15
-
+    
             temp_24 = ds_24['tmp2m']
             dwpt_24 = ds_24['dpt2m']
             lat_24 = ds_24['lat']
@@ -643,8 +649,8 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
             
             rtma_data = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
             rtma_data_24 = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_24, dwpt_24)
-
-            diff = rtma_data - rtma_data_24
+    
+            diff = rtma_data[0, :, :] - rtma_data_24[0, :, :]
 
             print("Unpacked the data successfully!")
         except Exception as e:
@@ -966,6 +972,8 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -985,7 +993,7 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
 
             temp = ds['tmp2m']
@@ -1302,6 +1310,8 @@ def plot_frost_freeze(western_bound=None, eastern_bound=None, southern_bound=Non
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -1321,7 +1331,7 @@ def plot_frost_freeze(western_bound=None, eastern_bound=None, southern_bound=Non
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
 
             temp = ds['tmp2m']
@@ -1638,6 +1648,8 @@ def plot_extreme_heat(temperature_threshold=100, western_bound=None, eastern_bou
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -1657,7 +1669,7 @@ def plot_extreme_heat(temperature_threshold=100, western_bound=None, eastern_bou
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
 
             temp = ds['tmp2m']
@@ -1823,6 +1835,8 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
     datacrs = ccrs.PlateCarree()
     data = data
     time = time
+    data_24 = data_24
+    time_24 = time_24
     state = state
     gacc_region = gacc_region
 
@@ -1971,6 +1985,8 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -1997,9 +2013,9 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
-            ds_24 = data_24[0]
+            ds_24 = data_24
             rtma_time_24 = time_24
 
             temp = ds['tmp2m']
@@ -2333,6 +2349,8 @@ def plot_dew_point(western_bound=None, eastern_bound=None, southern_bound=None, 
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -2352,7 +2370,7 @@ def plot_dew_point(western_bound=None, eastern_bound=None, southern_bound=None, 
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
 
             temp = ds['dpt2m']
@@ -2518,6 +2536,8 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
     datacrs = ccrs.PlateCarree()
     data = data
     time = time
+    data_24 = data_24
+    time_24 = time_24
     state = state
     gacc_region = gacc_region
 
@@ -2666,6 +2686,8 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -2692,9 +2714,9 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
-            ds_24 = data_24[0]
+            ds_24 = data_24
             rtma_time_24 = time_24
 
             temp = ds['dpt2m']
@@ -3023,6 +3045,8 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -3041,7 +3065,7 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
 
             tcdcclm = ds['tcdcclm']
@@ -3206,6 +3230,8 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
     datacrs = ccrs.PlateCarree()
     data = data
     time = time
+    data_24 = data_24
+    time_24 = time_24
     state = state
     gacc_region = gacc_region
 
@@ -3358,6 +3384,8 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -3382,22 +3410,20 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
-            ds_24 = data_24[0]
+            ds_24 = data_24
             rtma_time_24 = time_24
 
-            temp = ds['tmp2m']
+            tcdcclm= ds['tcdcclm']
             lat = ds['lat']
             lon = ds['lon']
-            temp = temp - 273.15
 
-            temp_24 = ds_24['tmp2m']
+            tcdcclm_24 = ds_24['tcdcclm']
             lat_24 = ds_24['lat']
             lon_24 = ds_24['lon']
-            temp_24 = temp_24 - 273.15
 
-            diff = temp[0, :, :] - temp_24[0, :, :]
+            diff = tcdcclm[0, :, :] - tcdcclm_24[0, :, :]
 
             print("Unpacked the data successfully!")
         except Exception as e:
@@ -3714,6 +3740,8 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -3733,7 +3761,7 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
 
             ws = ds['wind10m']
@@ -3899,6 +3927,8 @@ def plot_24_hour_wind_speed_comparison(western_bound=None, eastern_bound=None, s
     datacrs = ccrs.PlateCarree()
     data = data
     time = time
+    data_24 = data_24
+    time_24 = time_24
     state = state
     gacc_region = gacc_region
 
@@ -4047,6 +4077,8 @@ def plot_24_hour_wind_speed_comparison(western_bound=None, eastern_bound=None, s
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -4073,9 +4105,9 @@ def plot_24_hour_wind_speed_comparison(western_bound=None, eastern_bound=None, s
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
-            ds_24 = data_24[0]
+            ds_24 = data_24
             rtma_time_24 = time_24
 
             ws = ds['wind10m']
@@ -4190,7 +4222,7 @@ def plot_24_hour_wind_speed_comparison(western_bound=None, eastern_bound=None, s
     file_functions.update_images(fig, path, gif_path, '24HR RTMA WIND SPEED COMPARISON')
 
 
-def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', alpha=0.5, data=None, data_24=None, time=None, time_24=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8, barbs_or_quivers='barbs', barb_quiver_alpha=1, barb_quiver_fontsize=7, barb_linewidth=1, quiver_linewidth=0.5):
+def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', alpha=0.5, data=None, time=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8, barbs_or_quivers='barbs', barb_quiver_alpha=1, barb_quiver_fontsize=7, barb_linewidth=1, quiver_linewidth=0.5):
 
     r'''
         This function does the following:
@@ -4407,6 +4439,8 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -4431,7 +4465,7 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
 
             u = ds['ugrd10m']
@@ -4458,7 +4492,7 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
     rtma_time_utc = rtma_time.astimezone(from_zone)
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-    fig.set_facecolor('aliceblue')
+    fig.patch.set_facecolor('aliceblue')
 
     ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
     ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -4502,11 +4536,11 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
     
     if barbs == True:
     
-        plt.title("RTMA Wind Speed & Direction (MPH [Shaded] + Wind Barbs)", fontsize=title_fontsize, fontweight='bold', loc='left')
+        plt.title("RTMA Wind Speed & Direction\n[MPH (Shaded) + Wind Barbs]", fontsize=title_fontsize, fontweight='bold', loc='left')
 
     if barbs == False:
 
-        plt.title("RTMA Wind Speed & Direction (MPH [Shaded] + Wind Vectors)", fontsize=title_fontsize, fontweight='bold', loc='left')
+        plt.title("RTMA Wind Speed & Direction\n[MPH (Shaded) + Wind Vectors]", fontsize=title_fontsize, fontweight='bold', loc='left')
     
     plt.title("Analysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
 
@@ -4608,6 +4642,8 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
     datacrs = ccrs.PlateCarree()
     data = data
     time = time
+    data_24 = data_24
+    time_24 = time_24
     state = state
     gacc_region = gacc_region
 
@@ -4764,9 +4800,10 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
-
 
     if test == True and time == None:
         
@@ -4798,9 +4835,9 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
-            ds_24 = data_24[0]
+            ds_24 = data_24
             rtma_time_24 = time_24
 
             u = ds['ugrd10m']
@@ -4842,7 +4879,7 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
     rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)   
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-    fig.set_facecolor('aliceblue')
+    fig.patch.set_facecolor('aliceblue')
 
     ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
     ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
@@ -4886,11 +4923,11 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
 
     if barbs == True:
     
-        plt.title("RTMA Wind Speed & Direction Comparison (ΔMPH [Shaded] + Wind Barbs)", fontsize=title_fontsize, fontweight='bold', loc='left')
+        plt.title("RTMA Wind Speed & Direction Comparison\n[ΔMPH (Shaded) + Wind Barbs]", fontsize=title_fontsize, fontweight='bold', loc='left')
 
     if barbs == False:
 
-        plt.title("RTMA Wind Speed & Direction Comparison (ΔMPH [Shaded] + Wind Vectors)", fontsize=title_fontsize, fontweight='bold', loc='left')
+        plt.title("RTMA Wind Speed & Direction Comparison\n[ΔMPH (Shaded) + Wind Vectors]", fontsize=title_fontsize, fontweight='bold', loc='left')
     
     plt.title("Current: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")\n[Current - 24HRS]: " + rtma_time_24.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc_24.strftime('%H:00 UTC')+")", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
 
@@ -5169,6 +5206,8 @@ def plot_dry_and_windy_areas(low_rh_threshold=15, high_wind_threshold=25, wester
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -5198,7 +5237,7 @@ def plot_dry_and_windy_areas(low_rh_threshold=15, high_wind_threshold=25, wester
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
             temp = ds['tmp2m']
             dwpt = ds['dpt2m']
@@ -5698,6 +5737,8 @@ def plot_dry_and_gusty_areas(low_rh_threshold=15, high_wind_threshold=25, wester
     try:
         if data == None:
             test = True
+        if data != None:
+            test = False
     except Exception as a:
         test = False
 
@@ -5723,7 +5764,7 @@ def plot_dry_and_gusty_areas(low_rh_threshold=15, high_wind_threshold=25, wester
 
     elif test == False and time != None:
         try:
-            ds = data[0]
+            ds = data
             rtma_time = time
             temp = ds['tmp2m']
             dwpt = ds['dpt2m']
@@ -5953,7 +5994,7 @@ def plot_dry_and_gusty_areas(low_rh_threshold=15, high_wind_threshold=25, wester
     path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA DRY & GUSTY AREAS', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA DRY & GUSTY AREAS')
 
-def plot_relative_humidity_with_metar_obs(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8, metar_mask=None, metar_fontsize=10):
+def plot_relative_humidity_with_metar_obs(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8, metar_mask=None, metar_fontsize=10):
 
     r'''
         This function does the following:
@@ -6171,8 +6212,8 @@ def plot_relative_humidity_with_metar_obs(western_bound=None, eastern_bound=None
             sfc_data_decimate = data[6]
             metar_time_revised = data[7]
             plot_proj = data[8]            
-            
-            NOMADS = False
+            lat = rtma_data['latitude']
+            lon = rtma_data['longitude']
             print("Unpacked the data successfully!")
 
         except Exception as f:
@@ -6295,7 +6336,7 @@ def plot_relative_humidity_with_metar_obs(western_bound=None, eastern_bound=None
     path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA RH & METAR', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA RH & METAR')
 
-def plot_low_relative_humidity_with_metar_obs(low_rh_threshold=15, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8, metar_mask=None, metar_fontsize=10):
+def plot_low_relative_humidity_with_metar_obs(low_rh_threshold=15, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8, metar_mask=None, metar_fontsize=10):
 
     r'''
         This function does the following:
@@ -6518,8 +6559,8 @@ def plot_low_relative_humidity_with_metar_obs(low_rh_threshold=15, western_bound
             sfc_data_decimate = data[6]
             metar_time_revised = data[7]
             plot_proj = data[8]            
-            
-            NOMADS = False
+            lat = rtma_data['latitude']
+            lon = rtma_data['longitude']
             print("Unpacked the data successfully!")
 
         except Exception as f:
