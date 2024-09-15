@@ -160,6 +160,18 @@ class Thermodynamics:
         e_s = Thermodynamics.saturation_vapor_pressure(temperature)
         return (e / e_s) * 100
 
+    def find_mixing_height(temperature, height):
+        temperture = temperature
+        height = height
+        vals = []
+        i = 0
+        for i in range(0, 15):
+            if temperature[i+1] >= temperature[i]:
+                val = height[i+1]
+                vals.append(val)
+    
+        mixing_height = vals[0]
+        return round(mixing_height * 3.28084, 1)
 
 class scaling:
 
