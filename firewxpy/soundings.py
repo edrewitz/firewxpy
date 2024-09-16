@@ -69,46 +69,26 @@ def plot_observed_sounding(station_id):
     try:
         df_24 = WyomingUpperAir.request_data(date_24, station_id)
         print(station_id+' '+date_24.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')
-        sounding = True
     except Exception as a:
         print("Trying again! - Just in case.")
         try:
             time.sleep(10)
             df_24 = WyomingUpperAir.request_data(date_24, station_id)
             print(station_id+' '+date_24.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')
-            sounding = True
         except Exception as b:
             try:
                 print("Trying one last time! - This server can be glitchy.")
                 time.sleep(10)
                 df_24 = WyomingUpperAir.request_data(date_24, station_id)
-                print(station_id+' '+date_24.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')
-                sounding = True                
+                print(station_id+' '+date_24.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')              
             except Exception as c:
-                print("ERROR! User entered an invalid date or station ID")
-                sounding = False
+                print(station_id+' '+date_24.strftime('%m/%d/%Y %H:00 UTC')+' data not availiable.\nThere will be no 24-HR Comparisons on this plot.')
 
     if sounding == True:
 
         df.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
         df.dropna(axis=0, inplace=True)
         df = pandas_dataframe_to_unit_arrays(df)
-
-        df_24.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
-        df_24.dropna(axis=0, inplace=True)
-        df_24 = pandas_dataframe_to_unit_arrays(df_24)
-
-        temperature_24 = df_24['temperature']
-        temps_24 = df_24['temperature'].m
-        dewpoint_24 = df_24['dewpoint']
-        hgt_24 = df_24['height'].m
-        rh_24 = (mpcalc.relative_humidity_from_dewpoint(temperature_24, dewpoint_24) * 100)
-        pressure_24 = df_24['pressure']
-        u_24 = df_24['u_wind']
-        v_24 = df_24['v_wind']
-        height_24 = df_24['height']
-        elevation_24 = df_24['elevation']
-        elevation_24 = elevation_24.m * 3.28084
     
         temps = df['temperature'].m
         hgt = df['height'].m
@@ -143,26 +123,49 @@ def plot_observed_sounding(station_id):
         mheight = int(round(mheight[0], 0))
         theta = mpcalc.potential_temperature(pressure, temperature)
 
-        ft_24 = height_24.m *3.28084
-        ft_24 = ft_24 - elevation_24
-        hgts_24 = hgt_24
-        hgt_24 = hgt_24 - elevation_24
+        try:
 
-        if len(temps_24) > len(hgts_24):
-            df_len_24 = len(hgts_24)
-        elif len(temps_24) < len(hgts_24):
-            df_len_24 = len(temps_24)
-        else:
-            df_len_24 = len(temps_24)
-        mheight_24 = Thermodynamics.find_mixing_height(temps_24, hgts_24, df_len_24)
-        mheight_24 = mheight_24 - elevation_24
-        mheight_24 = int(round(mheight_24[0], 0))
-        theta_24 = mpcalc.potential_temperature(pressure_24, temperature_24)
-        mheight_diff = mheight - mheight_24
-        
+            df_24.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
+            df_24.dropna(axis=0, inplace=True)
+            df_24 = pandas_dataframe_to_unit_arrays(df_24)
+    
+            temperature_24 = df_24['temperature']
+            temps_24 = df_24['temperature'].m
+            dewpoint_24 = df_24['dewpoint']
+            hgt_24 = df_24['height'].m
+            rh_24 = (mpcalc.relative_humidity_from_dewpoint(temperature_24, dewpoint_24) * 100)
+            pressure_24 = df_24['pressure']
+            u_24 = df_24['u_wind']
+            v_24 = df_24['v_wind']
+            u_24 = u_24.m * 1.15078
+            v_24 = v_24.m * 1.15078
+            height_24 = df_24['height']
+            elevation_24 = df_24['elevation']
+            elevation_24 = elevation_24.m * 3.28084
+    
+            ft_24 = height_24.m *3.28084
+            ft_24 = ft_24 - elevation_24
+            hgts_24 = hgt_24
+            hgt_24 = hgt_24 - elevation_24
+    
+            if len(temps_24) > len(hgts_24):
+                df_len_24 = len(hgts_24)
+            elif len(temps_24) < len(hgts_24):
+                df_len_24 = len(temps_24)
+            else:
+                df_len_24 = len(temps_24)
+            mheight_24 = Thermodynamics.find_mixing_height(temps_24, hgts_24, df_len_24)
+            mheight_24 = mheight_24 - elevation_24
+            mheight_24 = int(round(mheight_24[0], 0))
+            theta_24 = mpcalc.potential_temperature(pressure_24, temperature_24)
+            mheight_diff = mheight - mheight_24
+            bv_squared_24 = mpcalc.brunt_vaisala_frequency_squared(height_24, theta_24) 
+
+        except Exception as e:
+            pass
         # Calculates the Brunt–Väisälä Frequency Squared
         bv_squared = mpcalc.brunt_vaisala_frequency_squared(height, theta)
-        bv_squared_24 = mpcalc.brunt_vaisala_frequency_squared(height_24, theta_24)
+
         title_lat = str(abs(round(lat, 1)))
         title_lon = str(abs(round(lon, 1)))
         if lat < 0:
@@ -238,10 +241,13 @@ def plot_observed_sounding(station_id):
         label_date = date.strftime('%m/%d %H:00 UTC')
         label_date_24 = date_24.strftime('%m/%d %H:00 UTC')
 
-        if mheight_diff >= 0:
-            sym = '+'
-        else:
-            sym = '-'
+        try:
+            if mheight_diff >= 0:
+                sym = '+'
+            else:
+                sym = '-'
+        except Exception as e:
+            pass
 
         try:
         
@@ -293,10 +299,10 @@ def plot_observed_sounding(station_id):
         ax1.tick_params(axis="y",direction="in", pad=-27)
         
         hgt_mask = (ft <= 5500)
-        hgt_mask_24 = (ft_24 <= 5500)
         
         ax1.plot(rh[hgt_mask], ft[hgt_mask], color='green', label=label_date, alpha=0.3)
         try:
+            hgt_mask_24 = (ft_24 <= 5500)
             ax1.plot(rh_24[hgt_mask_24], ft_24[hgt_mask_24], color='blue', label=label_date_24, alpha=0.3)
         except Exception as e:
             pass
@@ -317,8 +323,6 @@ def plot_observed_sounding(station_id):
         y_clip_radius=0.08
         u = u.m * 1.15078
         v = v.m * 1.15078
-        u_24 = u_24.m * 1.15078
-        v_24 = v_24.m * 1.15078
         ax2.set_ylim(ft[0], 5500)
         umin = np.nanmin(u[hgt_mask])
         umax = np.nanmax(u[hgt_mask])
