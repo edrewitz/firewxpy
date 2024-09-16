@@ -503,34 +503,63 @@ class file_functions:
             print("Individual images saved to: "+path)
             print("GIF saved to "+GIF_path)
 
-    def save_daily_sounding_graphic(figure, station_id):
+    def save_daily_sounding_graphic(figure, station_id, date):
 
         station_id = station_id
         station_id = station_id.upper()
         fig = figure
+        date = date
+        
 
-        if os.path.exists(f"Weather Data"):
-            print("Already Satisfied: Weather Data folder exists.")
-            if os.path.exists(f"Weather Data/Soundings"):
-                print("Already Satisfied: Daily Weather Summary folder exists.")
-                path = f"Weather Data/Soundings/{station_id}.png"
-                fig.savefig(path, bbox_inches='tight')
-                print(station_id+" Sounding Saved to "+path)
+        if date == None:
+
+            if os.path.exists(f"Weather Data"):
+                print("Already Satisfied: Weather Data folder exists.")
+                if os.path.exists(f"Weather Data/Soundings"):
+                    print("Already Satisfied: Daily Weather Summary folder exists.")
+                    path = f"Weather Data/Soundings/{station_id}.png"
+                    fig.savefig(path, bbox_inches='tight')
+                    print(station_id+" Sounding Saved to "+path)
+                else:
+                    print("f:Weather Data/Soundings does not exist.\nBuilding Soundings branch...")
+                    os.mkdir(f"Weather Data/Soundings")
+                    print("Successfully built new branch to directory!")
+                    path = f"Weather Data/Soundings/{station_id}.png"
+                    fig.savefig(path, bbox_inches='tight')
+                    print(station_id+" Sounding Saved to "+path)
             else:
-                print("f:Weather Data/Soundings does not exist.\nBuilding Soundings branch...")
+                print("Setting up the Soundings folder and the rest of the file structure...")
+                os.mkdir("Weather Data")        
                 os.mkdir(f"Weather Data/Soundings")
-                print("Successfully built new branch to directory!")
                 path = f"Weather Data/Soundings/{station_id}.png"
                 fig.savefig(path, bbox_inches='tight')
                 print(station_id+" Sounding Saved to "+path)
+
         else:
-            print("Setting up the Soundings folder and the rest of the file structure...")
-            os.mkdir("Weather Data")        
-            os.mkdir(f"Weather Data/Soundings")
-            os.mkdir(f"Weather Data/Soundings")
-            path = f"Weather Data/Soundings/{station_id}.png"
-            fig.savefig(path, bbox_inches='tight')
-            print(station_id+" Sounding Saved to "+path)
+            
+            date = date.strftime('%Y %m %d %H UTC')
+            
+            if os.path.exists(f"Weather Data"):
+                print("Already Satisfied: Weather Data folder exists.")
+                if os.path.exists(f"Weather Data/Custom Date Soundings"):
+                    print("Already Satisfied: Daily Weather Summary folder exists.")
+                    path = f"Weather Data/Custom Date Soundings/{station_id}_{date}.png"
+                    fig.savefig(path, bbox_inches='tight')
+                    print(station_id+" Sounding Saved to "+path)
+                else:
+                    print("f:Weather Data/Custom Soundings does not exist.\nBuilding Soundings branch...")
+                    os.mkdir(f"Weather Data/Custom Date Soundings")
+                    print("Successfully built new branch to directory!")
+                    path = f"Weather Data/Custom Date Soundings/{station_id}_{date}.png"
+                    fig.savefig(path, bbox_inches='tight')
+                    print(station_id+" Sounding Saved to "+path)
+            else:
+                print("Setting up the Soundings folder and the rest of the file structure...")
+                os.mkdir("Weather Data")        
+                os.mkdir(f"Weather Data/Custom Date Soundings")
+                path = f"Weather Data/Custom Date Soundings/{station_id}_{date}.png"
+                fig.savefig(path, bbox_inches='tight')
+                print(station_id+" Sounding Saved to "+path)            
     
 
     def save_daily_weather_summary(figure, station_id):
