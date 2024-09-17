@@ -66,15 +66,6 @@ def graphical_daily_summary(station_id):
     
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
-    times = []
-    for t in time:
-        year = t.year
-        month = t.month
-        day = t.day
-        hour = t.hour
-        minute = t.minute
-        time_stamp = pd.Timestamp(year, month, day, hour, minute, tz=to_zone)
-        times.append(time_stamp)
     
     start = time.iloc[0]
     year = start.year
@@ -82,7 +73,13 @@ def graphical_daily_summary(station_id):
     day = start.day
     
     start = datetime(year, month, day, tzinfo=to_zone)
+    start_summer_solstice = datetime(year, 6, 21, tzinfo=to_zone)
+    start_winter_solstice = datetime(year, 12, 21, tzinfo=to_zone)
+    start_equinox = datetime(year, 3, 21, tzinfo=to_zone)
     times_list = [start + timedelta(minutes=i *15) for i in range(24*4)]
+    times_list_summer_solstice = [start_summer_solstice + timedelta(minutes=i *15) for i in range(24*4)]
+    times_list_winter_solstice = [start_winter_solstice + timedelta(minutes=i *15) for i in range(24*4)]
+    times_list_equinox = [start_equinox + timedelta(minutes=i *15) for i in range(24*4)]
     
     temperature = df['air_temperature']
     relative_humidity = df['relative_humidity']
@@ -94,15 +91,33 @@ def graphical_daily_summary(station_id):
     solar_elevation = [solar.get_altitude(latitude, longitude, t) for t in times_list]
     solar_radiation = [radiation.get_radiation_direct(t, ele) for t, ele in zip(times_list, solar_elevation)]
     
+    solar_elevation_summer = [solar.get_altitude(latitude, longitude, t) for t in times_list_summer_solstice]
+    solar_radiation_summer = [radiation.get_radiation_direct(t, ele) for t, ele in zip(times_list_summer_solstice, solar_elevation_summer)]
+    
+    solar_elevation_winter = [solar.get_altitude(latitude, longitude, t) for t in times_list_winter_solstice]
+    solar_radiation_winter = [radiation.get_radiation_direct(t, ele) for t, ele in zip(times_list_winter_solstice, solar_elevation_winter)]
+    
+    solar_elevation_equinox = [solar.get_altitude(latitude, longitude, t) for t in times_list_equinox]
+    solar_radiation_equinox = [radiation.get_radiation_direct(t, ele) for t, ele in zip(times_list_equinox, solar_elevation_equinox)]
+    
     max_elevation = np.nanmax(solar_elevation)
     min_elevation = np.nanmin(solar_elevation)
-    max_radiation = np.nanmax(solar_radiation)
-    max_temperature = np.nanmax(temperature)
-    min_temperature = np.nanmin(temperature)
-    max_rh = np.nanmax(relative_humidity)
-    min_rh = np.nanmin(relative_humidity)
-    max_wind = np.nanmax(wind_speed)
-    max_radiation = np.nanmax(solar_radiation)
+
+    max_elevation_summer = np.nanmax(solar_elevation_summer)
+    min_elevation_summer = np.nanmin(solar_elevation_summer)
+
+    max_elevation_winter = np.nanmax(solar_elevation_winter)
+    min_elevation_winter = np.nanmin(solar_elevation_winter)
+
+    max_elevation_equinox = np.nanmax(solar_elevation_equinox)
+    min_elevation_equinox = np.nanmin(solar_elevation_equinox)
+
+    max_rad = np.nanmax(solar_radiation)
+
+    diff_ele_ss = max_elevation - max_elevation_summer
+    diff_ele_ws = max_elevation - max_elevation_winter
+    diff_ele_e = max_elevation - max_elevation_equinox
+
 
     plt.style.use('seaborn-v0_8-darkgrid')
     
@@ -128,7 +143,7 @@ def graphical_daily_summary(station_id):
     ax0 = fig.add_subplot(gs[0:1, 0:1])
     ax0.plot(time, temperature, c='red')
     ax0.xaxis.set_major_formatter(md.DateFormatter('%H', tz=to_zone))
-    ax0.set_ylim(minimum_temperature - 2, maximum_temperature + 2)
+    ax0.set_ylim(int(round(minimum_temperature - 2, 0)), int(round(maximum_temperature + 2, 0)))
     ax0.set_xlabel("Hour", color='white', fontsize=8, fontweight='bold')
     ax0.set_ylabel("Temperature (\N{DEGREE SIGN}F)", color='white', fontsize=8, fontweight='bold')
     ax0.set_title("Temperature", color='white', fontsize=11, fontweight='bold')
@@ -156,7 +171,10 @@ def graphical_daily_summary(station_id):
     ax2.tick_params(axis='y', colors='white')
     
     ax3 = fig.add_subplot(gs[0:1, 1:2])
-    ax3.plot(times_list, solar_elevation, c='orange')
+    ax3.plot(times_list, solar_elevation, c='orange', label=start.strftime('%m/%d'), alpha=0.5)
+    ax3.plot(times_list, solar_elevation_summer, c='red', label='Summer Solstice', alpha=0.5)
+    ax3.plot(times_list, solar_elevation_winter, c='blue', label='Winter Solstice', alpha=0.5)
+    ax3.plot(times_list, solar_elevation_equinox, c='magenta', label='Equinox', alpha=0.5)
     ax3.xaxis.set_major_formatter(md.DateFormatter('%H', tz=to_zone))
     ax3.set_xlabel("Hour", color='white', fontsize=8, fontweight='bold')
     ax3.set_ylabel("Solar Elevation Angle (Degrees)", color='white', fontsize=8, fontweight='bold')
@@ -165,6 +183,7 @@ def graphical_daily_summary(station_id):
     fig.text(0.55, 0.855, "Elevation Angle > 0 = Day\nElevation Angle < 0 = Night", fontsize=9, fontweight='bold')
     ax3.tick_params(axis='x', colors='white')
     ax3.tick_params(axis='y', colors='white')
+    ax3.legend(loc=(0.3,0.01), prop={'size': 8})
     
     ax4 = fig.add_subplot(gs[1:2, 1:2])
     ax4.plot(times_list, solar_radiation, c='orange')
@@ -175,6 +194,7 @@ def graphical_daily_summary(station_id):
     ax4.tick_params(axis='x', colors='white')
     ax4.tick_params(axis='y', colors='white')
 
+
     local_time, utc_time = standard.plot_creation_time()
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
@@ -182,41 +202,66 @@ def graphical_daily_summary(station_id):
     try:
         maximum_temperature = int(round(maximum_temperature, 0))
         maximum_temperature = str(maximum_temperature)
+        maximum_temperature_time_local = maximum_temperature_time_local.strftime('%H:%M Local')
+        maximum_temperature_time = maximum_temperature_time.strftime('%H:%M UTC')
     except Exception as e:
         maximum_temperature = 'NA'
+        maximum_temperature_time_local = 'NA'
+        maximum_temperature_time = 'NA'
     try:
         minimum_temperature = int(round(minimum_temperature, 0))
         minimum_temperature = str(minimum_temperature)
+        minimum_temperature_time_local = minimum_temperature_time_local.strftime('%H:%M Local')
+        minimum_temperature_time = minimum_temperature_time.strftime('%H:%M UTC')
     except Exception as e:
         minimum_temperature = 'NA'
+        minimum_temperature_time_local = 'NA'
+        minimum_temperature_time = 'NA'
     try:
         maximum_relative_humidity = int(round(maximum_relative_humidity, 0))
         maximum_relative_humidity = str(maximum_relative_humidity)
+        maximum_relative_humidity_time_local = maximum_relative_humidity_time_local.strftime('%H:%M Local')
+        maximum_relative_humidity_time = maximum_relative_humidity_time.strftime('%H:%M UTC')
     except Exception as e:
         maximum_relative_humidity = 'NA'
+        maximum_relative_humidity_time_local = 'NA'
+        maximum_relative_humidity_time = 'NA'
     try:
         minimum_relative_humidity = int(round(minimum_relative_humidity, 0))
         minimum_relative_humidity = str(minimum_relative_humidity)
+        minimum_relative_humidity_time_local = minimum_relative_humidity_time_local.strftime('%H:%M Local')
+        minimum_relative_humidity_time = minimum_relative_humidity_time.strftime('%H:%M UTC')
     except Exception as e:
         minimum_relative_humidity = 'NA'
+        minimum_relative_humidity_time_local = 'NA'
+        minimum_relative_humidity_time = 'NA'
     try:
         maximum_wind_speed = int(round(maximum_wind_speed, 0))
         maximum_wind_speed = str(maximum_wind_speed)
+        maximum_wind_speed_time_local = maximum_wind_speed_time_local.strftime('%H:%M Local')
+        maximum_wind_speed_time = maximum_wind_speed_time.strftime('%H:%M UTC')
     except Exception as e:
         maximum_wind_speed = 'NA'
+        maximum_wind_speed_time_local = 'NA'
+        maximum_wind_speed_time = 'NA'
     try:
         maximum_wind_gust = int(round(maximum_wind_gust, 0))
         maximum_wind_gust = str(maximum_wind_gust)
+        maximum_wind_gust_time_local = maximum_wind_gust_time_local.strftime('%H:%M Local')
+        maximum_wind_gust_time = maximum_wind_gust_time.strftime('%H:%M UTC')
     except Exception as e:
         maximum_wind_gust = 'NA'
+        maximum_wind_gust_time_local = 'NA'
+        maximum_wind_gust_time = 'NA'
 
-        if maximum_wind_gust != 'NA':
+    if diff_ele_e >= 0:
+        sym='+'
+    else:
+        sym=''
 
-            fig.text(0.487, 0.13, "Maximum Temperature: " +maximum_temperature +" (\N{DEGREE SIGN}F) " + maximum_temperature_time_local.strftime('%H:%M Local') + " ("+ maximum_temperature_time.strftime('%H:%M UTC')+")\n\nMinimum Temperature: " + minimum_temperature +" (\N{DEGREE SIGN}F) "+ minimum_temperature_time_local.strftime('%H:%M Local') + " ("+ minimum_temperature_time.strftime('%H:%M UTC')+")\n\nMaximum RH: " + maximum_relative_humidity +" (%) "+ maximum_relative_humidity_time_local.strftime('%H:%M Local') + " ("+ maximum_relative_humidity_time.strftime('%H:%M UTC')+")\n\nMinimum RH: " + minimum_relative_humidity +" (%) "+ minimum_relative_humidity_time_local.strftime('%H:%M Local') + " ("+ minimum_relative_humidity_time.strftime('%H:%M UTC')+")\n\nMaximum Wind Speed: " + maximum_wind_speed +" (MPH) "+ maximum_wind_speed_time_local.strftime('%H:%M Local') + " ("+ maximum_wind_speed_time.strftime('%H:%M UTC')+")\n\nMaximum Wind Gust: " + maximum_wind_gust +" (MPH) "+ maximum_wind_gust_time_local.strftime('%H:%M Local') + " ("+ maximum_wind_gust_time.strftime('%H:%M UTC')+")\n\nMaximum Elevation: " + str(round(max_elevation, 1)) + " Degrees Above the Horizon\n\nMinimum Elevation: " + str(round(min_elevation, 1)) + " Degrees Below the Horizon\n\nMaximum Solar Radiation: " + str(round(max_radiation, 1)) + " (W/m^2)", color='black', fontsize=11, fontweight='bold', bbox=props, zorder=10)
 
-        if maximum_wind_gust == 'NA':
+    fig.text(0.487, 0.115, "Maximum Temperature: " +maximum_temperature +" [\N{DEGREE SIGN}F] " + maximum_temperature_time_local + " ("+ maximum_temperature_time+")\n\nMinimum Temperature: " + minimum_temperature +" [\N{DEGREE SIGN}F] "+ minimum_temperature_time_local + " ("+ minimum_temperature_time+")\n\nMaximum RH: " + maximum_relative_humidity +" [%] "+ maximum_relative_humidity_time_local + " ("+ maximum_relative_humidity_time +")\n\nMinimum RH: " + minimum_relative_humidity +" [%] "+ minimum_relative_humidity_time_local + " ("+ minimum_relative_humidity_time +")\n\nMaximum Wind Speed: " + maximum_wind_speed +" [MPH] "+ maximum_wind_speed_time_local + " ("+ maximum_wind_speed_time +")\n\nMaximum Wind Gust: " + maximum_wind_gust +" [MPH] "+ maximum_wind_gust_time_local + " ("+ maximum_wind_gust_time +")\n\nMaximum Elevation: " + str(round(max_elevation, 1)) + " [\N{DEGREE SIGN} Above the Horizon]\n\nMinimum Elevation: " + str(round(min_elevation, 1)) + " [\N{DEGREE SIGN} Below the Horizon]\n\nMaximum Elevation Difference:\nSummer Solstice: "+str(round(diff_ele_ss,1))+" [\N{DEGREE SIGN}]\nEquinox: "+sym+""+str(round(diff_ele_e,1))+" [\N{DEGREE SIGN}]\nWinter Solstice: +"+str(round(diff_ele_ws,1))+" [\N{DEGREE SIGN}]\n\nMaximum Solar Radiation: " + str(round(max_rad, 1)) + " (W/m^2)", color='black', fontsize=8, fontweight='bold', bbox=props, zorder=6)
 
-            fig.text(0.487, 0.13, "Maximum Temperature: " +maximum_temperature +" (\N{DEGREE SIGN}F) " + maximum_temperature_time_local.strftime('%H:%M Local') + " ("+ maximum_temperature_time.strftime('%H:%M UTC')+")\n\nMinimum Temperature: " + minimum_temperature +" (\N{DEGREE SIGN}F) "+ minimum_temperature_time_local.strftime('%H:%M Local') + " ("+ minimum_temperature_time.strftime('%H:%M UTC')+")\n\nMaximum RH: " + maximum_relative_humidity +" (%) "+ maximum_relative_humidity_time_local.strftime('%H:%M Local') + " ("+ maximum_relative_humidity_time.strftime('%H:%M UTC')+")\n\nMinimum RH: " + minimum_relative_humidity +" (%) "+ minimum_relative_humidity_time_local.strftime('%H:%M Local') + " ("+ minimum_relative_humidity_time.strftime('%H:%M UTC')+")\n\nMaximum Wind Speed: " + maximum_wind_speed +" (MPH) "+ maximum_wind_speed_time_local.strftime('%H:%M Local') + " ("+ maximum_wind_speed_time.strftime('%H:%M UTC')+")\n\nMaximum Elevation: " + str(round(max_elevation, 1)) + " Degrees Above the Horizon\n\nMinimum Elevation: " + str(round(min_elevation, 1)) + " Degrees Below the Horizon\n\nMaximum Solar Radiation: " + str(round(max_radiation, 1)) + " (W/m^2)", color='black', fontsize=11, fontweight='bold', bbox=props, zorder=10)
     
     fig.text(0.27, 0.07, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=14, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)    
 
