@@ -267,4 +267,5 @@ def graphical_daily_summary(station_id):
 
     file_functions.save_daily_weather_summary(fig, station_id)
 
+
     
