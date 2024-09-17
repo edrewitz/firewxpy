@@ -3931,6 +3931,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             minimum_temperature_time = df['date_time'].iloc[-1]
             minimum_temperature_time_utc = minimum_temperature_time.replace(tzinfo=to_zone)
             minimum_temperature_time_local = minimum_temperature_time_utc.astimezone(from_zone)
+            print("Retrieved Temperature Data Successfully!")
             
             df = df.sort_values(['relative_humidity'], ascending=True)
             minimum_relative_humidity = df['relative_humidity'].iloc[0]
@@ -3941,6 +3942,7 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             maximum_relative_humidity_time = df['date_time'].iloc[-1]
             maximum_relative_humidity_time_utc = maximum_relative_humidity_time.replace(tzinfo=to_zone)
             maximum_relative_humidity_time_local = maximum_relative_humidity_time_utc.astimezone(from_zone)
+            print("Retrieved Relative Humidity Data Successfully!")
             
             df = df.sort_values(['wind_speed'], ascending=False)
             maximum_wind_speed = df['wind_speed'].iloc[0]
@@ -3949,12 +3951,14 @@ class UCAR_THREDDS_SERVER_OPENDAP_Downloads:
             maximum_wind_speed_time = df['date_time'].iloc[0]
             maximum_wind_speed_time_utc = maximum_wind_speed_time.replace(tzinfo=to_zone)
             maximum_wind_speed_time_local = maximum_wind_speed_time_utc.astimezone(from_zone)
+            print("Retrieved Wind Speed Data Successfully!")
             
             df = df.sort_values(['wind_gust'], ascending=False)
             maximum_wind_gust = df['wind_gust'].iloc[0]
             maximum_wind_gust_time = df['date_time'].iloc[0]
             maximum_wind_gust_time_utc = maximum_wind_gust_time.replace(tzinfo=to_zone)
             maximum_wind_gust_time_local = maximum_wind_gust_time_utc.astimezone(from_zone)
+            print("Retrieved Wind Gust Data Successfully!")
 
             df = df.sort_values(['date_time'], ascending=True)
 
@@ -6447,7 +6451,5 @@ class NOMADS_OPENDAP_Downloads:
 
             relative_humidity_to_plot = relative_humidity[0, :, :] 
             wind_gust_to_plot = wind_gust_mph[0, :, :]
-                
-            return lon_vals, lat_vals, time, relative_humidity_to_plot * 100, wind_gust_to_plot
 
 
