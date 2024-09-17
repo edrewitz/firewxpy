@@ -183,7 +183,7 @@ def plot_observed_sounding(station_id):
         idx = mpcalc.resample_nn_1d(pres, interval)
         fig = plt.figure(figsize=(12, 10))
         gs = gridspec.GridSpec(10, 13)
-        skew = SkewT(fig, rotation=45, subplot=gs[0:10, 0:13])
+        skew = SkewT(fig, rotation=45, subplot=gs[0:12, 0:13])
         skew.ax.set_title(station_id+" Vertical Profiles\nLatitude: "+title_lat+""+lat_symbol+" | Longitude: "+title_lon+""+lon_symbol, fontsize=12, fontweight='bold', loc='left')
         skew.ax.set_title("Valid: " + date.strftime('%m/%d/%Y %H:00 UTC'), fontsize=12, fontweight='bold', loc='right')
         
@@ -298,12 +298,12 @@ def plot_observed_sounding(station_id):
         
         ax1.tick_params(axis="y",direction="in", pad=-27)
         
-        hgt_mask = (ft <= 5500)
+        hgt_mask = (ft <= 6000)
         
-        ax1.plot(rh[hgt_mask], ft[hgt_mask], color='green', label=label_date, alpha=0.3)
+        ax1.plot(rh[hgt_mask], ft[hgt_mask], color='green', label=label_date, alpha=0.5)
         try:
-            hgt_mask_24 = (ft_24 <= 5500)
-            ax1.plot(rh_24[hgt_mask_24], ft_24[hgt_mask_24], color='blue', label=label_date_24, alpha=0.3)
+            hgt_mask_24 = (ft_24 <= 6000)
+            ax1.plot(rh_24[hgt_mask_24], ft_24[hgt_mask_24], color='blue', label=label_date_24, alpha=0.5)
         except Exception as e:
             pass
         
@@ -385,18 +385,18 @@ def plot_observed_sounding(station_id):
         ax4.set_xlabel("Temperature [℃]", fontsize=9, fontweight='bold')
         ax4.set_ylabel("Height [ft AGL]", fontsize=9, fontweight='bold')
         
-        hgts_mask = (ft <= 10500)
+        hgts_mask = (ft <= 12000)
         
         ax4.plot(temps[hgts_mask], ft[hgts_mask], color='darkred', label=label_date, alpha=0.5)
         try:
-            hgts_mask_24 = (ft_24 <= 10500)
+            hgts_mask_24 = (ft_24 <= 12000)
             ax4.plot(temps_24[hgts_mask_24], ft_24[hgts_mask_24], color='magenta', label=label_date_24, alpha=0.5)
         except Exception as e:
             pass        
 
         ax4.legend(loc=(0.2, 1.01), prop={'size': 7})
         
-        fig.text(0.15, 0.05, "Plot Created With FireWxPy(C) Eric J. Drewitz 2024\nData Source: weather.uwyo.edu\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
+        fig.text(0.16, 0.05, "Plot Created With FireWxPy(C) Eric J. Drewitz 2024\nData Source: weather.uwyo.edu\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
 
     if sounding == False:
         fig = standard.no_sounding_graphic(date)
@@ -495,7 +495,7 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         idx = mpcalc.resample_nn_1d(pres, interval)
         fig = plt.figure(figsize=(12, 10))
         gs = gridspec.GridSpec(10, 13)
-        skew = SkewT(fig, rotation=45, subplot=gs[0:10, 0:13])
+        skew = SkewT(fig, rotation=45, subplot=gs[0:12, 0:13])
         skew.ax.set_title(station_id+" Vertical Profiles\nLatitude: "+title_lat+""+lat_symbol+" | Longitude: "+title_lon+""+lon_symbol, fontsize=12, fontweight='bold', loc='left')
         skew.ax.set_title("Valid: " + date.strftime('%m/%d/%Y %H:00 UTC'), fontsize=12, fontweight='bold', loc='right')
         
@@ -640,7 +640,7 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         # Plots the Brunt–Väisälä Frequency Squared
         ax3.plot(bv_squared, ft, color='blue')
         
-        fig.text(0.15, 0.05, "Plot Created With FireWxPy(C) Eric J. Drewitz 2024\nData Source: weather.uwyo.edu\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
+        fig.text(0.16, 0.05, "Plot Created With FireWxPy(C) Eric J. Drewitz 2024\nData Source: weather.uwyo.edu\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
 
     if sounding == False:
         fig = standard.no_sounding_graphic(date)
