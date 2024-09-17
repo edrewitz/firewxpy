@@ -259,8 +259,17 @@ def graphical_daily_summary(station_id):
     else:
         sym=''
 
+    if max_elevation >= 0:
+        sym1 = '+'
+    else:
+        sym1 = ''
 
-    fig.text(0.487, 0.115, "Maximum Temperature: " +maximum_temperature +" [\N{DEGREE SIGN}F] " + maximum_temperature_time_local + " ("+ maximum_temperature_time+")\n\nMinimum Temperature: " + minimum_temperature +" [\N{DEGREE SIGN}F] "+ minimum_temperature_time_local + " ("+ minimum_temperature_time+")\n\nMaximum RH: " + maximum_relative_humidity +" [%] "+ maximum_relative_humidity_time_local + " ("+ maximum_relative_humidity_time +")\n\nMinimum RH: " + minimum_relative_humidity +" [%] "+ minimum_relative_humidity_time_local + " ("+ minimum_relative_humidity_time +")\n\nMaximum Wind Speed: " + maximum_wind_speed +" [MPH] "+ maximum_wind_speed_time_local + " ("+ maximum_wind_speed_time +")\n\nMaximum Wind Gust: " + maximum_wind_gust +" [MPH] "+ maximum_wind_gust_time_local + " ("+ maximum_wind_gust_time +")\n\nMaximum Elevation: " + str(round(max_elevation, 1)) + " [\N{DEGREE SIGN} Above the Horizon]\n\nMinimum Elevation: " + str(round(min_elevation, 1)) + " [\N{DEGREE SIGN} Below the Horizon]\n\nMaximum Elevation Difference:\nSummer Solstice: "+str(round(diff_ele_ss,1))+" [\N{DEGREE SIGN}]\nEquinox: "+sym+""+str(round(diff_ele_e,1))+" [\N{DEGREE SIGN}]\nWinter Solstice: +"+str(round(diff_ele_ws,1))+" [\N{DEGREE SIGN}]\n\nMaximum Solar Radiation: " + str(round(max_rad, 1)) + " (W/m^2)", color='black', fontsize=8, fontweight='bold', bbox=props, zorder=6)
+    if min_elevation >= 0:
+        sym2 = '+'
+    else:
+        sym2 = ''
+
+    fig.text(0.487, 0.115, "Maximum Temperature: " +maximum_temperature +" [\N{DEGREE SIGN}F] " + maximum_temperature_time_local + " ("+ maximum_temperature_time+")\n\nMinimum Temperature: " + minimum_temperature +" [\N{DEGREE SIGN}F] "+ minimum_temperature_time_local + " ("+ minimum_temperature_time+")\n\nMaximum RH: " + maximum_relative_humidity +" [%] "+ maximum_relative_humidity_time_local + " ("+ maximum_relative_humidity_time +")\n\nMinimum RH: " + minimum_relative_humidity +" [%] "+ minimum_relative_humidity_time_local + " ("+ minimum_relative_humidity_time +")\n\nMaximum Wind Speed: " + maximum_wind_speed +" [MPH] "+ maximum_wind_speed_time_local + " ("+ maximum_wind_speed_time +")\n\nMaximum Wind Gust: " + maximum_wind_gust +" [MPH] "+ maximum_wind_gust_time_local + " ("+ maximum_wind_gust_time +")\n\nMaximum Elevation: "+sym1+""+ str(round(max_elevation, 1)) + " [\N{DEGREE SIGN} From Horizon]\n\nMinimum Elevation: "+sym2+""+ str(round(min_elevation, 1)) + " [\N{DEGREE SIGN} From Horizon]\n\nMaximum Elevation Difference:\nSummer Solstice: "+str(round(diff_ele_ss,1))+" [\N{DEGREE SIGN}] | Max Elevation: "+sym1+""+str(round(max_elevation_summer,1))+" [\N{DEGREE SIGN} From Horizon]\nEquinox: "+sym+""+str(round(diff_ele_e,1))+" [\N{DEGREE SIGN}] | Max Elevation: "+sym1+""+str(round(max_elevation_equinox,1))+" [\N{DEGREE SIGN} From Horizon]\nWinter Solstice: +"+str(round(diff_ele_ws,1))+" [\N{DEGREE SIGN}] | Max Elevation: "+sym1+""+str(round(max_elevation_winter,1))+" [\N{DEGREE SIGN} From Horizon]\n\nMaximum Solar Radiation: " + str(round(max_rad, 1)) + " (W/m^2)", color='black', fontsize=8, fontweight='bold', bbox=props, zorder=6)
 
     
     fig.text(0.27, 0.07, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=14, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)    
