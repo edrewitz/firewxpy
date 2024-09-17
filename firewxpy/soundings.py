@@ -245,7 +245,7 @@ def plot_observed_sounding(station_id):
             if mheight_diff >= 0:
                 sym = '+'
             else:
-                sym = '-'
+                sym = ''
         except Exception as e:
             pass
 
