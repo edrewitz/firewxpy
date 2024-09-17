@@ -367,7 +367,7 @@ def plot_observed_sounding(station_id):
         ax3.set_ylim(ft[0], 15000)
         ax3.set_xlabel("BVF-Squared [1/s^2]", fontsize=9, fontweight='bold')
         ax3.set_ylabel("Height [ft AGL]", fontsize=9, fontweight='bold')
-        ax3.set_yticks([2000, 4000, 6000, 8000, 10000, 12500, 15000])
+        ax3.set_yticks([2000, 4000, 6000, 8000, 10000, 12000, 14000])
         
         # Plots the Brunt–Väisälä Frequency Squared
         ax3.plot(bv_squared, ft, color='red', alpha=0.5, label=label_date,)
