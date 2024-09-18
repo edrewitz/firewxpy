@@ -199,9 +199,10 @@ def plot_observed_sounding(station_id):
         
         
         skew.ax.set_ylim(1030, 250)
-        skew.plot_dry_adiabats(alpha=0.5)
-        skew.plot_mixing_lines(alpha=0.5)
-        skew.plot_moist_adiabats(alpha=0.5)
+        skew.plot_dry_adiabats(label='Dry Adiabats', alpha=0.5)
+        skew.plot_mixing_lines(label='Mixing Ratio Lines', alpha=0.5)
+        skew.plot_moist_adiabats(label='Moist Adiabats', alpha=0.5)
+        skew.ax.legend(loc=(0, 0), prop={'size': 10})
         skew.ax.set_xlabel("Temperature [℃]", fontsize=12, fontweight='bold')
         skew.ax.set_ylabel("Pressure [hPa]", fontsize=12, fontweight='bold')
         mask = (pressure >= 100 * units.hPa)
