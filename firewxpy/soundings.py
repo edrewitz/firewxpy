@@ -416,32 +416,52 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
     local_time, utc_time = standard.plot_creation_time()
 
     station_id = station_id
-    station_id = station_id.upper()
+    station_id = station_id.upper()    
+    
 
     date = datetime(year, month, day, hour)
+    date_24 = date - timedelta(hours=24)
 
     # pings the server to request data
     try:
         df = WyomingUpperAir.request_data(date, station_id)
-        print(station_id+" data retrieved successfully!")
+        print(station_id+' '+date.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')
         sounding = True
     except Exception as a:
         print("Trying again! - Just in case.")
         try:
             time.sleep(10)
             df = WyomingUpperAir.request_data(date, station_id)
-            print(station_id+" data retrieved successfully!")
+            print(station_id+' '+date.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')
             sounding = True
         except Exception as b:
             try:
                 print("Trying one last time! - This server can be glitchy.")
                 time.sleep(10)
                 df = WyomingUpperAir.request_data(date, station_id)
-                print(station_id+" data retrieved successfully!")
+                print(station_id+' '+date.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')
                 sounding = True                
             except Exception as c:
                 print("ERROR! User entered an invalid date or station ID")
                 sounding = False
+
+    try:
+        df_24 = WyomingUpperAir.request_data(date_24, station_id)
+        print(station_id+' '+date_24.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')
+    except Exception as a:
+        print("Trying again! - Just in case.")
+        try:
+            time.sleep(10)
+            df_24 = WyomingUpperAir.request_data(date_24, station_id)
+            print(station_id+' '+date_24.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')
+        except Exception as b:
+            try:
+                print("Trying one last time! - This server can be glitchy.")
+                time.sleep(10)
+                df_24 = WyomingUpperAir.request_data(date_24, station_id)
+                print(station_id+' '+date_24.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')              
+            except Exception as c:
+                print(station_id+' '+date_24.strftime('%m/%d/%Y %H:00 UTC')+' data not availiable.\nThere will be no 24-HR Comparisons on this plot.')
 
     if sounding == True:
 
@@ -481,9 +501,50 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         mheight = mheight - elevation
         mheight = int(round(mheight[0], 0))
         theta = mpcalc.potential_temperature(pressure, temperature)
-        
+
+        try:
+
+            df_24.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
+            df_24.dropna(axis=0, inplace=True)
+            df_24 = pandas_dataframe_to_unit_arrays(df_24)
+    
+            temperature_24 = df_24['temperature']
+            temps_24 = df_24['temperature'].m
+            dewpoint_24 = df_24['dewpoint']
+            hgt_24 = df_24['height'].m
+            rh_24 = (mpcalc.relative_humidity_from_dewpoint(temperature_24, dewpoint_24) * 100)
+            pressure_24 = df_24['pressure']
+            u_24 = df_24['u_wind']
+            v_24 = df_24['v_wind']
+            u_24 = u_24.m * 1.15078
+            v_24 = v_24.m * 1.15078
+            height_24 = df_24['height']
+            elevation_24 = df_24['elevation']
+            elevation_24 = elevation_24.m * 3.28084
+    
+            ft_24 = height_24.m *3.28084
+            ft_24 = ft_24 - elevation_24
+            hgts_24 = hgt_24
+            hgt_24 = hgt_24 - elevation_24
+    
+            if len(temps_24) > len(hgts_24):
+                df_len_24 = len(hgts_24)
+            elif len(temps_24) < len(hgts_24):
+                df_len_24 = len(temps_24)
+            else:
+                df_len_24 = len(temps_24)
+            mheight_24 = Thermodynamics.find_mixing_height(temps_24, hgts_24, df_len_24)
+            mheight_24 = mheight_24 - elevation_24
+            mheight_24 = int(round(mheight_24[0], 0))
+            theta_24 = mpcalc.potential_temperature(pressure_24, temperature_24)
+            mheight_diff = mheight - mheight_24
+            bv_squared_24 = mpcalc.brunt_vaisala_frequency_squared(height_24, theta_24) 
+
+        except Exception as e:
+            pass
         # Calculates the Brunt–Väisälä Frequency Squared
         bv_squared = mpcalc.brunt_vaisala_frequency_squared(height, theta)
+
         title_lat = str(abs(round(lat, 1)))
         title_lon = str(abs(round(lon, 1)))
         if lat < 0:
@@ -496,7 +557,7 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
             lon_symbol = ' [\N{DEGREE SIGN}E]'
         
         interval = np.logspace(2, 3) * units.hPa
-        barb_mask = (pressure >= 250 * units.hPa)
+        barb_mask = (pressure >= 100 * units.hPa)
         pres = pressure[barb_mask]
         idx = mpcalc.resample_nn_1d(pres, interval)
         fig = plt.figure(figsize=(12, 10))
@@ -509,13 +570,16 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         fig.patch.set_facecolor('aliceblue')
         
         
-        skew.ax.set_ylim(1030, 250)
-        skew.plot_dry_adiabats(alpha=0.5)
-        skew.plot_mixing_lines(alpha=0.5)
-        skew.plot_moist_adiabats(alpha=0.5)
+        skew.ax.set_ylim(1030, 100)
+        skew.plot_dry_adiabats(label='Dry Adiabats', alpha=0.5)
+        skew.plot_mixing_lines(label='Mixing Ratio Lines', alpha=0.5)
+        skew.plot_moist_adiabats(label='Moist Adiabats', alpha=0.5)
+        skew.ax.legend(loc=(0, 0), prop={'size': 10})
         skew.ax.set_xlabel("Temperature [℃]", fontsize=12, fontweight='bold')
         skew.ax.set_ylabel("Pressure [hPa]", fontsize=12, fontweight='bold')
         mask = (pressure >= 100 * units.hPa)
+        skew.ax.set_ylim(1030, 100)
+        skew.ax.set_xlim(-45, 45)
         
         wetbulb = mpcalc.wet_bulb_temperature(pressure[0], temperature, dewpoint).to('degC')
         
@@ -555,22 +619,47 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         LFC_NAN = np.isnan(lfc_pressure)
         EL_NAN = np.isnan(el_pressure)
         # Table if no LFC
+
+        label_date = date.strftime('%m/%d %H:00 UTC')
+        label_date_24 = date_24.strftime('%m/%d %H:00 UTC')
+
+        try:
+            if mheight_diff >= 0:
+                sym = '+'
+            else:
+                sym = ''
+        except Exception as e:
+            pass
+
+        try:
         
-        
-        if LFC_NAN == True and EL_NAN == False:
-            skew.ax.text(0.02, 0.65,'               EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\n               LCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]', transform=skew.ax.transAxes,
-                         fontsize=10, fontweight='bold', verticalalignment='top', bbox=props)
-        
-        # Table if LFC   
-        if LFC_NAN == False and EL_NAN == False:
-            skew.ax.text(0.02, 0.65,'               EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\n               LFC\nPressure: '+LFC_Pres+' [hPa]\nTemperature: '+LFC_Temp+' [℃]\n\n               LCL\nPressure: ' + LCL_Pres + '[hPa]\nTemperature: ' + LCL_Temp + '[℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]', transform=skew.ax.transAxes,
-                         fontsize=10, fontweight='bold', verticalalignment='top', bbox=props)
-        
-        if LFC_NAN == True and EL_NAN == True:
-            skew.ax.text(0.02, 0.65,'               LCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]', transform=skew.ax.transAxes,
-                         fontsize=10, fontweight='bold', verticalalignment='top', bbox=props)    
-           
-        # x-limits of the skewT       
+            if LFC_NAN == True and EL_NAN == False:
+                skew.ax.text(0.04, 0.35,'EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\nLCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]\n24-HR ΔMixing Height: '+sym+''+str(mheight_diff)+' [ft AGL]', transform=skew.ax.transAxes,
+                             fontsize=6, fontweight='bold', verticalalignment='top', bbox=props)
+            
+            # Table if LFC   
+            if LFC_NAN == False and EL_NAN == False:
+                skew.ax.text(0.04, 0.35,'EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\nLFC\nPressure: '+LFC_Pres+' [hPa]\nTemperature: '+LFC_Temp+' [℃]\n\nLCL\nPressure: ' + LCL_Pres + '[hPa]\nTemperature: ' + LCL_Temp + '[℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]\n24-HR ΔMixing Height: '+sym+''+str(mheight_diff)+' [ft AGL]', transform=skew.ax.transAxes,
+                             fontsize=6, fontweight='bold', verticalalignment='top', bbox=props)
+            
+            if LFC_NAN == True and EL_NAN == True:
+                skew.ax.text(0.05, 0.4,'LCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]\n24-HR ΔMixing Height: '+sym+''+str(mheight_diff)+' [ft AGL]', transform=skew.ax.transAxes,
+                             fontsize=6, fontweight='bold', verticalalignment='top', bbox=props)    
+
+        except Exception as e:
+
+            if LFC_NAN == True and EL_NAN == False:
+                skew.ax.text(0.04, 0.35,'EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\nLCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]', transform=skew.ax.transAxes,
+                             fontsize=6, fontweight='bold', verticalalignment='top', bbox=props)
+            
+            # Table if LFC   
+            if LFC_NAN == False and EL_NAN == False:
+                skew.ax.text(0.04, 0.35,'EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\nLFC\nPressure: '+LFC_Pres+' [hPa]\nTemperature: '+LFC_Temp+' [℃]\n\nLCL\nPressure: ' + LCL_Pres + '[hPa]\nTemperature: ' + LCL_Temp + '[℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]', transform=skew.ax.transAxes,
+                             fontsize=6, fontweight='bold', verticalalignment='top', bbox=props)
+            
+            if LFC_NAN == True and EL_NAN == True:
+                skew.ax.text(0.04, 0.35,'LCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]', transform=skew.ax.transAxes,
+                             fontsize=6, fontweight='bold', verticalalignment='top', bbox=props)       
         
         # Plots LCL LFC and EL
         if lcl_pressure:
@@ -587,9 +676,15 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         
         ax1.tick_params(axis="y",direction="in", pad=-27)
         
-        hgt_mask = (ft <= 5500)
+        hgt_mask = (ft <= 6000)
         
-        ax1.plot(rh[hgt_mask], ft[hgt_mask], color='green', alpha=0.3)
+        ax1.plot(rh[hgt_mask], ft[hgt_mask], color='green', label=label_date, alpha=0.5)
+        try:
+            hgt_mask_24 = (ft_24 <= 6000)
+            ax1.plot(rh_24[hgt_mask_24], ft_24[hgt_mask_24], color='blue', label=label_date_24, alpha=0.5)
+        except Exception as e:
+            pass
+        
         ax1.axhline(y=1000, xmin=0.14, xmax=1, linewidth=0.5, linestyle='--', color='red')
         ax1.axhline(y=2000, xmin=0.14, xmax=1, linewidth=0.5, linestyle='--', color='red')
         ax1.axhline(y=3000, xmin=0.14, xmax=1, linewidth=0.5, linestyle='--', color='red')
@@ -597,6 +692,8 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         ax1.axhline(y=5000, xmin=0.14, xmax=1, linewidth=0.5, linestyle='--', color='red')
         ax1.set_xlabel("Relative Humidity [%]", fontweight='bold')
         ax1.set_ylabel("Height [ft AGL]", fontweight='bold')
+        ax1.legend(loc=(0.65, 0.9), prop={'size': 5})
+        ax1.set_yticks([1000, 2000, 3000, 4000, 5000])
         
         ax2 = fig.add_subplot(gs[0:3, 1:3])
         ax2.tick_params(axis="y",direction="in", pad=-25)
@@ -625,25 +722,57 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         x = np.empty_like(ft)
         x.fill(xloc)
         
-        ax2.barbs(x[idx], ft[idx], u[idx], v[idx], clip_on=True, zorder=10, color='darkred', length=5)
+        ax2.barbs(x[idx], ft[idx], u[idx], v[idx], clip_on=True, zorder=10, color='darkred', label=label_date, length=5, alpha=0.5)
+        
+        try:
+            ax2.barbs(x[idx], ft_24[idx], u_24[idx], v_24[idx], clip_on=True, zorder=10, color='darkblue', label=label_date_24, length=5, alpha=0.5)
+        except Exception as e:
+            pass
+            
         ax2.plot(u, ft, label='u-wind', color='darkorange', alpha=0.5)
         ax2.plot(v, ft, label='v-wind', color='indigo', alpha=0.5)
-        ax2.legend(loc=(0.58, 0.9), prop={'size': 5})
+        ax2.legend(loc=(0.9, 0), prop={'size': 5})
         bbox_props = dict(boxstyle='round', facecolor='bisque', alpha=1)
         ax2.text(1.01, 0.815, 'u-max: '+str(int(round(umax, 0)))+' [MPH]\nu-min: ' +str(int(round(umin, 0)))+' [MPH]\nv-max: ' +str(int(round(vmax, 0)))+' [MPH]\nv-min: ' +str(int(round(vmin, 0)))+' [MPH]', fontsize=6, fontweight='bold', bbox=bbox_props, transform=ax2.transAxes)
         
         ax2.set_xlabel("Wind Velocity [MPH]", fontsize=9, fontweight='bold')
         ax2.set_ylabel("Height [ft AGL]", fontsize=9, fontweight='bold')
+        ax2.set_yticks([1000, 2000, 3000, 4000, 5000])
         
         ax3 = fig.add_subplot(gs[0:3, 4:7])
         ax3.tick_params(axis="y",direction="in", pad=-32)
-        ax3.axvline(x=0, color='red', alpha=0.5, linestyle='--')
+        ax3.axvline(x=0, color='gray', alpha=0.5, linestyle='--')
         ax3.set_ylim(ft[0], 15000)
         ax3.set_xlabel("BVF-Squared [1/s^2]", fontsize=9, fontweight='bold')
         ax3.set_ylabel("Height [ft AGL]", fontsize=9, fontweight='bold')
+        ax3.set_yticks([2000, 4000, 6000, 8000, 10000, 12000, 14000])
         
         # Plots the Brunt–Väisälä Frequency Squared
-        ax3.plot(bv_squared, ft, color='blue')
+        ax3.plot(bv_squared, ft, color='red', alpha=0.5, label=label_date,)
+        try:
+            ax3.plot(bv_squared_24, ft_24, color='blue', alpha=0.5, label=label_date_24)
+        except Exception as e:
+            pass
+
+        ax3.legend(loc=(0.57, 0.9), prop={'size': 5})
+
+        ax4 = fig.add_subplot(gs[4:6, 1:4])
+
+        ax4.tick_params(axis="y",direction="in", pad=-27)
+        ax4.set_yticks([2000, 4000, 6000, 8000, 10000])
+        ax4.set_xlabel("Temperature [℃]", fontsize=9, fontweight='bold')
+        ax4.set_ylabel("Height [ft AGL]", fontsize=9, fontweight='bold')
+        
+        hgts_mask = (ft <= 12000)
+        
+        ax4.plot(temps[hgts_mask], ft[hgts_mask], color='darkred', label=label_date, alpha=0.5)
+        try:
+            hgts_mask_24 = (ft_24 <= 12000)
+            ax4.plot(temps_24[hgts_mask_24], ft_24[hgts_mask_24], color='magenta', label=label_date_24, alpha=0.5)
+        except Exception as e:
+            pass        
+
+        ax4.legend(loc=(0.2, 1.01), prop={'size': 7})
         
         fig.text(0.16, 0.05, "Plot Created With FireWxPy(C) Eric J. Drewitz 2024\nData Source: weather.uwyo.edu\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
 
