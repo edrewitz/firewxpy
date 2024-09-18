@@ -4,7 +4,7 @@ build-system:
   build-backend: setuptools.build_meta
 project:
   name: firewxpy
-  version: '1.0.0.6.73'
+  version: '1.0.0.6.74'
   authors:
     - name: 'Eric J Drewitz, USDA/USFS'
   description: Weather Analysis and Forecasting For Fire Weather
