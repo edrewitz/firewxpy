@@ -185,7 +185,7 @@ def plot_observed_sounding(station_id):
             lon_symbol = ' [\N{DEGREE SIGN}E]'
         
         interval = np.logspace(2, 3) * units.hPa
-        barb_mask = (pressure >= 250 * units.hPa)
+        barb_mask = (pressure >= 100 * units.hPa)
         pres = pressure[barb_mask]
         idx = mpcalc.resample_nn_1d(pres, interval)
         fig = plt.figure(figsize=(12, 10))
@@ -198,7 +198,7 @@ def plot_observed_sounding(station_id):
         fig.patch.set_facecolor('aliceblue')
         
         
-        skew.ax.set_ylim(1030, 250)
+        skew.ax.set_ylim(1030, 100)
         skew.plot_dry_adiabats(label='Dry Adiabats', alpha=0.5)
         skew.plot_mixing_lines(label='Mixing Ratio Lines', alpha=0.5)
         skew.plot_moist_adiabats(label='Moist Adiabats', alpha=0.5)
@@ -206,6 +206,8 @@ def plot_observed_sounding(station_id):
         skew.ax.set_xlabel("Temperature [℃]", fontsize=12, fontweight='bold')
         skew.ax.set_ylabel("Pressure [hPa]", fontsize=12, fontweight='bold')
         mask = (pressure >= 100 * units.hPa)
+        skew.ax.set_ylim(1030, 100)
+        skew.ax.set_xlim(-45, 45)
         
         wetbulb = mpcalc.wet_bulb_temperature(pressure[0], temperature, dewpoint).to('degC')
         
@@ -260,36 +262,32 @@ def plot_observed_sounding(station_id):
         try:
         
             if LFC_NAN == True and EL_NAN == False:
-                skew.ax.text(0.32, 0.65,'EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\nLCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]\n24-HR ΔMixing Height: '+sym+''+str(mheight_diff)+' [ft AGL]', transform=skew.ax.transAxes,
+                skew.ax.text(0.04, 0.35,'EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\nLCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]\n24-HR ΔMixing Height: '+sym+''+str(mheight_diff)+' [ft AGL]', transform=skew.ax.transAxes,
                              fontsize=6, fontweight='bold', verticalalignment='top', bbox=props)
             
             # Table if LFC   
             if LFC_NAN == False and EL_NAN == False:
-                skew.ax.text(0.32, 0.65,'EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\nLFC\nPressure: '+LFC_Pres+' [hPa]\nTemperature: '+LFC_Temp+' [℃]\n\nLCL\nPressure: ' + LCL_Pres + '[hPa]\nTemperature: ' + LCL_Temp + '[℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]\n24-HR ΔMixing Height: '+sym+''+str(mheight_diff)+' [ft AGL]', transform=skew.ax.transAxes,
-                             fontsize=10, fontweight='bold', verticalalignment='top', bbox=props)
+                skew.ax.text(0.04, 0.35,'EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\nLFC\nPressure: '+LFC_Pres+' [hPa]\nTemperature: '+LFC_Temp+' [℃]\n\nLCL\nPressure: ' + LCL_Pres + '[hPa]\nTemperature: ' + LCL_Temp + '[℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]\n24-HR ΔMixing Height: '+sym+''+str(mheight_diff)+' [ft AGL]', transform=skew.ax.transAxes,
+                             fontsize=6, fontweight='bold', verticalalignment='top', bbox=props)
             
             if LFC_NAN == True and EL_NAN == True:
-                skew.ax.text(0.32, 0.65,'LCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]\n24-HR ΔMixing Height: '+sym+''+str(mheight_diff)+' [ft AGL]', transform=skew.ax.transAxes,
-                             fontsize=7, fontweight='bold', verticalalignment='top', bbox=props)    
+                skew.ax.text(0.05, 0.4,'LCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]\n24-HR ΔMixing Height: '+sym+''+str(mheight_diff)+' [ft AGL]', transform=skew.ax.transAxes,
+                             fontsize=6, fontweight='bold', verticalalignment='top', bbox=props)    
 
         except Exception as e:
 
             if LFC_NAN == True and EL_NAN == False:
-                skew.ax.text(0.32, 0.65,'EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\nLCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]', transform=skew.ax.transAxes,
+                skew.ax.text(0.04, 0.35,'EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\nLCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]', transform=skew.ax.transAxes,
                              fontsize=6, fontweight='bold', verticalalignment='top', bbox=props)
             
             # Table if LFC   
             if LFC_NAN == False and EL_NAN == False:
-                skew.ax.text(0.32, 0.65,'EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\nLFC\nPressure: '+LFC_Pres+' [hPa]\nTemperature: '+LFC_Temp+' [℃]\n\nLCL\nPressure: ' + LCL_Pres + '[hPa]\nTemperature: ' + LCL_Temp + '[℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]', transform=skew.ax.transAxes,
+                skew.ax.text(0.04, 0.35,'EL\nPressure: '+EL_Pres+' [hPa]\nTemperature: '+EL_Temp+' [℃]\n\nLFC\nPressure: '+LFC_Pres+' [hPa]\nTemperature: '+LFC_Temp+' [℃]\n\nLCL\nPressure: ' + LCL_Pres + '[hPa]\nTemperature: ' + LCL_Temp + '[℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]', transform=skew.ax.transAxes,
                              fontsize=6, fontweight='bold', verticalalignment='top', bbox=props)
             
             if LFC_NAN == True and EL_NAN == True:
-                skew.ax.text(0.32, 0.65,'LCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]', transform=skew.ax.transAxes,
-                             fontsize=6, fontweight='bold', verticalalignment='top', bbox=props)   
-            
-           
-        # x-limits of the skewT        
-        skew.ax.set_xlim(-25, 30)
+                skew.ax.text(0.04, 0.35,'LCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]', transform=skew.ax.transAxes,
+                             fontsize=6, fontweight='bold', verticalalignment='top', bbox=props)       
         
         # Plots LCL LFC and EL
         if lcl_pressure:
@@ -572,8 +570,7 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
             skew.ax.text(0.02, 0.65,'               LCL\nPressure: ' + LCL_Pres + ' [hPa]\nTemperature: ' + LCL_Temp + ' [℃]\n\nMixing Height: '+str(mheight)+' [ft AGL]', transform=skew.ax.transAxes,
                          fontsize=10, fontweight='bold', verticalalignment='top', bbox=props)    
            
-        # x-limits of the skewT        
-        skew.ax.set_xlim(-25, 30)
+        # x-limits of the skewT       
         
         # Plots LCL LFC and EL
         if lcl_pressure:
