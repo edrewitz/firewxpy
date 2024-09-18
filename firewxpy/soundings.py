@@ -42,6 +42,8 @@ def plot_observed_sounding(station_id):
             else:
                 day = local_time.day
                 hour = 12
+        else:
+            hour = 0
     else:
         hour = 12
 
