@@ -36,7 +36,7 @@ def plot_observed_sounding(station_id):
     day = utc_time.day
     
     if utc_time.hour >= 0 and utc_time.hour < 13:
-        if utc_time.hour == 0
+        if utc_time.hour == 0:
             if utc_time.minute >= 45:
                 hour = 0
             else:
