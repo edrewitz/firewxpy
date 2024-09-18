@@ -159,6 +159,7 @@ class Thermodynamics:
         e = Thermodynamics.saturation_vapor_pressure(dewpoint)
         e_s = Thermodynamics.saturation_vapor_pressure(temperature)
         return (e / e_s) * 100
+
     def find_mixing_height(temperature, height, df_len):
         temperture = temperature
         height = height
@@ -172,6 +173,7 @@ class Thermodynamics:
     
         mixing_height = vals[0]
         return round(mixing_height * 3.28084, 1)
+       
 
 class scaling:
 
