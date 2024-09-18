@@ -172,6 +172,8 @@ class Thermodynamics:
                 vals.append(val)
     
         mixing_height = vals[0]
+        if mixing_height < 0:
+            mixing_height = 0
         return round(mixing_height * 3.28084, 1)
        
 
