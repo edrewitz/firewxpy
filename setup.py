@@ -10,7 +10,7 @@ setup(
     packages = find_packages(),
     install_requires=[
         "matplotlib>=3.7",
-        "protobuf=3.20.3",
+        "protobuf==3.20.3",
         "metpy>=1.5.1",
         "netcdf4>=1.7.1",
         "numpy>=1.24",
