@@ -27,7 +27,7 @@ project:
   dependencies:
     - matplotlib>=3.7
     - metpy>=1.5.1
-    - protobuf=3.20.3
+    - protobuf==3.20.3
     - netcdf4>=1.7.1
     - numpy>=1.24
     - pandas>=2
