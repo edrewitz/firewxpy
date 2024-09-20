@@ -131,7 +131,6 @@ def plot_observed_sounding(station_id):
         theta = mpcalc.potential_temperature(pressure, temperature)
 
         try:
-
             df_24.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
             df_24.dropna(axis=0, inplace=True)
             df_24 = pandas_dataframe_to_unit_arrays(df_24)
@@ -154,7 +153,7 @@ def plot_observed_sounding(station_id):
             ft_24 = ft_24 - elevation_24
             hgts_24 = hgt_24
             hgt_24 = hgt_24 - elevation_24
-    
+            
             if len(temps_24) > len(hgts_24):
                 df_len_24 = len(hgts_24)
             elif len(temps_24) < len(hgts_24):
