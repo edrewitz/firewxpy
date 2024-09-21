@@ -200,10 +200,6 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
     
     if state != None and gacc_region == None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
-
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize + 2 
-            subplot_title_fontsize = subplot_title_fontsize + 2
             
 
         mpl.rcParams['xtick.labelsize'] = tick
@@ -259,7 +255,7 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
     if test == True and time == None:
         
         try:
-            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
             temp = ds['tmp2m']
             dwpt = ds['dpt2m']
             lat = ds['lat']
@@ -287,8 +283,26 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
             
             rtma_data = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
             print("Unpacked the data successfully!")
+            
         except Exception as e:
-            pass
+
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+            
+            try:
+                ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
+                temp = ds['tmp2m']
+                dwpt = ds['dpt2m']
+                lat = ds['lat']
+                lon = ds['lon']
+                temp = temp - 273.15
+                dwpt = dwpt - 273.15
+                
+                rtma_data = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
+                            
+                print("Unpacked the data successfully!")
+
+            except Exception as e:
+                pass
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -548,7 +562,7 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
                 county_border_linewidth=0.25
     
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour RH Comparison')
 
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
@@ -603,7 +617,7 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
     if test == True and time == None:
         
         try:
-            ds, ds_24, rtma_time, rtma_time_24 = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+            ds, ds_24, rtma_time, rtma_time_24 = RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
             temp = ds['tmp2m']
             dwpt = ds['dpt2m']
             lat = ds['lat']
@@ -655,7 +669,32 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
 
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+            try:
+                ds, ds_24, rtma_time, rtma_time_24 = RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+                temp = ds['tmp2m']
+                dwpt = ds['dpt2m']
+                lat = ds['lat']
+                lon = ds['lon']
+                temp = temp - 273.15
+                dwpt = dwpt - 273.15
+    
+                temp_24 = ds_24['tmp2m']
+                dwpt_24 = ds_24['dpt2m']
+                lat_24 = ds_24['lat']
+                lon_24 = ds_24['lon']
+                temp_24 = temp_24 - 273.15
+                dwpt_24 = dwpt_24 - 273.15
+                
+                rtma_data = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
+                rtma_data_24 = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp_24, dwpt_24)
+    
+                diff = rtma_data[0, :, :] - rtma_data_24[0, :, :]
+                            
+                print("Unpacked the data successfully!")
+
+            except Exception as e:
+                pass
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -928,9 +967,6 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
     if state != None and gacc_region == None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize + 2 
-            subplot_title_fontsize = subplot_title_fontsize + 2
 
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
@@ -982,7 +1018,7 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
     if test == True and time == None:
         
         try:
-            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
             temp = ds['tmp2m']
             lat = ds['lat']
             lon = ds['lon']
@@ -1004,7 +1040,19 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
             
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
+                temp = ds['tmp2m']
+                lat = ds['lat']
+                lon = ds['lon']
+                temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp)
+                            
+                print("Unpacked the data successfully!")   
+
+            except Exception as e:
+                pass
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -1267,10 +1315,6 @@ def plot_temperature_advection(western_bound=None, eastern_bound=None, southern_
     if state != None and gacc_region == None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize + 2 
-            subplot_title_fontsize = subplot_title_fontsize + 2
-
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
 
@@ -1321,7 +1365,7 @@ def plot_temperature_advection(western_bound=None, eastern_bound=None, southern_
     if test == True and time == None:
         
         try:
-            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
             temp = ds['tmp2m']
             u = ds['ugrd10m']
             v = ds['vgrd10m']
@@ -1347,8 +1391,22 @@ def plot_temperature_advection(western_bound=None, eastern_bound=None, southern_
             
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
-        
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
+                temp = ds['tmp2m']
+                u = ds['ugrd10m']
+                v = ds['vgrd10m']
+                lat = ds['lat']
+                lon = ds['lon']
+                temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp)
+                            
+                print("Unpacked the data successfully!")
+
+            except Exception as e:
+                pass
+                
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
 
@@ -1615,9 +1673,6 @@ def plot_dew_point_advection(western_bound=None, eastern_bound=None, southern_bo
     if state != None and gacc_region == None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize + 2 
-            subplot_title_fontsize = subplot_title_fontsize + 2
 
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
@@ -1669,7 +1724,7 @@ def plot_dew_point_advection(western_bound=None, eastern_bound=None, southern_bo
     if test == True and time == None:
         
         try:
-            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
             temp = ds['dpt2m']
             u = ds['ugrd10m']
             v = ds['vgrd10m']
@@ -1695,8 +1750,21 @@ def plot_dew_point_advection(western_bound=None, eastern_bound=None, southern_bo
             
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
-        
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
+                temp = ds['dpt2m']
+                u = ds['ugrd10m']
+                v = ds['vgrd10m']
+                lat = ds['lat']
+                lon = ds['lon']
+                temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp)
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass
+                 
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
 
@@ -1962,10 +2030,6 @@ def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, sou
     if state != None and gacc_region == None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize + 2 
-            subplot_title_fontsize = subplot_title_fontsize + 2
-
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
 
@@ -2016,7 +2080,7 @@ def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, sou
     if test == True and time == None:
         
         try:
-            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
             temp = ds['tmp2m']
             dwpt = ds['dpt2m']
             temp = temp - 273.15
@@ -2026,8 +2090,7 @@ def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, sou
             v = ds['vgrd10m']
             lat = ds['lat']
             lon = ds['lon']
-
-                        
+      
             print("Unpacked the data successfully!")
         except Exception as e:
             pass
@@ -2049,8 +2112,25 @@ def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, sou
             
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
-        
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
+                temp = ds['tmp2m']
+                dwpt = ds['dpt2m']
+                temp = temp - 273.15
+                dwpt = dwpt - 273.15
+                rh = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
+                u = ds['ugrd10m']
+                v = ds['vgrd10m']
+                lat = ds['lat']
+                lon = ds['lon']
+    
+                print("Unpacked the data successfully!")
+
+            except Exception as e:
+                pass
+
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
 
@@ -2314,10 +2394,6 @@ def plot_frost_freeze(western_bound=None, eastern_bound=None, southern_bound=Non
     if state != None and gacc_region == None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize + 2 
-            subplot_title_fontsize = subplot_title_fontsize + 2
-
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
 
@@ -2368,7 +2444,7 @@ def plot_frost_freeze(western_bound=None, eastern_bound=None, southern_bound=Non
     if test == True and time == None:
         
         try:
-            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
             temp = ds['tmp2m']
             lat = ds['lat']
             lon = ds['lon']
@@ -2390,8 +2466,19 @@ def plot_frost_freeze(western_bound=None, eastern_bound=None, southern_bound=Non
             
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
-        
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
+                temp = ds['tmp2m']
+                lat = ds['lat']
+                lon = ds['lon']
+                temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp)
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass
+
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
 
@@ -2652,10 +2739,6 @@ def plot_extreme_heat(temperature_threshold=100, western_bound=None, eastern_bou
     if state != None and gacc_region == None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize + 2 
-            subplot_title_fontsize = subplot_title_fontsize + 2
-
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
 
@@ -2706,7 +2789,7 @@ def plot_extreme_heat(temperature_threshold=100, western_bound=None, eastern_bou
     if test == True and time == None:
         
         try:
-            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
             temp = ds['tmp2m']
             lat = ds['lat']
             lon = ds['lon']
@@ -2728,7 +2811,18 @@ def plot_extreme_heat(temperature_threshold=100, western_bound=None, eastern_bou
             
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
+                temp = ds['tmp2m']
+                lat = ds['lat']
+                lon = ds['lon']
+                temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp)
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass    
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -2988,7 +3082,7 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
                 county_border_linewidth=0.25
     
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Temperature Comparison')
 
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
@@ -3043,7 +3137,7 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
     if test == True and time == None:
         
         try:
-            ds, ds_24, rtma_time, rtma_time_24 = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+            ds, ds_24, rtma_time, rtma_time_24 = RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
             temp = ds['tmp2m']
             lat = ds['lat']
             lon = ds['lon']
@@ -3081,7 +3175,25 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
 
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, ds_24, rtma_time, rtma_time_24 = RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+                temp = ds['tmp2m']
+                lat = ds['lat']
+                lon = ds['lon']
+                temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp)
+    
+                temp_24 = ds_24['tmp2m']
+                lat_24 = ds_24['lat']
+                lon_24 = ds_24['lon']
+                temp_24 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_24)
+    
+                diff = temp[0, :, :] - temp_24[0, :, :]
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass    
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -3353,10 +3465,6 @@ def plot_dew_point(western_bound=None, eastern_bound=None, southern_bound=None, 
     if state != None and gacc_region == None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize + 2 
-            subplot_title_fontsize = subplot_title_fontsize + 2
-
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
 
@@ -3407,7 +3515,7 @@ def plot_dew_point(western_bound=None, eastern_bound=None, southern_bound=None, 
     if test == True and time == None:
         
         try:
-            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
             temp = ds['dpt2m']
             lat = ds['lat']
             lon = ds['lon']
@@ -3429,7 +3537,18 @@ def plot_dew_point(western_bound=None, eastern_bound=None, southern_bound=None, 
             
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
+                temp = ds['dpt2m']
+                lat = ds['lat']
+                lon = ds['lon']
+                temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp)
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -3689,7 +3808,7 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
                 county_border_linewidth=0.25
     
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Dewpoint Comparison')
 
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
@@ -3744,7 +3863,7 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
     if test == True and time == None:
         
         try:
-            ds, ds_24, rtma_time, rtma_time_24 = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+            ds, ds_24, rtma_time, rtma_time_24 = RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
             temp = ds['dpt2m']
             lat = ds['lat']
             lon = ds['lon']
@@ -3782,7 +3901,25 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
 
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, ds_24, rtma_time, rtma_time_24 = RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+                temp = ds['dpt2m']
+                lat = ds['lat']
+                lon = ds['lon']
+                temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp)
+    
+                temp_24 = ds_24['dpt2m']
+                lat_24 = ds_24['lat']
+                lon_24 = ds_24['lon']
+                temp_24 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temp_24)
+    
+                diff = temp[0, :, :] - temp_24[0, :, :]
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -4049,10 +4186,6 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
     if state != None and gacc_region == None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize + 1 
-            subplot_title_fontsize = subplot_title_fontsize + 1
-
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
 
@@ -4103,7 +4236,7 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
     if test == True and time == None:
         
         try:
-            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
             lat = ds['lat']
             lon = ds['lon']
             tcdcclm = ds['tcdcclm']
@@ -4123,7 +4256,17 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
             
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
+                lat = ds['lat']
+                lon = ds['lon']
+                tcdcclm = ds['tcdcclm']
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -4383,11 +4526,7 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
                 county_border_linewidth=0.25
     
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
-
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize - 1 
-         #   subplot_title_fontsize = subplot_title_fontsize - 1
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Total Cloud Cover Comparison')
 
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
@@ -4442,7 +4581,7 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
     if test == True and time == None:
         
         try:
-            ds, ds_24, rtma_time, rtma_time_24 = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+            ds, ds_24, rtma_time, rtma_time_24 = RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
             tcdcclm= ds['tcdcclm']
             lat = ds['lat']
             lon = ds['lon']
@@ -4476,7 +4615,23 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
 
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, ds_24, rtma_time, rtma_time_24 = RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+                tcdcclm= ds['tcdcclm']
+                lat = ds['lat']
+                lon = ds['lon']
+    
+                tcdcclm_24 = ds_24['tcdcclm']
+                lat_24 = ds_24['lat']
+                lon_24 = ds_24['lon']
+    
+                diff = tcdcclm[0, :, :] - tcdcclm_24[0, :, :]
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -4744,10 +4899,6 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
     if state != None and gacc_region == None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize + 1 
-            subplot_title_fontsize = subplot_title_fontsize + 1
-
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
 
@@ -4798,7 +4949,7 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
     if test == True and time == None:
         
         try:
-            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
             lat = ds['lat']
             lon = ds['lon']
             ws = ds['wind10m']
@@ -4820,7 +4971,18 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
             
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
+                lat = ds['lat']
+                lon = ds['lon']
+                ws = ds['wind10m']
+                ws = unit_conversion.meters_per_second_to_mph(ws)
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -5080,7 +5242,7 @@ def plot_24_hour_wind_speed_comparison(western_bound=None, eastern_bound=None, s
                 county_border_linewidth=0.25
     
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Wind Speed Comparison')
 
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
@@ -5135,7 +5297,7 @@ def plot_24_hour_wind_speed_comparison(western_bound=None, eastern_bound=None, s
     if test == True and time == None:
         
         try:
-            ds, ds_24, rtma_time, rtma_time_24 = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+            ds, ds_24, rtma_time, rtma_time_24 = RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
             ws = ds['wind10m']
             lat = ds['lat']
             lon = ds['lon']
@@ -5173,7 +5335,25 @@ def plot_24_hour_wind_speed_comparison(western_bound=None, eastern_bound=None, s
 
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, ds_24, rtma_time, rtma_time_24 = RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+                ws = ds['wind10m']
+                lat = ds['lat']
+                lon = ds['lon']
+                ws = unit_conversion.meters_per_second_to_mph(ws)
+    
+                ws_24 = ds_24['wind10m']
+                lat_24 = ds_24['lat']
+                lon_24 = ds_24['lon']
+                ws_24 = unit_conversion.meters_per_second_to_mph(ws_24)
+    
+                diff = ws[0, :, :] - ws_24[0, :, :]
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -5443,10 +5623,6 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
     if state != None and gacc_region == None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize - 1
-            subplot_title_fontsize = subplot_title_fontsize - 1
-
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
 
@@ -5497,7 +5673,7 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
     if test == True and time == None:
         
         try:
-            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
             u = ds['ugrd10m']
             v = ds['vgrd10m']
             ws = ds['wind10m']
@@ -5529,7 +5705,23 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
             
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
+                u = ds['ugrd10m']
+                v = ds['vgrd10m']
+                ws = ds['wind10m']
+                lon = ds['lon']
+                lat = ds['lat']
+                ws = unit_conversion.meters_per_second_to_mph(ws)
+                lon_2d, lat_2d = np.meshgrid(lon, lat)
+                u = unit_conversion.meters_per_second_to_mph(u)
+                v = unit_conversion.meters_per_second_to_mph(v)    
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass    
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -5799,7 +5991,7 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
                 county_border_linewidth=0.25
     
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Wind Speed & Direction Comparison')
 
 
         mpl.rcParams['xtick.labelsize'] = tick
@@ -5854,7 +6046,7 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
     if test == True and time == None:
         
         try:
-            ds, ds_24, rtma_time, rtma_time_24 = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+            ds, ds_24, rtma_time, rtma_time_24 = RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
             u = ds['ugrd10m']
             v = ds['vgrd10m']
             u_24 = ds_24['ugrd10m']
@@ -5908,7 +6100,33 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
 
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, ds_24, rtma_time, rtma_time_24 = RTMA_CONUS.get_RTMA_24_hour_comparison_datasets(utc_time)
+                u = ds['ugrd10m']
+                v = ds['vgrd10m']
+                u_24 = ds_24['ugrd10m']
+                v_24 = ds_24['vgrd10m']
+                ws = ds['wind10m']
+                ws_24 = ds_24['wind10m']
+                lon = ds['lon']
+                lat = ds['lat']
+                lon_24 = ds_24['lon']
+                lat_24 = ds_24['lat']
+                ws = unit_conversion.meters_per_second_to_mph(ws)
+                ws_24 = unit_conversion.meters_per_second_to_mph(ws_24)
+                diff = ws[0, :, :] - ws_24[0, :, :]
+                lon_2d, lat_2d = np.meshgrid(lon, lat)
+                lon_24_2d, lat_24_2d = np.meshgrid(lon_24, lat_24)
+                u = unit_conversion.meters_per_second_to_mph(u)
+                v = unit_conversion.meters_per_second_to_mph(v)
+                u_24 = unit_conversion.meters_per_second_to_mph(u_24)
+                v_24 = unit_conversion.meters_per_second_to_mph(v_24)            
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass    
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -6198,7 +6416,7 @@ def plot_dry_and_windy_areas(low_rh_threshold=15, high_wind_threshold=25, wester
                 county_border_linewidth=0.25
     
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', True)
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', True, 'Dry and Windy Areas')
             
 
         mpl.rcParams['xtick.labelsize'] = tick
@@ -6261,7 +6479,7 @@ def plot_dry_and_windy_areas(low_rh_threshold=15, high_wind_threshold=25, wester
     if test == True and time == None:
         
         try:
-            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
             temp = ds['tmp2m']
             dwpt = ds['dpt2m']
             temp = temp - 273.15
@@ -6301,7 +6519,28 @@ def plot_dry_and_windy_areas(low_rh_threshold=15, high_wind_threshold=25, wester
             rtma_wind = rtma_wind[0, :, :] 
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
+                temp = ds['tmp2m']
+                dwpt = ds['dpt2m']
+                temp = temp - 273.15
+                dwpt = dwpt - 273.15
+                rtma_wind = ds['wind10m']
+                u = ds['ugrd10m']
+                v = ds['vgrd10m']
+                u = unit_conversion.meters_per_second_to_mph(u)
+                v = unit_conversion.meters_per_second_to_mph(v)
+                rtma_wind = unit_conversion.meters_per_second_to_mph(rtma_wind)
+                rtma_rh = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
+        
+                rtma_rh = rtma_rh[0, :, :]
+                rtma_wind = rtma_wind[0, :, :] 
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass    
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -6722,7 +6961,7 @@ def plot_dry_and_gusty_areas(low_rh_threshold=15, high_wind_threshold=25, wester
                 county_border_linewidth=0.25
     
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', True)
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', True, 'Dry and Gusty Areas')
             
 
         mpl.rcParams['xtick.labelsize'] = tick
@@ -6788,7 +7027,7 @@ def plot_dry_and_gusty_areas(low_rh_threshold=15, high_wind_threshold=25, wester
     if test == True and time == None:
         
         try:
-            ds, rtma_time = da.NOMADS_OPENDAP_Downloads.RTMA_CONUS.get_RTMA_dataset(utc_time)
+            ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
             temp = ds['tmp2m']
             dwpt = ds['dpt2m']
             temp = temp - 273.15
@@ -6820,7 +7059,24 @@ def plot_dry_and_gusty_areas(low_rh_threshold=15, high_wind_threshold=25, wester
             rtma_wind = rtma_wind[0, :, :] 
             print("Unpacked the data successfully!")
         except Exception as e:
-            pass
+            print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+
+            try:
+                ds, rtma_time = RTMA_CONUS.get_RTMA_dataset(utc_time)
+                temp = ds['tmp2m']
+                dwpt = ds['dpt2m']
+                temp = temp - 273.15
+                dwpt = dwpt - 273.15
+                rtma_wind = ds['gust10m']
+                rtma_wind = unit_conversion.meters_per_second_to_mph(rtma_wind)
+                rtma_rh = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
+        
+                rtma_rh = rtma_rh[0, :, :]
+                rtma_wind = rtma_wind[0, :, :] 
+                            
+                print("Unpacked the data successfully!")
+            except Exception as e:
+                pass    
         
     else:
         print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
@@ -7188,12 +7444,7 @@ def plot_relative_humidity_with_metar_obs(western_bound=None, eastern_bound=None
                 county_border_linewidth=0.25
     
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
-
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize + 2 
-            subplot_title_fontsize = subplot_title_fontsize + 2
-            
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, 'RH & METAR')            
 
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
@@ -7226,7 +7477,7 @@ def plot_relative_humidity_with_metar_obs(western_bound=None, eastern_bound=None
     
     if data == None:
         try:
-            data = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(utc_time, mask)
+            data = RTMA_CONUS.RTMA_Relative_Humidity_Synced_With_METAR(utc_time, mask)
             rtma_data = data[0]
             rtma_time = data[1]
             sfc_data = data[2]
@@ -7236,9 +7487,9 @@ def plot_relative_humidity_with_metar_obs(western_bound=None, eastern_bound=None
             sfc_data_decimate = data[6]
             metar_time_revised = data[7]
             plot_proj = data[8]   
-            lat = data[9]
-            lon = data[10]
-            
+            lat = rtma_data['latitude']
+            lon = rtma_data['longitude']
+        
             print("Unpacked the data successfully!")
         except Exception as e:
             pass
@@ -7260,8 +7511,8 @@ def plot_relative_humidity_with_metar_obs(western_bound=None, eastern_bound=None
 
         except Exception as f:
             try:
-                print("Unable to unpack the data. Downloading the data again...")
-                data = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(utc_time, mask)
+                print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+                data = RTMA_CONUS.RTMA_Relative_Humidity_Synced_With_METAR(utc_time, mask)
                 rtma_data = data[0]
                 rtma_time = data[1]
                 sfc_data = data[2]
@@ -7271,8 +7522,8 @@ def plot_relative_humidity_with_metar_obs(western_bound=None, eastern_bound=None
                 sfc_data_decimate = data[6]
                 metar_time_revised = data[7]
                 plot_proj = data[8] 
-                lat = data[9]
-                lon = data[10]
+                lat = rtma_data['latitude']
+                lon = rtma_data['longitude']
                 
                 print("Unpacked the data successfully!")
             except Exception as g:
@@ -7347,7 +7598,7 @@ def plot_relative_humidity_with_metar_obs(western_bound=None, eastern_bound=None
     else:
         pass
 
-    cs = ax.contourf(lon, lat, rtma_data[0, :, :], 
+    cs = ax.contourf(lon, lat, rtma_data, 
                      transform=datacrs, levels=contourf, cmap=cmap, alpha=alpha)
 
     cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=labels)
@@ -7537,13 +7788,8 @@ def plot_low_relative_humidity_with_metar_obs(low_rh_threshold=15, western_bound
                 county_border_linewidth=0.25
     
     if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
-
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize + 2 
-            subplot_title_fontsize = subplot_title_fontsize + 2
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, 'Low RH & METAR')
             
-
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
 
@@ -7575,7 +7821,7 @@ def plot_low_relative_humidity_with_metar_obs(low_rh_threshold=15, western_bound
     
     if data == None:
         try:
-            data = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(utc_time, mask)
+            data = RTMA_CONUS.RTMA_Relative_Humidity_Synced_With_METAR(utc_time, mask)
             rtma_data = data[0]
             rtma_time = data[1]
             sfc_data = data[2]
@@ -7609,8 +7855,8 @@ def plot_low_relative_humidity_with_metar_obs(low_rh_threshold=15, western_bound
 
         except Exception as f:
             try:
-                print("Unable to unpack the data. Downloading the data again...")
-                data = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.RTMA_Relative_Humidity_Synced_With_METAR(utc_time, mask)
+                print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+                data = RTMA_CONUS.RTMA_Relative_Humidity_Synced_With_METAR(utc_time, mask)
                 rtma_data = data[0]
                 rtma_time = data[1]
                 sfc_data = data[2]
@@ -7718,7 +7964,7 @@ def plot_low_relative_humidity_with_metar_obs(low_rh_threshold=15, western_bound
     
     stn.plot_barb(sfc_data['u'][sfc_data_decimate], sfc_data['v'][sfc_data_decimate])
 
-    plt.title("RTMA Low Relative Humidity (%) & METAR Observations\n[Relative Humidity <= "+str(low_rh_threshold)+" (%)]", fontsize=title_fontsize, fontweight='bold', loc='left')
+    plt.title("RTMA Low Relative Humidity (%) & METAR Observations\n[Relative Humidity (Shaded) <= "+str(low_rh_threshold)+" (%)]", fontsize=title_fontsize, fontweight='bold', loc='left')
     
     plt.title("Analysis & METARs Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
