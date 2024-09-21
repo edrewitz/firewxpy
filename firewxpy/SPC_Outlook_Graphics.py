@@ -19,25 +19,27 @@ This file was written by Meteorologist Eric J. Drewitz
 
 import pytz
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import metpy.plots as mpplots
 import numpy as np
-import parsers
-import data_access as da
-import geometry
-import colormaps
-import standard
-import settings
+import firewxpy.parsers as parsers
+import firewxpy.geometry as geometry
+import firewxpy.colormaps as colormaps
+import firewxpy.standard as standard
+import firewxpy.settings as settings
 
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
 from metpy.plots import colortables
 from dateutil import tz
+from firewxpy.utilities import file_functions
+from firewxpy.data_access import NDFD_CONUS
 
+mpl.rcParams['font.weight'] = 'bold'
 
-
-def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, colorbar_pad=0.02, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True, show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, state='us', gacc_region=None):
+def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, state='us', gacc_region=None, cwa=None, aspect=30, colorbar_pad=0.02):
 
     r'''
         This function plots the latest available Storm Prediction Center Critical Fire Weather Forecast. 
@@ -235,10 +237,109 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
 
     cmap = colormaps.SPC_Critical_Fire_Weather_Risk_Outlook_colormap()
         
+    reference_system = reference_system
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+    x1, x2, x3, y = settings.get_colorbar_label_coords(state, 'critical fire')
+
+    if reference_system == 'Custom' or reference_system == 'custom':
+        show_state_borders = show_state_borders
+        show_county_borders = show_county_borders
+        show_gacc_borders = show_gacc_borders
+        show_psa_borders = show_psa_borders
+        show_cwa_borders = show_cwa_borders
+        show_nws_firewx_zones = show_nws_firewx_zones
+        show_nws_public_zones = show_nws_public_zones
+
+    if reference_system != 'Custom' and reference_system != 'custom':
+        
+        show_state_borders = False
+        show_county_borders = False
+        show_gacc_borders = False
+        show_psa_borders = False
+        show_cwa_borders = False
+        show_nws_firewx_zones = False
+        show_nws_public_zones = False
+
+        if reference_system == 'States Only':
+            show_state_borders = True
+        if reference_system == 'States & Counties':
+            show_state_borders = True
+            show_county_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                county_border_linewidth=0.25
+        if reference_system == 'GACC Only':
+            show_gacc_borders = True
+        if reference_system == 'GACC & PSA':
+            show_gacc_borders = True
+            show_psa_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.25
+        if reference_system == 'CWA Only':
+            show_cwa_borders = True
+        if reference_system == 'NWS CWAs & NWS Public Zones':
+            show_cwa_borders = True
+            show_nws_public_zones = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                nws_public_zones_linewidth=0.25
+        if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
+            show_cwa_borders = True
+            show_nws_firewx_zones = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                nws_firewx_zones_linewidth=0.25
+        if reference_system == 'NWS CWAs & Counties':
+            show_cwa_borders = True
+            show_county_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                county_border_linewidth=0.25
+        if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_nws_firewx_zones = True
+            nws_firewx_zones_linewidth=0.25
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.5
+        if reference_system == 'GACC & PSA & NWS Public Zones':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_nws_public_zones = True
+            nws_public_zones_linewidth=0.25
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.5
+        if reference_system == 'GACC & PSA & NWS CWA':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_cwa_borders = True
+            cwa_border_linewidth=0.25
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.5
+        if reference_system == 'GACC & PSA & Counties':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_county_borders = True
+            county_border_linewidth=0.25
+        if reference_system == 'GACC & Counties':
+            show_gacc_borders = True
+            show_county_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                county_border_linewidth=0.25
+    
+    if state != None and gacc_region == None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'spc', False)
+
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
+
+
+    if state == None and gacc_region != None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'spc', False)
+
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
+
+
+    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
 
         fig_x_length = fig_x_length
         fig_y_length = fig_y_length
@@ -248,44 +349,36 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
         eastern_bound = eastern_bound
         southern_bound = southern_bound
         northern_bound = northern_bound
+        state = 'Custom'
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
+        aspect=aspect
+
+
+        if file_path == None:
+            directory_name = settings.check_NDFD_directory_name('us')
+        else:
+            directory_name = settings.check_NDFD_directory_name(directory_name)
 
     else:
         pass
 
-    if state == None and gacc_region == None:
+    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
     
-        directory_name = settings.check_NDFD_directory_name(directory_name)
+    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
 
-    if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'critical fire')
+    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
 
-        x1, x2, x3, y = settings.get_colorbar_label_coords(state, 'critical fire')
-        
+    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
 
-    if state == None and gacc_region != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'critical fire')
+    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
-
-    from_zone = tz.tzutc()
-    to_zone = tz.tzlocal()
-
-    PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-    GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+    directory_name = settings.check_NDFD_directory_name(directory_name)
 
     if file_path == None:
 
-        try:
+        grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.critfireo.bin')
 
-            grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.critfireo.bin')
-
-            print("Downloaded data successfully!")
-        except Exception as a:
-
-            print("Trying again to download data...")
-
-            count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.critfireo.bin')
-    
-                
         grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.critfireo.bin', 24, False, count_short, count_extended, directory_name)
 
     if file_path != None:
@@ -336,12 +429,15 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
         
     files = count
 
+    props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
     
     figs = [] 
 
     fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig1.set_facecolor('aliceblue')
-    fig1.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+    
+    fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
     ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
     ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -366,20 +462,23 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
         ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
     else:
         pass
-    ax1.set_title('Critical Fire Wx Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+    ax1.set_title('SPC Critical Fire Wx Forecast [Day 1]', fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+    ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
     cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 12, 2), cmap=cmap, transform=datacrs, zorder=2)
 
     cbar1 = fig1.colorbar(cs1, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
     cbar1.set_ticks([])
 
-    fig1.text(x1, y,'ELEVATED', fontsize=13, fontweight='bold')
-    fig1.text(x2, y,'CRITICAL', fontsize=13, fontweight='bold')
-    fig1.text(x3, y,'EXTREME', fontsize=13, fontweight='bold')
+    fig1.text(x1, y,'ELEVATED', fontsize=legend_fontsize, fontweight='bold')
+    fig1.text(x2, y,'CRITICAL', fontsize=legend_fontsize, fontweight='bold')
+    fig1.text(x3, y,'EXTREME', fontsize=legend_fontsize, fontweight='bold')
     
     fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig2.set_facecolor('aliceblue')
-    fig2.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+    fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
     ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
     ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -404,22 +503,23 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
         ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
     else:
         pass
+
+    ax2.set_title('SPC Critical Fire Wx Forecast [Day 2]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
-    ax2.set_title('Critical Fire Wx Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
     cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 12, 2), cmap=cmap, transform=datacrs, zorder=2)
 
     cbar2 = fig2.colorbar(cs2, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
     cbar2.set_ticks([])
 
-    fig2.text(x1, y,'ELEVATED', fontsize=13, fontweight='bold')
-    fig2.text(x2, y,'CRITICAL', fontsize=13, fontweight='bold')
-    fig2.text(x3, y,'EXTREME', fontsize=13, fontweight='bold')
-
+    fig2.text(x1, y,'ELEVATED', fontsize=legend_fontsize, fontweight='bold')
+    fig2.text(x2, y,'CRITICAL', fontsize=legend_fontsize, fontweight='bold')
+    fig2.text(x3, y,'EXTREME', fontsize=legend_fontsize, fontweight='bold')
 
     fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig3.set_facecolor('aliceblue')
-    fig3.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+    fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
     ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
     ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -444,21 +544,24 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
         ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
     else:
         pass
-    ax3.set_title('Critical Fire Wx Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+    ax3.set_title('SPC Critical Fire Wx Forecast [Day 3]', fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+    ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
     cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 12, 2), cmap=cmap, transform=datacrs, zorder=2)
 
     cbar3 = fig3.colorbar(cs3, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
     cbar3.set_ticks([])
 
-    fig3.text(x1, y,'ELEVATED', fontsize=13, fontweight='bold')
-    fig3.text(x2, y,'CRITICAL', fontsize=13, fontweight='bold')
-    fig3.text(x3, y,'EXTREME', fontsize=13, fontweight='bold')
+    fig3.text(x1, y,'ELEVATED', fontsize=legend_fontsize, fontweight='bold')
+    fig3.text(x2, y,'CRITICAL', fontsize=legend_fontsize, fontweight='bold')
+    fig3.text(x3, y,'EXTREME', fontsize=legend_fontsize, fontweight='bold')
     
     fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig4.set_facecolor('aliceblue')
-    fig4.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
-    
+    fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+
     ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
     ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
     ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -482,21 +585,24 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
         ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
     else:
         pass
-    ax4.set_title('Critical Fire Wx Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+    ax4.set_title('SPC Critical Fire Wx Forecast [Day 4]', fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+    ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
     cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 12, 2), cmap=cmap, transform=datacrs, zorder=2)
 
     cbar4 = fig4.colorbar(cs4, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
     cbar4.set_ticks([])
 
-    fig4.text(x1, y,'ELEVATED', fontsize=13, fontweight='bold')
-    fig4.text(x2, y,'CRITICAL', fontsize=13, fontweight='bold')
-    fig4.text(x3, y,'EXTREME', fontsize=13, fontweight='bold')
+    fig4.text(x1, y,'ELEVATED', fontsize=legend_fontsize, fontweight='bold')
+    fig4.text(x2, y,'CRITICAL', fontsize=legend_fontsize, fontweight='bold')
+    fig4.text(x3, y,'EXTREME', fontsize=legend_fontsize, fontweight='bold')
 
     fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig5.set_facecolor('aliceblue')
-    fig5.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
-    
+    fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+
     ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
     ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
     ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -520,20 +626,23 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
         ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
     else:
         pass
-    ax5.set_title('Critical Fire Wx Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+    ax5.set_title('SPC Critical Fire Wx Forecast [Day 5]', fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+    ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
     cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 12, 2), cmap=cmap, transform=datacrs, zorder=2)
 
     cbar5 = fig5.colorbar(cs5, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
     cbar5.set_ticks([])
 
-    fig5.text(x1, y,'ELEVATED', fontsize=13, fontweight='bold')
-    fig5.text(x2, y,'CRITICAL', fontsize=13, fontweight='bold')
-    fig5.text(x3, y,'EXTREME', fontsize=13, fontweight='bold')
+    fig5.text(x1, y,'ELEVATED', fontsize=legend_fontsize, fontweight='bold')
+    fig5.text(x2, y,'CRITICAL', fontsize=legend_fontsize, fontweight='bold')
+    fig5.text(x3, y,'EXTREME', fontsize=legend_fontsize, fontweight='bold')
 
     fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig6.set_facecolor('aliceblue')
-    fig6.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+    fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
     ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
     ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -558,23 +667,26 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
         ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
     else:
         pass
-    ax6.set_title('Critical Fire Wx Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+    ax6.set_title('SPC Critical Fire Wx Forecast [Day 6]', fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+    ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
     cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 12, 2), cmap=cmap, transform=datacrs, zorder=2)
 
     cbar6 = fig6.colorbar(cs6, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
     cbar6.set_ticks([])
 
-    fig6.text(x1, y,'ELEVATED', fontsize=13, fontweight='bold')
-    fig6.text(x2, y,'CRITICAL', fontsize=13, fontweight='bold')
-    fig6.text(x3, y,'EXTREME', fontsize=13, fontweight='bold')
+    fig6.text(x1, y,'ELEVATED', fontsize=legend_fontsize, fontweight='bold')
+    fig6.text(x2, y,'CRITICAL', fontsize=legend_fontsize, fontweight='bold')
+    fig6.text(x3, y,'EXTREME', fontsize=legend_fontsize, fontweight='bold')
 
     if test_7 == True:
 
         fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig7.set_facecolor('aliceblue')
-        fig7.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
-        
+        fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+
         ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
         ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -598,16 +710,19 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
             ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax7.set_title('Critical Fire Wx Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+        ax7.set_title('SPC Critical Fire Wx Forecast [Day 7]', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 12, 2), cmap=cmap, transform=datacrs, zorder=2)
 
         cbar7 = fig7.colorbar(cs7, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
         cbar7.set_ticks([])
     
-        fig7.text(x1, y,'ELEVATED', fontsize=13, fontweight='bold')
-        fig7.text(x2, y,'CRITICAL', fontsize=13, fontweight='bold')
-        fig7.text(x3, y,'EXTREME', fontsize=13, fontweight='bold')
+        fig7.text(x1, y,'ELEVATED', fontsize=legend_fontsize, fontweight='bold')
+        fig7.text(x2, y,'CRITICAL', fontsize=legend_fontsize, fontweight='bold')
+        fig7.text(x3, y,'EXTREME', fontsize=legend_fontsize, fontweight='bold')
     
         figs.append(fig1)
         figs.append(fig2)
@@ -625,10 +740,11 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
         figs.append(fig5)
         figs.append(fig6)
 
-    return figs
+    path, gif_path = file_functions.check_file_paths(state, gacc_region, 'SPC CRITICAL FIRE WEATHER OUTLOOK', reference_system)
+    file_functions.update_images(figs, path, gif_path, 'SPC CRITICAL FIRE WEATHER OUTLOOK')
 
 
-def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, colorbar_pad=0.02, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, show_state_borders=True,  show_county_borders=True, show_gacc_borders=False, show_psa_borders=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, state='us', gacc_region=None):
+def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, state='us', gacc_region=None, cwa=None, aspect=30, colorbar_pad=0.02):
 
     r'''
         This function plots the latest available Storm Prediction Dry Lightning Forecast. 
@@ -825,11 +941,115 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
     to_zone = tz.tzlocal()
 
     cmap = colormaps.SPC_Dry_Lightning_Risk_Outlook_colormap()
+
+    props = dict(boxstyle='round', facecolor='wheat', alpha=1)
         
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None:
+    reference_system = reference_system
+    mapcrs = ccrs.PlateCarree()
+    datacrs = ccrs.PlateCarree()
+
+    x1, x2, x3, y = settings.get_colorbar_label_coords(state, 'dry lightning')
+
+    if reference_system == 'Custom' or reference_system == 'custom':
+        show_state_borders = show_state_borders
+        show_county_borders = show_county_borders
+        show_gacc_borders = show_gacc_borders
+        show_psa_borders = show_psa_borders
+        show_cwa_borders = show_cwa_borders
+        show_nws_firewx_zones = show_nws_firewx_zones
+        show_nws_public_zones = show_nws_public_zones
+
+    if reference_system != 'Custom' and reference_system != 'custom':
+        
+        show_state_borders = False
+        show_county_borders = False
+        show_gacc_borders = False
+        show_psa_borders = False
+        show_cwa_borders = False
+        show_nws_firewx_zones = False
+        show_nws_public_zones = False
+
+        if reference_system == 'States Only':
+            show_state_borders = True
+        if reference_system == 'States & Counties':
+            show_state_borders = True
+            show_county_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                county_border_linewidth=0.25
+        if reference_system == 'GACC Only':
+            show_gacc_borders = True
+        if reference_system == 'GACC & PSA':
+            show_gacc_borders = True
+            show_psa_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.25
+        if reference_system == 'CWA Only':
+            show_cwa_borders = True
+        if reference_system == 'NWS CWAs & NWS Public Zones':
+            show_cwa_borders = True
+            show_nws_public_zones = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                nws_public_zones_linewidth=0.25
+        if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
+            show_cwa_borders = True
+            show_nws_firewx_zones = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                nws_firewx_zones_linewidth=0.25
+        if reference_system == 'NWS CWAs & Counties':
+            show_cwa_borders = True
+            show_county_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                county_border_linewidth=0.25
+        if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_nws_firewx_zones = True
+            nws_firewx_zones_linewidth=0.25
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.5
+        if reference_system == 'GACC & PSA & NWS Public Zones':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_nws_public_zones = True
+            nws_public_zones_linewidth=0.25
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.5
+        if reference_system == 'GACC & PSA & NWS CWA':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_cwa_borders = True
+            cwa_border_linewidth=0.25
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.5
+        if reference_system == 'GACC & PSA & Counties':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_county_borders = True
+            county_border_linewidth=0.25
+        if reference_system == 'GACC & Counties':
+            show_gacc_borders = True
+            show_county_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                county_border_linewidth=0.25
+    
+    if state != None and gacc_region == None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'spc', False)
+
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
+
+
+    if state == None and gacc_region != None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'spc', False)
+
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
+
+
+    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
 
         fig_x_length = fig_x_length
         fig_y_length = fig_y_length
@@ -839,44 +1059,36 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
         eastern_bound = eastern_bound
         southern_bound = southern_bound
         northern_bound = northern_bound
+        state = 'Custom'
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
+        aspect=aspect
+
+
+        if file_path == None:
+            directory_name = settings.check_NDFD_directory_name('us')
+        else:
+            directory_name = settings.check_NDFD_directory_name(directory_name)
 
     else:
         pass
 
-    if state == None and gacc_region == None:
+    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
     
-        directory_name = settings.check_NDFD_directory_name(directory_name)
+    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
 
-    if state != None and gacc_region == None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_state_data_and_coords(state, True, 'dry lightning')
+    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
 
-        x1, x2, x3, y = settings.get_colorbar_label_coords(state, 'dry lightning')
-        
+    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
 
-    if state == None and gacc_region != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, mapcrs, datacrs = settings.get_gacc_region_data_and_coords(gacc_region, True, 'dry lightning')
+    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
-
-    from_zone = tz.tzutc()
-    to_zone = tz.tzlocal()
-
-    PSAs = geometry.Predictive_Services_Areas.get_PSAs_custom_file_path(f"PSA Shapefiles/National_PSA_Current.shp", 'black')
-    GACC = geometry.Predictive_Services_Areas.get_GACC_Boundaries_custom_file_path(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black')
+    directory_name = settings.check_NDFD_directory_name(directory_name)
 
     if file_path == None:
 
-        try:
+        grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.dryfireo.bin')
 
-            grbs, ds, count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data(directory_name, 'ds.dryfireo.bin')
-
-            print("Downloaded data successfully!")
-        except Exception as a:
-
-            print("Trying again to download data...")
-
-            count_short, count_extended = da.FTP_Downloads.get_NWS_NDFD_7_Day_grid_data_test(directory_name, 'ds.dryfireo.bin')
-    
-                
         grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.dryfireo.bin', 24, False, count_short, count_extended, directory_name)
 
     if file_path != None:
@@ -932,7 +1144,7 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
 
     fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig1.set_facecolor('aliceblue')
-    fig1.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+    fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
     ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
     ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -957,20 +1169,23 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
         ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
     else:
         pass
-    ax1.set_title('Dry Lightning Forecast (Day 1)\nStart: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+    ax1.set_title('SPC Dry Lightning Forecast [Day 1]', fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+    ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
     cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=np.arange(4, 10, 2), cmap=cmap, transform=datacrs, zorder=2)
 
     cbar1 = fig1.colorbar(cs1, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
     cbar1.set_ticks([])
 
-    fig1.text(x1, y,'ISOLATED', fontsize=13, fontweight='bold')
-    fig1.text(x2, y,'SCATTERED', fontsize=13, fontweight='bold')
+    fig1.text(x1, y,'ISOLATED', fontsize=legend_fontsize, fontweight='bold')
+    fig1.text(x2, y,'SCATTERED', fontsize=legend_fontsize, fontweight='bold')
     
     fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig2.set_facecolor('aliceblue')
-    fig2.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
-    
+    fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+
     ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
     ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
     ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -994,20 +1209,22 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
         ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
     else:
         pass
+
+    ax2.set_title('SPC Dry Lightning Forecast [Day 2]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
-    ax2.set_title('Dry Lightning Forecast (Day 2)\nStart: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+    ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
     cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=np.arange(4, 10, 2), cmap=cmap, transform=datacrs, zorder=2)
 
     cbar2 = fig2.colorbar(cs2, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
     cbar2.set_ticks([])
 
-    fig2.text(x1, y,'ISOLATED', fontsize=13, fontweight='bold')
-    fig2.text(x2, y,'SCATTERED', fontsize=13, fontweight='bold')
+    fig2.text(x1, y,'ISOLATED', fontsize=legend_fontsize, fontweight='bold')
+    fig2.text(x2, y,'SCATTERED', fontsize=legend_fontsize, fontweight='bold')
 
     fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig3.set_facecolor('aliceblue')
-    fig3.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+    fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
     ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
     ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1032,20 +1249,23 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
         ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
     else:
         pass
-    ax3.set_title('Dry Lightning Forecast (Day 3)\nStart: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+    ax3.set_title('SPC Dry Lightning Forecast [Day 3]', fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+    ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
     cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=np.arange(4, 10, 2), cmap=cmap, transform=datacrs, zorder=2)
 
     cbar3 = fig3.colorbar(cs3, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
     cbar3.set_ticks([])
 
-    fig3.text(x1, y,'ISOLATED', fontsize=13, fontweight='bold')
-    fig3.text(x2, y,'SCATTERED', fontsize=13, fontweight='bold')
+    fig3.text(x1, y,'ISOLATED', fontsize=legend_fontsize, fontweight='bold')
+    fig3.text(x2, y,'SCATTERED', fontsize=legend_fontsize, fontweight='bold')
     
     fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig4.set_facecolor('aliceblue')
-    fig4.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
-    
+    fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+
     ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
     ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
     ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -1069,19 +1289,24 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
         ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
     else:
         pass
-    ax4.set_title('Dry Lightning Forecast (Day 4)\nStart: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+    ax4.set_title('SPC Dry Lightning Forecast [Day 4]', fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+    ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
     cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=np.arange(4, 10, 2), cmap=cmap, transform=datacrs, zorder=2)
 
     cbar4 = fig4.colorbar(cs4, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
     cbar4.set_ticks([])
 
-    fig4.text(x1, y,'ISOLATED', fontsize=13, fontweight='bold')
-    fig4.text(x2, y,'SCATTERED', fontsize=13, fontweight='bold')
+    fig4.text(x1, y,'ISOLATED', fontsize=legend_fontsize, fontweight='bold')
+    fig4.text(x2, y,'SCATTERED', fontsize=legend_fontsize, fontweight='bold')
 
     fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig5.set_facecolor('aliceblue')
-    fig5.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
+    fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+
+    fig5.suptitle('SPC Dry Lightning Forecast [Day 5]', fontsize=title_fontsize, fontweight='bold')
     
     ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
     ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
@@ -1106,20 +1331,23 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
         ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
     else:
         pass
-    ax5.set_title('Dry Lightning Forecast (Day 5)\nStart: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+    ax5.set_title('SPC Dry Lightning Forecast [Day 5]', fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+    ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
     cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=np.arange(4, 10, 2), cmap=cmap, transform=datacrs, zorder=2)
 
     cbar5 = fig5.colorbar(cs5, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
     cbar5.set_ticks([])
 
-    fig5.text(x1, y,'ISOLATED', fontsize=13, fontweight='bold')
-    fig5.text(x2, y,'SCATTERED', fontsize=13, fontweight='bold')
+    fig5.text(x1, y,'ISOLATED', fontsize=legend_fontsize, fontweight='bold')
+    fig5.text(x2, y,'SCATTERED', fontsize=legend_fontsize, fontweight='bold')
 
     fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig6.set_facecolor('aliceblue')
-    fig6.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
-    
+    fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+
     ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
     ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
     ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -1143,22 +1371,25 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
         ax6.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
     else:
         pass
-    ax6.set_title('Dry Lightning Forecast (Day 6)\nStart: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+    ax6.set_title('SPC Dry Lightning Forecast [Day 6]', fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+    ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
     cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=np.arange(4, 10, 2), cmap=cmap, transform=datacrs, zorder=2)
 
     cbar6 = fig6.colorbar(cs6, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
     cbar6.set_ticks([])
 
-    fig6.text(x1, y,'ISOLATED', fontsize=13, fontweight='bold')
-    fig6.text(x2, y,'SCATTERED', fontsize=13, fontweight='bold')
+    fig6.text(x1, y,'ISOLATED', fontsize=legend_fontsize, fontweight='bold')
+    fig6.text(x2, y,'SCATTERED', fontsize=legend_fontsize, fontweight='bold')
 
     if test_7 == True:
 
         fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig7.set_facecolor('aliceblue')
-        fig7.text(signature_x_position, signature_y_position, '                Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: NOAA/NWS/SPC | Image Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold')
-        
+        fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/SPC\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+
         ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
         ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
@@ -1182,15 +1413,18 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
             ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-        ax7.set_title('Dry Lightning Forecast (Day 7)\nStart: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + ' | End: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='center')
+
+        ax7.set_title('SPC Dry Lightning Forecast [Day 7]', fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
         cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=np.arange(4, 10, 2), cmap=cmap, transform=datacrs, zorder=2)
 
         cbar7 = fig7.colorbar(cs7, location='bottom', shrink=color_table_shrink, pad=colorbar_pad)
         cbar7.set_ticks([])
     
-        fig7.text(x1, y,'ISOLATED', fontsize=13, fontweight='bold')
-        fig7.text(x2, y,'SCATTERED', fontsize=13, fontweight='bold')
+        fig7.text(x1, y,'ISOLATED', fontsize=legend_fontsize, fontweight='bold')
+        fig7.text(x2, y,'SCATTERED', fontsize=legend_fontsize, fontweight='bold')
     
         figs.append(fig1)
         figs.append(fig2)
@@ -1208,5 +1442,5 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
         figs.append(fig5)
         figs.append(fig6)
 
-    return figs
-
+    path, gif_path = file_functions.check_file_paths(state, gacc_region, 'SPC DRY LIGHTNING OUTLOOK', reference_system)
+    file_functions.update_images(figs, path, gif_path, 'SPC DRY LIGHTNING OUTLOOK')
