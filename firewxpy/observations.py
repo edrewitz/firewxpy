@@ -19,7 +19,6 @@ import metpy.plots as mpplots
 import metpy.calc as mpcalc
 import numpy as np
 import firewxpy.parsers
-import firewxpy.data_access as da
 import firewxpy.calc
 import firewxpy.colormaps
 import pandas as pd
@@ -33,6 +32,7 @@ from metpy.plots import colortables
 from dateutil import tz
 from pysolar import solar, radiation
 from firewxpy.utilities import file_functions
+from firewxpy.data_access import previous_day_weather_summary_and_all_data
 
 mpl.rcParams['font.weight'] = 'bold'
 
@@ -59,7 +59,7 @@ def graphical_daily_summary(station_id):
 
     station_id = station_id.upper()
 
-    df, maximum_temperature, maximum_temperature_time, maximum_temperature_time_local, minimum_temperature, minimum_temperature_time, minimum_temperature_time_local, minimum_relative_humidity, minimum_relative_humidity_time, minimum_relative_humidity_time_local, maximum_relative_humidity, maximum_relative_humidity_time, maximum_relative_humidity_time_local, maximum_wind_speed, wind_dir, maximum_wind_speed_time, maximum_wind_speed_time_local, maximum_wind_gust, maximum_wind_gust_time, maximum_wind_gust_time_local, station_id, previous_day_utc = da.UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.previous_day_weather_summary_and_all_data(station_id)
+    df, maximum_temperature, maximum_temperature_time, maximum_temperature_time_local, minimum_temperature, minimum_temperature_time, minimum_temperature_time_local, minimum_relative_humidity, minimum_relative_humidity_time, minimum_relative_humidity_time_local, maximum_relative_humidity, maximum_relative_humidity_time, maximum_relative_humidity_time_local, maximum_wind_speed, wind_dir, maximum_wind_speed_time, maximum_wind_speed_time_local, maximum_wind_gust, maximum_wind_gust_time, maximum_wind_gust_time_local, station_id, previous_day_utc = previous_day_weather_summary_and_all_data(station_id)
 
     time = df['date_time']
     time = pd.to_datetime(time)
