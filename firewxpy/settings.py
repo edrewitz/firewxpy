@@ -11,12 +11,12 @@ This file hosts all the functions that return the settings for each plot for eac
 
 import cartopy.crs as ccrs
 
-def get_metar_mask(state, gacc_region):
+def get_metar_mask(state=None, gacc_region=None):
 
     if state != None and gacc_region == None:
         
         if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-            mask = 150
+            mask = 250000
         if state == 'CA' or state == 'ca':
             mask = 80000
 
@@ -232,11 +232,12 @@ def get_sample_point_color_by_state(state, plot_type):
 
     return color
 
-
-def get_state_data_and_coords(state, plot_type, gridspec):
+def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
 
     state = state
     gridspec=gridspec
+    plot_category = plot_category
+    plot_type = plot_type
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     color_table_shrink = 1
@@ -267,14 +268,14 @@ def get_state_data_and_coords(state, plot_type, gridspec):
         if gridspec == True:
             sample_point_fontsize=15
             tick = 8
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.26
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             signature_x_position = 0.01
             signature_y_position = 0.14
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.26
@@ -302,16 +303,43 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.25
             signature_y_position = 0.26
-        if plot_type == 'rtma':
-            title_fontsize = 5
-            subplot_title_fontsize=5
+        if plot_category == 'rtma':
+            title_fontsize = 7
+            subplot_title_fontsize = 7
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+            if plot_type == '24 Hour Dewpoint Comparison':
+                title_fontsize = 7
+                subplot_title_fontsize = 6 
+            if plot_type == '24 Hour RH Comparison':
+                title_fontsize = 7
+                subplot_title_fontsize = 6    
+            if plot_type == '24 Hour Temperature Comparison':
+                title_fontsize = 7
+                subplot_title_fontsize = 6    
+            if plot_type == '24 Hour Total Cloud Cover Comparison':
+                title_fontsize = 6
+                subplot_title_fontsize = 6    
+            if plot_type == '24 Hour Wind Speed & Direction Comparison':
+                title_fontsize = 7
+                subplot_title_fontsize = 6    
+            if plot_type == '24 Hour Wind Speed Comparison':
+                title_fontsize = 7
+                subplot_title_fontsize = 6   
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 6  
+            if plot_type == 'RH & METAR':
+                title_fontsize = 6
+                subplot_title_fontsize = 6                  
+            if plot_type == 'Low RH & METAR':
+                title_fontsize = 6
+                subplot_title_fontsize = 6             
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.25
             signature_y_position = 0.26
@@ -329,23 +357,23 @@ def get_state_data_and_coords(state, plot_type, gridspec):
         fig_y_length = 8
         signature_x_position = 0.15
         signature_y_position = 0.05
-        if plot_type == 'minrh':
+        if plot_category == 'minrh':
             title_fontsize=17 
-        if plot_type == 'poor recovery':
+        if plot_category == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_category == 'excellent recovery':
             title_fontsize=14
-        if plot_type == 'maxrh':
+        if plot_category == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_category == 'maxrh trend' or plot_category == 'minrh trend':
             title_fontsize=15
-        if plot_type == 'low minrh':
+        if plot_category == 'low minrh':
             title_fontsize=15
         subplot_title_fontsize=20 
         signature_fontsize=23
         sample_point_fontsize=12
         colorbar_fontsize=12
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_category == 'maxrh trend' or plot_category == 'minrh trend':
             colorbar_fontsize=8
 
     if state == 'HI' or state == 'hi':
@@ -359,23 +387,23 @@ def get_state_data_and_coords(state, plot_type, gridspec):
         fig_y_length = 10
         signature_x_position = 0.15
         signature_y_position = 0.05
-        if plot_type == 'minrh':
+        if plot_category == 'minrh':
             title_fontsize=17 
-        if plot_type == 'poor recovery':
+        if plot_category == 'poor recovery':
             title_fontsize=15 
-        if plot_type == 'excellent recovery':
+        if plot_category == 'excellent recovery':
             title_fontsize=14
-        if plot_type == 'maxrh':
+        if plot_category == 'maxrh':
             title_fontsize=17
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_category == 'maxrh trend' or plot_category == 'minrh trend':
             title_fontsize=15
-        if plot_type == 'low minrh':
+        if plot_category == 'low minrh':
             title_fontsize=15
         subplot_title_fontsize=20 
         signature_fontsize=23
         sample_point_fontsize=12
         colorbar_fontsize=12
-        if plot_type == 'maxrh trend' or plot_type == 'minrh trend':
+        if plot_category == 'maxrh trend' or plot_category == 'minrh trend':
             colorbar_fontsize=8
 
     if state == 'ME' or state == 'me':       
@@ -402,16 +430,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.26
             signature_y_position = 0.26
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             signature_x_position = 0.01
             signature_y_position = 0.12
             title_fontsize = 6
             subplot_title_fontsize=5
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.26
             signature_y_position = 0.26
@@ -441,16 +469,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.31
             signature_y_position = 0.255
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
             signature_y_position = 0.26
@@ -481,16 +509,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.275
             signature_y_position = 0.25
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
             signature_y_position = 0.26
@@ -521,16 +549,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.15
             signature_y_position = 0.25
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 8
             subplot_title_fontsize=7
             signature_x_position = 0.01
             signature_y_position = 0.135
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
             signature_y_position = 0.26
@@ -561,16 +589,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.25
             signature_y_position = 0.25
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
             signature_y_position = 0.26
@@ -603,16 +631,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.23
             signature_y_position = 0.25
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
             signature_y_position = 0.26
@@ -643,16 +671,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
             signature_y_position = 0.25
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
             signature_y_position = 0.26
@@ -683,16 +711,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.34
             signature_y_position = 0.25
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
             signature_y_position = 0.26
@@ -722,16 +750,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.26
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.26
@@ -761,16 +789,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -801,17 +829,17 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.25
             signature_y_position = 0.248
             color_table_shrink = 0.7
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -841,17 +869,17 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.24
             signature_y_position = 0.248
             color_table_shrink = 0.7
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -882,16 +910,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.14
             signature_y_position = 0.25
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.35
             signature_y_position = 0.26
@@ -922,16 +950,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/'
             signature_x_position = 0.2
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -961,16 +989,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1001,16 +1029,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/'
             signature_x_position = 0.28
             signature_y_position = 0.25
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/'
             signature_x_position = 0.35
             signature_y_position = 0.26
@@ -1040,16 +1068,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1080,16 +1108,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.31
             signature_y_position = 0.25
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.35
             signature_y_position = 0.26
@@ -1119,16 +1147,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 8
             subplot_title_fontsize=7
             signature_x_position = 0.01
             signature_y_position = 0.145
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1158,16 +1186,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1198,16 +1226,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1238,16 +1266,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1278,16 +1306,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1319,16 +1347,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/'
             signature_x_position = 0.16
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1359,16 +1387,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1400,16 +1428,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.21
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1440,16 +1468,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1480,16 +1508,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.29
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1521,16 +1549,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/'
             signature_x_position = 0.2
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1561,16 +1589,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1601,16 +1629,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1642,16 +1670,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
             signature_x_position = 0.31
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1683,16 +1711,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.21
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1724,16 +1752,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.34
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1765,16 +1793,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
             signature_x_position = 0.34
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1806,16 +1834,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
             signature_x_position = 0.23
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1847,16 +1875,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
             signature_x_position = 0.18
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1888,16 +1916,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/'
             signature_x_position = 0.21
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1928,16 +1956,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 9
             subplot_title_fontsize=8
             signature_x_position = 0.01
             signature_y_position = 0.16
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -1969,16 +1997,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.285
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -2010,16 +2038,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
             signature_x_position = 0.26
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -2051,16 +2079,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
             signature_x_position = 0.29
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -2091,16 +2119,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -2131,16 +2159,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -2171,16 +2199,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -2211,16 +2239,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -2250,16 +2278,16 @@ def get_state_data_and_coords(state, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -2269,7 +2297,7 @@ def get_state_data_and_coords(state, plot_type, gridspec):
     return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick
     
 
-def get_gacc_region_data_and_coords(gacc_region, plot_type, gridspec):
+def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec):
 
     gacc_region = gacc_region
     gridspec = gridspec
@@ -2312,16 +2340,16 @@ def get_gacc_region_data_and_coords(gacc_region, plot_type, gridspec):
             color_table_shrink = 0.65
             colorbar_fontsize = 8
             sample_point_fontsize=12
-        if plot_type == 'nws':
+        if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
             signature_x_position = 0.25
             signature_y_position = 0.248
-        if plot_type == 'rtma':
+        if plot_category == 'rtma':
             title_fontsize = 7
             subplot_title_fontsize=6
             signature_x_position = 0.01
             signature_y_position = 0.12
-        if plot_type == 'spc':
+        if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
             signature_x_position = 0.13
             signature_y_position = 0.245
@@ -2415,6 +2443,7 @@ def get_gacc_region_data_and_coords(gacc_region, plot_type, gridspec):
 
 
     return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick
+
 
 def get_colorbar_label_coords(state, plot_type):
 
