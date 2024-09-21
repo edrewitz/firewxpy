@@ -7,7 +7,6 @@ import metpy.plots as mpplots
 import metpy.calc as mpcalc
 import numpy as np
 import firewxpy.parsers as parsers
-import firewxpy.data_access as da
 import firewxpy.geometry as geometry
 import firewxpy.colormaps as colormaps
 import pandas as pd
@@ -25,6 +24,7 @@ from dateutil import tz
 from firewxpy.calc import scaling, Thermodynamics, unit_conversion
 from firewxpy.utilities import file_functions
 from metpy.units import units
+from firewxpy.data_access import RTMA_CONUS
 
 mpl.rcParams['font.weight'] = 'bold'
 
