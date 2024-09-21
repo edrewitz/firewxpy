@@ -19,17 +19,6 @@ Copyright (C) Meteorologist Eric J. Drewitz 2024
 # Inspiration
 This package is largely inspired by the MetPy package which was developed and is currently being maintained by Unidata (please see citation below in the citations section).
 
-# Python Module Dependencies
-1. PyGrib
-2. Xarray
-3. os
-4. ftplib
-5. MetPy
-6. Siphon
-7. NumPy
-8. cartopy
-9. Pandas
-
 # FireWxPy Documentation 
 https://github.com/edrewitz/FireWxPy/blob/main/FireWxPy_docs.md
 
