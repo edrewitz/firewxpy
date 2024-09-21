@@ -26,7 +26,6 @@ import metpy.plots as mpplots
 import metpy.calc as mpcalc
 import numpy as np
 import firewxpy.parsers as parsers
-import firewxpy.data_access as da
 import firewxpy.geometry as geometry
 import firewxpy.colormaps as colormaps
 import os
@@ -41,6 +40,7 @@ from dateutil import tz
 from matplotlib.patheffects import withStroke
 from firewxpy.calc import scaling, unit_conversion, contouring
 from firewxpy.utilities import file_functions
+from firewxpy.data_access import NDFD_CONUS
 
 mpl.rcParams['font.weight'] = 'bold'
 
