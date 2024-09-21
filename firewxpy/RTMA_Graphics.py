@@ -1097,7 +1097,7 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
     file_functions.update_images(fig, path, gif_path, 'RTMA TEMPERATURE')
 
 
-def plot_temperature_advection(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8):
+def plot_temperature_advection(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', sample_point_fontsize=8, alpha=0.5, data=None, time=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8):
 
     r'''
         This function does the following:
@@ -1434,25 +1434,18 @@ def plot_temperature_advection(western_bound=None, eastern_bound=None, southern_
     else:
         sample_point_fontsize = sample_point_fontsize
 
-    if show_sample_points == True:
 
-        stn = mpplots.StationPlot(ax, plot_lon.flatten(), plot_lat.flatten(),
-                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
-    
-        advection = advection[::decimate, ::decimate].to_numpy().flatten()
+    stn = mpplots.StationPlot(ax, plot_lon.flatten(), plot_lat.flatten(),
+                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
 
-        stn.plot_barb(u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='darkgreen', label=rtma_time.strftime('%m/%d %H:00'), alpha=1, zorder=9, linewidth=1)
-    
-        stn.plot_parameter('NE', advection, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+    stn.plot_barb(u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='darkgreen', label=rtma_time.strftime('%m/%d %H:00'), alpha=1, zorder=9, linewidth=2)
 
-    else:
-        pass
 
     path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA TEMPERATURE ADVECTION', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA TEMPERATURE ADVECTION')
 
 
-def plot_dew_point_advection(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8):
+def plot_dew_point_advection(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', sample_point_fontsize=8, alpha=0.5, data=None, time=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8):
 
     r'''
         This function does the following:
@@ -1789,25 +1782,17 @@ def plot_dew_point_advection(western_bound=None, eastern_bound=None, southern_bo
     else:
         sample_point_fontsize = sample_point_fontsize
 
-    if show_sample_points == True:
 
-        stn = mpplots.StationPlot(ax, plot_lon.flatten(), plot_lat.flatten(),
-                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
-    
-        advection = advection[::decimate, ::decimate].to_numpy().flatten()
+    stn = mpplots.StationPlot(ax, plot_lon.flatten(), plot_lat.flatten(),
+                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
 
-        stn.plot_barb(u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='darkred', label=rtma_time.strftime('%m/%d %H:00'), alpha=1, zorder=9, linewidth=1)
-    
-        stn.plot_parameter('NE', advection, color='darkred', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-
-    else:
-        pass
+    stn.plot_barb(u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='darkred', label=rtma_time.strftime('%m/%d %H:00'), alpha=1, zorder=9, linewidth=2)
 
     path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA DEW POINT ADVECTION', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA DEW POINT ADVECTION')
 
 
-def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8):
+def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', sample_point_fontsize=8, alpha=0.5, data=None, time=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8):
 
     r'''
         This function does the following:
@@ -2151,20 +2136,11 @@ def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, sou
     else:
         sample_point_fontsize = sample_point_fontsize
 
-    if show_sample_points == True:
+    stn = mpplots.StationPlot(ax, plot_lon.flatten(), plot_lat.flatten(),
+                                 transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
 
-        stn = mpplots.StationPlot(ax, plot_lon.flatten(), plot_lat.flatten(),
-                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+    stn.plot_barb(u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='blue', label=rtma_time.strftime('%m/%d %H:00'), alpha=1, zorder=9, linewidth=2)
     
-        advection = advection[::decimate, ::decimate].to_numpy().flatten()
-
-        stn.plot_barb(u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='blue', label=rtma_time.strftime('%m/%d %H:00'), alpha=1, zorder=9, linewidth=1)
-    
-        stn.plot_parameter('NE', advection, color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-
-    else:
-        pass
-
     path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA RH ADVECTION', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA RH ADVECTION')
 
@@ -6747,10 +6723,6 @@ def plot_dry_and_gusty_areas(low_rh_threshold=15, high_wind_threshold=25, wester
     
     if state != None and gacc_region == None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', True)
-
-        if state == 'CA' or state == 'ca':
-            title_fontsize = title_fontsize -1
-            #subplot_title_fontsize = subplot_title_fontsize -1
             
 
         mpl.rcParams['xtick.labelsize'] = tick
