@@ -1,5 +1,4 @@
-Here are several tutorials on how users will be able to use FireWxPy to make customized weather graphics with a focus on fire
-weather while having MINIMAL coding proficiency. My motto is: "I want my software to do all the work so you don't have to!"
+Here are several tutorials on how users will be able to use FireWxPy to make customized weather graphics with a focus on fire weather while having MINIMAL coding proficiency. My motto is: "I want my software to do all the work so you don't have to!"
 
 In FireWxPy users can make graphics in the following categories: NWS Forecasts, Real Time Mesoscale Analysis (RTMA), 
 Observed Soundings and Daily Weather Summaries for the previous day for an ASOS. 
@@ -13,8 +12,8 @@ script they are running.
 
 Here are links to jupyter lab tutorials for all the aforementioned scenarios:
 
-1) First Time User plotting the RTMA Temperature and 24-Hour RTMA Temperature Comparison Across CONUS - [click here]([url](https://github.com/edrewitz/firewxpy/blob/main/tutorials/CONUS_RTMA_Temperature_Example.ipynb))
-2) User creates a lot of RTMA plots for the state of California in one script - [click here]([url](https://github.com/edrewitz/firewxpy/blob/main/tutorials/RTMA_CA_Example.ipynb))
-3) User creates 3 different types of graphics of the NWS Relative Humidity Forecast - [click here]([url](https://github.com/edrewitz/firewxpy/blob/main/tutorials/NWS_RH_Forecasts_AZ_Example.ipynb))
-4) User creates a lot of graphics showing the NWS Temperature and RH Forecasts across Texas - [click here]([url](https://github.com/edrewitz/firewxpy/blob/main/tutorials/NWS_Temperature_RH_Forecasts_TX_Example.ipynb))
+1) First Time User plotting the RTMA Temperature and 24-Hour RTMA Temperature Comparison Across CONUS - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/CONUS_RTMA_Temperature_Example.ipynb)
+2) User creates a lot of RTMA plots for the state of California in one script - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/RTMA_CA_Example.ipynb)
+3) User creates 3 different types of graphics of the NWS Relative Humidity Forecast across Arizona - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/NWS_RH_Forecasts_AZ_Example.ipynb)
+4) User creates a lot of graphics showing the NWS Temperature and RH Forecasts across Texas - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/NWS_Temperature_RH_Forecasts_TX_Example.ipynb)
 
