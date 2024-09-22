@@ -16,4 +16,6 @@ Here are links to jupyter lab tutorials for all the aforementioned scenarios:
 2) User creates a lot of RTMA plots for the state of California in one script - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/RTMA_CA_Example.ipynb)
 3) User creates 3 different types of graphics of the NWS Relative Humidity Forecast across Arizona - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/NWS_RH_Forecasts_AZ_Example.ipynb)
 4) User creates a lot of graphics showing the NWS Temperature and RH Forecasts across Texas - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/NWS_Temperature_RH_Forecasts_TX_Example.ipynb)
+5) User creates an upper air profiles graphic for San Diego, CA (NKX) - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/NKX_Sounding_Example.ipynb)
+6) User creates a daily weather summary graphic for the previous day for Ontario International Airport ASOS (KONT) - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/KONT_Daily_Weather_Summary_Example.ipynb)
 
