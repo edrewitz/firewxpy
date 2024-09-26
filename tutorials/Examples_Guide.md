@@ -18,4 +18,5 @@ Here are links to jupyter lab tutorials for all the aforementioned scenarios:
 4) User creates a lot of graphics showing the NWS Temperature and RH Forecasts across Texas - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/NWS_Temperature_RH_Forecasts_TX_Example.ipynb)
 5) User creates an upper air profiles graphic for San Diego, CA (NKX) - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/NKX_Sounding_Example.ipynb)
 6) User creates a daily weather summary graphic for the previous day for Ontario International Airport ASOS (KONT) - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/KONT_Daily_Weather_Summary_Example.ipynb)
+7) User creates an upper air profile for a custom date/time. In this example we will look at the onset of Santa Ana Winds in San Diego, CA on October 30th, 2023 00z. - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/Santa_Ana_Wind_Sounding.ipynb)
 
