@@ -160,14 +160,21 @@ class Thermodynamics:
         e_s = Thermodynamics.saturation_vapor_pressure(temperature)
         return (e / e_s) * 100
 
-    def find_mixing_height(temperature, height, df_len):
+    def find_mixing_height(temperature, height):
         temperture = temperature
         height = height
+        len_temp = len(temperature)
+        len_height = len(height)
+        if len_temp >= len_height:
+            df_len = len_height
+        else:
+            df_len = len_temp
+            
         df_len = df_len - 1
         vals = []
         i = 0
         for i in range(0, df_len):
-            if temperature[i+1] >= temperature[i]:
+            if temperature.iloc[i+1] >= temperature.iloc[i]:
                 val = height[i+1]
                 vals.append(val)
     
