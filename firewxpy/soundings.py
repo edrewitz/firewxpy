@@ -50,71 +50,360 @@ def plot_observed_sounding(station_id):
     station_id = station_id
     station_id = station_id.upper()
 
-    year = utc_time.year
-    month = utc_time.month
-    day = utc_time.day
-    
-    if utc_time.hour >= 0 and utc_time.hour < 13:
-        if utc_time.hour == 0:
-            if utc_time.minute >= 45:
-                hour = 0
-            else:
-                day = local_time.day
-                hour = 12
-        else:
-            hour = 0
-    else:
-        hour = 12
+    dates = []
+    sounding = True
+    for i in range(0, 13):
+        year = utc_time.year
+        month = utc_time.month
+        day = utc_time.day
+        hour = utc_time.hour - i
+        date = datetime(year, month, day, hour)
+        dates.append(date)
 
-    date = datetime(year, month, day, hour)
-    date_24 = date - timedelta(hours=24)
-
-    # pings the server to request data
     try:
-        df = WyomingUpperAir.request_data(date, station_id)
-        print(station_id+' '+date.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')
-        sounding = True
-    except Exception as a:
-        print("Trying again! - Just in case.")
+        print("Searching for data at time: "+dates[0].strftime('%m/%d %H:00 UTC'))
+        df = WyomingUpperAir.request_data(dates[0], station_id)
+        print("Successfully retrieved data for: "+dates[0].strftime('%m/%d %H:00 UTC"'))
+        date = dates[0]
+        data = True
+    except Exception as e:
+        time.sleep(10)
+        print("Trying again!")
         try:
+            df = WyomingUpperAir.request_data(dates[0], station_id)
+            print("Successfully retrieved data for: "+dates[0].strftime('%m/%d %H:00 UTC"'))
+            date = dates[0]
+            data = True
+        except Exception as e:
             time.sleep(10)
-            df = WyomingUpperAir.request_data(date, station_id)
-            print(station_id+' '+date.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')
-            sounding = True
-        except Exception as b:
+            print("Trying one last time! This server can be glitchy...")
             try:
-                print("Trying one last time! - This server can be glitchy.")
+                df = WyomingUpperAir.request_data(dates[0], station_id)
+                print("Successfully retrieved data for: "+dates[0].strftime('%m/%d %H:00 UTC"'))
+                date = dates[0]
+                data = True
+            except Exception as e:
+                print("Searching for data at time: "+dates[1].strftime('%m/%d %H:00 UTC'))
+                try:
+                   df = WyomingUpperAir.request_data(dates[1], station_id)
+                   print("Successfully retrieved data for: "+dates[1].strftime('%m/%d %H:00 UTC"')) 
+                   date = dates[1]
+                   data = True
+                except Exception as e:
+                    time.sleep(10)
+                    print("Trying again!")
+                    try:
+                        df = WyomingUpperAir.request_data(dates[1], station_id)
+                        print("Successfully retrieved data for: "+dates[1].strftime('%m/%d %H:00 UTC"'))
+                        date = dates[1]
+                        data = True
+                    except Exception as e:
+                        time.sleep(10)
+                        print("Trying one last time! This server can be glitchy...")
+                        try:
+                            df = WyomingUpperAir.request_data(dates[1], station_id)
+                            print("Successfully retrieved data for: "+dates[1].strftime('%m/%d %H:00 UTC"'))
+                            date = dates[1] 
+                            data = True
+                        except Exception as e:
+                            print("Searching for data at time: "+dates[2].strftime('%m/%d %H:00 UTC'))
+                            try:
+                               df = WyomingUpperAir.request_data(dates[2], station_id)
+                               print("Successfully retrieved data for: "+dates[2].strftime('%m/%d %H:00 UTC"')) 
+                               date = dates[2] 
+                               data = True
+                            except Exception as e:
+                                time.sleep(10)
+                                print("Trying again!")
+                                try:
+                                    df = WyomingUpperAir.request_data(dates[2], station_id)
+                                    print("Successfully retrieved data for: "+dates[2].strftime('%m/%d %H:00 UTC"'))
+                                    date = dates[2]
+                                    data = True
+                                except Exception as e:
+                                    time.sleep(10)
+                                    print("Trying one last time! This server can be glitchy...")
+                                    try:
+                                        df = WyomingUpperAir.request_data(dates[2], station_id)
+                                        print("Successfully retrieved data for: "+dates[2].strftime('%m/%d %H:00 UTC"')) 
+                                        date = dates[2]
+                                        data = True
+                                    except Exception as e:
+                                        data = False
+
+    if data == False:
+        print("Searching for data at time: "+dates[3].strftime('%m/%d %H:00 UTC'))
+        try:
+           df = WyomingUpperAir.request_data(dates[3], station_id)
+           print("Successfully retrieved data for: "+dates[3].strftime('%m/%d %H:00 UTC"'))
+           date = dates[3] 
+           data = True
+        except Exception as e:
+            time.sleep(10)
+            print("Trying again!")
+            try:
+                df = WyomingUpperAir.request_data(dates[3], station_id)
+                print("Successfully retrieved data for: "+dates[3].strftime('%m/%d %H:00 UTC"'))
+                date = dates[3]
+                data = True
+            except Exception as e:
                 time.sleep(10)
-                df = WyomingUpperAir.request_data(date, station_id)
-                print(station_id+' '+date.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')
-                sounding = True                
-            except Exception as c:
-                print("ERROR! User entered an invalid date or station ID")
-                sounding = False
+                print("Trying one last time! This server can be glitchy...")
+                try:
+                    df = WyomingUpperAir.request_data(dates[3], station_id)
+                    print("Successfully retrieved data for: "+dates[3].strftime('%m/%d %H:00 UTC"')) 
+                    date = dates[3]
+                    data = True
+                except Exception as e:
+                    print("Searching for data at time: "+dates[4].strftime('%m/%d %H:00 UTC'))
+                    try:
+                       df = WyomingUpperAir.request_data(dates[4], station_id)
+                       print("Successfully retrieved data for: "+dates[4].strftime('%m/%d %H:00 UTC"'))
+                       date = dates[4]
+                       data = True 
+                    except Exception as e:
+                        time.sleep(10)
+                        print("Trying again!")
+                        try:
+                            df = WyomingUpperAir.request_data(dates[4], station_id)
+                            print("Successfully retrieved data for: "+dates[4].strftime('%m/%d %H:00 UTC"'))
+                            date = dates[4]
+                            data = True
+                        except Exception as e:
+                            time.sleep(10)
+                            print("Trying one last time! This server can be glitchy...")
+                            try:
+                                df = WyomingUpperAir.request_data(dates[4], station_id)
+                                print("Successfully retrieved data for: "+dates[4].strftime('%m/%d %H:00 UTC"')) 
+                                date = dates[4]
+                                data = True
+                            except Exception as e:
+                                data = False                    
+                                
+                                
+    if data == False:                         
+        print("Searching for data at time: "+dates[5].strftime('%m/%d %H:00 UTC'))
+        try:
+           df = WyomingUpperAir.request_data(dates[5], station_id)
+           print("Successfully retrieved data for: "+dates[5].strftime('%m/%d %H:00 UTC"'))
+           date = dates[5]
+           data = True
+        except Exception as e:
+            time.sleep(10)
+            print("Trying again!")
+            try:
+                df = WyomingUpperAir.request_data(dates[5], station_id)
+                print("Successfully retrieved data for: "+dates[5].strftime('%m/%d %H:00 UTC"'))
+                date = dates[5]
+                data = True
+            except Exception as e:
+                time.sleep(10)
+                print("Trying one last time! This server can be glitchy...")
+                try:
+                    df = WyomingUpperAir.request_data(dates[5], station_id)
+                    print("Successfully retrieved data for: "+dates[5].strftime('%m/%d %H:00 UTC"')) 
+                    date = dates[5]
+                    data = True
+                except Exception as e:
+                    print("Searching for data at time: "+dates[6].strftime('%m/%d %H:00 UTC'))
+                    try:
+                       df = WyomingUpperAir.request_data(dates[6], station_id)
+                       print("Successfully retrieved data for: "+dates[6].strftime('%m/%d %H:00 UTC"'))
+                       date = dates[6]
+                       data = True 
+                    except Exception as e:
+                        time.sleep(10)
+                        print("Trying again!")
+                        try:
+                            df = WyomingUpperAir.request_data(dates[6], station_id)
+                            print("Successfully retrieved data for: "+dates[6].strftime('%m/%d %H:00 UTC"'))
+                            date = dates[6]
+                            data = True
+                        except Exception as e:
+                            time.sleep(10)
+                            print("Trying one last time! This server can be glitchy...")
+                            try:
+                                df = WyomingUpperAir.request_data(dates[6], station_id)
+                                print("Successfully retrieved data for: "+dates[6].strftime('%m/%d %H:00 UTC"')) 
+                                date = dates[6]
+                                data = True
+                            except Exception as e:
+                                print("Searching for data at time: "+dates[7].strftime('%m/%d %H:00 UTC'))
+                                try:
+                                   df = WyomingUpperAir.request_data(dates[7], station_id)
+                                   print("Successfully retrieved data for: "+dates[7].strftime('%m/%d %H:00 UTC"')) 
+                                   date = dates[7]
+                                   data = True 
+                                except Exception as e:
+                                    time.sleep(10)
+                                    print("Trying again!")
+                                    try:
+                                        df = WyomingUpperAir.request_data(dates[7], station_id)
+                                        print("Successfully retrieved data for: "+dates[7].strftime('%m/%d %H:00 UTC"'))
+                                        date = dates[7]
+                                        data = True
+                                    except Exception as e:
+                                        time.sleep(10)
+                                        print("Trying one last time! This server can be glitchy...")
+                                        try:
+                                            df = WyomingUpperAir.request_data(dates[7], station_id)
+                                            print("Successfully retrieved data for: "+dates[7].strftime('%m/%d %H:00 UTC"')) 
+                                            date = dates[7]
+                                            data = True
+                                        except Exception as e:
+                                            data = False                                            
+                                            
+                                            
+                                            
+    if data == False:                                            
+        print("Searching for data at time: "+dates[8].strftime('%m/%d %H:00 UTC'))
+        try:
+           df = WyomingUpperAir.request_data(dates[8], station_id)
+           print("Successfully retrieved data for: "+dates[8].strftime('%m/%d %H:00 UTC"')) 
+           date = dates[8]
+           data = True 
+        except Exception as e:
+            time.sleep(10)
+            print("Trying again!")
+            try:
+                df = WyomingUpperAir.request_data(dates[8], station_id)
+                print("Successfully retrieved data for: "+dates[8].strftime('%m/%d %H:00 UTC"'))
+                date = dates[8]
+                data = True
+            except Exception as e:
+                time.sleep(10)
+                print("Trying one last time! This server can be glitchy...")
+                try:
+                    df = WyomingUpperAir.request_data(dates[8], station_id)
+                    print("Successfully retrieved data for: "+dates[8].strftime('%m/%d %H:00 UTC"'))
+                    date = dates[8]
+                    data = True
+                except Exception as e:
+                    print("Searching for data at time: "+dates[9].strftime('%m/%d %H:00 UTC'))
+                    try:
+                       df = WyomingUpperAir.request_data(dates[9], station_id)
+                       print("Successfully retrieved data for: "+dates[9].strftime('%m/%d %H:00 UTC"'))
+                       date = dates[9]
+                       data = True 
+                    except Exception as e:
+                        time.sleep(10)
+                        print("Trying again!")
+                        try:
+                            df = WyomingUpperAir.request_data(dates[9], station_id)
+                            print("Successfully retrieved data for: "+dates[9].strftime('%m/%d %H:00 UTC"'))
+                            date = dates[9]
+                            data = True
+                        except Exception as e:
+                            time.sleep(10)
+                            print("Trying one last time! This server can be glitchy...")
+                            try:
+                                df = WyomingUpperAir.request_data(dates[9], station_id)
+                                print("Successfully retrieved data for: "+dates[9].strftime('%m/%d %H:00 UTC"'))   
+                                date = dates[9]
+                                data = True
+                            except Exception as e:
+                                print("Searching for data at time: "+dates[10].strftime('%m/%d %H:00 UTC'))
+                                try:
+                                   df = WyomingUpperAir.request_data(dates[10], station_id)
+                                   print("Successfully retrieved data for: "+dates[10].strftime('%m/%d %H:00 UTC"'))
+                                   date = dates[10]
+                                   data = True
+                                except Exception as e:
+                                    time.sleep(10)
+                                    print("Trying again!")
+                                    try:
+                                        df = WyomingUpperAir.request_data(dates[10], station_id)
+                                        print("Successfully retrieved data for: "+dates[10].strftime('%m/%d %H:00 UTC"'))
+                                        date = dates[10]
+                                        data = True
+                                    except Exception as e:
+                                        time.sleep(10)
+                                        print("Trying one last time! This server can be glitchy...")
+                                        try:
+                                            df = WyomingUpperAir.request_data(dates[10], station_id)
+                                            print("Successfully retrieved data for: "+dates[10].strftime('%m/%d %H:00 UTC"'))   
+                                            date = dates[10]
+                                            data = True
+                                        except Exception as e:
+                                            data = False                                                                                            
+                                            
+                                            
+    if data == False:                                
+        print("Searching for data at time: "+dates[11].strftime('%m/%d %H:00 UTC'))
+        try:
+           df = WyomingUpperAir.request_data(dates[11], station_id)
+           print("Successfully retrieved data for: "+dates[11].strftime('%m/%d %H:00 UTC"'))
+           date = dates[11] 
+        except Exception as e:
+            time.sleep(10)
+            print("Trying again!")
+            try:
+                df = WyomingUpperAir.request_data(dates[11], station_id)
+                print("Successfully retrieved data for: "+dates[11].strftime('%m/%d %H:00 UTC"'))
+                date = dates[11]
+            except Exception as e:
+                time.sleep(10)
+                print("Trying one last time! This server can be glitchy...")
+                try:
+                    df = WyomingUpperAir.request_data(dates[11], station_id)
+                    print("Successfully retrieved data for: "+dates[11].strftime('%m/%d %H:00 UTC"'))
+                    date = dates[11]
+                except Exception as e:
+                    print("Searching for data at time: "+dates[12].strftime('%m/%d %H:00 UTC'))
+                    try:
+                       df = WyomingUpperAir.request_data(dates[12], station_id)
+                       print("Successfully retrieved data for: "+dates[12].strftime('%m/%d %H:00 UTC"')) 
+                       date = dates[12] 
+                    except Exception as e:
+                        time.sleep(10)
+                        print("Trying again!")
+                        try:
+                            df = WyomingUpperAir.request_data(dates[12], station_id)
+                            print("Successfully retrieved data for: "+dates[12].strftime('%m/%d %H:00 UTC"'))
+                            date = dates[12]
+                        except Exception as e:
+                            time.sleep(10)
+                            print("Trying one last time! This server can be glitchy...")
+                            try:
+                                df = WyomingUpperAir.request_data(dates[12], station_id)
+                                print("Successfully retrieved data for: "+dates[12].strftime('%m/%d %H:00 UTC"'))  
+                                date = dates[12]
+                            except Exception as e:
+                                print("No Sounding Data has been recorded within the past 12 hours.")
+                                sounding = False
+
+
 
     try:
+        date_24 = date - timedelta(hours=24)
+        print("Searching for data at time: "+date_24.strftime('%m/%d %H:00 UTC'))
         df_24 = WyomingUpperAir.request_data(date_24, station_id)
-        print(station_id+' '+date_24.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')
-    except Exception as a:
-        print("Trying again! - Just in case.")
+        print("Successfully retrieved data for: "+date_24.strftime('%m/%d %H:00 UTC'))
+    except Exception as e:
+        time.sleep(10)
         try:
-            time.sleep(10)
+            print("Trying Again!")
             df_24 = WyomingUpperAir.request_data(date_24, station_id)
-            print(station_id+' '+date_24.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')
-        except Exception as b:
+            print("Successfully retrieved data for: "+date_24.strftime('%m/%d %H:00 UTC'))
+        except Exception as e:
+            time.sleep(10)
             try:
-                print("Trying one last time! - This server can be glitchy.")
-                time.sleep(10)
+                print("Trying one last time! This server can be glitchy...")
                 df_24 = WyomingUpperAir.request_data(date_24, station_id)
-                print(station_id+' '+date_24.strftime('%m/%d/%Y %H:00 UTC')+' data retrieved successfully!')              
-            except Exception as c:
-                print(station_id+' '+date_24.strftime('%m/%d/%Y %H:00 UTC')+' data not availiable.\nThere will be no 24-HR Comparisons on this plot.')
-
+                print("Successfully retrieved data for: "+date_24.strftime('%m/%d %H:00 UTC'))
+            except Exception as e:
+                pass
+    
     if sounding == True:
 
         df.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
         df.dropna(axis=0, inplace=True)
         df['height'] = clean_height_data(df['height'])
+        mheight = Thermodynamics.find_mixing_height(df['temperature'], df['height'])
+        elev = df['elevation'] * 3.28084
+        mheight = mheight - elev
+        mheight = mheight.iloc[0]
+        mheight = int(round(mheight, 0))
         d = pandas_dataframe_to_unit_arrays(df)
     
         temps = d['temperature'].m
@@ -145,51 +434,52 @@ def plot_observed_sounding(station_id):
             df_len = len(temps)
         else:
             df_len = len(temps)
-        mheight = Thermodynamics.find_mixing_height(temps, hgts, df_len)
-        mheight = mheight - elevation
-        mheight = int(round(mheight[0], 0))
+
         theta = mpcalc.potential_temperature(pressure, temperature)
 
-       # try:
-        df_24.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
-        df_24.dropna(axis=0, inplace=True)
-        df_24['height'] = clean_height_data(df_24['height'])
-        d_24 = pandas_dataframe_to_unit_arrays(df_24)
+        try:
+            df_24.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
+            df_24.dropna(axis=0, inplace=True)
+            df_24['height'] = clean_height_data(df_24['height'])
+            mheight_24 = Thermodynamics.find_mixing_height(df_24['temperature'], df_24['height'])
+            elev_24 = df_24['elevation'] * 3.28084
+            mheight_24 = mheight_24 - elev_24
+            mheight_24 = mheight_24.iloc[0]
+            mheight_24 = int(round(mheight_24, 0))
+            d_24 = pandas_dataframe_to_unit_arrays(df_24)
+    
+            temperature_24 = d_24['temperature']
+            temps_24 = d_24['temperature'].m
+            dewpoint_24 = d_24['dewpoint']
+            hgt_24 = d_24['height'].m
+            rh_24 = (mpcalc.relative_humidity_from_dewpoint(temperature_24, dewpoint_24) * 100)
+            pressure_24 = d_24['pressure']
+            u_24 = d_24['u_wind']
+            v_24 = d_24['v_wind']
+            u_24 = u_24.m * 1.15078
+            v_24 = v_24.m * 1.15078
+            height_24 = d_24['height']
+            elevation_24 = d_24['elevation']
+            elevation_24 = elevation_24.m * 3.28084
+    
+            ft_24 = height_24.m *3.28084
+            ft_24 = ft_24 - elevation_24
+            hgts_24 = hgt_24
+            hgt_24 = hgt_24 - elevation_24
+            
+            if len(temps_24) > len(hgts_24):
+                df_len_24 = len(hgts_24)
+            elif len(temps_24) < len(hgts_24):
+                df_len_24 = len(temps_24)
+            else:
+                df_len_24 = len(temps_24)
+    
+            theta_24 = mpcalc.potential_temperature(pressure_24, temperature_24)
+            mheight_diff = mheight - mheight_24
+            bv_squared_24 = mpcalc.brunt_vaisala_frequency_squared(height_24, theta_24) 
 
-        temperature_24 = d_24['temperature']
-        temps_24 = d_24['temperature'].m
-        dewpoint_24 = d_24['dewpoint']
-        hgt_24 = d_24['height'].m
-        rh_24 = (mpcalc.relative_humidity_from_dewpoint(temperature_24, dewpoint_24) * 100)
-        pressure_24 = d_24['pressure']
-        u_24 = d_24['u_wind']
-        v_24 = d_24['v_wind']
-        u_24 = u_24.m * 1.15078
-        v_24 = v_24.m * 1.15078
-        height_24 = d_24['height']
-        elevation_24 = d_24['elevation']
-        elevation_24 = elevation_24.m * 3.28084
-
-        ft_24 = height_24.m *3.28084
-        ft_24 = ft_24 - elevation_24
-        hgts_24 = hgt_24
-        hgt_24 = hgt_24 - elevation_24
-        
-        if len(temps_24) > len(hgts_24):
-            df_len_24 = len(hgts_24)
-        elif len(temps_24) < len(hgts_24):
-            df_len_24 = len(temps_24)
-        else:
-            df_len_24 = len(temps_24)
-        mheight_24 = Thermodynamics.find_mixing_height(temps_24, hgts_24, df_len_24)
-        mheight_24 = mheight_24 - elevation_24
-        mheight_24 = int(round(mheight_24[0], 0))
-        theta_24 = mpcalc.potential_temperature(pressure_24, temperature_24)
-        mheight_diff = mheight - mheight_24
-        bv_squared_24 = mpcalc.brunt_vaisala_frequency_squared(height_24, theta_24) 
-
-      #  except Exception as e:
-       #     pass
+        except Exception as e:
+            pass
         # Calculates the Brunt–Väisälä Frequency Squared
         bv_squared = mpcalc.brunt_vaisala_frequency_squared(height, theta)
 
@@ -488,23 +778,28 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         df.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
         df.dropna(axis=0, inplace=True)
         df['height'] = clean_height_data(df['height'])
-        df = pandas_dataframe_to_unit_arrays(df)
+        mheight = Thermodynamics.find_mixing_height(df['temperature'], df['height'])
+        elev = df['elevation'] * 3.28084
+        mheight = mheight - elev
+        mheight = mheight.iloc[0]
+        mheight = int(round(mheight, 0))
+        d = pandas_dataframe_to_unit_arrays(df)
     
-        temps = df['temperature'].m
-        hgt = df['height'].m
-        pressure = df['pressure']
-        temperature = df['temperature']
-        dewpoint = df['dewpoint']
-        ws = df['speed']
-        u = df['u_wind']
-        v = df['v_wind']
-        direction = df['direction']
-        pwats = df['pw']
-        station_elevation = df['elevation']
-        lat = df['latitude'][0].m
-        lon = df['longitude'][0].m
-        height = df['height']
-        elevation = df['elevation']
+        temps = d['temperature'].m
+        hgt = d['height'].m
+        pressure = d['pressure']
+        temperature = d['temperature']
+        dewpoint = d['dewpoint']
+        ws = d['speed']
+        u = d['u_wind']
+        v = d['v_wind']
+        direction = d['direction']
+        pwats = d['pw']
+        station_elevation = d['elevation']
+        lat = d['latitude'][0].m
+        lon = d['longitude'][0].m
+        height = d['height']
+        elevation = d['elevation']
         elevation = elevation.m * 3.28084
         rh = (mpcalc.relative_humidity_from_dewpoint(temperature, dewpoint) * 100)
         ft = height.m *3.28084
@@ -518,46 +813,46 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
             df_len = len(temps)
         else:
             df_len = len(temps)
-        mheight = Thermodynamics.find_mixing_height(temps, hgts, df_len)
-        mheight = mheight - elevation
-        mheight = int(round(mheight[0], 0))
+
         theta = mpcalc.potential_temperature(pressure, temperature)
 
         try:
-
             df_24.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
             df_24.dropna(axis=0, inplace=True)
             df_24['height'] = clean_height_data(df_24['height'])
-            df_24 = pandas_dataframe_to_unit_arrays(df_24)
+            mheight_24 = Thermodynamics.find_mixing_height(df_24['temperature'], df_24['height'])
+            elev_24 = df_24['elevation'] * 3.28084
+            mheight_24 = mheight_24 - elev_24
+            mheight_24 = mheight_24.iloc[0]
+            mheight_24 = int(round(mheight_24, 0))
+            d_24 = pandas_dataframe_to_unit_arrays(df_24)
     
-            temperature_24 = df_24['temperature']
-            temps_24 = df_24['temperature'].m
-            dewpoint_24 = df_24['dewpoint']
-            hgt_24 = df_24['height'].m
+            temperature_24 = d_24['temperature']
+            temps_24 = d_24['temperature'].m
+            dewpoint_24 = d_24['dewpoint']
+            hgt_24 = d_24['height'].m
             rh_24 = (mpcalc.relative_humidity_from_dewpoint(temperature_24, dewpoint_24) * 100)
-            pressure_24 = df_24['pressure']
-            u_24 = df_24['u_wind']
-            v_24 = df_24['v_wind']
+            pressure_24 = d_24['pressure']
+            u_24 = d_24['u_wind']
+            v_24 = d_24['v_wind']
             u_24 = u_24.m * 1.15078
             v_24 = v_24.m * 1.15078
-            height_24 = df_24['height']
-            elevation_24 = df_24['elevation']
+            height_24 = d_24['height']
+            elevation_24 = d_24['elevation']
             elevation_24 = elevation_24.m * 3.28084
     
             ft_24 = height_24.m *3.28084
             ft_24 = ft_24 - elevation_24
             hgts_24 = hgt_24
             hgt_24 = hgt_24 - elevation_24
-    
+            
             if len(temps_24) > len(hgts_24):
                 df_len_24 = len(hgts_24)
             elif len(temps_24) < len(hgts_24):
                 df_len_24 = len(temps_24)
             else:
                 df_len_24 = len(temps_24)
-            mheight_24 = Thermodynamics.find_mixing_height(temps_24, hgts_24, df_len_24)
-            mheight_24 = mheight_24 - elevation_24
-            mheight_24 = int(round(mheight_24[0], 0))
+    
             theta_24 = mpcalc.potential_temperature(pressure_24, temperature_24)
             mheight_diff = mheight - mheight_24
             bv_squared_24 = mpcalc.brunt_vaisala_frequency_squared(height_24, theta_24) 
