@@ -24,6 +24,25 @@ mpl.rcParams['font.weight'] = 'bold'
 mpl.rcParams['xtick.labelsize'] = 7
 mpl.rcParams['ytick.labelsize'] = 7
 
+pd.options.mode.copy_on_write = True
+
+def clean_height_data(height_data):
+
+    height_data = height_data
+    
+    end = len(height_data) - 1
+
+    for i in range(0, end):
+        if height_data.iloc[i+1] < height_data.iloc[i]:
+            if height_data.iloc[i] >= 5000 and height_data.iloc[i] < 10000:
+                height_data.iloc[i+1] = height_data.iloc[i+1] + 10000
+            if height_data.iloc[i] >= 15000 and height_data.iloc[i] < 20000:
+                height_data.iloc[i+1] = height_data.iloc[i+1] + 20000
+            else:
+                height_data.iloc[i+1] = height_data.iloc[i+1] + 30000
+    return height_data
+
+
 def plot_observed_sounding(station_id):
 
     local_time, utc_time = standard.plot_creation_time()
@@ -95,23 +114,24 @@ def plot_observed_sounding(station_id):
 
         df.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
         df.dropna(axis=0, inplace=True)
-        df = pandas_dataframe_to_unit_arrays(df)
+        df['height'] = clean_height_data(df['height'])
+        d = pandas_dataframe_to_unit_arrays(df)
     
-        temps = df['temperature'].m
-        hgt = df['height'].m
-        pressure = df['pressure']
-        temperature = df['temperature']
-        dewpoint = df['dewpoint']
-        ws = df['speed']
-        u = df['u_wind']
-        v = df['v_wind']
-        direction = df['direction']
-        pwats = df['pw']
-        station_elevation = df['elevation']
-        lat = df['latitude'][0].m
-        lon = df['longitude'][0].m
-        height = df['height']
-        elevation = df['elevation']
+        temps = d['temperature'].m
+        hgt = d['height'].m
+        pressure = d['pressure']
+        temperature = d['temperature']
+        dewpoint = d['dewpoint']
+        ws = d['speed']
+        u = d['u_wind']
+        v = d['v_wind']
+        direction = d['direction']
+        pwats = d['pw']
+        station_elevation = d['elevation']
+        lat = d['latitude'][0].m
+        lon = d['longitude'][0].m
+        height = d['height']
+        elevation = d['elevation']
         elevation = elevation.m * 3.28084
         rh = (mpcalc.relative_humidity_from_dewpoint(temperature, dewpoint) * 100)
         ft = height.m *3.28084
@@ -130,45 +150,46 @@ def plot_observed_sounding(station_id):
         mheight = int(round(mheight[0], 0))
         theta = mpcalc.potential_temperature(pressure, temperature)
 
-        try:
-            df_24.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
-            df_24.dropna(axis=0, inplace=True)
-            df_24 = pandas_dataframe_to_unit_arrays(df_24)
-    
-            temperature_24 = df_24['temperature']
-            temps_24 = df_24['temperature'].m
-            dewpoint_24 = df_24['dewpoint']
-            hgt_24 = df_24['height'].m
-            rh_24 = (mpcalc.relative_humidity_from_dewpoint(temperature_24, dewpoint_24) * 100)
-            pressure_24 = df_24['pressure']
-            u_24 = df_24['u_wind']
-            v_24 = df_24['v_wind']
-            u_24 = u_24.m * 1.15078
-            v_24 = v_24.m * 1.15078
-            height_24 = df_24['height']
-            elevation_24 = df_24['elevation']
-            elevation_24 = elevation_24.m * 3.28084
-    
-            ft_24 = height_24.m *3.28084
-            ft_24 = ft_24 - elevation_24
-            hgts_24 = hgt_24
-            hgt_24 = hgt_24 - elevation_24
-            
-            if len(temps_24) > len(hgts_24):
-                df_len_24 = len(hgts_24)
-            elif len(temps_24) < len(hgts_24):
-                df_len_24 = len(temps_24)
-            else:
-                df_len_24 = len(temps_24)
-            mheight_24 = Thermodynamics.find_mixing_height(temps_24, hgts_24, df_len_24)
-            mheight_24 = mheight_24 - elevation_24
-            mheight_24 = int(round(mheight_24[0], 0))
-            theta_24 = mpcalc.potential_temperature(pressure_24, temperature_24)
-            mheight_diff = mheight - mheight_24
-            bv_squared_24 = mpcalc.brunt_vaisala_frequency_squared(height_24, theta_24) 
+       # try:
+        df_24.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
+        df_24.dropna(axis=0, inplace=True)
+        df_24['height'] = clean_height_data(df_24['height'])
+        d_24 = pandas_dataframe_to_unit_arrays(df_24)
 
-        except Exception as e:
-            pass
+        temperature_24 = d_24['temperature']
+        temps_24 = d_24['temperature'].m
+        dewpoint_24 = d_24['dewpoint']
+        hgt_24 = d_24['height'].m
+        rh_24 = (mpcalc.relative_humidity_from_dewpoint(temperature_24, dewpoint_24) * 100)
+        pressure_24 = d_24['pressure']
+        u_24 = d_24['u_wind']
+        v_24 = d_24['v_wind']
+        u_24 = u_24.m * 1.15078
+        v_24 = v_24.m * 1.15078
+        height_24 = d_24['height']
+        elevation_24 = d_24['elevation']
+        elevation_24 = elevation_24.m * 3.28084
+
+        ft_24 = height_24.m *3.28084
+        ft_24 = ft_24 - elevation_24
+        hgts_24 = hgt_24
+        hgt_24 = hgt_24 - elevation_24
+        
+        if len(temps_24) > len(hgts_24):
+            df_len_24 = len(hgts_24)
+        elif len(temps_24) < len(hgts_24):
+            df_len_24 = len(temps_24)
+        else:
+            df_len_24 = len(temps_24)
+        mheight_24 = Thermodynamics.find_mixing_height(temps_24, hgts_24, df_len_24)
+        mheight_24 = mheight_24 - elevation_24
+        mheight_24 = int(round(mheight_24[0], 0))
+        theta_24 = mpcalc.potential_temperature(pressure_24, temperature_24)
+        mheight_diff = mheight - mheight_24
+        bv_squared_24 = mpcalc.brunt_vaisala_frequency_squared(height_24, theta_24) 
+
+      #  except Exception as e:
+       #     pass
         # Calculates the Brunt–Väisälä Frequency Squared
         bv_squared = mpcalc.brunt_vaisala_frequency_squared(height, theta)
 
@@ -466,6 +487,7 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
 
         df.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
         df.dropna(axis=0, inplace=True)
+        df['height'] = clean_height_data(df['height'])
         df = pandas_dataframe_to_unit_arrays(df)
     
         temps = df['temperature'].m
@@ -505,6 +527,7 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
 
             df_24.drop_duplicates(inplace=True,subset='pressure',ignore_index=True)
             df_24.dropna(axis=0, inplace=True)
+            df_24['height'] = clean_height_data(df_24['height'])
             df_24 = pandas_dataframe_to_unit_arrays(df_24)
     
             temperature_24 = df_24['temperature']
