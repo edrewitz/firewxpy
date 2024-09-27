@@ -1,3 +1,4 @@
+
 import math
 import numpy as np
 
@@ -243,6 +244,12 @@ class scaling:
                 decimate = 300
 
             if state == 'GA' or state == 'ga':
+                decimate = 300
+
+            if state == 'TN' or state == 'tn':
+                decimate = 300
+
+            if state == 'KY' or state == 'ky':
                 decimate = 300
         
         return decimate
