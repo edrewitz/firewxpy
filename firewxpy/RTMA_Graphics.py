@@ -7973,7 +7973,7 @@ def plot_low_relative_humidity_with_metar_obs(low_rh_threshold=15, western_bound
     path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA LOW RH & METAR', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA LOW RH & METAR')
 
-def plot_wind_speed_with_metar_obs(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8, metar_mask=None, metar_fontsize=10, u_component=None, v_component=None, sample_point_type='barbs'):
+def plot_wind_speed_with_observed_winds(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8, metar_mask=None, metar_fontsize=10, u_component=None, v_component=None, sample_point_type='barbs'):
 
     r'''
         This function does the following:
@@ -8157,28 +8157,28 @@ def plot_wind_speed_with_metar_obs(western_bound=None, eastern_bound=None, south
     mask = settings.get_metar_mask(state, gacc_region, rtma_ws=True)
     
     if data == None:
-        #try:
-        data = RTMA_CONUS.RTMA_Synced_With_METAR('Wind_speed_Analysis_height_above_ground', utc_time, mask)
-        rtma_data = data[0]
-        rtma_time = data[1]
-        sfc_data = data[2]
-        sfc_data_u_kt = data[3]
-        sfc_data_v_kt = data[4]
-        sfc_data_rh = data[5]
-        sfc_data_decimate = data[6]
-        metar_time_revised = data[7]
-        plot_proj = data[8]   
-        lat = rtma_data['latitude']
-        lon = rtma_data['longitude']
-        rtma_data = rtma_data * 2.23694
-        u, t = RTMA_CONUS.get_current_rtma_data(utc_time, 'u-component_of_wind_Analysis_height_above_ground')
-        v, t = RTMA_CONUS.get_current_rtma_data(utc_time, 'v-component_of_wind_Analysis_height_above_ground')
-        u = u * 2.23694
-        v = v * 2.23694
-        
-        print("Unpacked the data successfully!")
-        #except Exception as e:
-         #   pass
+        try:
+            data = RTMA_CONUS.RTMA_Synced_With_METAR('Wind_speed_Analysis_height_above_ground', utc_time, mask)
+            rtma_data = data[0]
+            rtma_time = data[1]
+            sfc_data = data[2]
+            sfc_data_u_kt = data[3]
+            sfc_data_v_kt = data[4]
+            sfc_data_rh = data[5]
+            sfc_data_decimate = data[6]
+            metar_time_revised = data[7]
+            plot_proj = data[8]   
+            lat = rtma_data['latitude']
+            lon = rtma_data['longitude']
+            rtma_data = rtma_data * 2.23694
+            u, t = RTMA_CONUS.get_current_rtma_data(utc_time, 'u-component_of_wind_Analysis_height_above_ground')
+            v, t = RTMA_CONUS.get_current_rtma_data(utc_time, 'v-component_of_wind_Analysis_height_above_ground')
+            u = u * 2.23694
+            v = v * 2.23694
+            
+            print("Unpacked the data successfully!")
+        except Exception as e:
+            pass
 
     elif data != None:
         try:
@@ -8314,11 +8314,11 @@ def plot_wind_speed_with_metar_obs(western_bound=None, eastern_bound=None, south
     sfc_data['u'] = sfc_data['u'] * 1.15078
     sfc_data['v'] = sfc_data['v'] * 1.15078
     
-    stn.plot_barb(sfc_data['u'][sfc_data_decimate], sfc_data['v'][sfc_data_decimate], color='crimson')
+    stn.plot_barb(sfc_data['u'][sfc_data_decimate], sfc_data['v'][sfc_data_decimate], color='darkorange')
 
     if sample_point_type == 'points':
 
-        plt.title("RTMA Wind Speed (MPH) & METAR Observations", fontsize=title_fontsize, fontweight='bold', loc='left')
+        plt.title("RTMA Wind Speed [MPH] & Observed Winds", fontsize=title_fontsize, fontweight='bold', loc='left')
 
         stn1 = mpplots.StationPlot(ax, df_ws['longitude'][::decimate], df_ws['latitude'][::decimate],
                                      transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -8327,7 +8327,7 @@ def plot_wind_speed_with_metar_obs(western_bound=None, eastern_bound=None, south
 
     if sample_point_type == 'barbs':
         
-        plt.title("RTMA Wind Speed (MPH) & Observed Wind [METAR]\nRTMA Wind [Green Barbs] | Observed Wind [Red Barbs]", fontsize=title_fontsize, fontweight='bold', loc='left')
+        plt.title("RTMA Wind Speed (MPH) & Observed Wind [METAR]\nRTMA Wind [Green Barbs] | Observed Wind [Orange Barbs]", fontsize=title_fontsize, fontweight='bold', loc='left')
         
         stn1 = mpplots.StationPlot(ax, df_u['longitude'][::decimate], df_u['latitude'][::decimate],
                                      transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
@@ -8340,10 +8340,10 @@ def plot_wind_speed_with_metar_obs(western_bound=None, eastern_bound=None, south
     
     ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
-    path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA WIND SPEED & METAR', reference_system)
-    file_functions.update_images(fig, path, gif_path, 'RTMA WIND SPEED & METAR')
+    path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA WIND SPEED & OBS', reference_system)
+    file_functions.update_images(fig, path, gif_path, 'RTMA WIND SPEED & OBS')
 
-def plot_wind_gust_with_metar_obs(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8, metar_mask=None, metar_fontsize=10):
+def plot_wind_gust_with_observed_winds(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8, metar_mask=None, metar_fontsize=10, sample_point_type='barbs'):
 
     r'''
         This function does the following:
@@ -8409,7 +8409,7 @@ def plot_wind_gust_with_metar_obs(western_bound=None, eastern_bound=None, southe
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    contourf = np.arange(0, 61, 1)
+    contourf = np.arange(0, 81, 1)
     labels = contourf[::5]
 
     if reference_system == 'Custom' or reference_system == 'custom':
@@ -8524,7 +8524,7 @@ def plot_wind_gust_with_metar_obs(western_bound=None, eastern_bound=None, southe
         aspect=aspect
         mask = metar_mask
     
-    mask = settings.get_metar_mask(state, gacc_region)
+    mask = settings.get_metar_mask(state, gacc_region, rtma_ws=True)
     
     if data == None:
         try:
@@ -8541,8 +8541,10 @@ def plot_wind_gust_with_metar_obs(western_bound=None, eastern_bound=None, southe
             lat = rtma_data['latitude']
             lon = rtma_data['longitude']
             rtma_data = rtma_data * 2.23694
-            sfc_data['wind_speed'] = sfc_data['wind_speed'] * 1.15078
-            sfc_data['wind_gust'] = sfc_data['wind_gust'] * 1.15078
+            u, t = RTMA_CONUS.get_current_rtma_data(utc_time, 'u-component_of_wind_Analysis_height_above_ground')
+            v, t = RTMA_CONUS.get_current_rtma_data(utc_time, 'v-component_of_wind_Analysis_height_above_ground')
+            u = u * 2.23694
+            v = v * 2.23694
             
             print("Unpacked the data successfully!")
         except Exception as e:
@@ -8562,15 +8564,17 @@ def plot_wind_gust_with_metar_obs(western_bound=None, eastern_bound=None, southe
             lat = rtma_data['latitude']
             lon = rtma_data['longitude']
             rtma_data = rtma_data * 2.23694
-            sfc_data['wind_speed'] = sfc_data['wind_speed'] * 1.15078
-            sfc_data['wind_gust'] = sfc_data['wind_gust'] * 1.15078
+            u = u_component
+            v = v_component
+            u = u * 2.23694
+            v = v * 2.23694
             
             print("Unpacked the data successfully!")
 
         except Exception as f:
             try:
                 print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
-                data = RTMA_CONUS.RTMA_Synced_With_METAR('Wind_speed_Analysis_height_above_ground', utc_time, mask)
+                data = RTMA_CONUS.RTMA_Synced_With_METAR('Wind_speed_gust_Analysis_height_above_ground', utc_time, mask)
                 rtma_data = data[0] 
                 rtma_time = data[1]
                 sfc_data = data[2]
@@ -8583,8 +8587,10 @@ def plot_wind_gust_with_metar_obs(western_bound=None, eastern_bound=None, southe
                 lat = rtma_data['latitude']
                 lon = rtma_data['longitude']
                 rtma_data = rtma_data * 2.23694
-                sfc_data['wind_speed'] = sfc_data['wind_speed'] * 1.15078
-                sfc_data['wind_gust'] = sfc_data['wind_gust'] * 1.15078
+                u, t = RTMA_CONUS.get_current_rtma_data(utc_time, 'u-component_of_wind_Analysis_height_above_ground')
+                v, t = RTMA_CONUS.get_current_rtma_data(utc_time, 'v-component_of_wind_Analysis_height_above_ground')
+                u = u * 2.23694
+                v = v * 2.23694
                 
                 print("Unpacked the data successfully!")
             except Exception as g:
@@ -8659,6 +8665,12 @@ def plot_wind_gust_with_metar_obs(western_bound=None, eastern_bound=None, southe
     else:
         pass
 
+    decimate = scaling.get_tds_rtma_decimation_by_state_or_gacc_region(state, gacc_region)
+
+    df_ws = rtma_data.to_dataframe()
+    df_u = u.to_dataframe()
+    df_v = v.to_dataframe()
+
     cs = ax.contourf(lon, lat, rtma_data, 
                      transform=datacrs, levels=contourf, cmap=cmap, alpha=alpha, zorder=4, extend='max')
 
@@ -8668,25 +8680,34 @@ def plot_wind_gust_with_metar_obs(western_bound=None, eastern_bound=None, southe
     # Plots METAR
     stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_decimate].m, sfc_data['latitude'][sfc_data_decimate].m,
                              transform=ccrs.PlateCarree(), fontsize=metar_fontsize, zorder=10, clip_on=True)
-    
-    
-    stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_decimate], color='red',
-                      path_effects=[withStroke(linewidth=1, foreground='black')])
-    
-    stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_decimate], color='blue',
-                      path_effects=[withStroke(linewidth=1, foreground='black')])
-    
-    stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_decimate], mpplots.sky_cover)
 
+    sfc_data['u'] = sfc_data['u'] * 1.15078
+    sfc_data['v'] = sfc_data['v'] * 1.15078
     
-    stn.plot_barb(sfc_data['u'][sfc_data_decimate], sfc_data['v'][sfc_data_decimate], color='crimson')
+    stn.plot_barb(sfc_data['u'][sfc_data_decimate], sfc_data['v'][sfc_data_decimate], color='darkorange')
 
-    plt.title("RTMA Wind Gust (MPH) & METAR Observations", fontsize=title_fontsize, fontweight='bold', loc='left')
+    if sample_point_type == 'points':
+
+        plt.title("RTMA Wind Gust [MPH] & Observed Gusts [MPH]", fontsize=title_fontsize, fontweight='bold', loc='left')
+
+        stn1 = mpplots.StationPlot(ax, df_ws['longitude'][::decimate], df_ws['latitude'][::decimate],
+                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
     
-    plt.title("Analysis & METARs Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
+        stn1.plot_parameter('C', df_ws['Wind_speed_gust_Analysis_height_above_ground'][::decimate], color='crimson', zorder=7)
+
+    if sample_point_type == 'barbs':
+        
+        plt.title("RTMA Wind Gust [MPH (Shaded)]\nRTMA Winds [MPH (Green Barbs)]\nObserved Winds [MPH (Orange Barbs)]", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        stn1 = mpplots.StationPlot(ax, df_u['longitude'][::decimate], df_u['latitude'][::decimate],
+                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+    
+        stn1.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::decimate], df_v['v-component_of_wind_Analysis_height_above_ground'][::decimate], color='lime', zorder=7)      
+    
+    plt.title("Analysis & Observations Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
     ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
-    path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA WIND GUST & METAR', reference_system)
-    file_functions.update_images(fig, path, gif_path, 'RTMA WIND GUST & METAR')
+    path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA WIND GUST & OBS', reference_system)
+    file_functions.update_images(fig, path, gif_path, 'RTMA WIND GUST & OBS')
 
