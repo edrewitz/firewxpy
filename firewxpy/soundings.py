@@ -53,11 +53,7 @@ def plot_observed_sounding(station_id):
     dates = []
     sounding = True
     for i in range(0, 13):
-        year = utc_time.year
-        month = utc_time.month
-        day = utc_time.day 
-        hour = abs(utc_time.hour - i)
-        date = datetime(year, month, day, hour)
+        date = utc_time - timedelta(hours=i)
         dates.append(date)
 
     try:
@@ -498,6 +494,10 @@ def plot_observed_sounding(station_id):
         barb_mask = (pressure >= 100 * units.hPa)
         pres = pressure[barb_mask]
         idx = mpcalc.resample_nn_1d(pres, interval)
+        interval_24 = np.logspace(2, 3) * units.hPa
+        barb_mask_24 = (pressure_24 >= 100 * units.hPa)
+        pres_24 = pressure_24[barb_mask_24]
+        idx_24 = mpcalc.resample_nn_1d(pres_24, interval_24)
         fig = plt.figure(figsize=(12, 10))
         gs = gridspec.GridSpec(10, 13)
         skew = SkewT(fig, rotation=45, subplot=gs[0:12, 0:13])
@@ -663,7 +663,7 @@ def plot_observed_sounding(station_id):
         ax2.barbs(x[idx], ft[idx], u[idx], v[idx], clip_on=True, zorder=10, color='darkred', label=label_date, length=5, alpha=0.5)
         
         try:
-            ax2.barbs(x[idx], ft_24[idx], u_24[idx], v_24[idx], clip_on=True, zorder=10, color='darkblue', label=label_date_24, length=5, alpha=0.5)
+            ax2.barbs(x[idx_24], ft_24[idx_24], u_24[idx_24], v_24[idx_24], clip_on=True, zorder=10, color='darkblue', label=label_date_24, length=5, alpha=0.5)
         except Exception as e:
             pass
             
@@ -877,6 +877,10 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         barb_mask = (pressure >= 100 * units.hPa)
         pres = pressure[barb_mask]
         idx = mpcalc.resample_nn_1d(pres, interval)
+        interval_24 = np.logspace(2, 3) * units.hPa
+        barb_mask_24 = (pressure_24 >= 100 * units.hPa)
+        pres_24 = pressure_24[barb_mask_24]
+        idx_24 = mpcalc.resample_nn_1d(pres_24, interval_24)
         fig = plt.figure(figsize=(12, 10))
         gs = gridspec.GridSpec(10, 13)
         skew = SkewT(fig, rotation=45, subplot=gs[0:12, 0:13])
@@ -1042,7 +1046,7 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         ax2.barbs(x[idx], ft[idx], u[idx], v[idx], clip_on=True, zorder=10, color='darkred', label=label_date, length=5, alpha=0.5)
         
         try:
-            ax2.barbs(x[idx], ft_24[idx], u_24[idx], v_24[idx], clip_on=True, zorder=10, color='darkblue', label=label_date_24, length=5, alpha=0.5)
+            ax2.barbs(x[idx_24], ft_24[idx_24], u_24[idx_24], v_24[idx_24], clip_on=True, zorder=10, color='darkblue', label=label_date_24, length=5, alpha=0.5)
         except Exception as e:
             pass
             
@@ -1098,5 +1102,5 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
 
     fname = station_id+" VERTICAL PROFILES"
     
-    file_functions.save_daily_sounding_graphic(fig, station_id, date)  
+    file_functions.save_daily_sounding_graphic(fig, station_id, date) 
         
