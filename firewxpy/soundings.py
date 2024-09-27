@@ -55,7 +55,7 @@ def plot_observed_sounding(station_id):
     for i in range(0, 13):
         year = utc_time.year
         month = utc_time.month
-        day = utc_time.day
+        day = utc_time.day 
         hour = abs(utc_time.hour - i)
         date = datetime(year, month, day, hour)
         dates.append(date)
@@ -63,7 +63,7 @@ def plot_observed_sounding(station_id):
     try:
         print("Searching for data at time: "+dates[0].strftime('%m/%d %H:00 UTC'))
         df = WyomingUpperAir.request_data(dates[0], station_id)
-        print("Successfully retrieved data for: "+dates[0].strftime('%m/%d %H:00 UTC"'))
+        print("Successfully retrieved data for: "+dates[0].strftime('%m/%d %H:00 UTC'))
         date = dates[0]
         data = True
     except Exception as e:
@@ -71,7 +71,7 @@ def plot_observed_sounding(station_id):
         print("Trying again!")
         try:
             df = WyomingUpperAir.request_data(dates[0], station_id)
-            print("Successfully retrieved data for: "+dates[0].strftime('%m/%d %H:00 UTC"'))
+            print("Successfully retrieved data for: "+dates[0].strftime('%m/%d %H:00 UTC'))
             date = dates[0]
             data = True
         except Exception as e:
@@ -79,14 +79,14 @@ def plot_observed_sounding(station_id):
             print("Trying one last time! This server can be glitchy...")
             try:
                 df = WyomingUpperAir.request_data(dates[0], station_id)
-                print("Successfully retrieved data for: "+dates[0].strftime('%m/%d %H:00 UTC"'))
+                print("Successfully retrieved data for: "+dates[0].strftime('%m/%d %H:00 UTC'))
                 date = dates[0]
                 data = True
             except Exception as e:
                 print("Searching for data at time: "+dates[1].strftime('%m/%d %H:00 UTC'))
                 try:
                    df = WyomingUpperAir.request_data(dates[1], station_id)
-                   print("Successfully retrieved data for: "+dates[1].strftime('%m/%d %H:00 UTC"')) 
+                   print("Successfully retrieved data for: "+dates[1].strftime('%m/%d %H:00 UTC')) 
                    date = dates[1]
                    data = True
                 except Exception as e:
@@ -94,7 +94,7 @@ def plot_observed_sounding(station_id):
                     print("Trying again!")
                     try:
                         df = WyomingUpperAir.request_data(dates[1], station_id)
-                        print("Successfully retrieved data for: "+dates[1].strftime('%m/%d %H:00 UTC"'))
+                        print("Successfully retrieved data for: "+dates[1].strftime('%m/%d %H:00 UTC'))
                         date = dates[1]
                         data = True
                     except Exception as e:
@@ -102,14 +102,14 @@ def plot_observed_sounding(station_id):
                         print("Trying one last time! This server can be glitchy...")
                         try:
                             df = WyomingUpperAir.request_data(dates[1], station_id)
-                            print("Successfully retrieved data for: "+dates[1].strftime('%m/%d %H:00 UTC"'))
+                            print("Successfully retrieved data for: "+dates[1].strftime('%m/%d %H:00 UTC'))
                             date = dates[1] 
                             data = True
                         except Exception as e:
                             print("Searching for data at time: "+dates[2].strftime('%m/%d %H:00 UTC'))
                             try:
                                df = WyomingUpperAir.request_data(dates[2], station_id)
-                               print("Successfully retrieved data for: "+dates[2].strftime('%m/%d %H:00 UTC"')) 
+                               print("Successfully retrieved data for: "+dates[2].strftime('%m/%d %H:00 UTC')) 
                                date = dates[2] 
                                data = True
                             except Exception as e:
@@ -117,7 +117,7 @@ def plot_observed_sounding(station_id):
                                 print("Trying again!")
                                 try:
                                     df = WyomingUpperAir.request_data(dates[2], station_id)
-                                    print("Successfully retrieved data for: "+dates[2].strftime('%m/%d %H:00 UTC"'))
+                                    print("Successfully retrieved data for: "+dates[2].strftime('%m/%d %H:00 UTC'))
                                     date = dates[2]
                                     data = True
                                 except Exception as e:
@@ -125,7 +125,7 @@ def plot_observed_sounding(station_id):
                                     print("Trying one last time! This server can be glitchy...")
                                     try:
                                         df = WyomingUpperAir.request_data(dates[2], station_id)
-                                        print("Successfully retrieved data for: "+dates[2].strftime('%m/%d %H:00 UTC"')) 
+                                        print("Successfully retrieved data for: "+dates[2].strftime('%m/%d %H:00 UTC')) 
                                         date = dates[2]
                                         data = True
                                     except Exception as e:
@@ -135,7 +135,7 @@ def plot_observed_sounding(station_id):
         print("Searching for data at time: "+dates[3].strftime('%m/%d %H:00 UTC'))
         try:
            df = WyomingUpperAir.request_data(dates[3], station_id)
-           print("Successfully retrieved data for: "+dates[3].strftime('%m/%d %H:00 UTC"'))
+           print("Successfully retrieved data for: "+dates[3].strftime('%m/%d %H:00 UTC'))
            date = dates[3] 
            data = True
         except Exception as e:
@@ -143,7 +143,7 @@ def plot_observed_sounding(station_id):
             print("Trying again!")
             try:
                 df = WyomingUpperAir.request_data(dates[3], station_id)
-                print("Successfully retrieved data for: "+dates[3].strftime('%m/%d %H:00 UTC"'))
+                print("Successfully retrieved data for: "+dates[3].strftime('%m/%d %H:00 UTC'))
                 date = dates[3]
                 data = True
             except Exception as e:
@@ -151,14 +151,14 @@ def plot_observed_sounding(station_id):
                 print("Trying one last time! This server can be glitchy...")
                 try:
                     df = WyomingUpperAir.request_data(dates[3], station_id)
-                    print("Successfully retrieved data for: "+dates[3].strftime('%m/%d %H:00 UTC"')) 
+                    print("Successfully retrieved data for: "+dates[3].strftime('%m/%d %H:00 UTC')) 
                     date = dates[3]
                     data = True
                 except Exception as e:
                     print("Searching for data at time: "+dates[4].strftime('%m/%d %H:00 UTC'))
                     try:
                        df = WyomingUpperAir.request_data(dates[4], station_id)
-                       print("Successfully retrieved data for: "+dates[4].strftime('%m/%d %H:00 UTC"'))
+                       print("Successfully retrieved data for: "+dates[4].strftime('%m/%d %H:00 UTC'))
                        date = dates[4]
                        data = True 
                     except Exception as e:
@@ -166,7 +166,7 @@ def plot_observed_sounding(station_id):
                         print("Trying again!")
                         try:
                             df = WyomingUpperAir.request_data(dates[4], station_id)
-                            print("Successfully retrieved data for: "+dates[4].strftime('%m/%d %H:00 UTC"'))
+                            print("Successfully retrieved data for: "+dates[4].strftime('%m/%d %H:00 UTC'))
                             date = dates[4]
                             data = True
                         except Exception as e:
@@ -174,7 +174,7 @@ def plot_observed_sounding(station_id):
                             print("Trying one last time! This server can be glitchy...")
                             try:
                                 df = WyomingUpperAir.request_data(dates[4], station_id)
-                                print("Successfully retrieved data for: "+dates[4].strftime('%m/%d %H:00 UTC"')) 
+                                print("Successfully retrieved data for: "+dates[4].strftime('%m/%d %H:00 UTC')) 
                                 date = dates[4]
                                 data = True
                             except Exception as e:
@@ -185,7 +185,7 @@ def plot_observed_sounding(station_id):
         print("Searching for data at time: "+dates[5].strftime('%m/%d %H:00 UTC'))
         try:
            df = WyomingUpperAir.request_data(dates[5], station_id)
-           print("Successfully retrieved data for: "+dates[5].strftime('%m/%d %H:00 UTC"'))
+           print("Successfully retrieved data for: "+dates[5].strftime('%m/%d %H:00 UTC'))
            date = dates[5]
            data = True
         except Exception as e:
@@ -193,7 +193,7 @@ def plot_observed_sounding(station_id):
             print("Trying again!")
             try:
                 df = WyomingUpperAir.request_data(dates[5], station_id)
-                print("Successfully retrieved data for: "+dates[5].strftime('%m/%d %H:00 UTC"'))
+                print("Successfully retrieved data for: "+dates[5].strftime('%m/%d %H:00 UTC'))
                 date = dates[5]
                 data = True
             except Exception as e:
@@ -201,14 +201,14 @@ def plot_observed_sounding(station_id):
                 print("Trying one last time! This server can be glitchy...")
                 try:
                     df = WyomingUpperAir.request_data(dates[5], station_id)
-                    print("Successfully retrieved data for: "+dates[5].strftime('%m/%d %H:00 UTC"')) 
+                    print("Successfully retrieved data for: "+dates[5].strftime('%m/%d %H:00 UTC')) 
                     date = dates[5]
                     data = True
                 except Exception as e:
                     print("Searching for data at time: "+dates[6].strftime('%m/%d %H:00 UTC'))
                     try:
                        df = WyomingUpperAir.request_data(dates[6], station_id)
-                       print("Successfully retrieved data for: "+dates[6].strftime('%m/%d %H:00 UTC"'))
+                       print("Successfully retrieved data for: "+dates[6].strftime('%m/%d %H:00 UTC'))
                        date = dates[6]
                        data = True 
                     except Exception as e:
@@ -216,7 +216,7 @@ def plot_observed_sounding(station_id):
                         print("Trying again!")
                         try:
                             df = WyomingUpperAir.request_data(dates[6], station_id)
-                            print("Successfully retrieved data for: "+dates[6].strftime('%m/%d %H:00 UTC"'))
+                            print("Successfully retrieved data for: "+dates[6].strftime('%m/%d %H:00 UTC'))
                             date = dates[6]
                             data = True
                         except Exception as e:
@@ -224,14 +224,14 @@ def plot_observed_sounding(station_id):
                             print("Trying one last time! This server can be glitchy...")
                             try:
                                 df = WyomingUpperAir.request_data(dates[6], station_id)
-                                print("Successfully retrieved data for: "+dates[6].strftime('%m/%d %H:00 UTC"')) 
+                                print("Successfully retrieved data for: "+dates[6].strftime('%m/%d %H:00 UTC')) 
                                 date = dates[6]
                                 data = True
                             except Exception as e:
                                 print("Searching for data at time: "+dates[7].strftime('%m/%d %H:00 UTC'))
                                 try:
                                    df = WyomingUpperAir.request_data(dates[7], station_id)
-                                   print("Successfully retrieved data for: "+dates[7].strftime('%m/%d %H:00 UTC"')) 
+                                   print("Successfully retrieved data for: "+dates[7].strftime('%m/%d %H:00 UTC')) 
                                    date = dates[7]
                                    data = True 
                                 except Exception as e:
@@ -239,7 +239,7 @@ def plot_observed_sounding(station_id):
                                     print("Trying again!")
                                     try:
                                         df = WyomingUpperAir.request_data(dates[7], station_id)
-                                        print("Successfully retrieved data for: "+dates[7].strftime('%m/%d %H:00 UTC"'))
+                                        print("Successfully retrieved data for: "+dates[7].strftime('%m/%d %H:00 UTC'))
                                         date = dates[7]
                                         data = True
                                     except Exception as e:
@@ -247,7 +247,7 @@ def plot_observed_sounding(station_id):
                                         print("Trying one last time! This server can be glitchy...")
                                         try:
                                             df = WyomingUpperAir.request_data(dates[7], station_id)
-                                            print("Successfully retrieved data for: "+dates[7].strftime('%m/%d %H:00 UTC"')) 
+                                            print("Successfully retrieved data for: "+dates[7].strftime('%m/%d %H:00 UTC')) 
                                             date = dates[7]
                                             data = True
                                         except Exception as e:
@@ -259,7 +259,7 @@ def plot_observed_sounding(station_id):
         print("Searching for data at time: "+dates[8].strftime('%m/%d %H:00 UTC'))
         try:
            df = WyomingUpperAir.request_data(dates[8], station_id)
-           print("Successfully retrieved data for: "+dates[8].strftime('%m/%d %H:00 UTC"')) 
+           print("Successfully retrieved data for: "+dates[8].strftime('%m/%d %H:00 UTC')) 
            date = dates[8]
            data = True 
         except Exception as e:
@@ -267,7 +267,7 @@ def plot_observed_sounding(station_id):
             print("Trying again!")
             try:
                 df = WyomingUpperAir.request_data(dates[8], station_id)
-                print("Successfully retrieved data for: "+dates[8].strftime('%m/%d %H:00 UTC"'))
+                print("Successfully retrieved data for: "+dates[8].strftime('%m/%d %H:00 UTC'))
                 date = dates[8]
                 data = True
             except Exception as e:
@@ -275,14 +275,14 @@ def plot_observed_sounding(station_id):
                 print("Trying one last time! This server can be glitchy...")
                 try:
                     df = WyomingUpperAir.request_data(dates[8], station_id)
-                    print("Successfully retrieved data for: "+dates[8].strftime('%m/%d %H:00 UTC"'))
+                    print("Successfully retrieved data for: "+dates[8].strftime('%m/%d %H:00 UTC'))
                     date = dates[8]
                     data = True
                 except Exception as e:
                     print("Searching for data at time: "+dates[9].strftime('%m/%d %H:00 UTC'))
                     try:
                        df = WyomingUpperAir.request_data(dates[9], station_id)
-                       print("Successfully retrieved data for: "+dates[9].strftime('%m/%d %H:00 UTC"'))
+                       print("Successfully retrieved data for: "+dates[9].strftime('%m/%d %H:00 UTC'))
                        date = dates[9]
                        data = True 
                     except Exception as e:
@@ -290,7 +290,7 @@ def plot_observed_sounding(station_id):
                         print("Trying again!")
                         try:
                             df = WyomingUpperAir.request_data(dates[9], station_id)
-                            print("Successfully retrieved data for: "+dates[9].strftime('%m/%d %H:00 UTC"'))
+                            print("Successfully retrieved data for: "+dates[9].strftime('%m/%d %H:00 UTC'))
                             date = dates[9]
                             data = True
                         except Exception as e:
@@ -298,14 +298,14 @@ def plot_observed_sounding(station_id):
                             print("Trying one last time! This server can be glitchy...")
                             try:
                                 df = WyomingUpperAir.request_data(dates[9], station_id)
-                                print("Successfully retrieved data for: "+dates[9].strftime('%m/%d %H:00 UTC"'))   
+                                print("Successfully retrieved data for: "+dates[9].strftime('%m/%d %H:00 UTC'))   
                                 date = dates[9]
                                 data = True
                             except Exception as e:
                                 print("Searching for data at time: "+dates[10].strftime('%m/%d %H:00 UTC'))
                                 try:
                                    df = WyomingUpperAir.request_data(dates[10], station_id)
-                                   print("Successfully retrieved data for: "+dates[10].strftime('%m/%d %H:00 UTC"'))
+                                   print("Successfully retrieved data for: "+dates[10].strftime('%m/%d %H:00 UTC'))
                                    date = dates[10]
                                    data = True
                                 except Exception as e:
@@ -313,7 +313,7 @@ def plot_observed_sounding(station_id):
                                     print("Trying again!")
                                     try:
                                         df = WyomingUpperAir.request_data(dates[10], station_id)
-                                        print("Successfully retrieved data for: "+dates[10].strftime('%m/%d %H:00 UTC"'))
+                                        print("Successfully retrieved data for: "+dates[10].strftime('%m/%d %H:00 UTC'))
                                         date = dates[10]
                                         data = True
                                     except Exception as e:
@@ -321,7 +321,7 @@ def plot_observed_sounding(station_id):
                                         print("Trying one last time! This server can be glitchy...")
                                         try:
                                             df = WyomingUpperAir.request_data(dates[10], station_id)
-                                            print("Successfully retrieved data for: "+dates[10].strftime('%m/%d %H:00 UTC"'))   
+                                            print("Successfully retrieved data for: "+dates[10].strftime('%m/%d %H:00 UTC'))   
                                             date = dates[10]
                                             data = True
                                         except Exception as e:
@@ -332,41 +332,41 @@ def plot_observed_sounding(station_id):
         print("Searching for data at time: "+dates[11].strftime('%m/%d %H:00 UTC'))
         try:
            df = WyomingUpperAir.request_data(dates[11], station_id)
-           print("Successfully retrieved data for: "+dates[11].strftime('%m/%d %H:00 UTC"'))
+           print("Successfully retrieved data for: "+dates[11].strftime('%m/%d %H:00 UTC'))
            date = dates[11] 
         except Exception as e:
             time.sleep(10)
             print("Trying again!")
             try:
                 df = WyomingUpperAir.request_data(dates[11], station_id)
-                print("Successfully retrieved data for: "+dates[11].strftime('%m/%d %H:00 UTC"'))
+                print("Successfully retrieved data for: "+dates[11].strftime('%m/%d %H:00 UTC'))
                 date = dates[11]
             except Exception as e:
                 time.sleep(10)
                 print("Trying one last time! This server can be glitchy...")
                 try:
                     df = WyomingUpperAir.request_data(dates[11], station_id)
-                    print("Successfully retrieved data for: "+dates[11].strftime('%m/%d %H:00 UTC"'))
+                    print("Successfully retrieved data for: "+dates[11].strftime('%m/%d %H:00 UTC'))
                     date = dates[11]
                 except Exception as e:
                     print("Searching for data at time: "+dates[12].strftime('%m/%d %H:00 UTC'))
                     try:
                        df = WyomingUpperAir.request_data(dates[12], station_id)
-                       print("Successfully retrieved data for: "+dates[12].strftime('%m/%d %H:00 UTC"')) 
+                       print("Successfully retrieved data for: "+dates[12].strftime('%m/%d %H:00 UTC')) 
                        date = dates[12] 
                     except Exception as e:
                         time.sleep(10)
                         print("Trying again!")
                         try:
                             df = WyomingUpperAir.request_data(dates[12], station_id)
-                            print("Successfully retrieved data for: "+dates[12].strftime('%m/%d %H:00 UTC"'))
+                            print("Successfully retrieved data for: "+dates[12].strftime('%m/%d %H:00 UTC'))
                             date = dates[12]
                         except Exception as e:
                             time.sleep(10)
                             print("Trying one last time! This server can be glitchy...")
                             try:
                                 df = WyomingUpperAir.request_data(dates[12], station_id)
-                                print("Successfully retrieved data for: "+dates[12].strftime('%m/%d %H:00 UTC"'))  
+                                print("Successfully retrieved data for: "+dates[12].strftime('%m/%d %H:00 UTC'))  
                                 date = dates[12]
                             except Exception as e:
                                 print("No Sounding Data has been recorded within the past 12 hours.")
