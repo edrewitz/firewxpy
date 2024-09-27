@@ -11,16 +11,30 @@ This file hosts all the functions that return the settings for each plot for eac
 
 import cartopy.crs as ccrs
 
-def get_metar_mask(state=None, gacc_region=None):
+def get_metar_mask(state=None, gacc_region=None, rtma_ws=False):
 
-    if state != None and gacc_region == None:
-        
-        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-            mask = 250000
-        if state == 'CA' or state == 'ca':
-            mask = 80000
-        if state == 'FL' or state == 'fl':
-            mask = 80000
+    if rtma_ws == False:
+        if state != None and gacc_region == None:
+            
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                mask = 250000
+            if state == 'CA' or state == 'ca':
+                mask = 80000
+            if state == 'FL' or state == 'fl':
+                mask = 60000
+
+    if rtma_ws == True:
+        if state != None and gacc_region == None:
+            
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                mask = 250000
+            if state == 'CA' or state == 'ca':
+                mask = 80000
+            if state == 'FL' or state == 'fl':
+                mask = 300
+            if state == 'GA' or state == 'ga':
+                mask = 300
+    
 
     return mask
 
@@ -1723,8 +1737,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.21
             signature_y_position = 0.248
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 6
+            subplot_title_fontsize = 6
             signature_x_position = 0.01
             signature_y_position = 0.12
         if plot_category == 'spc':
