@@ -477,6 +477,326 @@ class RTMA_CONUS:
     
         return data
 
+    def RTMA_Synced_With_METAR(parameter, current_time, mask):
+    
+        r'''
+        This function is the recommended method to download the Real Time Mesoscale Analysis dataset with the METAR dataset as this function syncs the time of the
+        latest available Real Time Mesoscale Analysis dataset with the latest available complete METAR dataset. 
+    
+        Inputs: 1) parameter (String) - The weather parameter the user wishes to download. 
+                                       To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
+    
+                2) current_time (Datetime) - Current date and time in UTC. 
+                3) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+        
+        Returns: 1) rtma_data - The latest avaiable Real Time Mesoscale Analysis dataset
+                 2) rtma_time - The time of the latest avaiable Real Time Mesoscale Analysis dataset
+                 3) sfc_data - The entire METAR dataset. 
+                 4) sfc_data_u_kt - The u-component (west-east) of the wind velocity in knots. 
+                 5) sfc_data_v_kt - The v-component (north-south) of the wind velocity in knots. 
+                 6) sfc_data_rh - The relative humidity in the METAR dataset. 
+                 7) sfc_data_mask - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed.
+                 8) metar_time_revised - The corrected time (if needed) for the latest complete METAR dataset. 
+                 9) plot_projection - The coordinate reference system of the data being plotted. This is usually PlateCarree.
+        '''
+    
+        parameter = parameter
+        current_time = current_time
+        mask = mask
+    
+        metar_time = latest_metar_time(current_time)
+    
+        rtma_data, rtma_time = RTMA_CONUS.get_current_rtma_data(current_time, parameter)
+    
+        plot_projection = rtma_data.metpy.cartopy_crs
+        
+        new_metar_time = parsers.checks.check_RTMA_vs_METAR_Times(rtma_time, metar_time)
+    
+        sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised = get_METAR_Data(new_metar_time, plot_projection, mask)
+        data = []
+        data.append(rtma_data)
+        data.append(rtma_time)
+        data.append(sfc_data)
+        data.append(sfc_data_u_kt)
+        data.append(sfc_data_v_kt)
+        data.append(sfc_data_rh)
+        data.append(sfc_data_mask)
+        data.append(metar_time_revised)
+        data.append(plot_projection)
+    
+        return data
+
+
+    def get_current_rtma_data(current_time, parameter):
+    
+        r"""
+        This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis for any available parameter. 
+    
+        Inputs:
+               1) current_time (Datetime) - Current time in UTC.
+               2) parameter (String) - The weather parameter the user wishes to download. 
+                                       To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
+    
+        Returns: 1) If there are zero errors, the latest dataset and the time of the dataset for the requested parameter will be returned. 
+                 2) If there is an error, an error message is returned. 
+    
+        """
+    
+        times = []
+    
+        for i in range(0,5):
+            new_time = current_time - timedelta(hours=i)
+            times.append(new_time)
+    
+        try:
+            main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
+            main_server_status = main_server_response.status_code
+        except Exception as a:
+            pass
+            
+        try:
+            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            first_backup_server_status = first_backup_server_response.status_code
+        except Exception as b:
+            pass
+         
+        try:
+            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
+            second_backup_server_status = second_backup_server_response.status_code
+        except Exception as c:
+            pass
+    
+        if main_server_status == 200:
+            print("Main UCAR THREDDS Server is online. Connecting!")
+            try:
+                rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                rtma_parameter = rtma_data[parameter].squeeze()
+    
+                print("Data retrieval for " + current_time.strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                
+                return rtma_parameter, current_time
+                
+            except Exception as e:
+        
+                print(parameter + " Data is unavailiable for "+current_time.strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[0].strftime('%m/%d/%Y %H00 UTC'))
+                
+                try:
+                    rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                    rtma_parameter = rtma_data[parameter].squeeze()
+                    time = times[0]
+        
+                    print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                    return rtma_parameter, time
+        
+                except Exception as a:
+        
+                    print(parameter + " Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
+                   
+                    try:
+                        rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                        rtma_parameter = rtma_data[parameter].squeeze()
+                        time = times[1]
+            
+                        print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                        return rtma_parameter, time
+        
+        
+                    except Exception as b:
+                                    
+                        print(parameter + " Data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
+        
+                        try:
+                            rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                            rtma_parameter = rtma_data[parameter].squeeze()
+                            time = times[2]
+            
+                            print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                            return rtma_parameter, time
+        
+                        except Exception as c:
+                                    
+                            print(parameter + " Data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
+        
+                            try:
+                                rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                                rtma_parameter = rtma_data[parameter].squeeze()
+                                time = times[3]
+                
+                                print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                                return rtma_parameter, time
+                            
+                        
+                            except syntaxError as k:
+                                error = info.syntax_error()
+        
+                                return error
+    
+        if main_server_status != 200 and first_backup_server_status == 200:
+            print("Main UCAR THREDDS Server is down. Connected to the first backup UCAR THREDDS Server!")
+            try:
+                rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                rtma_parameter = rtma_data[parameter].squeeze()
+    
+                print("Data retrieval for " + current_time.strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                
+                return rtma_parameter, current_time
+                
+            except Exception as e:
+        
+                print(parameter + " Data is unavailiable for "+current_time.strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[0].strftime('%m/%d/%Y %H00 UTC'))
+                
+                try:
+                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                    rtma_parameter = rtma_data[parameter].squeeze()
+                    time = times[0]
+        
+                    print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                    return rtma_parameter, time
+        
+                except Exception as a:
+        
+                    print(parameter + " Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
+                   
+                    try:
+                        rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                        rtma_parameter = rtma_data[parameter].squeeze()
+                        time = times[1]
+            
+                        print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                        return rtma_parameter, time
+        
+        
+                    except Exception as b:
+                                    
+                        print(parameter + " Data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
+        
+                        try:
+                            rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                            rtma_parameter = rtma_data[parameter].squeeze()
+                            time = times[2]
+            
+                            print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                            return rtma_parameter, time
+        
+                        except Exception as c:
+                                    
+                            print(parameter + " Data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
+        
+                            try:
+                                rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                                rtma_parameter = rtma_data[parameter].squeeze()
+                                time = times[3]
+                
+                                print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                                return rtma_parameter, time
+                            
+                        
+                            except syntaxError as k:
+                                error = info.syntax_error()
+        
+                                return error
+    
+        if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status == 200:
+    
+            print("Main UCAR THREDDS Server is down. Connected to the second backup UCAR THREDDS Server!")
+            try:
+                rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                rtma_parameter = rtma_data[parameter].squeeze()
+    
+                print("Data retrieval for " + current_time.strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                
+                return rtma_parameter, current_time
+                
+            except Exception as e:
+        
+                print(parameter + " Data is unavailiable for "+current_time.strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[0].strftime('%m/%d/%Y %H00 UTC'))
+                
+                try:
+                    rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                    rtma_parameter = rtma_data[parameter].squeeze()
+                    time = times[0]
+        
+                    print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                    return rtma_parameter, time
+        
+                except Exception as a:
+        
+                    print(parameter + " Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
+                   
+                    try:
+                        rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                        rtma_parameter = rtma_data[parameter].squeeze()
+                        time = times[1]
+            
+                        print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                        return rtma_parameter, time
+        
+        
+                    except Exception as b:
+                                    
+                        print(parameter + " Data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
+        
+                        try:
+                            rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                            rtma_parameter = rtma_data[parameter].squeeze()
+                            time = times[2]
+            
+                            print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                            return rtma_parameter, time
+        
+                        except Exception as c:
+                                    
+                            print(parameter + " Data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
+        
+                            try:
+                                rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
+                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
+                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
+                                rtma_parameter = rtma_data[parameter].squeeze()
+                                time = times[3]
+                
+                                print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
+                                return rtma_parameter, time
+                            
+                        
+                            except syntaxError as k:
+                                error = info.syntax_error()
+        
+                                return error
+            
+            print("Unable to connect to either the main or backup servers. Aborting!")
+    
+        if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
+            print("Unable to connect to either the main or backup servers. Aborting!")
+
 
 class NDFD_CONUS:
 
@@ -648,278 +968,6 @@ def get_NWS_NDFD_7_Day_grid_data(directory_name, parameter):
     except Exception as e:
         dir_error = info.directory_name_error()
         return dir_error
-
-    
-    
-def get_current_rtma_data(current_time, parameter):
-
-    r"""
-    This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis for any available parameter. 
-
-    Inputs:
-           1) current_time (Datetime) - Current time in UTC.
-           2) parameter (String) - The weather parameter the user wishes to download. 
-                                   To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
-
-    Returns: 1) If there are zero errors, the latest dataset and the time of the dataset for the requested parameter will be returned. 
-             2) If there is an error, an error message is returned. 
-
-    """
-
-    times = []
-
-    for i in range(0,5):
-        new_time = current_time - timedelta(hours=i)
-        times.append(new_time)
-
-    try:
-        main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-        main_server_status = main_server_response.status_code
-    except Exception as a:
-        pass
-        
-    try:
-        first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
-        first_backup_server_status = first_backup_server_response.status_code
-    except Exception as b:
-        pass
-     
-    try:
-        second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
-        second_backup_server_status = second_backup_server_response.status_code
-    except Exception as c:
-        pass
-
-    if main_server_status == 200:
-        print("Main UCAR THREDDS Server is online. Connecting!")
-        try:
-            rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-            rtma_parameter = rtma_data[parameter].squeeze()
-
-            print("Data retrieval for " + current_time.strftime('%m/%d/%Y %H00 UTC') + " is successful")
-            
-            return rtma_parameter, current_time
-            
-        except Exception as e:
-    
-            print(parameter + " Data is unavailiable for "+current_time.strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[0].strftime('%m/%d/%Y %H00 UTC'))
-            
-            try:
-                rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                rtma_parameter = rtma_data[parameter].squeeze()
-                time = times[0]
-    
-                print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                return rtma_parameter, time
-    
-            except Exception as a:
-    
-                print(parameter + " Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
-               
-                try:
-                    rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                    rtma_parameter = rtma_data[parameter].squeeze()
-                    time = times[1]
-        
-                    print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                    return rtma_parameter, time
-    
-    
-                except Exception as b:
-                                
-                    print(parameter + " Data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
-    
-                    try:
-                        rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                        rtma_parameter = rtma_data[parameter].squeeze()
-                        time = times[2]
-        
-                        print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                        return rtma_parameter, time
-    
-                    except Exception as c:
-                                
-                        print(parameter + " Data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
-    
-                        try:
-                            rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                            rtma_parameter = rtma_data[parameter].squeeze()
-                            time = times[3]
-            
-                            print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                            return rtma_parameter, time
-                        
-                    
-                        except syntaxError as k:
-                            error = info.syntax_error()
-    
-                            return error
-
-    if main_server_status != 200 and first_backup_server_status == 200:
-        print("Main UCAR THREDDS Server is down. Connected to the first backup UCAR THREDDS Server!")
-        try:
-            rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-            rtma_parameter = rtma_data[parameter].squeeze()
-
-            print("Data retrieval for " + current_time.strftime('%m/%d/%Y %H00 UTC') + " is successful")
-            
-            return rtma_parameter, current_time
-            
-        except Exception as e:
-    
-            print(parameter + " Data is unavailiable for "+current_time.strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[0].strftime('%m/%d/%Y %H00 UTC'))
-            
-            try:
-                rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                rtma_parameter = rtma_data[parameter].squeeze()
-                time = times[0]
-    
-                print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                return rtma_parameter, time
-    
-            except Exception as a:
-    
-                print(parameter + " Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
-               
-                try:
-                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                    rtma_parameter = rtma_data[parameter].squeeze()
-                    time = times[1]
-        
-                    print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                    return rtma_parameter, time
-    
-    
-                except Exception as b:
-                                
-                    print(parameter + " Data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
-    
-                    try:
-                        rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                        rtma_parameter = rtma_data[parameter].squeeze()
-                        time = times[2]
-        
-                        print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                        return rtma_parameter, time
-    
-                    except Exception as c:
-                                
-                        print(parameter + " Data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
-    
-                        try:
-                            rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                            rtma_parameter = rtma_data[parameter].squeeze()
-                            time = times[3]
-            
-                            print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                            return rtma_parameter, time
-                        
-                    
-                        except syntaxError as k:
-                            error = info.syntax_error()
-    
-                            return error
-
-    if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status == 200:
-
-        print("Main UCAR THREDDS Server is down. Connected to the second backup UCAR THREDDS Server!")
-        try:
-            rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-            rtma_parameter = rtma_data[parameter].squeeze()
-
-            print("Data retrieval for " + current_time.strftime('%m/%d/%Y %H00 UTC') + " is successful")
-            
-            return rtma_parameter, current_time
-            
-        except Exception as e:
-    
-            print(parameter + " Data is unavailiable for "+current_time.strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[0].strftime('%m/%d/%Y %H00 UTC'))
-            
-            try:
-                rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                rtma_parameter = rtma_data[parameter].squeeze()
-                time = times[0]
-    
-                print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                return rtma_parameter, time
-    
-            except Exception as a:
-    
-                print(parameter + " Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
-               
-                try:
-                    rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                    rtma_parameter = rtma_data[parameter].squeeze()
-                    time = times[1]
-        
-                    print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                    return rtma_parameter, time
-    
-    
-                except Exception as b:
-                                
-                    print(parameter + " Data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
-    
-                    try:
-                        rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                        rtma_parameter = rtma_data[parameter].squeeze()
-                        time = times[2]
-        
-                        print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                        return rtma_parameter, time
-    
-                    except Exception as c:
-                                
-                        print(parameter + " Data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
-    
-                        try:
-                            rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                            rtma_parameter = rtma_data[parameter].squeeze()
-                            time = times[3]
-            
-                            print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                            return rtma_parameter, time
-                        
-                    
-                        except syntaxError as k:
-                            error = info.syntax_error()
-    
-                            return error
-        
-        print("Unable to connect to either the main or backup servers. Aborting!")
-
-    if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
-        print("Unable to connect to either the main or backup servers. Aborting!")
 
 def get_rtma_24_hour_comparison_data_with_u_and_v_components(current_time):
 
@@ -3580,47 +3628,6 @@ def latest_metar_time(current_time):
 
     return metar_time
 
-    
-
-
-def RTMA_Synced_With_METAR(parameter, current_time, mask):
-
-    r'''
-    This function is the recommended method to download the Real Time Mesoscale Analysis dataset with the METAR dataset as this function syncs the time of the
-    latest available Real Time Mesoscale Analysis dataset with the latest available complete METAR dataset. 
-
-    Inputs: 1) parameter (String) - The weather parameter the user wishes to download. 
-                                   To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
-
-            2) current_time (Datetime) - Current date and time in UTC. 
-            3) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
-    
-    Returns: 1) rtma_data - The latest avaiable Real Time Mesoscale Analysis dataset
-             2) rtma_time - The time of the latest avaiable Real Time Mesoscale Analysis dataset
-             3) sfc_data - The entire METAR dataset. 
-             4) sfc_data_u_kt - The u-component (west-east) of the wind velocity in knots. 
-             5) sfc_data_v_kt - The v-component (north-south) of the wind velocity in knots. 
-             6) sfc_data_rh - The relative humidity in the METAR dataset. 
-             7) sfc_data_mask - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed.
-             8) metar_time_revised - The corrected time (if needed) for the latest complete METAR dataset. 
-             9) plot_projection - The coordinate reference system of the data being plotted. This is usually PlateCarree.
-    '''
-
-    parameter = parameter
-    current_time = current_time
-    mask = mask
-
-    metar_time = latest_metar_time(current_time)
-
-    rtma_data, rtma_time = get_current_rtma_data(current_time, parameter)
-
-    plot_projection = rtma_data.metpy.cartopy_crs
-    
-    new_metar_time = parsers.checks.check_RTMA_vs_METAR_Times(rtma_time, metar_time)
-
-    sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised = UCAR_THREDDS_SERVER_OPENDAP_Downloads.METARs.get_METAR_Data(new_metar_time, plot_projection, mask)
-
-    return rtma_data, rtma_time, sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised, plot_projection
 
 def RTMA_Synced_With_METAR_Hawaii(parameter, current_time):
 
