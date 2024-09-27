@@ -27,14 +27,17 @@ def get_metar_mask(state=None, gacc_region=None, rtma_ws=False):
         if state != None and gacc_region == None:
             
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-                mask = 250000
+                mask = 100000
             if state == 'CA' or state == 'ca':
-                mask = 80000
+                mask = 300
             if state == 'FL' or state == 'fl':
                 mask = 300
             if state == 'GA' or state == 'ga':
                 mask = 300
-    
+            if state == 'TN' or state == 'tn':
+                mask = 300
+            if state == 'KY' or state == 'ky':
+                mask = 300    
 
     return mask
 
@@ -1565,10 +1568,11 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.14
             signature_y_position = 0.248
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 8
+            subplot_title_fontsize= 7
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.15
+            signature_fontsize=8
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
@@ -2456,8 +2460,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.14
             signature_y_position = 0.248
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 8
+            subplot_title_fontsize=7
             signature_x_position = 0.01
             signature_y_position = 0.12
         if plot_category == 'spc':
