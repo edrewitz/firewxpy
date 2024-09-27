@@ -7973,3 +7973,720 @@ def plot_low_relative_humidity_with_metar_obs(low_rh_threshold=15, western_bound
     path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA LOW RH & METAR', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA LOW RH & METAR')
 
+def plot_wind_speed_with_metar_obs(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8, metar_mask=None, metar_fontsize=10, u_component=None, v_component=None, sample_point_type='barbs'):
+
+    r'''
+        This function does the following:
+                                        1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                        2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                        3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                        4) Plots the relative humidity data overlayed with the METAR reports. 
+
+        
+
+        Inputs:
+
+            1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+            2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+            3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+            4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+            5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+            6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+            7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+            8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+            
+            9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+            10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+            11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+            12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+
+            13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+            14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+            15) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+            16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+            17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+            18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                       Default setting is 0.05.
+                                       Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                       Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+            19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                        will not display on the map. 
+
+
+        Returns:
+                1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports. 
+    
+    '''
+    
+    data = data
+    local_time, utc_time = standard.plot_creation_time()
+
+    props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+    contourf = np.arange(0, 61, 1)
+    labels = contourf[::5]
+
+    if reference_system == 'Custom' or reference_system == 'custom':
+        show_state_borders = show_state_borders
+        show_county_borders = show_county_borders
+        show_gacc_borders = show_gacc_borders
+        show_psa_borders = show_psa_borders
+        show_cwa_borders = show_cwa_borders
+        show_nws_firewx_zones = show_nws_firewx_zones
+        show_nws_public_zones = show_nws_public_zones
+
+    if reference_system != 'Custom' and reference_system != 'custom':
+        
+        show_state_borders = False
+        show_county_borders = False
+        show_gacc_borders = False
+        show_psa_borders = False
+        show_cwa_borders = False
+        show_nws_firewx_zones = False
+        show_nws_public_zones = False
+
+        if reference_system == 'States Only':
+            show_state_borders = True
+        if reference_system == 'States & Counties':
+            show_state_borders = True
+            show_county_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                county_border_linewidth=0.25
+        if reference_system == 'GACC Only':
+            show_gacc_borders = True
+        if reference_system == 'GACC & PSA':
+            show_gacc_borders = True
+            show_psa_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.25
+        if reference_system == 'CWA Only':
+            show_cwa_borders = True
+        if reference_system == 'NWS CWAs & NWS Public Zones':
+            show_cwa_borders = True
+            show_nws_public_zones = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                nws_public_zones_linewidth=0.25
+        if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
+            show_cwa_borders = True
+            show_nws_firewx_zones = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                nws_firewx_zones_linewidth=0.25
+        if reference_system == 'NWS CWAs & Counties':
+            show_cwa_borders = True
+            show_county_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                county_border_linewidth=0.25
+        if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_nws_firewx_zones = True
+            nws_firewx_zones_linewidth=0.25
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.5
+        if reference_system == 'GACC & PSA & NWS Public Zones':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_nws_public_zones = True
+            nws_public_zones_linewidth=0.25
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.5
+        if reference_system == 'GACC & PSA & NWS CWA':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_cwa_borders = True
+            cwa_border_linewidth=0.25
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.5
+        if reference_system == 'GACC & PSA & Counties':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_county_borders = True
+            county_border_linewidth=0.25
+        if reference_system == 'GACC & Counties':
+            show_gacc_borders = True
+            show_county_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                county_border_linewidth=0.25
+    
+    if state != None and gacc_region == None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, 'RH & METAR')            
+
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
+
+
+    if state == None and gacc_region != None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'rtma', False)
+
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
+
+
+    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
+
+        fig_x_length = fig_x_length
+        fig_y_length = fig_y_length
+        signature_x_position = signature_x_position
+        signature_y_position = signature_y_position
+        western_bound = western_bound
+        eastern_bound = eastern_bound
+        southern_bound = southern_bound
+        northern_bound = northern_bound
+        state = 'Custom'
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
+        aspect=aspect
+        mask = metar_mask
+    
+    mask = settings.get_metar_mask(state, gacc_region, rtma_ws=True)
+    
+    if data == None:
+        #try:
+        data = RTMA_CONUS.RTMA_Synced_With_METAR('Wind_speed_Analysis_height_above_ground', utc_time, mask)
+        rtma_data = data[0]
+        rtma_time = data[1]
+        sfc_data = data[2]
+        sfc_data_u_kt = data[3]
+        sfc_data_v_kt = data[4]
+        sfc_data_rh = data[5]
+        sfc_data_decimate = data[6]
+        metar_time_revised = data[7]
+        plot_proj = data[8]   
+        lat = rtma_data['latitude']
+        lon = rtma_data['longitude']
+        rtma_data = rtma_data * 2.23694
+        u, t = RTMA_CONUS.get_current_rtma_data(utc_time, 'u-component_of_wind_Analysis_height_above_ground')
+        v, t = RTMA_CONUS.get_current_rtma_data(utc_time, 'v-component_of_wind_Analysis_height_above_ground')
+        u = u * 2.23694
+        v = v * 2.23694
+        
+        print("Unpacked the data successfully!")
+        #except Exception as e:
+         #   pass
+
+    elif data != None:
+        try:
+            rtma_data = data[0]
+            rtma_time = data[1]
+            sfc_data = data[2]
+            sfc_data_u_kt = data[3]
+            sfc_data_v_kt = data[4]
+            sfc_data_rh = data[5]
+            sfc_data_decimate = data[6]
+            metar_time_revised = data[7]
+            plot_proj = data[8]            
+            lat = rtma_data['latitude']
+            lon = rtma_data['longitude']
+            rtma_data = rtma_data * 2.23694
+            u = u_component
+            v = v_component
+            u = u * 2.23694
+            v = v * 2.23694
+            
+            print("Unpacked the data successfully!")
+
+        except Exception as f:
+            try:
+                print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+                data = RTMA_CONUS.RTMA_Synced_With_METAR('Wind_speed_Analysis_height_above_ground', utc_time, mask)
+                rtma_data = data[0] 
+                rtma_time = data[1]
+                sfc_data = data[2]
+                sfc_data_u_kt = data[3]
+                sfc_data_v_kt = data[4]
+                sfc_data_rh = data[5]
+                sfc_data_decimate = data[6]
+                metar_time_revised = data[7]
+                plot_proj = data[8] 
+                lat = rtma_data['latitude']
+                lon = rtma_data['longitude']
+                rtma_data = rtma_data * 2.23694
+                u, t = RTMA_CONUS.get_current_rtma_data(utc_time, 'u-component_of_wind_Analysis_height_above_ground')
+                v, t = RTMA_CONUS.get_current_rtma_data(utc_time, 'v-component_of_wind_Analysis_height_above_ground')
+                u = u * 2.23694
+                v = v * 2.23694
+                
+                print("Unpacked the data successfully!")
+            except Exception as g:
+                pass            
+
+    else:
+        print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
+
+    from_zone = tz.tzutc()
+    to_zone = tz.tzlocal()
+    rtma_time = rtma_time.replace(tzinfo=from_zone)
+    rtma_time = rtma_time.astimezone(to_zone)
+    rtma_time_utc = rtma_time.astimezone(from_zone)
+    metar_time_revised = metar_time_revised.replace(tzinfo=from_zone)
+    metar_time_revised = metar_time_revised.astimezone(to_zone)
+    metar_time_revised_utc = metar_time_revised.astimezone(from_zone)
+    
+    datacrs = ccrs.PlateCarree()
+
+    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
+    
+    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+    cmap = colormaps.wind_speed_colormap()
+
+    fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+    fig.set_facecolor('aliceblue')
+
+    ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+    ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+    ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+    ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+    ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+    if show_rivers == True:
+        ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+    else:
+        pass
+
+    if show_gacc_borders == True:
+        ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+    else:
+        pass
+    if show_psa_borders == True:
+        ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_county_borders == True:
+        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_state_borders == True:
+        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+    else:
+        pass
+    if show_cwa_borders == True:
+        ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_nws_firewx_zones == True:
+        ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+    else:
+        pass
+    if show_nws_public_zones == True:
+        ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+    else:
+        pass
+
+    decimate = scaling.get_tds_rtma_decimation_by_state_or_gacc_region(state, gacc_region)
+
+    df_ws = rtma_data.to_dataframe()
+    df_u = u.to_dataframe()
+    df_v = v.to_dataframe()
+
+    cs = ax.contourf(lon, lat, rtma_data, 
+                     transform=datacrs, levels=contourf, cmap=cmap, alpha=alpha, zorder=4, extend='max')
+
+    cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=labels)
+    cbar.set_label(label="Wind Speed (MPH)", size=colorbar_fontsize, fontweight='bold')
+
+    # Plots METAR
+    stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_decimate].m, sfc_data['latitude'][sfc_data_decimate].m,
+                             transform=ccrs.PlateCarree(), fontsize=metar_fontsize, zorder=10, clip_on=True)
+    
+    sfc_data['u'] = sfc_data['u'] * 1.15078
+    sfc_data['v'] = sfc_data['v'] * 1.15078
+    
+    stn.plot_barb(sfc_data['u'][sfc_data_decimate], sfc_data['v'][sfc_data_decimate], color='crimson')
+
+    if sample_point_type == 'points':
+
+        plt.title("RTMA Wind Speed (MPH) & METAR Observations", fontsize=title_fontsize, fontweight='bold', loc='left')
+
+        stn1 = mpplots.StationPlot(ax, df_ws['longitude'][::decimate], df_ws['latitude'][::decimate],
+                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+    
+        stn1.plot_parameter('C', df_ws['Wind_speed_Analysis_height_above_ground'][::decimate], color='crimson', zorder=7)
+
+    if sample_point_type == 'barbs':
+        
+        plt.title("RTMA Wind Speed (MPH) & Observed Wind [METAR]\nRTMA Wind [Green Barbs] | Observed Wind [Red Barbs]", fontsize=title_fontsize, fontweight='bold', loc='left')
+        
+        stn1 = mpplots.StationPlot(ax, df_u['longitude'][::decimate], df_u['latitude'][::decimate],
+                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+    
+        stn1.plot_barb(df_u['u-component_of_wind_Analysis_height_above_ground'][::decimate], df_v['v-component_of_wind_Analysis_height_above_ground'][::decimate], color='lime', zorder=7)        
+
+    
+    
+    plt.title("Analysis & Observations Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
+    
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+
+    path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA WIND SPEED & METAR', reference_system)
+    file_functions.update_images(fig, path, gif_path, 'RTMA WIND SPEED & METAR')
+
+def plot_wind_gust_with_metar_obs(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, state='us', gacc_region=None, colorbar_pad=0.02, clabel_fontsize=8, metar_mask=None, metar_fontsize=10):
+
+    r'''
+        This function does the following:
+                                        1) Downloads the latest availiable temperature and dewpoint data arrays. 
+                                        2) Downloads the METAR Data that is synced with the latest availiable 2.5km x 2.5km Real Time Mesoscale Analysis Data. 
+                                        3) Uses MetPy to calculate the relative humidity data array from the temperature and dewpoint data arrays. 
+                                        4) Plots the relative humidity data overlayed with the METAR reports. 
+
+        
+
+        Inputs:
+
+            1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees.
+
+            2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees.
+
+            3) southern_bound (Integer or Float) - Southern extent of the plot in decimal degrees.
+
+            4) northern_bound (Integer or Float) - Northern extent of the plot in decimal degrees.
+
+            5) central_longitude (Integer or Float) - The central longitude. Defaults to -96.
+
+            6) central_latitude (Integer or Float) - The central latitude. Defaults to 39.
+
+            7) first_standard_parallel (Integer or Float) - Southern standard parallel. 
+
+            8) second_standard_parallel (Integer or Float) - Northern standard parallel. 
+            
+            9) fig_x_length (Integer) - The horizontal (x-direction) length of the entire figure. 
+
+            10) fig_y_length (Integer) - The vertical (y-direction) length of the entire figure. 
+
+            11) color_table_shrink (Integer or Float) - The size of the color bar with respect to the size of the figure. Generally this ranges between 0 and 1. Values closer to 0 correspond to shrinking the size of the color bar while larger values correspond to increasing the size of the color bar. 
+
+            12) decimate (Integer) - Distance in meters to decimate METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+
+            13) signature_x_position (Integer or Float) - The x-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure. 
+
+            14) signature_y_position (Integer or Float) - The y-position of the signature (The signature is where the credit is given to FireWxPy and the data source on the graphic) with respect to the axis of the subplot of the figure.
+
+            15) title_font_size (Integer) - The fontsize of the title of the figure. 
+
+            16) signature_font_size (Integer) - The fontsize of the signature of the figure. 
+
+            17) colorbar_label_font_size (Integer) - The fontsize of the title of the colorbar of the figure. 
+
+            18) colorbar_pad (Float) - This determines how close the position of the colorbar is to the edge of the subplot of the figure. 
+                                       Default setting is 0.05.
+                                       Lower numbers mean the colorbar is closer to the edge of the subplot while larger numbers allows for more space between the edge of the subplot and the colorbar.
+                                       Example: If colorbar_pad = 0.00, then the colorbar is right up against the edge of the subplot. 
+
+            19) show_rivers (Boolean) - If set to True, rivers will display on the map. If set to False, rivers 
+                                        will not display on the map. 
+
+
+        Returns:
+                1) A figure of the plotted 2.5km x 2.5km Real Time Mesoscale Analysis relative humidity overlayed with the latest METAR reports. 
+    
+    '''
+    
+    data = data
+    local_time, utc_time = standard.plot_creation_time()
+
+    props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+    contourf = np.arange(0, 61, 1)
+    labels = contourf[::5]
+
+    if reference_system == 'Custom' or reference_system == 'custom':
+        show_state_borders = show_state_borders
+        show_county_borders = show_county_borders
+        show_gacc_borders = show_gacc_borders
+        show_psa_borders = show_psa_borders
+        show_cwa_borders = show_cwa_borders
+        show_nws_firewx_zones = show_nws_firewx_zones
+        show_nws_public_zones = show_nws_public_zones
+
+    if reference_system != 'Custom' and reference_system != 'custom':
+        
+        show_state_borders = False
+        show_county_borders = False
+        show_gacc_borders = False
+        show_psa_borders = False
+        show_cwa_borders = False
+        show_nws_firewx_zones = False
+        show_nws_public_zones = False
+
+        if reference_system == 'States Only':
+            show_state_borders = True
+        if reference_system == 'States & Counties':
+            show_state_borders = True
+            show_county_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                county_border_linewidth=0.25
+        if reference_system == 'GACC Only':
+            show_gacc_borders = True
+        if reference_system == 'GACC & PSA':
+            show_gacc_borders = True
+            show_psa_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.25
+        if reference_system == 'CWA Only':
+            show_cwa_borders = True
+        if reference_system == 'NWS CWAs & NWS Public Zones':
+            show_cwa_borders = True
+            show_nws_public_zones = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                nws_public_zones_linewidth=0.25
+        if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
+            show_cwa_borders = True
+            show_nws_firewx_zones = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                nws_firewx_zones_linewidth=0.25
+        if reference_system == 'NWS CWAs & Counties':
+            show_cwa_borders = True
+            show_county_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                county_border_linewidth=0.25
+        if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_nws_firewx_zones = True
+            nws_firewx_zones_linewidth=0.25
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.5
+        if reference_system == 'GACC & PSA & NWS Public Zones':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_nws_public_zones = True
+            nws_public_zones_linewidth=0.25
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.5
+        if reference_system == 'GACC & PSA & NWS CWA':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_cwa_borders = True
+            cwa_border_linewidth=0.25
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                psa_border_linewidth=0.5
+        if reference_system == 'GACC & PSA & Counties':
+            show_gacc_borders = True
+            show_psa_borders = True
+            show_county_borders = True
+            county_border_linewidth=0.25
+        if reference_system == 'GACC & Counties':
+            show_gacc_borders = True
+            show_county_borders = True
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                county_border_linewidth=0.25
+    
+    if state != None and gacc_region == None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, 'RH & METAR')            
+
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
+
+
+    if state == None and gacc_region != None:
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'rtma', False)
+
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
+
+
+    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
+
+        fig_x_length = fig_x_length
+        fig_y_length = fig_y_length
+        signature_x_position = signature_x_position
+        signature_y_position = signature_y_position
+        western_bound = western_bound
+        eastern_bound = eastern_bound
+        southern_bound = southern_bound
+        northern_bound = northern_bound
+        state = 'Custom'
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
+        aspect=aspect
+        mask = metar_mask
+    
+    mask = settings.get_metar_mask(state, gacc_region)
+    
+    if data == None:
+        try:
+            data = RTMA_CONUS.RTMA_Synced_With_METAR('Wind_speed_gust_Analysis_height_above_ground', utc_time, mask)
+            rtma_data = data[0]
+            rtma_time = data[1]
+            sfc_data = data[2]
+            sfc_data_u_kt = data[3]
+            sfc_data_v_kt = data[4]
+            sfc_data_rh = data[5]
+            sfc_data_decimate = data[6]
+            metar_time_revised = data[7]
+            plot_proj = data[8]   
+            lat = rtma_data['latitude']
+            lon = rtma_data['longitude']
+            rtma_data = rtma_data * 2.23694
+            sfc_data['wind_speed'] = sfc_data['wind_speed'] * 1.15078
+            sfc_data['wind_gust'] = sfc_data['wind_gust'] * 1.15078
+            
+            print("Unpacked the data successfully!")
+        except Exception as e:
+            pass
+
+    elif data != None:
+        try:
+            rtma_data = data[0]
+            rtma_time = data[1]
+            sfc_data = data[2]
+            sfc_data_u_kt = data[3]
+            sfc_data_v_kt = data[4]
+            sfc_data_rh = data[5]
+            sfc_data_decimate = data[6]
+            metar_time_revised = data[7]
+            plot_proj = data[8]            
+            lat = rtma_data['latitude']
+            lon = rtma_data['longitude']
+            rtma_data = rtma_data * 2.23694
+            sfc_data['wind_speed'] = sfc_data['wind_speed'] * 1.15078
+            sfc_data['wind_gust'] = sfc_data['wind_gust'] * 1.15078
+            
+            print("Unpacked the data successfully!")
+
+        except Exception as f:
+            try:
+                print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
+                data = RTMA_CONUS.RTMA_Synced_With_METAR('Wind_speed_Analysis_height_above_ground', utc_time, mask)
+                rtma_data = data[0] 
+                rtma_time = data[1]
+                sfc_data = data[2]
+                sfc_data_u_kt = data[3]
+                sfc_data_v_kt = data[4]
+                sfc_data_rh = data[5]
+                sfc_data_decimate = data[6]
+                metar_time_revised = data[7]
+                plot_proj = data[8] 
+                lat = rtma_data['latitude']
+                lon = rtma_data['longitude']
+                rtma_data = rtma_data * 2.23694
+                sfc_data['wind_speed'] = sfc_data['wind_speed'] * 1.15078
+                sfc_data['wind_gust'] = sfc_data['wind_gust'] * 1.15078
+                
+                print("Unpacked the data successfully!")
+            except Exception as g:
+                pass            
+
+    else:
+        print("Error! Both values either need to have a value of None or have an array of the RTMA Data and RTMA Timestamp.")
+
+    from_zone = tz.tzutc()
+    to_zone = tz.tzlocal()
+    rtma_time = rtma_time.replace(tzinfo=from_zone)
+    rtma_time = rtma_time.astimezone(to_zone)
+    rtma_time_utc = rtma_time.astimezone(from_zone)
+    metar_time_revised = metar_time_revised.replace(tzinfo=from_zone)
+    metar_time_revised = metar_time_revised.astimezone(to_zone)
+    metar_time_revised_utc = metar_time_revised.astimezone(from_zone)
+    
+    datacrs = ccrs.PlateCarree()
+
+    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
+    
+    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+    cmap = colormaps.wind_speed_colormap()
+
+    fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+    fig.set_facecolor('aliceblue')
+
+    ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+    ax.set_extent((western_bound, eastern_bound, southern_bound, northern_bound), crs=ccrs.PlateCarree())
+    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+    ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+    ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+    ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=3)
+    if show_rivers == True:
+        ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=3)
+    else:
+        pass
+
+    if show_gacc_borders == True:
+        ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+    else:
+        pass
+    if show_psa_borders == True:
+        ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_county_borders == True:
+        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_state_borders == True:
+        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+    else:
+        pass
+    if show_cwa_borders == True:
+        ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_nws_firewx_zones == True:
+        ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+    else:
+        pass
+    if show_nws_public_zones == True:
+        ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+    else:
+        pass
+
+    cs = ax.contourf(lon, lat, rtma_data, 
+                     transform=datacrs, levels=contourf, cmap=cmap, alpha=alpha, zorder=4, extend='max')
+
+    cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=labels)
+    cbar.set_label(label="Wind Gust (MPH)", size=colorbar_fontsize, fontweight='bold')
+
+    # Plots METAR
+    stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_decimate].m, sfc_data['latitude'][sfc_data_decimate].m,
+                             transform=ccrs.PlateCarree(), fontsize=metar_fontsize, zorder=10, clip_on=True)
+    
+    
+    stn.plot_parameter('NW', sfc_data['air_temperature'].to('degF')[sfc_data_decimate], color='red',
+                      path_effects=[withStroke(linewidth=1, foreground='black')])
+    
+    stn.plot_parameter('SW', sfc_data['dew_point_temperature'].to('degF')[sfc_data_decimate], color='blue',
+                      path_effects=[withStroke(linewidth=1, foreground='black')])
+    
+    stn.plot_symbol('C', sfc_data['cloud_coverage'][sfc_data_decimate], mpplots.sky_cover)
+
+    
+    stn.plot_barb(sfc_data['u'][sfc_data_decimate], sfc_data['v'][sfc_data_decimate], color='crimson')
+
+    plt.title("RTMA Wind Gust (MPH) & METAR Observations", fontsize=title_fontsize, fontweight='bold', loc='left')
+    
+    plt.title("Analysis & METARs Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
+    
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+
+    path, gif_path = file_functions.check_file_paths(state, gacc_region, 'RTMA WIND GUST & METAR', reference_system)
+    file_functions.update_images(fig, path, gif_path, 'RTMA WIND GUST & METAR')
+
