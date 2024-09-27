@@ -56,7 +56,7 @@ def plot_observed_sounding(station_id):
         year = utc_time.year
         month = utc_time.month
         day = utc_time.day
-        hour = utc_time.hour - i
+        hour = abs(utc_time.hour - i)
         date = datetime(year, month, day, hour)
         dates.append(date)
 
