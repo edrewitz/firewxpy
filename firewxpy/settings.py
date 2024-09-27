@@ -19,6 +19,8 @@ def get_metar_mask(state=None, gacc_region=None):
             mask = 250000
         if state == 'CA' or state == 'ca':
             mask = 80000
+        if state == 'FL' or state == 'fl':
+            mask = 80000
 
     return mask
 
@@ -209,6 +211,11 @@ def get_label_coords(state, gacc_region):
         if state == 'NY' or state == 'ny':
 
             x_coord = 0.845
+            y_coord = 0.9
+
+        if state == 'FL' or state == 'fl':
+
+            x_coord = 0.81
             y_coord = 0.9
 
     if state == None and gacc_region != None:
@@ -1554,8 +1561,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.2
             signature_y_position = 0.248
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 8
+            subplot_title_fontsize=7
             signature_x_position = 0.01
             signature_y_position = 0.12
         if plot_category == 'spc':
