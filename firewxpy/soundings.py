@@ -659,11 +659,13 @@ def plot_observed_sounding(station_id):
         xloc = int(round(mean, 0))
         x = np.empty_like(ft)
         x.fill(xloc)
+        x_24 = np.empty_like(ft_24)
+        x_24.fill(xloc)
         
         ax2.barbs(x[idx], ft[idx], u[idx], v[idx], clip_on=True, zorder=10, color='darkred', label=label_date, length=5, alpha=0.5)
         
         try:
-            ax2.barbs(x[idx_24], ft_24[idx_24], u_24[idx_24], v_24[idx_24], clip_on=True, zorder=10, color='darkblue', label=label_date_24, length=5, alpha=0.5)
+            ax2.barbs(x_24[idx_24], ft_24[idx_24], u_24[idx_24], v_24[idx_24], clip_on=True, zorder=10, color='darkblue', label=label_date_24, length=5, alpha=0.5)
         except Exception as e:
             pass
             
@@ -1042,11 +1044,13 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         xloc = int(round(mean, 0))
         x = np.empty_like(ft)
         x.fill(xloc)
+        x_24 = np.empty_like(ft_24)
+        x_24.fill(xloc)
         
         ax2.barbs(x[idx], ft[idx], u[idx], v[idx], clip_on=True, zorder=10, color='darkred', label=label_date, length=5, alpha=0.5)
         
         try:
-            ax2.barbs(x[idx_24], ft_24[idx_24], u_24[idx_24], v_24[idx_24], clip_on=True, zorder=10, color='darkblue', label=label_date_24, length=5, alpha=0.5)
+            ax2.barbs(x_24[idx_24], ft_24[idx_24], u_24[idx_24], v_24[idx_24], clip_on=True, zorder=10, color='darkblue', label=label_date_24, length=5, alpha=0.5)
         except Exception as e:
             pass
             
@@ -1103,4 +1107,5 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
     fname = station_id+" VERTICAL PROFILES"
     
     file_functions.save_daily_sounding_graphic(fig, station_id, date)  
+         
         
