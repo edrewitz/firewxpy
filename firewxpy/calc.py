@@ -233,78 +233,21 @@ class scaling:
         return decimate
 
 
-    def get_rtma_decimation(western_bound, eastern_bound, southern_bound, northern_bound, barbs):
+    def get_tds_rtma_decimation_by_state_or_gacc_region(state, gacc_region):
 
-        western_bound_init = -122
-        eastern_bound_init = -114
-        southern_bound_init = 32
-        northern_bound_init = 40
+        if state != None and gacc_region == None:
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                decimate = 3800
 
-        wb_init = abs(western_bound_init)
-        eb_init = abs(eastern_bound_init)
-        nb_init = abs(northern_bound_init)
-        sb_init = abs(southern_bound_init)
+            if state == 'FL' or state == 'fl':
+                decimate = 300
 
-        L1_init = wb_init - eb_init
-        L2_init = nb_init - sb_init
-
-        A_init = L1_init * L2_init
-
-        wb = abs(western_bound)
-        eb = abs(eastern_bound)
-        nb = abs(northern_bound)
-        sb = abs(southern_bound)
-
-        L1 = wb - eb
-        L2 = nb - sb
-
-        A = L1 * L2
-
-        decimate_init = 1800
-
-        decimate = (A * decimate_init) / A_init
-
-        decimate = int(round(decimate, -2))
-
-        west = 124
-        east = 67
-        south = 25
-        north = 49
-
-        Lwe_conus = west - east
-        Lns_conus = north - south
-        A_conus = Lwe_conus * Lns_conus
-
-        if A > A_init:
-            decimate = (int(round((decimate / 2), 0))) + 200
-            if barbs == True:
-                decimate = decimate + 800
-            if barbs == None:
-                Anew = A_init *2.5
-                if A > Anew:
-                    decimate = decimate + 800
-                else:
-                    decimate = decimate + 500
-                if A >= A_conus:
-                    decimate = decimate * 2
-                else:
-                    decimate = decimate
-            else:
-                if A >= A_conus:
-                    decimate = decimate * 2
-                else:
-                    decimate = decimate
-        elif A < A_init:
-            decimate = int(round((decimate / 2), 0))
-            if barbs == None:
-                Alow = A_init/2
-                if A < Alow:
-                    decimate = decimate -500
-
-        else:
-            decimate = decimate
-
+            if state == 'GA' or state == 'ga':
+                decimate = 300
+        
         return decimate
+            
+        
 
     def get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, directory_name):
 
