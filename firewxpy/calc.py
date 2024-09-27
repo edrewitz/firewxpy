@@ -231,6 +231,11 @@ class scaling:
         else:
             decimate = decimate
 
+        if decimate == 0:
+            decimate = 10
+        else:
+            decimate = decimate
+
         return decimate
 
 
