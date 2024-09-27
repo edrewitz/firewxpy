@@ -157,18 +157,93 @@ def get_gridspec_dims(state, gacc_region):
             col5 = 6
             col6 = 10
 
+        if state == 'ME' or state == 'me':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 7
+
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
+
+        if state == 'NH' or state == 'nh':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 9
+
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
+
+        if state == 'VT' or state == 'vt':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 7
+
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
+
+        if state == 'MA' or state == 'ma':
+
+            row1 = 0
+            row2 = 7 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'RI' or state == 'ri':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 7
+
+            row3 = 0
+            row4 = 5
+            col3 = 7
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 7
+            col6 = 10
+
     return row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 
 
-def get_gridspec_barb_dims(state, gacc_region):
-
-    if state != None and gacc_region == None:
-
-        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-            barb_fontsize = 10
-        if state == 'CA' or state == 'ca':
-            barb_fontsize = 8
-
-    return barb_fontsize
 
 def get_quiver_dims(state, gacc_region, gridspec):
 
@@ -184,9 +259,39 @@ def get_quiver_dims(state, gacc_region, gridspec):
     
             if state == 'CA' or state == 'ca':
     
-                minshaft=0.000005 
-                headlength=9 
-                headwidth=7
+                minshaft=0.000000000000000000000000005  
+                headlength=20 
+                headwidth=17
+
+            if state == 'ME' or state == 'me':
+    
+                minshaft=0.000000000000000000000000005  
+                headlength=20 
+                headwidth=17
+
+            if state == 'NH' or state == 'nh':
+    
+                minshaft=0.000000000000000000000000005  
+                headlength=20 
+                headwidth=17
+
+            if state == 'VT' or state == 'vt':
+    
+                minshaft=0.000000000000000000000000005  
+                headlength=20 
+                headwidth=17
+
+            if state == 'MA' or state == 'ma':
+    
+                minshaft=0.000000000000000000000000005  
+                headlength=20 
+                headwidth=17
+
+            if state == 'RI' or state == 'ri':
+    
+                minshaft=0.000000000000000000000000005  
+                headlength=20 
+                headwidth=17
 
     if gridspec == True:
         
@@ -200,9 +305,39 @@ def get_quiver_dims(state, gacc_region, gridspec):
     
             if state == 'CA' or state == 'ca':
     
-                minshaft=0.00000000005 
-                headlength=9 
-                headwidth=7
+                minshaft=0.000000000000000000000000005  
+                headlength=20 
+                headwidth=17
+
+            if state == 'ME' or state == 'me':
+    
+                minshaft=0.000000000000000000000000005  
+                headlength=20 
+                headwidth=17
+
+            if state == 'NH' or state == 'nh':
+    
+                minshaft=0.000000000000000000000000005  
+                headlength=20 
+                headwidth=17
+
+            if state == 'VT' or state == 'vt':
+    
+                minshaft=0.000000000000000000000000005  
+                headlength=20 
+                headwidth=17
+
+            if state == 'MA' or state == 'ma':
+    
+                minshaft=0.000000000000000000000000005  
+                headlength=20 
+                headwidth=17
+
+            if state == 'RI' or state == 'ri':
+    
+                minshaft=0.000000000000000000000000005  
+                headlength=20 
+                headwidth=17
         
     return minshaft, headlength, headwidth
 
@@ -460,6 +595,11 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_y_position = 0.12
             title_fontsize = 6
             subplot_title_fontsize=5
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 6  
+                sample_point_fontsize = 9
+        
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.26
@@ -487,7 +627,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.45
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -498,7 +638,11 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.09
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 5
+                subplot_title_fontsize = 5  
+                sample_point_fontsize = 9
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
@@ -527,7 +671,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.5
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -538,7 +682,11 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.08
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 5  
+                sample_point_fontsize = 9
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
@@ -549,7 +697,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
     if state == 'MA' or state == 'ma':
         western_bound = -73.55
         eastern_bound = -69.88
-        southern_bound = 41.2
+        southern_bound = 41.3
         northern_bound = 42.92
         fig_x_length = 10
         fig_y_length = 6
@@ -567,7 +715,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 1
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -607,7 +755,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.9
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -619,6 +767,10 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             subplot_title_fontsize=12
             signature_x_position = 0.01
             signature_y_position = 0.12
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 5  
+                sample_point_fontsize = 9
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
