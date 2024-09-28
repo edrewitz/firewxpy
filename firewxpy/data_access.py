@@ -16,7 +16,6 @@ Depending on the data source, the data will be downloaded either from an FTP ser
 ##### IMPORTS NEEDED PYTHON MODULES #######
 import pygrib
 import xarray as xr
-import os
 import metpy
 import metpy.calc as mpcalc
 import firewxpy.parsers as parsers
@@ -25,7 +24,6 @@ import cartopy.crs as ccrs
 import requests
 import firewxpy.calc as calc
 import numpy as np
-import pickle
 import netCDF4
 import time as t
 import firewxpy.standard as standard
