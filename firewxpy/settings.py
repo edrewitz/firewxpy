@@ -42,472 +42,6 @@ def get_metar_mask(state=None, gacc_region=None, rtma_ws=False):
     return mask
 
 
-def check_NDFD_directory_name(directory_name):
-
-    directory_name = directory_name
-
-    if directory_name == 'CONUS' or directory_name == 'US' or directory_name == 'USA' or directory_name == 'conus' or directory_name == 'us' or directory_name == 'usa':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
-        
-    if directory_name == 'Central Great Lakes' or directory_name == 'CGL' or directory_name == 'central great lakes' or directory_name == 'cgl':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/'
-        
-    if directory_name == 'Central Mississippi Valley' or directory_name == 'central mississippi valley' or directory_name == 'CMV' or directory_name == 'cmv':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/'
-    
-    if directory_name == 'Central Plains' or directory_name == 'central plains' or directory_name == 'CP' or directory_name == 'cp':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/'
-
-    if directory_name == 'Central Rockies' or directory_name == 'central rockies' or directory_name == 'CR' or directory_name == 'cr':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/'
-
-    if directory_name == 'Eastern Great Lakes' or directory_name == 'eastern great lakes' or directory_name == 'EGL' or directory_name == 'egl':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/'
-
-    if directory_name == 'Mid Atlantic' or directory_name == 'Mid-Atlantic' or directory_name == 'mid atlantic' or directory_name == 'mid-atlantic' or directory_name == 'ma' or directory_name == 'Mid Atl' or directory_name == 'mid atl' or directory_name == 'Mid-Atl' or directory_name == 'mid-atl':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/'
-
-    if directory_name == 'Northeast' or directory_name == 'northeast' or directory_name == 'neast' or directory_name == 'NE' or directory_name == 'ne' or directory_name == 'NEAST' or directory_name == 'Neast':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
-
-    if directory_name == 'Alaska' or directory_name == 'AK' or directory_name == 'ak' or directory_name == 'alaska':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-
-    if directory_name == 'GUAM' or directory_name == 'Guam' or directory_name == 'guam' or directory_name == 'GM' or directory_name == 'gm':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/'
-
-    if directory_name == 'Hawaii' or directory_name == 'HAWAII' or directory_name == 'HI' or directory_name == 'hi':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/'
-
-    if directory_name == 'Northern Hemisphere' or directory_name == 'NHemisphere' or directory_name == 'northern hemisphere' or directory_name == 'nhemisphere' or directory_name == 'NH' or directory_name == 'nh':
-
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/'
-
-    if directory_name == 'North Pacific Ocean' or directory_name == 'NORTH PACIFIC OCEAN' or directory_name == 'north pacific ocean' or directory_name == 'npo' or directory_name == 'NPO':
-
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/'
-
-    if directory_name == 'Northern Plains' or directory_name == 'NORTHERN PLAINS' or directory_name == 'northern plains' or directory_name == 'NP' or directory_name == 'np' or directory_name == 'NPLAINS' or directory_name == 'nplains':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
-
-    if directory_name == 'Northern Rockies' or directory_name == 'northern rockies' or directory_name == 'NR' or directory_name == 'nr':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/'
-
-    if directory_name == 'Oceanic' or directory_name == 'OCEANIC' or directory_name == 'oceanic' or directory_name == 'o' or directory_name == 'O':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/'
-
-    if directory_name == 'Pacific Northwest' or directory_name == 'PACIFIC NORTHWEST' or directory_name == 'pacific northwest' or directory_name == 'PNW' or directory_name == 'pnw' or directory_name == 'PACNW' or directory_name == 'pacnw':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
-
-    if directory_name == 'Pacific Southwest' or directory_name == 'PACIFIC SOUTHWEST' or directory_name == 'pacific southwest' or directory_name == 'PSW' or directory_name == 'psw' or directory_name == 'PACSW' or directory_name == 'pacsw':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
-
-    if directory_name == 'Puerto Rico' or directory_name == 'PUERTO RICO' or directory_name == 'puerto rico' or directory_name == 'PR' or directory_name == 'pr':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/'
-
-    if directory_name == 'Southeast' or directory_name == 'SOUTHEAST' or directory_name == 'southeast' or directory_name == 'SEAST' or directory_name == 'seast' or directory_name == 'SE' or directory_name == 'se':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/'
-
-    if directory_name == 'Southern Mississippi Valley' or directory_name == 'southern mississippi valley' or directory_name == 'SMV' or directory_name == 'smv':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
-
-    if directory_name == 'Southern Plains' or directory_name == 'SOUTHERN PLAINS' or directory_name == 'southern plains' or directory_name == 'SPLAINS' or directory_name == 'splains' or directory_name == 'SP' or directory_name == 'sp':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/'
-        
-    if directory_name == 'Southern Rockies' or directory_name == 'southern rockies' or directory_name == 'SR' or directory_name == 'sr':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/'
-
-    if directory_name == 'Upper Mississippi Valley' or directory_name == 'upper mississippi valley' or directory_name == 'UMV' or directory_name == 'umv':
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/'
-
-    return directory_name
-
-def get_quiver_dims(state, gacc_region):
-
-
-    if state != None and gacc_region == None:
-
-        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-
-            minshaft=0.000005 
-            headlength=5 
-            headwidth=3
-
-        else:
-
-            minshaft=0.000000000000000000000000005  
-            headlength=20 
-            headwidth=17
-        
-    return minshaft, headlength, headwidth
-
-def get_label_coords(state, gacc_region):
-
-    if state != None and gacc_region == None:
-
-        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-
-            x_coord = 0.85
-            y_coord = 0.9
-
-        if state == 'CA' or state == 'ca':
-
-            x_coord = 0.73
-            y_coord = 0.92
-
-
-
-        if state == 'NY' or state == 'ny':
-
-            x_coord = 0.845
-            y_coord = 0.9
-
-        if state == 'FL' or state == 'fl':
-
-            x_coord = 0.81
-            y_coord = 0.9
-
-    if state == None and gacc_region != None:
-
-        if gacc_region == 'OSCC' or gacc_region == 'oscc' or gacc_region == 'SOPS' or gacc_region == 'sops':
-
-            x_coord = 0.82
-            y_coord = 0.9     
-    
-    return x_coord, y_coord
-
-
-def get_gridspec_dims(state, gacc_region):
-
-    if state != None and gacc_region == None:
-
-        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-
-            row1 = 0
-            row2 = 8 
-            col1 = 0
-            col2 = 10
-
-            row3 = 5
-            row4 = 10
-            col3 = 0
-            col4 = 5
-
-            row5 = 5
-            row6 = 10
-            col5 = 5
-            col6 = 10
-
-        if state == 'CA' or state == 'ca':
-
-            row1 = 0
-            row2 = 10 
-            col1 = 0
-            col2 = 7
-
-            row3 = 0
-            row4 = 5
-            col3 = 6
-            col4 = 10
-
-            row5 = 5
-            row6 = 10
-            col5 = 6
-            col6 = 10
-
-        if state == 'ME' or state == 'me':
-
-            row1 = 0
-            row2 = 10 
-            col1 = 0
-            col2 = 7
-
-            row3 = 0
-            row4 = 5
-            col3 = 6
-            col4 = 10
-
-            row5 = 5
-            row6 = 10
-            col5 = 6
-            col6 = 10
-
-        if state == 'NH' or state == 'nh':
-
-            row1 = 0
-            row2 = 10 
-            col1 = 0
-            col2 = 9
-
-            row3 = 0
-            row4 = 5
-            col3 = 6
-            col4 = 10
-
-            row5 = 5
-            row6 = 10
-            col5 = 6
-            col6 = 10
-
-        if state == 'VT' or state == 'vt':
-
-            row1 = 0
-            row2 = 10 
-            col1 = 0
-            col2 = 7
-
-            row3 = 0
-            row4 = 5
-            col3 = 6
-            col4 = 10
-
-            row5 = 5
-            row6 = 10
-            col5 = 6
-            col6 = 10
-
-        if state == 'MA' or state == 'ma':
-
-            row1 = 0
-            row2 = 7 
-            col1 = 0
-            col2 = 10
-
-            row3 = 6
-            row4 = 10
-            col3 = 0
-            col4 = 5
-
-            row5 = 6
-            row6 = 10
-            col5 = 5
-            col6 = 10
-
-        if state == 'RI' or state == 'ri':
-
-            row1 = 0
-            row2 = 10 
-            col1 = 0
-            col2 = 7
-
-            row3 = 0
-            row4 = 5
-            col3 = 7
-            col4 = 10
-
-            row5 = 5
-            row6 = 10
-            col5 = 7
-            col6 = 10
-
-        if state == 'CT' or state == 'ct':
-
-            row1 = 0
-            row2 = 6 
-            col1 = 0
-            col2 = 10
-
-            row3 = 6
-            row4 = 10
-            col3 = 0
-            col4 = 5
-
-            row5 = 6
-            row6 = 10
-            col5 = 5
-            col6 = 10
-
-        if state == 'NJ' or state == 'nj':
-
-            row1 = 0
-            row2 = 10 
-            col1 = 0
-            col2 = 9
-
-            row3 = 0
-            row4 = 5
-            col3 = 6
-            col4 = 10
-
-            row5 = 5
-            row6 = 10
-            col5 = 6
-            col6 = 10
-
-        if state == 'DE' or state == 'de':
-
-            row1 = 0
-            row2 = 10 
-            col1 = 0
-            col2 = 9
-
-            row3 = 0
-            row4 = 5
-            col3 = 6
-            col4 = 10
-
-            row5 = 5
-            row6 = 10
-            col5 = 6
-            col6 = 10
-
-        if state == 'NY' or state == 'ny':
-
-            row1 = 0
-            row2 = 6 
-            col1 = 0
-            col2 = 10
-
-            row3 = 6
-            row4 = 10
-            col3 = 0
-            col4 = 5
-
-            row5 = 6
-            row6 = 10
-            col5 = 5
-            col6 = 10
-
-        if state == 'PA' or state == 'pa':
-
-            row1 = 0
-            row2 = 8 
-            col1 = 0
-            col2 = 10
-
-            row3 = 6
-            row4 = 10
-            col3 = 0
-            col4 = 5
-
-            row5 = 6
-            row6 = 10
-            col5 = 5
-            col6 = 10
-
-        if state == 'OH' or state == 'oh':
-
-            row1 = 0
-            row2 = 6 
-            col1 = 0
-            col2 = 10
-
-            row3 = 6
-            row4 = 10
-            col3 = 0
-            col4 = 5
-
-            row5 = 6
-            row6 = 10
-            col5 = 5
-            col6 = 10
-
-        if state == 'MI' or state == 'mi':
-
-            row1 = 0
-            row2 = 6 
-            col1 = 0
-            col2 = 10
-
-            row3 = 6
-            row4 = 10
-            col3 = 0
-            col4 = 5
-
-            row5 = 6
-            row6 = 10
-            col5 = 5
-            col6 = 10
-
-        if state == 'MN' or state == 'mn':
-
-            row1 = 0
-            row2 = 10 
-            col1 = 0
-            col2 = 7
-
-            row3 = 0
-            row4 = 5
-            col3 = 6
-            col4 = 10
-
-            row5 = 5
-            row6 = 10
-            col5 = 6
-            col6 = 10
-
-        if state == 'WI' or state == 'wi':
-
-            row1 = 0
-            row2 = 7 
-            col1 = 0
-            col2 = 10
-
-            row3 = 6
-            row4 = 10
-            col3 = 0
-            col4 = 5
-
-            row5 = 6
-            row6 = 10
-            col5 = 5
-            col6 = 10
-
-        if state == 'IA' or state == 'ia':
-
-            row1 = 0
-            row2 = 8 
-            col1 = 0
-            col2 = 10
-
-            row3 = 6
-            row4 = 10
-            col3 = 0
-            col4 = 5
-
-            row5 = 6
-            row6 = 10
-            col5 = 5
-            col6 = 10
-
-        if state == 'IN' or state == 'in':
-
-            row1 = 0
-            row2 = 10 
-            col1 = 0
-            col2 = 9
-
-            row3 = 0
-            row4 = 5
-            col3 = 6
-            col4 = 10
-
-            row5 = 5
-            row6 = 10
-            col5 = 6
-            col6 = 10
-
-        if state == 'MO' or state == 'mo':
-
-            row1 = 0
-            row2 = 6 
-            col1 = 0
-            col2 = 10
-
-            row3 = 6
-            row4 = 10
-            col3 = 0
-            col4 = 5
-
-            row5 = 6
-            row6 = 10
-            col5 = 5
-            col6 = 10
-
-
-    return row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 
-    
-
 def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
 
     state = state
@@ -1435,7 +969,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_y_position = 0.248
         if plot_category == 'rtma':
             signature_x_position = 0.01
-            signature_y_position = 0.13
+            signature_y_position = 0.12
             title_fontsize = 6
             subplot_title_fontsize=5
             signature_fontsize=6
@@ -1485,7 +1019,12 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.08
+            fig_x_length = 12
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 5  
+                sample_point_fontsize = 9
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.35
@@ -2815,80 +2354,85 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec):
     return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick
 
 
-def get_colorbar_label_coords(state, plot_type):
+def check_NDFD_directory_name(directory_name):
 
-    state = state 
-    plot_type
+    directory_name = directory_name
 
-    if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
+    if directory_name == 'CONUS' or directory_name == 'US' or directory_name == 'USA' or directory_name == 'conus' or directory_name == 'us' or directory_name == 'usa':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        
+    if directory_name == 'Central Great Lakes' or directory_name == 'CGL' or directory_name == 'central great lakes' or directory_name == 'cgl':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/'
+        
+    if directory_name == 'Central Mississippi Valley' or directory_name == 'central mississippi valley' or directory_name == 'CMV' or directory_name == 'cmv':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/'
+    
+    if directory_name == 'Central Plains' or directory_name == 'central plains' or directory_name == 'CP' or directory_name == 'cp':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/'
 
-        if plot_type == 'dry lightning':
-            x1 = 0.25
-            x2 = 0.65
-            x3 = None
-            y = 0.195
+    if directory_name == 'Central Rockies' or directory_name == 'central rockies' or directory_name == 'CR' or directory_name == 'cr':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/'
 
-    if state == 'CA' or state == 'ca':
+    if directory_name == 'Eastern Great Lakes' or directory_name == 'eastern great lakes' or directory_name == 'EGL' or directory_name == 'egl':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/'
 
-        if plot_type == 'critical fire':
-            x1 = 0.278
-            x2 = 0.46
-            x3 = 0.64
-            y = 0.207
+    if directory_name == 'Mid Atlantic' or directory_name == 'Mid-Atlantic' or directory_name == 'mid atlantic' or directory_name == 'mid-atlantic' or directory_name == 'ma' or directory_name == 'Mid Atl' or directory_name == 'mid atl' or directory_name == 'Mid-Atl' or directory_name == 'mid-atl':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/'
 
-        if plot_type == 'dry lightning':
-            x1 = 0.325
-            x2 = 0.585
-            x3 = None
-            y = 0.205
+    if directory_name == 'Northeast' or directory_name == 'northeast' or directory_name == 'neast' or directory_name == 'NE' or directory_name == 'ne' or directory_name == 'NEAST' or directory_name == 'Neast':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
 
-    if state == 'ME' or state == 'me':
+    if directory_name == 'Alaska' or directory_name == 'AK' or directory_name == 'ak' or directory_name == 'alaska':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
 
-        if plot_type == 'critical fire':
-            x1 = 0.278
-            x2 = 0.46
-            x3 = 0.64
-            y = 0.207
+    if directory_name == 'GUAM' or directory_name == 'Guam' or directory_name == 'guam' or directory_name == 'GM' or directory_name == 'gm':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/'
 
-        if plot_type == 'dry lightning':
-            x1 = 0.325
-            x2 = 0.585
-            x3 = None
-            y = 0.195
+    if directory_name == 'Hawaii' or directory_name == 'HAWAII' or directory_name == 'HI' or directory_name == 'hi':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/'
 
-    if state == 'NH' or state == 'nh':
+    if directory_name == 'Northern Hemisphere' or directory_name == 'NHemisphere' or directory_name == 'northern hemisphere' or directory_name == 'nhemisphere' or directory_name == 'NH' or directory_name == 'nh':
 
-        if plot_type == 'critical fire':
-            x1 = 0.278
-            x2 = 0.46
-            x3 = 0.64
-            y = 0.207
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/'
 
-        if plot_type == 'dry lightning':
-            x1 = 0.325
-            x2 = 0.585
-            x3 = None
-            y = 0.195
+    if directory_name == 'North Pacific Ocean' or directory_name == 'NORTH PACIFIC OCEAN' or directory_name == 'north pacific ocean' or directory_name == 'npo' or directory_name == 'NPO':
 
-    if state == 'VT' or state == 'vt':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/'
 
-        if plot_type == 'critical fire':
-            x1 = 0.278
-            x2 = 0.46
-            x3 = 0.64
-            y = 0.207
+    if directory_name == 'Northern Plains' or directory_name == 'NORTHERN PLAINS' or directory_name == 'northern plains' or directory_name == 'NP' or directory_name == 'np' or directory_name == 'NPLAINS' or directory_name == 'nplains':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/'
 
-        if plot_type == 'dry lightning':
-            x1 = 0.325
-            x2 = 0.585
-            x3 = None
-            y = 0.195
+    if directory_name == 'Northern Rockies' or directory_name == 'northern rockies' or directory_name == 'NR' or directory_name == 'nr':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/'
 
-    return x1, x2, x3, y
+    if directory_name == 'Oceanic' or directory_name == 'OCEANIC' or directory_name == 'oceanic' or directory_name == 'o' or directory_name == 'O':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/'
+
+    if directory_name == 'Pacific Northwest' or directory_name == 'PACIFIC NORTHWEST' or directory_name == 'pacific northwest' or directory_name == 'PNW' or directory_name == 'pnw' or directory_name == 'PACNW' or directory_name == 'pacnw':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
+
+    if directory_name == 'Pacific Southwest' or directory_name == 'PACIFIC SOUTHWEST' or directory_name == 'pacific southwest' or directory_name == 'PSW' or directory_name == 'psw' or directory_name == 'PACSW' or directory_name == 'pacsw':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
+
+    if directory_name == 'Puerto Rico' or directory_name == 'PUERTO RICO' or directory_name == 'puerto rico' or directory_name == 'PR' or directory_name == 'pr':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/'
+
+    if directory_name == 'Southeast' or directory_name == 'SOUTHEAST' or directory_name == 'southeast' or directory_name == 'SEAST' or directory_name == 'seast' or directory_name == 'SE' or directory_name == 'se':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/'
+
+    if directory_name == 'Southern Mississippi Valley' or directory_name == 'southern mississippi valley' or directory_name == 'SMV' or directory_name == 'smv':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
+
+    if directory_name == 'Southern Plains' or directory_name == 'SOUTHERN PLAINS' or directory_name == 'southern plains' or directory_name == 'SPLAINS' or directory_name == 'splains' or directory_name == 'SP' or directory_name == 'sp':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/'
+        
+    if directory_name == 'Southern Rockies' or directory_name == 'southern rockies' or directory_name == 'SR' or directory_name == 'sr':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/'
+
+    if directory_name == 'Upper Mississippi Valley' or directory_name == 'upper mississippi valley' or directory_name == 'UMV' or directory_name == 'umv':
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/'
+
+    return directory_name
+
 
     
