@@ -53,7 +53,7 @@ def plot_observed_sounding(station_id):
     dates = []
     sounding = True
     for i in range(0, 13):
-        date = abs(utc_time - timedelta(hours=i))
+        date = utc_time - timedelta(hours=i)
         dates.append(date)
 
     try:
