@@ -1,4 +1,3 @@
-import pytz
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import cartopy.crs as ccrs
@@ -11,7 +10,6 @@ import firewxpy.geometry as geometry
 import firewxpy.colormaps as colormaps
 import pandas as pd
 import matplotlib.gridspec as gridspec
-import math
 import firewxpy.settings as settings
 import firewxpy.standard as standard
 import firewxpy.dims as dims
