@@ -14,6 +14,7 @@ import matplotlib.gridspec as gridspec
 import math
 import firewxpy.settings as settings
 import firewxpy.standard as standard
+import firewxpy.dims as dims
 
 
 from matplotlib.patheffects import withStroke
