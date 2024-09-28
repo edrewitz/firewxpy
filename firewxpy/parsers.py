@@ -14,7 +14,6 @@ import numpy as np
 import firewxpy.data_access as da
 import matplotlib.pyplot as plt
 import firewxpy.calc as calc
-import os
 import cartopy.crs as ccrs
 import xarray as xr
 
