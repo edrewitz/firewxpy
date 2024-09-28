@@ -5808,7 +5808,7 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
 
     if barbs == False:
 
-        minshaft, headlength, headwidth = settings.get_quiver_dims(state, gacc_region, False)
+        minshaft, headlength, headwidth = dims.get_quiver_dims(state, gacc_region)
 
         ax.quiver(lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate], u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='lime', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=9, linewidth=quiver_linewidth, transform=ccrs.PlateCarree())
 
@@ -6220,7 +6220,7 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
 
     if barbs == False:
 
-        minshaft, headlength, headwidth = settings.get_quiver_dims(state, gacc_region, False)
+        minshaft, headlength, headwidth = dims.get_quiver_dims(state, gacc_region)
 
         ax.quiver(lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate], u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='red', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=9, linewidth=quiver_linewidth, transform=ccrs.PlateCarree())
     
@@ -6231,7 +6231,7 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
     cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=labels)
     cbar.set_label(label="Wind Speed Difference (ΔMPH)", size=colorbar_fontsize, fontweight='bold')
 
-    x_loc, y_loc = settings.get_label_coords(state, gacc_region)
+    x_loc, y_loc = dims.get_label_coords(state, gacc_region)
     
     leg = ax.legend(loc=(x_loc, y_loc), framealpha=1)
     leg.set_zorder(12)
@@ -6560,7 +6560,7 @@ def plot_dry_and_windy_areas(low_rh_threshold=15, high_wind_threshold=25, wester
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
-    row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 = settings.get_gridspec_dims(state, gacc_region)
+    row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 = dims.get_gridspec_dims(state, gacc_region)
     gs = gridspec.GridSpec(10, 10)
 
     ax1 = fig.add_subplot(gs[row1:row2, col1:col2], projection=ccrs.PlateCarree())
@@ -6772,7 +6772,7 @@ def plot_dry_and_windy_areas(low_rh_threshold=15, high_wind_threshold=25, wester
 
         if sample_point_type == 'quivers' or sample_point_type == 'vectors':
 
-            minshaft, headlength, headwidth = settings.get_quiver_dims(state, gacc_region, True)
+            minshaft, headlength, headwidth = dims.get_quiver_dims(state, gacc_region)
     
             ax3.quiver(plot_lons[::decimate, ::decimate], plot_lats[::decimate, ::decimate], u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='lime', minshaft=minshaft, headlength=headlength, headwidth=headwidth, zorder=11, linewidth=barb_quiver_linewidth, transform=ccrs.PlateCarree())
     
@@ -7097,7 +7097,7 @@ def plot_dry_and_gusty_areas(low_rh_threshold=15, high_wind_threshold=25, wester
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
-    row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 = settings.get_gridspec_dims(state, gacc_region)
+    row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 = dims.get_gridspec_dims(state, gacc_region)
     
     gs = gridspec.GridSpec(10, 10)
 
