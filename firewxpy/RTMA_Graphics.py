@@ -18,7 +18,6 @@ import firewxpy.dims as dims
 from matplotlib.patheffects import withStroke
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
-from metpy.plots import colortables
 from dateutil import tz
 from firewxpy.calc import scaling, Thermodynamics, unit_conversion
 from firewxpy.utilities import file_functions
