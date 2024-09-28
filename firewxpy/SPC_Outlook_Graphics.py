@@ -14,10 +14,6 @@ This file was written by Meteorologist Eric J. Drewitz
                         USDA/USFS
 
 '''
-
-
-
-import pytz
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import cartopy.crs as ccrs
@@ -31,7 +27,6 @@ import firewxpy.standard as standard
 import firewxpy.settings as settings
 
 from metpy.plots import USCOUNTIES
-from datetime import datetime, timedelta
 from metpy.plots import colortables
 from dateutil import tz
 from firewxpy.utilities import file_functions
