@@ -10,16 +10,13 @@ This file was written by Meteorologist Eric J. Drewitz
 
 '''
 
-import pytz
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import metpy.plots as mpplots
-import metpy.calc as mpcalc
 import numpy as np
 import firewxpy.parsers
-import firewxpy.calc
 import firewxpy.colormaps
 import pandas as pd
 import matplotlib.gridspec as gridspec
