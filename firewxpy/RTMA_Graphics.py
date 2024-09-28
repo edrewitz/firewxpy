@@ -6330,10 +6330,15 @@ def plot_dry_and_windy_areas(low_rh_threshold=15, high_wind_threshold=25, wester
     
     wind_speed_contourf = np.arange(high_wind_threshold, high_wind, 1)
 
-    if low_rh_thresh <= 15:
+    if low_rh_threshold <= 15:
         rh_labels = rh_contourf
+    elif low_rh_threshold > 15 and low_rh_threshold < 40:
+        if (low_rh_threshold % 2) == 0:
+            rh_labels = rh_contourf[::2]
+        else:
+            rh_labels = rh_contourf[::5]
     else:
-        rh_labels = rh_contourf[::2]
+        rh_labels = rh_contourf[::5]
         
     wind_labels = wind_speed_contourf[::5]
 
@@ -6877,10 +6882,15 @@ def plot_dry_and_gusty_areas(low_rh_threshold=15, high_wind_threshold=25, wester
     high_wind = high_wind_threshold + 36
     wind_speed_contourf = np.arange(high_wind_threshold, high_wind, 1)
 
-    if low_rh_thresh <= 15:
+    if low_rh_threshold <= 15:
         rh_labels = rh_contourf
+    elif low_rh_threshold > 15 and low_rh_threshold < 40:
+        if (low_rh_threshold % 2) == 0:
+            rh_labels = rh_contourf[::2]
+        else:
+            rh_labels = rh_contourf[::5]
     else:
-        rh_labels = rh_contourf[::2]
+        rh_labels = rh_contourf[::5]
         
     wind_labels = wind_speed_contourf[::5]
 
