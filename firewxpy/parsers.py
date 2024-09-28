@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 import firewxpy.calc as calc
 import cartopy.crs as ccrs
 import xarray as xr
+import os
 
 from datetime import datetime, timedelta
 from metpy.units import units
