@@ -122,6 +122,61 @@ def check_NDFD_directory_name(directory_name):
 
     return directory_name
 
+def get_quiver_dims(state, gacc_region):
+
+
+    if state != None and gacc_region == None:
+
+        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+
+            minshaft=0.000005 
+            headlength=5 
+            headwidth=3
+
+        else:
+
+            minshaft=0.000000000000000000000000005  
+            headlength=20 
+            headwidth=17
+        
+    return minshaft, headlength, headwidth
+
+def get_label_coords(state, gacc_region):
+
+    if state != None and gacc_region == None:
+
+        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+
+            x_coord = 0.85
+            y_coord = 0.9
+
+        if state == 'CA' or state == 'ca':
+
+            x_coord = 0.73
+            y_coord = 0.92
+
+
+
+        if state == 'NY' or state == 'ny':
+
+            x_coord = 0.845
+            y_coord = 0.9
+
+        if state == 'FL' or state == 'fl':
+
+            x_coord = 0.81
+            y_coord = 0.9
+
+    if state == None and gacc_region != None:
+
+        if gacc_region == 'OSCC' or gacc_region == 'oscc' or gacc_region == 'SOPS' or gacc_region == 'sops':
+
+            x_coord = 0.82
+            y_coord = 0.9     
+    
+    return x_coord, y_coord
+
+
 def get_gridspec_dims(state, gacc_region):
 
     if state != None and gacc_region == None:
@@ -245,151 +300,213 @@ def get_gridspec_dims(state, gacc_region):
             col5 = 7
             col6 = 10
 
-    return row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 
+        if state == 'CT' or state == 'ct':
 
+            row1 = 0
+            row2 = 6 
+            col1 = 0
+            col2 = 10
 
-def get_quiver_dims(state, gacc_region, gridspec):
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
 
-    if gridspec == False:
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
 
-        if state != None and gacc_region == None:
-    
-            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-    
-                minshaft=0.000005 
-                headlength=5 
-                headwidth=3
-    
-            if state == 'CA' or state == 'ca':
-    
-                minshaft=0.000000000000000000000000005  
-                headlength=20 
-                headwidth=17
+        if state == 'NJ' or state == 'nj':
 
-            if state == 'ME' or state == 'me':
-    
-                minshaft=0.000000000000000000000000005  
-                headlength=20 
-                headwidth=17
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 9
 
-            if state == 'NH' or state == 'nh':
-    
-                minshaft=0.000000000000000000000000005  
-                headlength=20 
-                headwidth=17
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
 
-            if state == 'VT' or state == 'vt':
-    
-                minshaft=0.000000000000000000000000005  
-                headlength=20 
-                headwidth=17
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
 
-            if state == 'MA' or state == 'ma':
-    
-                minshaft=0.000000000000000000000000005  
-                headlength=20 
-                headwidth=17
+        if state == 'DE' or state == 'de':
 
-            if state == 'RI' or state == 'ri':
-    
-                minshaft=0.000000000000000000000000005  
-                headlength=20 
-                headwidth=17
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 9
 
-    if gridspec == True:
-        
-        if state != None and gacc_region == None:
-    
-            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-    
-                minshaft=0.000005 
-                headlength=5 
-                headwidth=3
-    
-            if state == 'CA' or state == 'ca':
-    
-                minshaft=0.000000000000000000000000005  
-                headlength=20 
-                headwidth=17
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
 
-            if state == 'ME' or state == 'me':
-    
-                minshaft=0.000000000000000000000000005  
-                headlength=20 
-                headwidth=17
-
-            if state == 'NH' or state == 'nh':
-    
-                minshaft=0.000000000000000000000000005  
-                headlength=20 
-                headwidth=17
-
-            if state == 'VT' or state == 'vt':
-    
-                minshaft=0.000000000000000000000000005  
-                headlength=20 
-                headwidth=17
-
-            if state == 'MA' or state == 'ma':
-    
-                minshaft=0.000000000000000000000000005  
-                headlength=20 
-                headwidth=17
-
-            if state == 'RI' or state == 'ri':
-    
-                minshaft=0.000000000000000000000000005  
-                headlength=20 
-                headwidth=17
-        
-    return minshaft, headlength, headwidth
-
-def get_label_coords(state, gacc_region):
-
-    if state != None and gacc_region == None:
-
-        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-
-            x_coord = 0.85
-            y_coord = 0.9
-
-        if state == 'CA' or state == 'ca':
-
-            x_coord = 0.73
-            y_coord = 0.92
-
-
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
 
         if state == 'NY' or state == 'ny':
 
-            x_coord = 0.845
-            y_coord = 0.9
+            row1 = 0
+            row2 = 6 
+            col1 = 0
+            col2 = 10
 
-        if state == 'FL' or state == 'fl':
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
 
-            x_coord = 0.81
-            y_coord = 0.9
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
 
-    if state == None and gacc_region != None:
+        if state == 'PA' or state == 'pa':
 
-        if gacc_region == 'OSCC' or gacc_region == 'oscc' or gacc_region == 'SOPS' or gacc_region == 'sops':
+            row1 = 0
+            row2 = 8 
+            col1 = 0
+            col2 = 10
 
-            x_coord = 0.82
-            y_coord = 0.9     
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'OH' or state == 'oh':
+
+            row1 = 0
+            row2 = 6 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'MI' or state == 'mi':
+
+            row1 = 0
+            row2 = 6 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'MN' or state == 'mn':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 7
+
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
+
+        if state == 'WI' or state == 'wi':
+
+            row1 = 0
+            row2 = 7 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'IA' or state == 'ia':
+
+            row1 = 0
+            row2 = 8 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'IN' or state == 'in':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 9
+
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
+
+        if state == 'MO' or state == 'mo':
+
+            row1 = 0
+            row2 = 6 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+
+    return row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 
     
-    return x_coord, y_coord
-    
-
-def get_sample_point_color_by_state(state, plot_type):
-
-    if plot_type == 'rtma rh':
-        color = 'blue'
-        if state == 'US' or state == 'us' or state == 'usa' or state == 'USA':
-            color = 'red'
-        if state == 'NY' or state =='ny':
-            color = 'red'
-
-    return color
 
 def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
 
@@ -730,6 +847,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             subplot_title_fontsize=7
             signature_x_position = 0.01
             signature_y_position = 0.135
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                fig_x_length = 9
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
@@ -804,7 +923,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.9
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -812,10 +931,15 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.23
             signature_y_position = 0.25
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 8
+            subplot_title_fontsize=7
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.135
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 5  
+                sample_point_fontsize = 9
+                fig_x_length = 6
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
@@ -844,7 +968,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.45
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -855,7 +979,12 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.08
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 5
+                subplot_title_fontsize = 4  
+                sample_point_fontsize = 9
+                fig_x_length = 9
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
@@ -884,7 +1013,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.47
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -895,7 +1024,12 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.08
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 5
+                subplot_title_fontsize = 4  
+                sample_point_fontsize = 9
+                fig_x_length = 9
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
@@ -923,7 +1057,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.9
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -931,10 +1065,15 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.13
             signature_y_position = 0.26
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.16
+            title_fontsize = 6
+            subplot_title_fontsize=5
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 6  
+                sample_point_fontsize = 9
+                fig_x_length = 7
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
@@ -962,7 +1101,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.9
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -970,10 +1109,16 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.13
             signature_y_position = 0.248
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.147
+            title_fontsize = 6
+            subplot_title_fontsize=5
+            signature_fontsize= 8 
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 6  
+                sample_point_fontsize = 9
+                fig_x_length = 7
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
@@ -1002,7 +1147,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.9
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -1011,10 +1156,17 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_y_position = 0.248
             color_table_shrink = 0.7
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.13
+            title_fontsize = 6
+            subplot_title_fontsize=5
+            signature_fontsize=8
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 5
+                subplot_title_fontsize = 5  
+                sample_point_fontsize = 9
+                fig_x_length = 4
+                tick=7
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
@@ -1042,7 +1194,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.9
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -1051,10 +1203,17 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_y_position = 0.248
             color_table_shrink = 0.7
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.13
+            title_fontsize = 6
+            subplot_title_fontsize=5
+            signature_fontsize=8
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 5
+                subplot_title_fontsize = 5  
+                sample_point_fontsize = 9
+                fig_x_length = 4
+                tick=7
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
@@ -1094,7 +1253,14 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.09
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 6  
+                fig_y_length = 4
+                colorbar_fontsize=6
+                signature_fontsize=6
+                tick = 5
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.35
@@ -1123,7 +1289,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.9
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -1131,10 +1297,17 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.2
             signature_y_position = 0.248
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.115
+            title_fontsize = 6
+            subplot_title_fontsize=5
+            signature_fontsize=6
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 5
+                subplot_title_fontsize = 5  
+                sample_point_fontsize = 9
+                fig_x_length = 4
+                tick=7
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/'
             signature_x_position = 0.13
@@ -1162,7 +1335,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.9
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -1170,10 +1343,17 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.14
             signature_y_position = 0.248
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.147
+            title_fontsize = 6
+            subplot_title_fontsize=5
+            signature_fontsize= 8 
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 6  
+                sample_point_fontsize = 9
+                fig_x_length = 7
+                fig_y_length = 8
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/'
             signature_x_position = 0.13
@@ -1202,7 +1382,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.5
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -1213,7 +1393,12 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             title_fontsize = 14
             subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.08
+            fig_x_length = 12
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 5  
+                sample_point_fontsize = 9
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/'
             signature_x_position = 0.35
@@ -1241,7 +1426,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.8
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -1249,10 +1434,18 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.14
             signature_y_position = 0.248
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.13
+            title_fontsize = 6
+            subplot_title_fontsize=5
+            signature_fontsize=6
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 5
+                subplot_title_fontsize = 5  
+                sample_point_fontsize = 9
+                fig_y_length = 7
+                fig_x_length = 6
+                tick=7
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
