@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import time
 from zipfile import ZipFile
 from PIL import Image
-from datetime import datetime, timedelta
+from datetime import datetime
 
 class file_functions:
 
