@@ -17,7 +17,6 @@ Classes in this file:
 
 #### IMPORTS ####
 
-import pytz
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -28,14 +27,11 @@ import numpy as np
 import firewxpy.parsers as parsers
 import firewxpy.geometry as geometry
 import firewxpy.colormaps as colormaps
-import os
-import xarray as xr
 import firewxpy.settings as settings
 import firewxpy.standard as standard
 
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
-from metpy.plots import colortables
 from dateutil import tz
 from matplotlib.patheffects import withStroke
 from firewxpy.calc import scaling, unit_conversion, contouring
