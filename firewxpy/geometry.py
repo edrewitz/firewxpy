@@ -8,14 +8,13 @@
 
 ###### IMPORTS ################
 import urllib.request
-import sys
 import os
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 
 from cartopy.io.shapereader import Reader
 from cartopy.feature import ShapelyFeature
-from firewxpy.utilities import file_functions
+from utilities import file_functions
 
 #### INFORMATION CLASS ####
 # The information class returns helpful tips for when the user encounters errors
@@ -60,10 +59,10 @@ def download_shape_files():
         # Makes new folder
         os.mkdir("NWS CWA Boundaries")
         # Downloads the CWA Shapefiles
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_CWA_Boundaries/w_05mr24.dbf', 'w_05mr24.dbf')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_CWA_Boundaries/w_05mr24.prj', 'w_05mr24.prj')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_CWA_Boundaries/w_05mr24.shx', 'w_05mr24.shx')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_CWA_Boundaries/w_05mr24.zip', 'w_05mr24.zip')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_CWA_Boundaries/w_05mr24.dbf', 'w_05mr24.dbf')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_CWA_Boundaries/w_05mr24.prj', 'w_05mr24.prj')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_CWA_Boundaries/w_05mr24.shx', 'w_05mr24.shx')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_CWA_Boundaries/w_05mr24.zip', 'w_05mr24.zip')
         # Moves files to new folder
         os.replace('w_05mr24.zip', f"NWS CWA Boundaries/w_05mr24.zip")
         os.replace('w_05mr24.dbf', f"NWS CWA Boundaries/w_05mr24.dbf")
@@ -80,10 +79,10 @@ def download_shape_files():
         # Makes new folder
         os.mkdir("NWS Fire Weather Zones")
         # Downloads the FWZ Shapefiles
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Fire_Weather_Zones/fz05mr24.zip', 'fz05mr24.zip')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Fire_Weather_Zones/fz05mr24.dbf', 'fz05mr24.dbf')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Fire_Weather_Zones/fz05mr24.prj', 'fz05mr24.prj')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Fire_Weather_Zones/fz05mr24.shx', 'fz05mr24.shx')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_Fire_Weather_Zones/fz05mr24.zip', 'fz05mr24.zip')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_Fire_Weather_Zones/fz05mr24.dbf', 'fz05mr24.dbf')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_Fire_Weather_Zones/fz05mr24.prj', 'fz05mr24.prj')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_Fire_Weather_Zones/fz05mr24.shx', 'fz05mr24.shx')
         # Moves files to new folder
         os.replace('fz05mr24.zip', f"NWS Fire Weather Zones/fz05mr24.zip")
         os.replace('fz05mr24.dbf', f"NWS Fire Weather Zones/fz05mr24.dbf")
@@ -100,10 +99,10 @@ def download_shape_files():
         # Makes new folder
         os.mkdir("NWS Public Zones")
         # Downloads files
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Public_Zones/z_05mr24.zip', 'z_05mr24.zip')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Public_Zones/z_05mr24.dbf', 'z_05mr24.dbf')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Public_Zones/z_05mr24.prj', 'z_05mr24.prj')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/NWS_Public_Zones/z_05mr24.shx', 'z_05mr24.shx')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_Public_Zones/z_05mr24.zip', 'z_05mr24.zip')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_Public_Zones/z_05mr24.dbf', 'z_05mr24.dbf')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_Public_Zones/z_05mr24.prj', 'z_05mr24.prj')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_Public_Zones/z_05mr24.shx', 'z_05mr24.shx')
         # Moves files to new folder
         os.replace('z_05mr24.zip', f"NWS Public Zones/z_05mr24.zip")
         os.replace('z_05mr24.dbf', f"NWS Public Zones/z_05mr24.dbf")
@@ -119,12 +118,12 @@ def download_shape_files():
         # Makes new folder
         os.mkdir("GACC Boundaries Shapefiles")
         # Downloads files
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/GACC%20Boundaries%20Shapefiles/National_GACC_Boundaries.xml', 'National_GACC_Boundaries.xml')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/GACC%20Boundaries%20Shapefiles/National_GACC_Current.cpg', 'National_GACC_Current.cpg')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/GACC%20Boundaries%20Shapefiles/National_GACC_Current.dbf', 'National_GACC_Current.dbf')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/GACC%20Boundaries%20Shapefiles/National_GACC_Current.prj', 'National_GACC_Current.prj')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/GACC%20Boundaries%20Shapefiles/National_GACC_Current.shp', 'National_GACC_Current.shp')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/GACC%20Boundaries%20Shapefiles/National_GACC_Current.shx', 'National_GACC_Current.shx')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/GACC%20Boundaries%20Shapefiles/National_GACC_Boundaries.xml', 'National_GACC_Boundaries.xml')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/GACC%20Boundaries%20Shapefiles/National_GACC_Current.cpg', 'National_GACC_Current.cpg')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/GACC%20Boundaries%20Shapefiles/National_GACC_Current.dbf', 'National_GACC_Current.dbf')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/GACC%20Boundaries%20Shapefiles/National_GACC_Current.prj', 'National_GACC_Current.prj')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/GACC%20Boundaries%20Shapefiles/National_GACC_Current.shp', 'National_GACC_Current.shp')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/GACC%20Boundaries%20Shapefiles/National_GACC_Current.shx', 'National_GACC_Current.shx')
         # Moves files to folder
         os.replace('National_GACC_Boundaries.xml', f"GACC Boundaries Shapefiles/National_GACC_Boundaries.xml")
         os.replace('National_GACC_Current.cpg', f"GACC Boundaries Shapefiles/National_GACC_Current.cpg")
@@ -143,12 +142,12 @@ def download_shape_files():
         os.mkdir("PSA Shapefiles")
         # Downloads files
 
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/PSA%20Shapefiles/National_PSA_Current.xml', 'National_PSA_Current.xml')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/PSA%20Shapefiles/National_PSA_Current.cpg', 'National_PSA_Current.cpg')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/PSA%20Shapefiles/National_PSA_Current.dbf', 'National_PSA_Current.dbf')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/PSA%20Shapefiles/National_PSA_Current.prj', 'National_PSA_Current.prj')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/PSA%20Shapefiles/National_PSA_Current.shp', 'National_PSA_Current.shp')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/src/PSA%20Shapefiles/National_PSA_Current.shx', 'National_PSA_Current.shx')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/PSA%20Shapefiles/National_PSA_Current.xml', 'National_PSA_Current.xml')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/PSA%20Shapefiles/National_PSA_Current.cpg', 'National_PSA_Current.cpg')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/PSA%20Shapefiles/National_PSA_Current.dbf', 'National_PSA_Current.dbf')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/PSA%20Shapefiles/National_PSA_Current.prj', 'National_PSA_Current.prj')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/PSA%20Shapefiles/National_PSA_Current.shp', 'National_PSA_Current.shp')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/PSA%20Shapefiles/National_PSA_Current.shx', 'National_PSA_Current.shx')
 
         # Moves files to folder
         os.replace('National_PSA_Current.xml', f"PSA Shapefiles/National_PSA_Current.xml")
