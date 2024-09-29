@@ -399,6 +399,448 @@ def get_gridspec_dims(state, gacc_region):
             col5 = 6
             col6 = 10
 
+        if state == 'ND' or state == 'nd':
+
+            row1 = 0
+            row2 = 8 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'SD' or state == 'sd':
+
+            row1 = 0
+            row2 = 8 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'NE' or state == 'ne':
+
+            row1 = 0
+            row2 = 9 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'MD' or state == 'md':
+
+            row1 = 0
+            row2 = 9 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'VA' or state == 'va':
+
+            row1 = 0
+            row2 = 9 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'SC' or state == 'sc':
+
+            row1 = 0
+            row2 = 6 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'KY' or state == 'ky':
+
+            row1 = 0
+            row2 = 9 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'WV' or state == 'wv':
+
+            row1 = 0
+            row2 = 7 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'NC' or state == 'nc':
+
+            row1 = 0
+            row2 = 9 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'NV' or state == 'nv':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 8
+
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
+
+        if state == 'FL' or state == 'fl':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 7
+
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
+
+        if state == 'OR' or state == 'or':
+
+            row1 = 0
+            row2 = 8 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'WA' or state == 'wa':
+
+            row1 = 0
+            row2 = 9 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'ID' or state == 'id':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 8
+
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
+
+        if state == 'GA' or state == 'ga':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 7
+
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
+
+        if state == 'AL' or state == 'al':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 9
+
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
+
+        if state == 'MS' or state == 'ms':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 9
+
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
+
+        if state == 'LA' or state == 'la':
+
+            row1 = 0
+            row2 = 7 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'AR' or state == 'ar':
+
+            row1 = 0
+            row2 = 6 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'TX' or state == 'tx':
+
+            row1 = 0
+            row2 = 7 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'OK' or state == 'ok':
+
+            row1 = 0
+            row2 = 9 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'NM' or state == 'nm':
+
+            row1 = 0
+            row2 = 6 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'AZ' or state == 'az':
+
+            row1 = 0
+            row2 = 6 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'UT' or state == 'ut':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 7
+
+            row3 = 0
+            row4 = 5
+            col3 = 6
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 6
+            col6 = 10
+
+        if state == 'CO' or state == 'co':
+
+            row1 = 0
+            row2 = 7 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'WY' or state == 'wy':
+
+            row1 = 0
+            row2 = 7 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
 
     return row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 
 
