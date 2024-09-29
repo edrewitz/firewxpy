@@ -118,37 +118,10 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.25
             signature_y_position = 0.26
         if plot_category == 'rtma':
-            title_fontsize = 7
-            subplot_title_fontsize = 7
+            title_fontsize = 6
+            subplot_title_fontsize = 6
             signature_x_position = 0.01
-            signature_y_position = 0.12
-            if plot_type == '24 Hour Dewpoint Comparison':
-                title_fontsize = 7
-                subplot_title_fontsize = 6 
-            if plot_type == '24 Hour RH Comparison':
-                title_fontsize = 7
-                subplot_title_fontsize = 6    
-            if plot_type == '24 Hour Temperature Comparison':
-                title_fontsize = 7
-                subplot_title_fontsize = 6    
-            if plot_type == '24 Hour Total Cloud Cover Comparison':
-                title_fontsize = 6
-                subplot_title_fontsize = 6    
-            if plot_type == '24 Hour Wind Speed & Direction Comparison':
-                title_fontsize = 7
-                subplot_title_fontsize = 6    
-            if plot_type == '24 Hour Wind Speed Comparison':
-                title_fontsize = 7
-                subplot_title_fontsize = 6   
-            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
-                title_fontsize = 6
-                subplot_title_fontsize = 6  
-            if plot_type == 'RH & METAR':
-                title_fontsize = 6
-                subplot_title_fontsize = 6                  
-            if plot_type == 'Low RH & METAR':
-                title_fontsize = 6
-                subplot_title_fontsize = 6             
+            signature_y_position = 0.12         
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.25
@@ -2109,14 +2082,14 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_y_position = 0.12
             title_fontsize = 6
             subplot_title_fontsize=5
-            signature_fontsize=6
+            signature_fontsize=9
             if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
-                title_fontsize = 4
-                subplot_title_fontsize = 4  
+                title_fontsize = 8
+                subplot_title_fontsize = 7  
                 sample_point_fontsize = 9
-                fig_y_length = 7
-                fig_x_length = 3
-                tick=6
+                fig_y_length = 14
+                fig_x_length = 7
+                tick=9
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
             signature_x_position = 0.13
@@ -2288,7 +2261,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.9
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -2296,10 +2269,17 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.14
             signature_y_position = 0.248
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 9
+            subplot_title_fontsize=8
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.16
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 6  
+                sample_point_fontsize = 9
+                fig_x_length = 7
+                fig_y_length = 6
+                signature_fontsize=8
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/'
             signature_x_position = 0.13
@@ -2328,7 +2308,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.9
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -2336,10 +2316,17 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.14
             signature_y_position = 0.248
         if plot_category == 'rtma':
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 9
+            subplot_title_fontsize=8
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.16
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 6  
+                sample_point_fontsize = 9
+                fig_x_length = 7
+                fig_y_length = 6
+                signature_fontsize=8
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/'
             signature_x_position = 0.13
@@ -2367,7 +2354,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.9
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
@@ -2375,10 +2362,17 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             signature_x_position = 0.14
             signature_y_position = 0.248
         if plot_category == 'rtma':
-            title_fontsize = 8
-            subplot_title_fontsize=7
+            title_fontsize = 9
+            subplot_title_fontsize=8
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.24
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 6  
+                sample_point_fontsize = 9
+                fig_x_length = 7
+                fig_y_length = 4
+                signature_fontsize=8
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
