@@ -841,6 +841,57 @@ def get_gridspec_dims(state, gacc_region):
             col5 = 5
             col6 = 10
 
+        if state == 'MT' or state == 'mt':
+
+            row1 = 0
+            row2 = 7 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'KS' or state == 'ks':
+
+            row1 = 0
+            row2 = 7 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if state == 'TN' or state == 'tn':
+
+            row1 = 0
+            row2 = 9 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
 
     return row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 
 
