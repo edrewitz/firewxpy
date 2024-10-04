@@ -24,11 +24,15 @@ import cartopy.feature as cfeature
 import metpy.plots as mpplots
 import metpy.calc as mpcalc
 import numpy as np
+import pandas as pd
 import firewxpy.parsers as parsers
 import firewxpy.geometry as geometry
 import firewxpy.colormaps as colormaps
 import firewxpy.settings as settings
 import firewxpy.standard as standard
+import os
+import imageio
+import dims
 
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
@@ -37,6 +41,7 @@ from matplotlib.patheffects import withStroke
 from firewxpy.calc import scaling, unit_conversion, contouring
 from firewxpy.utilities import file_functions
 from firewxpy.data_access import NDFD_CONUS
+from metpy.units import units
 
 mpl.rcParams['font.weight'] = 'bold'
 
