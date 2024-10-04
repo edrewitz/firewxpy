@@ -13631,3 +13631,674 @@ class temperature:
         file_functions.update_images(figs, path, gif_path, 'NWS Max T Trend')
 
 
+class dry_and_windy:
+
+    def plot_dry_and_windy_forecast(low_minimum_rh_threshold=15, wind_speed_threshold=25, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', ds_ws_short=None, ds_ws_extended=None, ds_rh_short=None, ds_rh_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9, fps=1):
+
+
+        decimate = decimate
+        low_minimum_rh_threshold = low_minimum_rh_threshold
+        wind_speed_threshold = wind_speed_threshold
+        state_border_linewidth = state_border_linewidth
+        county_border_linewidth = county_border_linewidth
+        gacc_border_linewidth = gacc_border_linewidth
+        psa_border_linewidth = psa_border_linewidth
+        state_border_linestyle = state_border_linestyle
+        county_border_linestyle = county_border_linestyle
+        gacc_border_linestyle = gacc_border_linestyle
+        psa_border_linestyle = psa_border_linestyle
+        show_sample_points = show_sample_points
+        sample_point_fontsize = sample_point_fontsize
+        alpha = alpha
+
+        props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+        
+        cmap = colormaps.red_flag_warning_criteria_colormap()
+
+        local_time, utc_time = standard.plot_creation_time()
+
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+    
+        reference_system = reference_system
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
+
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
+    
+            if reference_system == 'States Only':
+                show_state_borders = True
+            if reference_system == 'States & Counties':
+                show_state_borders = True
+                show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+            if reference_system == 'GACC & PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.25
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+            if reference_system == 'NWS CWAs & NWS Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_public_zones_linewidth=0.25
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    nws_firewx_zones_linewidth=0.25
+            if reference_system == 'NWS CWAs & Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+                nws_firewx_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
+            if reference_system == 'GACC & PSA & NWS Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+                nws_public_zones_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
+            if reference_system == 'GACC & PSA & NWS CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+                cwa_border_linewidth=0.25
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    psa_border_linewidth=0.5
+            if reference_system == 'GACC & PSA & Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+                county_border_linewidth=0.25
+            if reference_system == 'GACC & Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+                if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                    county_border_linewidth=0.25
+        
+        if state != None and gacc_region == None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False, plot_type='Dry and Windy Forecast')
+    
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_state(state)
+            else:
+                decimate = decimate
+    
+        if state == None and gacc_region != None:
+            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False, plot_type='Dry and Windy Forecast')
+
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+    
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
+            else:
+                decimate = decimate
+
+        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
+    
+            fig_x_length = fig_x_length
+            fig_y_length = fig_y_length
+            signature_x_position = signature_x_position
+            signature_y_position = signature_y_position
+            western_bound = western_bound
+            eastern_bound = eastern_bound
+            southern_bound = southern_bound
+            northern_bound = northern_bound
+            state = 'Custom'
+            mpl.rcParams['xtick.labelsize'] = tick
+            mpl.rcParams['ytick.labelsize'] = tick
+            aspect=aspect
+
+            if decimate == 'default':
+                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
+            else:
+                decimate = decimate
+
+            if file_path == None:
+                directory_name = settings.check_NDFD_directory_name('us')
+            else:
+                directory_name = settings.check_NDFD_directory_name(directory_name)
+    
+        else:
+            pass
+    
+        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
+        
+        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
+
+        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
+
+        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
+
+        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
+
+        directory_name = settings.check_NDFD_directory_name(directory_name)
+    
+        if ds_ws_short == None and ds_ws_extended == None and ds_rh_short == None and ds_rh_extended == None:
+
+
+            ds_ws_short = NDFD_CONUS.download_short_term_NDFD_grids(directory_name, 'ds.wspd.bin')
+            if os.path.exists('ds.wspd.bin'):
+                os.remove('ds.wspd.bin')
+            else:
+                pass
+            ds_ws_extended = NDFD_CONUS.download_extended_NDFD_grids(directory_name, 'ds.wspd.bin')
+            if os.path.exists('ds.wspd.bin'):
+                os.remove('ds.wspd.bin')
+            else:
+                pass
+            ds_rh_short = NDFD_CONUS.download_short_term_NDFD_grids(directory_name, 'ds.rhm.bin')
+            if os.path.exists('ds.rhm.bin'):
+                os.remove('ds.rhm.bin')
+            else:
+                pass
+            ds_rh_extended = NDFD_CONUS.download_extended_NDFD_grids(directory_name, 'ds.rhm.bin')
+            if os.path.exists('ds.rhm.bin'):
+                os.remove('ds.rhm.bin')
+            else:
+                pass
+
+    
+        if ds_ws_short != None and ds_ws_extended != None and ds_rh_short != None and ds_rh_extended != None:
+    
+            ds_ws_short = ds_ws_short
+            ds_ws_extended = ds_ws_extended
+            ds_rh_short = ds_rh_short
+            ds_rh_extended = ds_rh_extended
+
+
+        valid_time_short = ds_ws_short['valid_time']
+        valid_time_short = valid_time_short.to_dataframe()
+        end_short = len(valid_time_short) - 1
+        times_short = []
+        for i in range(0, end_short):
+            v_time_short = valid_time_short['valid_time'].iloc[i][0]
+            times_short.append(v_time_short)
+        
+        valid_time_extended = ds_ws_extended['valid_time']
+        valid_time_extended = valid_time_extended.to_dataframe()
+        end_extended = len(valid_time_extended) - 1
+        times_extended = []
+        for i in range(0, end_extended):
+            v_time_extended = valid_time_extended['valid_time'].iloc[i][0]
+            times_extended.append(v_time_extended)
+
+        times_short_local = []
+        for i in times_short:
+            i = i.replace(tzinfo=from_zone)
+            i = i.astimezone(to_zone)
+            i = i.strftime('%m/%d %H:00 Local')
+            times_short_local.append(i)
+
+        times_extended_local = []
+        for i in times_extended:
+            i = i.replace(tzinfo=from_zone)
+            i = i.astimezone(to_zone)
+            i = i.strftime('%m/%d %H:00 Local')
+            times_extended_local.append(i)
+            
+        
+        ds_ws_short['si10'] = ds_ws_short['si10'] * 2.23694
+        ds_ws_extended['si10'] = ds_ws_extended['si10'] * 2.23694
+        
+        mask_short = (ds_ws_short['si10'] >= low_minimum_rh_threshold) & (ds_rh_short['r2'] <= wind_speed_threshold)
+        mask_extended = (ds_ws_extended['si10'] >= low_minimum_rh_threshold) & (ds_rh_extended['r2'] <= wind_speed_threshold)
+        
+        lat_short = ds_ws_short['latitude']
+        lon_short = ds_ws_short['longitude']
+        lat_extended = ds_ws_extended['latitude']
+        lon_extended = ds_ws_extended['longitude']
+        mask_lat_short = mask_short['latitude']
+        mask_lon_short = mask_short['longitude']
+        mask_lat_extended = mask_extended['latitude']
+        mask_lon_extended = mask_extended['longitude']
+
+        plot_type = 'NWS Dry and Windy Areas'
+
+        if state != None and gacc_region == None:
+
+            state = state.upper()
+        
+            full_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system
+            state_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state
+            type_path = 'f:Weather Data/NWS Forecasts/'+plot_type
+
+            full_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state+'/'+reference_system
+            state_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state
+            type_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type
+
+                ##########################
+                # STILL IMAGES DIRECTORY #
+                ##########################
+
+            if os.path.exists(f"Weather Data"):
+                print("Already Satisfied: Weather Data parent directory exists.")
+            else:
+                print("Weather Data parent directory does not exist.\nBuilding the directory automatically...")
+                os.mkdir(f"Weather Data")
+                print("Successfully built f:Weather Data")
+
+            if os.path.exists(f"Weather Data/NWS Forecasts"):
+                print("Already Satisfied: NWS Forecasts Directory exists.")
+
+                if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}"):
+                    print('Already Satisfied: '+type_path+ ' exists.')
+                    
+                    if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{state}"):
+                        print('Already Satisfied: '+state_path+' exists.')
+
+                        if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}"):
+                            print('Already Satisfied: '+full_path+' exists')
+
+                        else:
+                            print(full_path+' not found. Automatically building new branch to directory...')
+                            os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                            print("Successfully built new branch to directory!")                                
+
+                    else:
+                        print(state_path+' not found. Automatically building new branch to directory...')
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                        print("Successfully built new branch to directory!")
+                        
+                else:
+                    print(type_path+' not found. Automatically building new branch to directory...')
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                    print("Successfully built new branch to directory!")
+                    
+            else:
+                print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
+                
+                # Building directory for still images
+                os.mkdir(f"Weather Data/NWS Forecasts")
+                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
+                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
+                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+
+                print("Successfully built new directory!")
+
+            ########################
+            # GIF IMAGES DIRECTORY #
+            ########################
+                
+            if os.path.exists(f"Weather Data/NWS Forecasts"):
+                print("Already Satisfied: NWS Forecasts Directory exists.")
+
+                if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/"):
+                    print('Already Satisfied: NWS Forecasts GIFs Directory exists.')
+
+                    if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}"):
+                        print('Already Satisfied: '+type_path_gif+ ' exists.')
+
+                        if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}"):
+                            print('Already Satisfied: '+state_path_gif+ ' exists.')
+
+                            if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}"):
+                                print('Already Satisfied: '+full_path_gif+ ' exists.')
+                            else:
+                                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                                print("Successfully built new branch to directory!")   
+
+                        else:
+                            print(state_path_gif+' not found. Building branch to directory.')
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                            print("Successfully built new branch to directory!")                                
+
+                    else:
+                        print(type_path_gif+' not found. Building branch to directory.')
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                        print("Successfully built new branch to directory!")
+                        
+
+                else:
+                    print('NWS Forecasts GIFs Directory not found. Building directory...')
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                        
+                    
+            else:
+                print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
+                
+                # Building directory for still images
+                os.mkdir(f"Weather Data/NWS Forecasts")
+                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/")
+                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
+                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+
+                print("Successfully built new directory!")
+
+        if state == None and gacc_region != None:
+
+            gacc_region = gacc_region.upper()
+        
+            full_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+gacc_region+'/'+reference_system
+            gacc_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+gacc_region
+            type_path = 'f:Weather Data/NWS Forecasts/'+plot_type
+
+            full_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+gacc_region+'/'+reference_system
+            gacc_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+gacc_region
+            type_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type
+
+
+            ##########################
+            # STILL IMAGES DIRECTORY #
+            ##########################
+
+
+            if os.path.exists(f"Weather Data/NWS Forecasts"):
+                print("Already Satisfied: NWS Forecasts Directory exists.")
+
+                if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}"):
+                    print('Already Satisfied: '+type_path+ ' exists.')
+                    
+                    if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}"):
+                        print('Already Satisfied: '+gacc_path+' exists.')
+
+                        if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}"):
+                            print('Already Satisfied: '+full_path+' exists')
+
+                        else:
+                            print(full_path+' not found. Automatically building new branch to directory...')
+                            os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}")
+                            print("Successfully built new branch to directory!")                                
+
+                    else:
+                        print(gacc_path+' not found. Automatically building new branch to directory...')
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}")
+                        print("Successfully built new branch to directory!")
+                        
+                else:
+                    print(type_path+' not found. Automatically building new branch to directory...')
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}")
+                    print("Successfully built new branch to directory!")
+                    
+            else:
+                print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
+                
+                # Building directory for still images
+                os.mkdir(f"Weather Data/NWS Forecasts")
+                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
+                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}")
+                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}")
+
+                print("Successfully built new directory!")
+
+            ########################
+            # GIF IMAGES DIRECTORY #
+            ########################
+                
+            if os.path.exists(f"Weather Data/NWS Forecasts"):
+                print("Already Satisfied: NWS Forecasts Directory exists.")
+
+                if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/"):
+                    print('Already Satisfied: NWS Forecasts GIFs Directory exists.')
+
+                    if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}"):
+                        print('Already Satisfied: '+type_path_gif+ ' exists.')
+
+                        if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}"):
+                            print('Already Satisfied: '+gacc_path_gif+ ' exists.')
+
+                            if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}/{reference_system}"):
+                                print('Already Satisfied: '+full_path_gif+ ' exists.')
+                            else:
+                                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+                                print("Successfully built new branch to directory!")   
+
+                        else:
+                            print(gacc_path_gif+' not found. Building branch to directory.')
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+                            print("Successfully built new branch to directory!")                                
+
+                    else:
+                        print(type_path_gif+' not found. Building branch to directory.')
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+                        print("Successfully built new branch to directory!")
+                        
+
+                else:
+                    print('NWS Forecasts GIFs Directory not found. Building directory...')
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+                        
+                    
+            else:
+                print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
+                
+                # Building directory for still images
+                os.mkdir(f"Weather Data/NWS Forecasts")
+                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/")
+                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
+                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}")
+                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+
+                print("Successfully built new directory!")
+
+        short_times = []
+        for t in times_short:
+            short_times.append(t.strftime('%H:00 UTC'))
+            
+        extended_times = []
+        for t in times_extended:
+            extended_times.append(t.strftime('%H:00 UTC'))
+        
+        save_names_short = []
+        save_names_extended = []
+
+        for i in range(0, (len(times_short) - 1)):
+            name = times_short[i].strftime('%Y_%m_%d_%H')+".png"
+            save_names_short.append(name)
+        for i in range(0, (len(times_extended) - 1)):
+            name = times_extended[i].strftime('%Y_%m_%d_%H')+".png"
+            save_names_extended.append(name)
+
+        try:
+            for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}"):
+                os.remove(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{file}")
+        except Exception as e:
+            pass
+
+        row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 = dims.get_gridspec_dims(state, gacc_region)
+        
+        for i in range(0, (len(times_short) - 1)):
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+            
+            ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=8)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+        
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+            if show_cwa_borders == True:
+                ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+
+            props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+        
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+        
+            ax.set_title("National Weather Service Forecast: Dry & Windy Areas\n[Relative Humidity <= "+str(low_minimum_rh_threshold)+" (%) & Wind Speed >= "+str(wind_speed_threshold)+" (MPH)]", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax.set_title(f"Valid Time: {times_short_local[i]} ({short_times[i]})", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
+        
+            try:
+                ax.pcolormesh(mask_lon_short, mask_lat_short, mask_short[i], transform=ccrs.PlateCarree(), cmap=cmap, zorder=2, alpha=alpha)
+            except Exception as e:
+                pass   
+
+
+            if state != None and gacc_region == None:
+
+                fig.savefig(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{save_names_short[i]}", bbox_inches='tight')
+                #GIF_path = f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}"
+                plt.close(fig)
+                
+            if state == None and gacc_region != None:
+
+                fig.savefig(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/{save_names_short[i]}", bbox_inches='tight')
+                plt.close(fig)
+
+
+        for i in range(0, (len(times_extended) - 1)):
+            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+            fig.set_facecolor('aliceblue')
+            
+            ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], ccrs.PlateCarree())
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=8)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+        
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+            if show_cwa_borders == True:
+                ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+        
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+        
+            ax.set_title("National Weather Service Forecast: Dry & Windy Areas\n[Relative Humidity <= "+str(low_minimum_rh_threshold)+" (%) & Wind Speed >= "+str(wind_speed_threshold)+" (MPH)]", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax.set_title(f"Valid Time: {times_extended_local[i]} ({extended_times[i]})", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
+        
+            try:
+                ax.pcolormesh(mask_lon_short, mask_lat_short, mask_short[i], transform=ccrs.PlateCarree(), cmap=cmap, zorder=2, alpha=alpha)
+            except Exception as e:
+                pass   
+
+            if state != None and gacc_region == None:
+
+                fig.savefig(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{save_names_extended[i]}", bbox_inches='tight')
+                plt.close(fig)
+                    
+                
+            if state == None and gacc_region != None:
+
+                fig.savefig(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/{save_names_extended[i]}", bbox_inches='tight')
+                plt.close(fig)
+
+        if state != None and gacc_region == None:
+
+            GIF_path = "Weather Data/NWS Forecasts/GIFs/"+plot_type+"/"+state+"/"+reference_system+"/NWS Dry and Windy Areas.gif"               
+            with imageio.get_writer(GIF_path, fps=fps) as writer:
+                for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}"):
+                    image = imageio.v2.imread(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{file}")
+                    writer.append_data(image)
+            print("GIF Created and saved in f:"+GIF_path)
+
+        if state == None and gacc_region != None:
+           
+            GIF_path = "Weather Data/NWS Forecasts/GIFs/"+plot_type+"/"+gacc_region+"/"+reference_system+"/NWS Dry and Windy Areas.gif" 
+                        
+            with imageio.get_writer(GIF_path, fps=fps) as writer:
+                for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}"):
+                    image = imageio.v2.imread(file)
+                    writer.append_data(image)
+            print("GIF Created and saved in f:"+GIF_path)
