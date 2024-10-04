@@ -14185,7 +14185,7 @@ class dry_and_windy:
 
             props = dict(boxstyle='round', facecolor='wheat', alpha=1)
         
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NWS/NDFD\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
         
             ax.set_title("National Weather Service Forecast: Dry & Windy Areas\n[Relative Humidity <= "+str(low_minimum_rh_threshold)+" (%) & Wind Speed >= "+str(wind_speed_threshold)+" (MPH)]", fontsize=title_fontsize, fontweight='bold', loc='left')
             ax.set_title(f"Valid Time: {times_short_local[i]} ({short_times[i]})", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
@@ -14251,7 +14251,7 @@ class dry_and_windy:
             else:
                 pass
         
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NWS/NDFD\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
         
             ax.set_title("National Weather Service Forecast: Dry & Windy Areas\n[Relative Humidity <= "+str(low_minimum_rh_threshold)+" (%) & Wind Speed >= "+str(wind_speed_threshold)+" (MPH)]", fontsize=title_fontsize, fontweight='bold', loc='left')
             ax.set_title(f"Valid Time: {times_extended_local[i]} ({extended_times[i]})", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
