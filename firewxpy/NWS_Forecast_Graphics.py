@@ -14126,10 +14126,10 @@ class dry_and_windy:
         save_names_extended = []
 
         for i in times_short:
-            name = i.strftime('%Y_%m_%d_%H')+".png"
+            name = i.strftime('%Y_%m_%d_%H')+".jpg"
             save_names_short.append(name)
         for i in times_extended:
-            name = i.strftime('%Y_%m_%d_%H')+".png"
+            name = i.strftime('%Y_%m_%d_%H')+".jpg"
             save_names_extended.append(name)
 
         try:
