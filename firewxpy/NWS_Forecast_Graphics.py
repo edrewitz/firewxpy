@@ -13635,13 +13635,12 @@ class temperature:
         path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Max T Trend', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Max T Trend')
 
-
 class dry_and_windy:
 
-    def plot_dry_and_windy_forecast(low_minimum_rh_threshold=15, wind_speed_threshold=25, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', ds_ws_short=None, ds_ws_extended=None, ds_rh_short=None, ds_rh_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9, fps=1):
+
+    def plot_dry_and_windy_forecast(low_minimum_rh_threshold=15, wind_speed_threshold=25, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', ds_ws_short=None, ds_ws_extended=None, ds_rh_short=None, ds_rh_extended=None, state='us', gacc_region=None, cwa=None, aspect=30, tick=9, fps=1):
 
 
-        decimate = decimate
         low_minimum_rh_threshold = low_minimum_rh_threshold
         wind_speed_threshold = wind_speed_threshold
         state_border_linewidth = state_border_linewidth
@@ -13757,21 +13756,11 @@ class dry_and_windy:
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
     
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
         if state == None and gacc_region != None:
             directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False, plot_type='Dry and Windy Forecast')
 
             mpl.rcParams['xtick.labelsize'] = tick
             mpl.rcParams['ytick.labelsize'] = tick
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
 
         if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
     
@@ -13788,10 +13777,6 @@ class dry_and_windy:
             mpl.rcParams['ytick.labelsize'] = tick
             aspect=aspect
 
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
-            else:
-                decimate = decimate
 
             if file_path == None:
                 directory_name = settings.check_NDFD_directory_name('us')
@@ -13880,8 +13865,8 @@ class dry_and_windy:
         ds_ws_short['si10'] = ds_ws_short['si10'] * 2.23694
         ds_ws_extended['si10'] = ds_ws_extended['si10'] * 2.23694
         
-        mask_short = (ds_ws_short['si10'] >= low_minimum_rh_threshold) & (ds_rh_short['r2'] <= wind_speed_threshold)
-        mask_extended = (ds_ws_extended['si10'] >= low_minimum_rh_threshold) & (ds_rh_extended['r2'] <= wind_speed_threshold)
+        mask_short = (ds_ws_short['si10'] >= wind_speed_threshold) & (ds_rh_short['r2'] <= low_minimum_rh_threshold)
+        mask_extended = (ds_ws_extended['si10'] >= wind_speed_threshold) & (ds_rh_extended['r2'] <= low_minimum_rh_threshold)
         
         lat_short = ds_ws_short['latitude']
         lon_short = ds_ws_short['longitude']
@@ -14140,11 +14125,11 @@ class dry_and_windy:
         save_names_short = []
         save_names_extended = []
 
-        for i in range(0, (len(times_short) - 1)):
-            name = times_short[i].strftime('%Y_%m_%d_%H')+".png"
+        for i in times_short:
+            name = i.strftime('%Y_%m_%d_%H')+".png"
             save_names_short.append(name)
-        for i in range(0, (len(times_extended) - 1)):
-            name = times_extended[i].strftime('%Y_%m_%d_%H')+".png"
+        for i in times_extended:
+            name = i.strftime('%Y_%m_%d_%H')+".png"
             save_names_extended.append(name)
 
         try:
@@ -14153,7 +14138,6 @@ class dry_and_windy:
         except Exception as e:
             pass
 
-        row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 = dims.get_gridspec_dims(state, gacc_region)
         
         for i in range(0, (len(times_short) - 1)):
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
@@ -14215,7 +14199,6 @@ class dry_and_windy:
             if state != None and gacc_region == None:
 
                 fig.savefig(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{save_names_short[i]}", bbox_inches='tight')
-                #GIF_path = f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}"
                 plt.close(fig)
                 
             if state == None and gacc_region != None:
@@ -14274,7 +14257,7 @@ class dry_and_windy:
             ax.set_title(f"Valid Time: {times_extended_local[i]} ({extended_times[i]})", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
             try:
-                ax.pcolormesh(mask_lon_short, mask_lat_short, mask_short[i], transform=ccrs.PlateCarree(), cmap=cmap, zorder=2, alpha=alpha)
+                ax.pcolormesh(mask_lon_extended, mask_lat_extended, mask_extended[i], transform=ccrs.PlateCarree(), cmap=cmap, zorder=2, alpha=alpha)
             except Exception as e:
                 pass   
 
