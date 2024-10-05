@@ -25,27 +25,35 @@ class file_functions:
         path = path
         GIF_path = GIF_path
 
-        if plot_type == 'RTMA WIND GUST & METAR':
+        if plot_type == 'RTMA LOW AND HIGH RH':
+            
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA LOW AND HIGH RH.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA LOW AND HIGH RH.png")              
+
+        if plot_type == 'RTMA WIND GUST & OBS':
 
             fig = figure_list
 
-            fig = fig.savefig(path+'/RTMA WIND GUST & METAR', bbox_inches='tight')
+            fig = fig.savefig(path+'/RTMA WIND GUST & OBS.png', bbox_inches='tight')
 
-            print("Image saved to: "+path+"/RTMA WIND GUST & METAR.png")                
+            print("Image saved to: "+path+"/RTMA WIND GUST & OBS.png")                
 
-        if plot_type == 'RTMA WIND SPEED & METAR':
+        if plot_type == 'RTMA WIND SPEED & OBS':
 
             fig = figure_list
 
-            fig = fig.savefig(path+'/RTMA WIND SPEED & METAR', bbox_inches='tight')
+            fig = fig.savefig(path+'/RTMA WIND SPEED & OBS.png', bbox_inches='tight')
 
-            print("Image saved to: "+path+"/RTMA WIND SPEED & METAR.png")             
+            print("Image saved to: "+path+"/RTMA WIND SPEED & OBS.png")             
 
         if plot_type == 'RTMA DEW POINT ADVECTION':
 
             fig = figure_list
 
-            fig = fig.savefig(path+'/RTMA DEW POINT ADVECTION', bbox_inches='tight')
+            fig = fig.savefig(path+'/RTMA DEW POINT ADVECTION.png', bbox_inches='tight')
 
             print("Image saved to: "+path+"/RTMA DEW POINT ADVECTION.png")              
 
@@ -876,7 +884,7 @@ class file_functions:
                 path = f"Weather Data/SPC Outlooks/{plot_type}/{gacc_region}/{reference_system}"
                 GIF_path = f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{gacc_region}/{reference_system}"
 
-        if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON' or plot_type == 'RTMA TEMPERATURE' or plot_type == '24HR RTMA TEMPERATURE COMPARISON' or plot_type == '24HR RTMA TOTAL CLOUD COVER COMPARISON' or plot_type == 'RTMA TOTAL CLOUD COVER' or plot_type == '24HR RTMA DEW POINT COMPARISON' or plot_type == 'RTMA DEW POINT' or plot_type == 'RTMA WIND SPEED' or plot_type == '24HR RTMA WIND SPEED COMPARISON' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND BARBS' or plot_type == 'RTMA DRY & WINDY AREAS SAMPLE POINTS' or plot_type == 'RTMA DRY & WINDY AREAS WIND BARBS' or plot_type == 'RTMA DRY & WINDY AREAS WIND VECTORS' or plot_type == 'RTMA DRY & GUSTY AREAS' or plot_type == 'RTMA RH & METAR' or plot_type == 'RTMA LOW RH & METAR' or plot_type == 'RTMA FROST FREEZE' or plot_type == 'RTMA EXTREME HEAT' or plot_type == 'RTMA TEMPERATURE ADVECTION' or plot_type == 'RTMA RH ADVECTION' or plot_type == 'RTMA DEW POINT ADVECTION' or plot_type == 'RTMA WIND GUST & METAR' or plot_type == 'RTMA WIND SPEED & METAR':
+        if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON' or plot_type == 'RTMA TEMPERATURE' or plot_type == '24HR RTMA TEMPERATURE COMPARISON' or plot_type == '24HR RTMA TOTAL CLOUD COVER COMPARISON' or plot_type == 'RTMA TOTAL CLOUD COVER' or plot_type == '24HR RTMA DEW POINT COMPARISON' or plot_type == 'RTMA DEW POINT' or plot_type == 'RTMA WIND SPEED' or plot_type == '24HR RTMA WIND SPEED COMPARISON' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND BARBS' or plot_type == 'RTMA DRY & WINDY AREAS SAMPLE POINTS' or plot_type == 'RTMA DRY & WINDY AREAS WIND BARBS' or plot_type == 'RTMA DRY & WINDY AREAS WIND VECTORS' or plot_type == 'RTMA DRY & GUSTY AREAS' or plot_type == 'RTMA RH & METAR' or plot_type == 'RTMA LOW RH & METAR' or plot_type == 'RTMA FROST FREEZE' or plot_type == 'RTMA EXTREME HEAT' or plot_type == 'RTMA TEMPERATURE ADVECTION' or plot_type == 'RTMA RH ADVECTION' or plot_type == 'RTMA DEW POINT ADVECTION' or plot_type == 'RTMA WIND GUST & OBS' or plot_type == 'RTMA WIND SPEED & OBS' or plot_type == 'RTMA LOW AND HIGH RH':
 
             if state != None and gacc_region == None:
 
