@@ -1,3 +1,7 @@
+
+<img width="120" alt="firewxpy logo" src="https://github.com/user-attachments/assets/27d7353c-89ae-4827-a1fb-0d64d80599ad">
+
+
 # FireWxPy
 
 Thank you for checking out FireWxPy! A user friendly Python package to create visualizations of data specific to fire weather and fire weather forecasting. 
