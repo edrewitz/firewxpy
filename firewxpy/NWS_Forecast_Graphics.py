@@ -13638,7 +13638,7 @@ class temperature:
 class dry_and_windy:
 
 
-    def plot_dry_and_windy_forecast(low_minimum_rh_threshold=15, wind_speed_threshold=25, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=1, directory_name='CONUS', ds_ws_short=None, ds_ws_extended=None, ds_rh_short=None, ds_rh_extended=None, state='us', gacc_region=None, cwa=None, aspect=30, tick=9, fps=1):
+        def plot_dry_and_windy_forecast(low_minimum_rh_threshold=15, wind_speed_threshold=25, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=1, directory_name='CONUS', ds_ws_short=None, ds_rh_short=None, state='us', gacc_region=None, cwa=None, aspect=30, tick=9, fps=1):
 
 
         low_minimum_rh_threshold = low_minimum_rh_threshold
@@ -13798,15 +13798,10 @@ class dry_and_windy:
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
     
-        if ds_ws_short == None and ds_ws_extended == None and ds_rh_short == None and ds_rh_extended == None:
+        if ds_ws_short == None and ds_rh_short == None:
 
 
             ds_ws_short = NDFD_CONUS.download_short_term_NDFD_grids(directory_name, 'ds.wspd.bin')
-            if os.path.exists('ds.wspd.bin'):
-                os.remove('ds.wspd.bin')
-            else:
-                pass
-            ds_ws_extended = NDFD_CONUS.download_extended_NDFD_grids(directory_name, 'ds.wspd.bin')
             if os.path.exists('ds.wspd.bin'):
                 os.remove('ds.wspd.bin')
             else:
@@ -13816,20 +13811,12 @@ class dry_and_windy:
                 os.remove('ds.rhm.bin')
             else:
                 pass
-            ds_rh_extended = NDFD_CONUS.download_extended_NDFD_grids(directory_name, 'ds.rhm.bin')
-            if os.path.exists('ds.rhm.bin'):
-                os.remove('ds.rhm.bin')
-            else:
-                pass
 
     
-        if ds_ws_short != None and ds_ws_extended != None and ds_rh_short != None and ds_rh_extended != None:
+        if ds_ws_short != None and ds_rh_short != None:
     
             ds_ws_short = ds_ws_short
-            ds_ws_extended = ds_ws_extended
             ds_rh_short = ds_rh_short
-            ds_rh_extended = ds_rh_extended
-
 
         valid_time_short = ds_ws_short['valid_time']
         valid_time_short = valid_time_short.to_dataframe()
@@ -13838,14 +13825,6 @@ class dry_and_windy:
         for i in range(0, end_short):
             v_time_short = valid_time_short['valid_time'].iloc[i][0]
             times_short.append(v_time_short)
-        
-        valid_time_extended = ds_ws_extended['valid_time']
-        valid_time_extended = valid_time_extended.to_dataframe()
-        end_extended = len(valid_time_extended) - 1
-        times_extended = []
-        for i in range(0, end_extended):
-            v_time_extended = valid_time_extended['valid_time'].iloc[i][0]
-            times_extended.append(v_time_extended)
 
         times_short_local = []
         for i in times_short:
@@ -13853,29 +13832,16 @@ class dry_and_windy:
             i = i.astimezone(to_zone)
             i = i.strftime('%m/%d %H:00 Local')
             times_short_local.append(i)
-
-        times_extended_local = []
-        for i in times_extended:
-            i = i.replace(tzinfo=from_zone)
-            i = i.astimezone(to_zone)
-            i = i.strftime('%m/%d %H:00 Local')
-            times_extended_local.append(i)
             
         
         ds_ws_short['si10'] = ds_ws_short['si10'] * 2.23694
-        ds_ws_extended['si10'] = ds_ws_extended['si10'] * 2.23694
         
         mask_short = (ds_ws_short['si10'] >= wind_speed_threshold) & (ds_rh_short['r2'] <= low_minimum_rh_threshold)
-        mask_extended = (ds_ws_extended['si10'] >= wind_speed_threshold) & (ds_rh_extended['r2'] <= low_minimum_rh_threshold)
         
         lat_short = ds_ws_short['latitude']
         lon_short = ds_ws_short['longitude']
-        lat_extended = ds_ws_extended['latitude']
-        lon_extended = ds_ws_extended['longitude']
         mask_lat_short = mask_short['latitude']
         mask_lon_short = mask_short['longitude']
-        mask_lat_extended = mask_extended['latitude']
-        mask_lon_extended = mask_extended['longitude']
 
         plot_type = 'NWS Dry and Windy Areas'
 
@@ -14117,21 +14083,13 @@ class dry_and_windy:
         short_times = []
         for t in times_short:
             short_times.append(t.strftime('%H:00 UTC'))
-            
-        extended_times = []
-        for t in times_extended:
-            extended_times.append(t.strftime('%H:00 UTC'))
         
         save_names_short = []
-        save_names_extended = []
 
         for i in times_short:
             name = i.strftime('%Y_%m_%d_%H')+".jpg"
             save_names_short.append(name)
-        for i in times_extended:
-            name = i.strftime('%Y_%m_%d_%H')+".jpg"
-            save_names_extended.append(name)
-
+            
         try:
             for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}"):
                 os.remove(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{file}")
@@ -14206,71 +14164,6 @@ class dry_and_windy:
                 fig.savefig(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/{save_names_short[i]}", bbox_inches='tight')
                 plt.close(fig)
 
-
-        for i in range(0, (len(times_extended) - 1)):
-            fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-            fig.set_facecolor('aliceblue')
-            
-            ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
-            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], ccrs.PlateCarree())
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=8)
-            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
-            if show_rivers == True:
-                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-            else:
-                pass
-        
-            if show_gacc_borders == True:
-                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-            else:
-                pass
-            if show_psa_borders == True:
-                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_county_borders == True:
-                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_state_borders == True:
-                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-            else:
-                pass
-            if show_cwa_borders == True:
-                ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_firewx_zones == True:
-                ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_public_zones == True:
-                ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-            else:
-                pass
-        
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NWS/NDFD\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
-        
-            ax.set_title("National Weather Service Forecast: Dry & Windy Areas\n[Relative Humidity <= "+str(low_minimum_rh_threshold)+" (%) & Wind Speed >= "+str(wind_speed_threshold)+" (MPH)]", fontsize=title_fontsize, fontweight='bold', loc='left')
-            ax.set_title(f"Valid Time: {times_extended_local[i]} ({extended_times[i]})", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
-        
-            try:
-                ax.pcolormesh(mask_lon_extended, mask_lat_extended, mask_extended[i], transform=ccrs.PlateCarree(), cmap=cmap, zorder=2, alpha=alpha)
-            except Exception as e:
-                pass   
-
-            if state != None and gacc_region == None:
-
-                fig.savefig(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{save_names_extended[i]}", bbox_inches='tight')
-                plt.close(fig)
-                    
-                
-            if state == None and gacc_region != None:
-
-                fig.savefig(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/{save_names_extended[i]}", bbox_inches='tight')
-                plt.close(fig)
 
         if state != None and gacc_region == None:
 
