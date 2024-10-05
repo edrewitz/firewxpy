@@ -971,3 +971,90 @@ def get_colorbar_label_coords(state, plot_type):
             y = 0.195
 
     return x1, x2, x3, y
+
+def get_colorbar_coords(state, gacc_region):
+
+    if state != None and gacc_region == None:
+
+        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+
+            x1, x2, y, x_size, fontsize = 0.18, 0.55, 0.25, 0.3, 12
+
+        if state == 'CA' or state == 'ca':
+
+            x1, x2, y, x_size, fontsize = 0.19, 0.54, 0.05, 0.3, 12
+
+        if state == 'ME' or state == 'me':
+
+            x1, x2, y, x_size, fontsize = 0.19, 0.54, 0.05, 0.3, 12
+
+        if state == 'NH' or state == 'nh':
+
+            x1, x2, y, x_size, fontsize = 0.25, 0.53, 0.05, 0.25, 12
+
+        if state == 'VT' or state == 'vt':
+
+            x1, x2, y, x_size, fontsize = 0.25, 0.53, 0.05, 0.25, 12
+
+        if state == 'MA' or state == 'ma':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.15, 0.35, 12
+
+        if state == 'RI' or state == 'ri':
+
+            x1, x2, y, x_size, fontsize = 0.2, 0.55, 0.05, 0.27, 12
+
+        if state == 'CT' or state == 'ct':
+
+            x1, x2, y, x_size, fontsize = 0.18, 0.55, 0.05, 0.3, 12
+
+        if state == 'NJ' or state == 'nj':
+
+            x1, x2, y, x_size, fontsize = 0.29, 0.58, 0.05, 0.15, 7
+
+        if state == 'DE' or state == 'de':
+
+            x1, x2, y, x_size, fontsize = 0.29, 0.58, 0.05, 0.15, 7
+
+        if state == 'NY' or state == 'ny':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.15, 0.35, 12
+
+        if state == 'PA' or state == 'pa':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.2, 0.35, 12
+
+        if state == 'OH' or state == 'oh':
+
+            x1, x2, y, x_size, fontsize = 0.19, 0.54, 0.05, 0.31, 12
+
+        if state == 'MI' or state == 'mi':
+
+            x1, x2, y, x_size, fontsize = 0.19, 0.54, 0.05, 0.33, 12
+
+        if state == 'MN' or state == 'mn':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.15, 0.33, 12
+
+        if state == 'WI' or state == 'wi':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.54, 0.05, 0.36, 12
+
+        if state == 'IA' or state == 'ia':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.2, 0.35, 12
+
+        if state == 'IN' or state == 'in':
+
+            x1, x2, y, x_size, fontsize = 0.29, 0.53, 0.05, 0.2, 7
+
+        if state == 'MO' or state == 'mo':
+
+            x1, x2, y, x_size, fontsize = 0.14, 0.54, 0.12, 0.36, 12
+
+        if state == 'IL' or state == 'il':
+
+            x1, x2, y, x_size, fontsize = 0.31, 0.53, 0.05, 0.2, 7
+
+    return x1, x2, y, x_size, fontsize
+        
