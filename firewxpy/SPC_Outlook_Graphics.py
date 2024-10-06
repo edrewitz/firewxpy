@@ -25,6 +25,7 @@ import firewxpy.geometry as geometry
 import firewxpy.colormaps as colormaps
 import firewxpy.standard as standard
 import firewxpy.settings as settings
+import firewxpy.dims as dims
 
 from metpy.plots import USCOUNTIES
 from metpy.plots import colortables
@@ -236,7 +237,7 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
 
-    x1, x2, x3, y = settings.get_colorbar_label_coords(state, 'critical fire')
+    x1, x2, x3, y = dims.get_colorbar_label_coords(state, 'critical fire')
 
     if reference_system == 'Custom' or reference_system == 'custom':
         show_state_borders = show_state_borders
@@ -946,7 +947,7 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
 
-    x1, x2, x3, y = settings.get_colorbar_label_coords(state, 'dry lightning')
+    x1, x2, x3, y = dims.get_colorbar_label_coords(state, 'dry lightning')
 
     if reference_system == 'Custom' or reference_system == 'custom':
         show_state_borders = show_state_borders
