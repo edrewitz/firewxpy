@@ -1056,5 +1056,121 @@ def get_colorbar_coords(state, gacc_region):
 
             x1, x2, y, x_size, fontsize = 0.31, 0.53, 0.05, 0.2, 7
 
+        if state == 'ND' or state == 'nd':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.2, 0.35, 12
+
+        if state == 'SD' or state == 'sd':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.2, 0.35, 12
+
+        if state == 'NE' or state == 'ne':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.24, 0.35, 12
+
+        if state == 'MD' or state == 'md':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.24, 0.35, 12
+
+        if state == 'VA' or state == 'va':
+
+            x1, x2, y, x_size, fontsize = 0.14, 0.55, 0.24, 0.35, 12
+
+        if state == 'SC' or state == 'sc':
+
+            x1, x2, y, x_size, fontsize = 0.14, 0.54, 0.12, 0.36, 12
+
+        if state == 'KY' or state == 'ky':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.24, 0.35, 12
+
+        if state == 'WV' or state == 'wv':
+
+            x1, x2, y, x_size, fontsize = 0.12, 0.52, 0.05, 0.36, 12
+
+        if state == 'NC' or state == 'nc':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.24, 0.35, 12
+
+        if state == 'NV' or state == 'nv':
+
+            x1, x2, y, x_size, fontsize = 0.25, 0.53, 0.05, 0.25, 12
+
+        if state == 'FL' or state == 'fl':
+
+            x1, x2, y, x_size, fontsize = 0.14, 0.54, 0.07, 0.36, 12
+
+        if state == 'OR' or state == 'or':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.2, 0.35, 12
+
+        if state == 'WA' or state == 'wa':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.2, 0.35, 12
+
+        if state == 'ID' or state == 'id':
+
+            x1, x2, y, x_size, fontsize = 0.26, 0.52, 0.05, 0.23, 12
+
+        if state == 'GA' or state == 'ga':
+
+            x1, x2, y, x_size, fontsize = 0.25, 0.53, 0.07, 0.25, 12
+
+        if state == 'AL' or state == 'al':
+
+            x1, x2, y, x_size, fontsize = 0.28, 0.54, 0.07, 0.2, 12
+
+        if state == 'MS' or state == 'ms':
+
+            x1, x2, y, x_size, fontsize = 0.29, 0.53, 0.07, 0.18, 12
+
+        if state == 'LA' or state == 'la':
+
+            x1, x2, y, x_size, fontsize = 0.16, 0.53, 0.07, 0.33, 12
+
+        if state == 'AR' or state == 'ar':
+
+            x1, x2, y, x_size, fontsize = 0.16, 0.53, 0.07, 0.34, 12
+
+        if state == 'TX' or state == 'tx':
+
+            x1, x2, y, x_size, fontsize = 0.16, 0.53, 0.07, 0.34, 12
+
+        if state == 'OK' or state == 'ok':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.25, 0.35, 12
+
+        if state == 'NM' or state == 'nm':
+
+            x1, x2, y, x_size, fontsize = 0.22, 0.53, 0.07, 0.25, 12
+
+        if state == 'AZ' or state == 'az':
+
+            x1, x2, y, x_size, fontsize = 0.22, 0.53, 0.07, 0.25, 12
+
+        if state == 'UT' or state == 'ut':
+
+            x1, x2, y, x_size, fontsize = 0.24, 0.53, 0.07, 0.26, 12
+
+        if state == 'CO' or state == 'co':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.15, 0.35, 12
+
+        if state == 'WY' or state == 'wy':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.15, 0.35, 12
+
+        if state == 'MT' or state == 'mt':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.24, 0.35, 12
+
+        if state == 'KS' or state == 'ks':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.24, 0.35, 12
+
+        if state == 'TN' or state == 'tn':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.33, 0.35, 12
+
     return x1, x2, y, x_size, fontsize
         
