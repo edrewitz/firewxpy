@@ -6636,7 +6636,7 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
 
     x_loc, y_loc = dims.get_label_coords(state, gacc_region)
     
-    leg = ax.legend(loc=(x_loc, y_loc), framealpha=1)
+    leg = ax.legend(loc=(x_loc, y_loc), framealpha=1, fontsize='x-small')
     leg.set_zorder(12)
 
     fname = '24HR RTMA WIND SPEED & DIRECTION COMPARISON'+ file_name_end
