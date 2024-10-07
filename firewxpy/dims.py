@@ -25,25 +25,238 @@ def get_label_coords(state, gacc_region):
 
         if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
 
-            x_coord = 0.85
-            y_coord = 0.9
+            x_coord = 0.91
+            y_coord = 0.92
 
         if state == 'CA' or state == 'ca':
 
             x_coord = 0.73
             y_coord = 0.92
 
+        if state == 'ME' or state == 'me':
 
+            x_coord = 0.77
+            y_coord = 0.93
+
+        if state == 'NH' or state == 'nh':
+
+            x_coord = 0.77
+            y_coord = 0.94
+
+        if state == 'VT' or state == 'vt':
+
+            x_coord = 0.77
+            y_coord = 0.02
+
+        if state == 'MA' or state == 'ma':
+
+            x_coord = 0.83
+            y_coord = 0.9
+
+        if state == 'RI' or state == 'ri':
+
+            x_coord = 0.78
+            y_coord = 0.93
+
+        if state == 'CT' or state == 'ct':
+
+            x_coord = 0.78
+            y_coord = 0.02
+
+        if state == 'NJ' or state == 'nj':
+
+            x_coord = 0.73
+            y_coord = 0.95
+
+        if state == 'PA' or state == 'pa':
+
+            x_coord = 0.85
+            y_coord = 0.92
+
+        if state == 'OH' or state == 'oh':
+
+            x_coord = 0.82
+            y_coord = 0.02
+
+        if state == 'MI' or state == 'mi':
+
+            x_coord = 0.82
+            y_coord = 0.94
+
+        if state == 'MN' or state == 'mn':
+
+            x_coord = 0.85
+            y_coord = 0.93
+
+        if state == 'WI' or state == 'wi':
+
+            x_coord = 0.85
+            y_coord = 0.94
+
+        if state == 'IA' or state == 'ia':
+
+            x_coord = 0.88
+            y_coord = 0.92
+
+        if state == 'IN' or state == 'in':
+
+            x_coord = 0.75
+            y_coord = 0.02
+
+        if state == 'MO' or state == 'mo':
+
+            x_coord = 0.88
+            y_coord = 0.94
+
+        if state == 'IL' or state == 'il':
+
+            x_coord = 0.01
+            y_coord = 0.93
 
         if state == 'NY' or state == 'ny':
 
-            x_coord = 0.845
-            y_coord = 0.9
+            x_coord = 0.87
+            y_coord = 0.93
 
         if state == 'FL' or state == 'fl':
 
+            x_coord = 0.86
+            y_coord = 0.94
+
+        if state == 'ND' or state == 'nd':
+
+            x_coord = 0.88
+            y_coord = 0.02
+
+        if state == 'SD' or state == 'sd':
+
+            x_coord = 0.88
+            y_coord = 0.02
+
+        if state == 'NE' or state == 'ne':
+
+            x_coord = 0.87
+            y_coord = 0.92
+
+        if state == 'MD' or state == 'md':
+
+            x_coord = 0.87
+            y_coord = 0.92
+
+        if state == 'VA' or state == 'va':
+
+            x_coord = 0.87
+            y_coord = 0.92
+
+        if state == 'SC' or state == 'sc':
+
+            x_coord = 0.86
+            y_coord = 0.94
+
+        if state == 'KY' or state == 'ky':
+
+            x_coord = 0.87
+            y_coord = 0.92
+
+        if state == 'WV' or state == 'wv':
+
+            x_coord = 0.86
+            y_coord = 0.94
+
+        if state == 'NC' or state == 'nc':
+
+            x_coord = 0.87
+            y_coord = 0.93
+
+        if state == 'NV' or state == 'nv':
+
+            x_coord = 0.01
+            y_coord = 0.15
+
+        if state == 'OR' or state == 'or':
+
+            x_coord = 0.86
+            y_coord = 0.94
+
+        if state == 'WA' or state == 'wa':
+
+            x_coord = 0.88
+            y_coord = 0.02
+
+        if state == 'ID' or state == 'id':
+
+            x_coord = 0.8
+            y_coord = 0.94
+
+        if state == 'GA' or state == 'ga':
+
             x_coord = 0.81
-            y_coord = 0.9
+            y_coord = 0.94
+
+        if state == 'AL' or state == 'al':
+
+            x_coord = 0.75
+            y_coord = 0.02
+
+        if state == 'MS' or state == 'ms':
+
+            x_coord = 0.01
+            y_coord = 0.94
+
+        if state == 'LA' or state == 'la':
+
+            x_coord = 0.83
+            y_coord = 0.94
+
+        if state == 'TX' or state == 'tx':
+
+            x_coord = 0.01
+            y_coord = 0.94
+
+        if state == 'OK' or state == 'ok':
+
+            x_coord = 0.01
+            y_coord = 0.18
+
+        if state == 'NM' or state == 'nm':
+
+            x_coord = 0.82
+            y_coord = 0.02
+
+        if state == 'AZ' or state == 'az':
+
+            x_coord = 0.82
+            y_coord = 0.02
+
+        if state == 'UT' or state == 'ut':
+
+            x_coord = 0.82
+            y_coord = 0.94
+
+        if state == 'CO' or state == 'co':
+
+            x_coord = 0.85
+            y_coord = 0.02
+
+        if state == 'WY' or state == 'wy':
+
+            x_coord = 0.85
+            y_coord = 0.02
+
+        if state == 'MT' or state == 'mt':
+
+            x_coord = 0.85
+            y_coord = 0.02
+
+        if state == 'KS' or state == 'ks':
+
+            x_coord = 0.85
+            y_coord = 0.02
+
+        if state == 'TN' or state == 'tn':
+
+            x_coord = 0.85
+            y_coord = 0.02
 
     if state == None and gacc_region != None:
 
@@ -963,6 +1176,20 @@ def get_colorbar_label_coords(state, plot_type):
             x2 = 0.46
             x3 = 0.64
             y = 0.207
+
+        if plot_type == 'dry lightning':
+            x1 = 0.325
+            x2 = 0.585
+            x3 = None
+            y = 0.195
+
+    if state == 'MA' or state == 'ma':
+
+        if plot_type == 'critical fire':
+            x1 = 0.2
+            x2 = 0.465
+            x3 = 0.72
+            y = 0.18
 
         if plot_type == 'dry lightning':
             x1 = 0.325
