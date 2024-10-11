@@ -212,7 +212,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         colorbar_fontsize=12
         title_fontsize = 8
         subplot_title_fontsize=7
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.67
         aspect=30
         tick=6
@@ -259,7 +259,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         title_fontsize = 7
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.5
         aspect=30
         tick=6
@@ -290,8 +290,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
             signature_y_position = 0.26
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 7
+            subplot_title_fontsize=6
 
     if state == 'VT' or state == 'vt':
         western_bound = -73.50
@@ -307,7 +307,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         title_fontsize = 8
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.6
         aspect=30
         tick=6
@@ -338,8 +338,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
             signature_y_position = 0.26
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 7
+            subplot_title_fontsize=6
 
     if state == 'MA' or state == 'ma':
         western_bound = -73.55
@@ -401,7 +401,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         title_fontsize = 8
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.75
         aspect=30
         tick=6
@@ -432,8 +432,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.25
             signature_y_position = 0.25
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 10
+            subplot_title_fontsize=8
 
     if state == 'CT' or state == 'ct':
         western_bound = -73.74
@@ -449,7 +449,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         title_fontsize = 8
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.8
         y_loc = 1 
         x_loc = 0.5
@@ -483,8 +483,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.23
             signature_y_position = 0.25
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 10
+            subplot_title_fontsize=8
 
     if state == 'NJ' or state == 'nj':
         western_bound = -75.60
@@ -500,7 +500,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         title_fontsize = 5
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 10
         color_table_shrink = 0.45
         aspect=30
         tick=6
@@ -532,8 +532,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
             signature_y_position = 0.25
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 7
+            subplot_title_fontsize=6
 
     if state == 'DE' or state == 'de':
         western_bound = -76
@@ -549,7 +549,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         title_fontsize = 6
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 10
         color_table_shrink = 0.5
         aspect=30
         tick=6
@@ -581,8 +581,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.34
             signature_y_position = 0.25
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 7
+            subplot_title_fontsize=6
 
     if state == 'NY' or state == 'ny':
         western_bound = -79.85
@@ -598,7 +598,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 16
         aspect=30
         tick=9
         if gridspec == True:
@@ -645,7 +645,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 16
         aspect=30
         tick=9
         if gridspec == True:
@@ -694,7 +694,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.6
         aspect=30
         tick=9
@@ -748,7 +748,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.7
         aspect=30
         tick=9
@@ -799,7 +799,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         title_fontsize = 8
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 1
         aspect=30
         tick=7
@@ -849,7 +849,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.8
         aspect=30
         tick=9
@@ -901,7 +901,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 16
         aspect=30
         tick=9
         if gridspec == True:
@@ -953,7 +953,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         title_fontsize = 8
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.5
         aspect=30
         tick=6
@@ -985,8 +985,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/'
             signature_x_position = 0.28
             signature_y_position = 0.25
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 7
+            subplot_title_fontsize=6
 
     if state == 'MO' or state == 'mo':
         western_bound = -95.9
@@ -1002,7 +1002,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 17
         aspect=30
         tick=9
         if gridspec == True:
@@ -1054,7 +1054,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         title_fontsize = 7
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.45
         aspect=30
         tick=6
@@ -1086,8 +1086,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.31
             signature_y_position = 0.25
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 7
+            subplot_title_fontsize=6
 
     if state == 'ND' or state == 'nd':
         western_bound = -104.2
@@ -1103,7 +1103,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -1153,7 +1153,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -1204,7 +1204,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -1255,7 +1255,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -1287,8 +1287,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.14
             signature_y_position = 0.248
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 8
+            subplot_title_fontsize=7
            
 
     if state == 'VA' or state == 'va':
@@ -1305,7 +1305,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -1356,7 +1356,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.8
         aspect=30
         tick=9
@@ -1410,7 +1410,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -1460,7 +1460,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.8
         aspect=30
         tick=9
@@ -1512,7 +1512,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -1561,7 +1561,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=9
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.6
         aspect=30
         tick=7
@@ -1593,8 +1593,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.29
             signature_y_position = 0.248
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 8
+            subplot_title_fontsize=7
 
     if state == 'FL' or state == 'fl':
         western_bound = -87.71
@@ -1611,7 +1611,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         sample_point_fontsize=10
         colorbar_fontsize=12
         color_table_shrink = 0.8
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -1661,7 +1661,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -1712,7 +1712,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -1763,7 +1763,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=8
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.55
         aspect=30
         tick=7
@@ -1797,8 +1797,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
             signature_x_position = 0.31
             signature_y_position = 0.248
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 8
+            subplot_title_fontsize=7
         
 
     if state == 'GA' or state == 'ga':
@@ -1816,7 +1816,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         sample_point_fontsize=10
         color_table_shrink = 0.8
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         color_table_shrink = 0.6
         tick=8
@@ -1848,8 +1848,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.21
             signature_y_position = 0.248
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 8
+            subplot_title_fontsize=7
           
 
     if state == 'AL' or state == 'al':
@@ -1866,7 +1866,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=8
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.5
         aspect=30
         tick=6
@@ -1898,8 +1898,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.34
             signature_y_position = 0.248
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 7
+            subplot_title_fontsize=6
         
 
     if state == 'MS' or state == 'ms':
@@ -1916,7 +1916,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=8
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.5
         aspect=30
         tick=6
@@ -1950,8 +1950,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/'
             signature_x_position = 0.34
             signature_y_position = 0.248
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 7
+            subplot_title_fontsize=6
         
 
     if state == 'LA' or state == 'la':
@@ -1968,7 +1968,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.8
         aspect=30
         tick=9
@@ -2023,7 +2023,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.8
         aspect=30
         tick=9
@@ -2078,7 +2078,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.8
         aspect=30
         tick=9
@@ -2133,7 +2133,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=8
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -2185,7 +2185,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         sample_point_fontsize=10
         colorbar_fontsize=12
         color_table_shrink = 0.65
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -2218,8 +2218,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.285
             signature_y_position = 0.248
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 8
+            subplot_title_fontsize=7
         
 
     if state == 'AZ' or state == 'az':
@@ -2236,7 +2236,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=8
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.65
         aspect=30
         tick=9
@@ -2271,8 +2271,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
             signature_x_position = 0.26
             signature_y_position = 0.248
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 8
+            subplot_title_fontsize=7
         
 
     if state == 'UT' or state == 'ut':
@@ -2289,7 +2289,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.6
         aspect=30
         tick=7
@@ -2322,8 +2322,8 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
             signature_x_position = 0.29
             signature_y_position = 0.248
-            title_fontsize = 14
-            subplot_title_fontsize=12
+            title_fontsize = 8
+            subplot_title_fontsize=7
         
 
     if state == 'CO' or state == 'co':
@@ -2340,7 +2340,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -2393,7 +2393,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -2446,7 +2446,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -2498,7 +2498,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -2549,7 +2549,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -2621,7 +2621,7 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 30
+        legend_fontsize = 12
         color_table_shrink = 0.8
         aspect=30
         tick=9
