@@ -296,6 +296,11 @@ class relative_humidity:
         directory_name = directory_name
         state = state
 
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
+
         thresh = poor_overnight_recovery_rh_threshold + 1
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -1221,6 +1226,11 @@ class relative_humidity:
         to_zone = tz.tzlocal()
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
+
         levels = np.arange(excellent_overnight_recovery_rh_threshold, 101, 1)
         if excellent_overnight_recovery_rh_threshold < 80:
             labels = levels[::2]
@@ -2119,6 +2129,11 @@ class relative_humidity:
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
         cmap = colormaps.relative_humidity_colormap()
+
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
         
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -3021,6 +3036,11 @@ class relative_humidity:
         to_zone = tz.tzlocal()
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
+
         levels = np.arange(-50, 51, 1)
         labels = levels[::4]
 
@@ -3878,6 +3898,11 @@ class relative_humidity:
 
         levels = np.arange(0, thresh, 1)
         labels = levels
+
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
     
         cmap = colormaps.low_relative_humidity_colormap()
         reference_system = reference_system
@@ -5230,6 +5255,11 @@ class relative_humidity:
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree()
 
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
+
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
 
@@ -6573,6 +6603,11 @@ class relative_humidity:
         datacrs = ccrs.PlateCarree()
 
         cmap = colormaps.relative_humidity_change_colormap()
+
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
         
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -7511,6 +7546,11 @@ class temperature:
         state = state
         gacc_region = gacc_region
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
     
         temp_scale_cool = np.arange(temp_scale_cool_start, temp_scale_cool_stop_corrected, temp_scale_step)
     
@@ -8524,6 +8564,11 @@ class temperature:
         ds = data_array
 
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
     
         temp_scale_cool = np.arange(temp_scale_cool_start, temp_scale_cool_stop_corrected, temp_scale_step)
     
@@ -9513,6 +9558,11 @@ class temperature:
         gacc_region = gacc_region
 
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
     
         cmap = colormaps.cool_temperatures_colormap()
         
@@ -10469,6 +10519,11 @@ class temperature:
         cmap = colormaps.temperature_colormap()
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
+
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
     
         temp_scale_cool = np.arange(temp_scale_cool_start, temp_scale_cool_stop_corrected, temp_scale_step)
     
@@ -10841,7 +10896,7 @@ class temperature:
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
-        ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
+        ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
         ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
@@ -11392,6 +11447,11 @@ class temperature:
         alpha = alpha
 
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
     
         cmap = colormaps.temperature_colormap()
         from_zone = tz.tzutc()
@@ -12285,6 +12345,11 @@ class temperature:
 
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
+
         levels = np.arange(-25, 26, 1)
         labels = levels[::2]
     
@@ -13076,6 +13141,11 @@ class temperature:
 
         levels = np.arange(-25, 26, 1)
         labels = levels[::2]
+
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
     
         cmap = colormaps.temperature_change_colormap()
         
@@ -13656,6 +13726,11 @@ class dry_and_windy:
         alpha = alpha
 
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
         
         cmap = colormaps.red_flag_warning_criteria_colormap()
 
@@ -14096,6 +14171,12 @@ class dry_and_windy:
         except Exception as e:
             pass
 
+        try:
+            for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}"):
+                os.remove(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/{file}")
+        except Exception as e:
+            pass
+
         
         for i in range(0, (len(times_short) - 1)):
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
@@ -14180,7 +14261,7 @@ class dry_and_windy:
                         
             with imageio.get_writer(GIF_path, fps=fps) as writer:
                 for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}"):
-                    image = imageio.v2.imread(file)
+                    image = imageio.v2.imread(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/{file}")
                     writer.append_data(image)
             print("GIF Created and saved in f:"+GIF_path)
     
@@ -14207,6 +14288,11 @@ class dry_and_windy:
         cmap = colormaps.red_flag_warning_criteria_colormap()
 
         local_time, utc_time = standard.plot_creation_time()
+
+        if gacc_region != None:
+            state = None
+        else:
+            state = state
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -14727,6 +14813,6 @@ class dry_and_windy:
                         
             with imageio.get_writer(GIF_path, fps=fps) as writer:
                 for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}"):
-                    image = imageio.v2.imread(file)
+                    image = imageio.v2.imread(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/{file}")
                     writer.append_data(image)
             print("GIF Created and saved in f:"+GIF_path)
