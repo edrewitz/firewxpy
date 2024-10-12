@@ -14729,6 +14729,12 @@ class dry_and_windy:
         except Exception as e:
             pass
 
+        try:
+            for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}"):
+                os.remove(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/{file}")
+        except Exception as e:
+            pass
+
         
         for i in range(0, (len(times_short) - 1)):
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
