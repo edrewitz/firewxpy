@@ -95,6 +95,11 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
     state = state
     gacc_region = gacc_region
 
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
+
     reference_system = reference_system
 
     if sample_point_fontsize != 8:
@@ -459,6 +464,11 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=15, high_rh_threshold=8
     time = time
     state = state
     gacc_region = gacc_region
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     reference_system = reference_system
 
@@ -866,6 +876,11 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
     state = state
     gacc_region = gacc_region
 
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
+
     if sample_point_fontsize != 8:
         sp_font_default = False
         sp_fontsize = sample_point_fontsize
@@ -972,7 +987,7 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
 
 
     if state == None and gacc_region != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'rtma', False)
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'rtma', False, '24 Hour RH Comparison')
 
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
@@ -1261,6 +1276,11 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
     time = time
     state = state
     gacc_region = gacc_region
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     reference_system = reference_system
     mapcrs = ccrs.PlateCarree()
@@ -1614,6 +1634,11 @@ def plot_temperature_advection(western_bound=None, eastern_bound=None, southern_
     time = time
     state = state
     gacc_region = gacc_region
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     reference_system = reference_system
     mapcrs = ccrs.PlateCarree()
@@ -1973,6 +1998,11 @@ def plot_dew_point_advection(western_bound=None, eastern_bound=None, southern_bo
     state = state
     gacc_region = gacc_region
 
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
+
     reference_system = reference_system
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
@@ -2329,6 +2359,11 @@ def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, sou
     time = time
     state = state
     gacc_region = gacc_region
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     reference_system = reference_system
     mapcrs = ccrs.PlateCarree()
@@ -2694,6 +2729,11 @@ def plot_frost_freeze(western_bound=None, eastern_bound=None, southern_bound=Non
     state = state
     gacc_region = gacc_region
 
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
+
     reference_system = reference_system
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
@@ -3038,6 +3078,11 @@ def plot_extreme_heat(temperature_threshold=100, western_bound=None, eastern_bou
     time = time
     state = state
     gacc_region = gacc_region
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     reference_system = reference_system
     mapcrs = ccrs.PlateCarree()
@@ -3385,6 +3430,11 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
     time_24 = time_24
     state = state
     gacc_region = gacc_region
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     if sample_point_fontsize != 8:
         sp_font_default = False
@@ -3760,6 +3810,11 @@ def plot_dew_point(western_bound=None, eastern_bound=None, southern_bound=None, 
     state = state
     gacc_region = gacc_region
 
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
+
     reference_system = reference_system
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
@@ -4111,6 +4166,11 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
     time_24 = time_24
     state = state
     gacc_region = gacc_region
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     if sample_point_fontsize != 8:
         sp_font_default = False
@@ -4486,6 +4546,11 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
     state = state
     gacc_region = gacc_region
 
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
+
     reference_system = reference_system
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
@@ -4829,6 +4894,11 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
     time_24 = time_24
     state = state
     gacc_region = gacc_region
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     if sample_point_fontsize != 8:
         sp_font_default = False
@@ -5199,6 +5269,11 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
     state = state
     gacc_region = gacc_region
 
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
+
     reference_system = reference_system
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
@@ -5545,6 +5620,11 @@ def plot_24_hour_wind_speed_comparison(western_bound=None, eastern_bound=None, s
     time_24 = time_24
     state = state
     gacc_region = gacc_region
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     if sample_point_fontsize != 8:
         sp_font_default = False
@@ -5921,6 +6001,11 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
     state = state
     gacc_region = gacc_region
 
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
+
     if barbs_or_quivers == 'barbs' or barbs_or_quivers == 'Barbs' or barbs_or_quivers == 'BARBS' or barbs_or_quivers == 'B' or barbs_or_quivers == 'b':
 
         barbs = True
@@ -6290,6 +6375,11 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
     time_24 = time_24
     state = state
     gacc_region = gacc_region
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
 
     if barbs_or_quivers == 'barbs' or barbs_or_quivers == 'Barbs' or barbs_or_quivers == 'BARBS' or barbs_or_quivers == 'B' or barbs_or_quivers == 'b':
@@ -6717,6 +6807,11 @@ def plot_dry_and_windy_areas(low_rh_threshold=15, high_wind_threshold=25, wester
     reference_system = reference_system
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     if sample_point_fontsize != 8:
         sp_font_default = False
@@ -7271,6 +7366,11 @@ def plot_dry_and_gusty_areas(low_rh_threshold=15, high_wind_threshold=25, wester
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
 
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
+
     if sample_point_fontsize != 8:
         sp_font_default = False
         sp_fontsize = sample_point_fontsize
@@ -7774,6 +7874,11 @@ def plot_relative_humidity_with_metar_obs(western_bound=None, eastern_bound=None
     data = data
     local_time, utc_time = standard.plot_creation_time()
 
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
+
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
     contourf = np.arange(0, 101, 1)
@@ -8112,6 +8217,11 @@ def plot_low_relative_humidity_with_metar_obs(low_rh_threshold=15, western_bound
     
     data = data
     local_time, utc_time = standard.plot_creation_time()
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
@@ -8459,6 +8569,11 @@ def plot_wind_speed_with_observed_winds(western_bound=None, eastern_bound=None, 
     
     data = data
     local_time, utc_time = standard.plot_creation_time()
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
@@ -8829,6 +8944,11 @@ def plot_wind_gust_with_observed_winds(western_bound=None, eastern_bound=None, s
     
     data = data
     local_time, utc_time = standard.plot_creation_time()
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
