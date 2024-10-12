@@ -79,7 +79,7 @@ def red_flag_warning_wind_parameter_colormap():
     return red_flag_warning_wind_parameter_colormap
 
 def red_flag_warning_criteria_colormap():
-    red_flag_warning_criteria_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("red flag warning", ["white", "red"])
+    red_flag_warning_criteria_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("red flag warning", ["beige", "red"])
     return red_flag_warning_criteria_colormap
 
 def cool_temperatures_colormap():
