@@ -227,6 +227,11 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
 
     local_time, utc_time = standard.plot_creation_time()
     grid_time_interval = 24
+
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
     
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
@@ -237,7 +242,7 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
 
-    x1, x2, x3, y = dims.get_colorbar_label_coords(state, 'critical fire')
+    x1, x2, x3, y = dims.get_colorbar_label_coords(state, gacc_region, 'critical fire')
 
     if reference_system == 'Custom' or reference_system == 'custom':
         show_state_borders = show_state_borders
@@ -929,6 +934,10 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
         Return: A list of figures for each forecast day. 
     '''
 
+    if gacc_region != None:
+        state = None
+    else:
+        state = state
 
     local_time, utc_time = standard.plot_creation_time()
     grid_time_interval = 24
@@ -947,7 +956,7 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
 
-    x1, x2, x3, y = dims.get_colorbar_label_coords(state, 'dry lightning')
+    x1, x2, x3, y = dims.get_colorbar_label_coords(state, gacc_region, 'dry lightning')
 
     if reference_system == 'Custom' or reference_system == 'custom':
         show_state_borders = show_state_borders
