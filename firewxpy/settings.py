@@ -11,37 +11,6 @@ This file hosts all the functions that return the settings for each plot for eac
 
 import cartopy.crs as ccrs
 
-def get_metar_mask(state=None, gacc_region=None, rtma_ws=False):
-
-    if rtma_ws == False:
-        if state != None and gacc_region == None:
-            
-            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-                mask = 250000
-            if state == 'CA' or state == 'ca':
-                mask = 80000
-            if state == 'FL' or state == 'fl':
-                mask = 60000
-
-    if rtma_ws == True:
-        if state != None and gacc_region == None:
-            
-            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-                mask = 100000
-            if state == 'CA' or state == 'ca':
-                mask = 300
-            if state == 'FL' or state == 'fl':
-                mask = 300
-            if state == 'GA' or state == 'ga':
-                mask = 300
-            if state == 'TN' or state == 'tn':
-                mask = 300
-            if state == 'KY' or state == 'ky':
-                mask = 300    
-
-    return mask
-
-
 def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
 
     state = state
@@ -239,6 +208,9 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
                 title_fontsize = 6
                 subplot_title_fontsize = 6  
                 sample_point_fontsize = 9
+            if plot_type == 'RTMA Wind Speed & Observed Wind Speed':
+                title_fontsize = 6
+                subplot_title_fontsize = 6                 
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.26
@@ -286,6 +258,12 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
                 title_fontsize = 5
                 subplot_title_fontsize = 5  
                 sample_point_fontsize = 9
+            if plot_type == 'Low RH & METAR' or plot_type == 'RH & METAR':
+                title_fontsize = 6
+                subplot_title_fontsize=5 
+            if plot_type == 'RTMA Wind Speed & Observed Wind Speed':
+                title_fontsize = 6
+                subplot_title_fontsize=6                 
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
@@ -334,6 +312,9 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
                 title_fontsize = 6
                 subplot_title_fontsize = 5  
                 sample_point_fontsize = 9
+            if plot_type == 'Low RH & METAR':
+                title_fontsize = 6
+                subplot_title_fontsize=6  
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.35
@@ -428,6 +409,9 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
                 title_fontsize = 6
                 subplot_title_fontsize = 5  
                 sample_point_fontsize = 9
+            if plot_type == 'Low RH & METAR':
+                title_fontsize = 6
+                subplot_title_fontsize=6  
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.25
@@ -577,6 +561,9 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
                 subplot_title_fontsize = 4  
                 sample_point_fontsize = 9
                 fig_x_length = 9
+            if plot_type == 'Low RH & METAR' or plot_type == 'RH & METAR':
+                title_fontsize = 5
+                subplot_title_fontsize = 5
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/'
             signature_x_position = 0.34
@@ -645,7 +632,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         signature_fontsize=10
         sample_point_fontsize=10
         colorbar_fontsize=12
-        legend_fontsize = 16
+        legend_fontsize = 12
         aspect=30
         tick=9
         if gridspec == True:
@@ -981,6 +968,9 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
                 title_fontsize = 6
                 subplot_title_fontsize = 5  
                 sample_point_fontsize = 9
+            if plot_type == 'RH & METAR':
+                title_fontsize = 6
+                subplot_title_fontsize = 6                
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/'
             signature_x_position = 0.28
@@ -1082,6 +1072,9 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
                 subplot_title_fontsize = 5  
                 sample_point_fontsize = 9
                 fig_y_length = 7
+            if plot_type == 'RH & METAR':
+                title_fontsize = 6
+                subplot_title_fontsize=5                
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.31
@@ -2588,7 +2581,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
     return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick
     
 
-def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec):
+def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec, plot_type=None):
 
     gacc_region = gacc_region
     gridspec = gridspec
@@ -2614,7 +2607,7 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec):
         northern_bound = 39.06
         fig_x_length = 12
         fig_y_length = 10
-        signature_x_position = 0.10
+        signature_x_position = 0.1
         signature_y_position = 0.05
         subplot_title_fontsize=9
         title_fontsize = 11
@@ -2633,6 +2626,137 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec):
             sample_point_fontsize=12
         if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
+            signature_x_position = 0.195
+            signature_y_position = 0.25
+            if plot_type == 'Dry and Windy Forecast' or plot_type == 'Dry and Gusty Forecast':
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+                signature_x_position = 0.01
+                signature_y_position = 0.1
+                subplot_title_fontsize=8
+                title_fontsize = 9
+        if plot_category == 'rtma':
+            title_fontsize = 7
+            subplot_title_fontsize=6
+            signature_x_position = 0.01
+            signature_y_position = 0.12
+        if plot_category == 'spc':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
+            signature_x_position = 0.195
+            signature_y_position = 0.25
+            title_fontsize = 14
+            subplot_title_fontsize=12
+
+    if gacc_region == 'ONCC' or gacc_region == 'oncc' or gacc_region == 'NOPS' or gacc_region == 'nops':
+        western_bound = -124.8
+        eastern_bound = -119.1
+        southern_bound = 35.9
+        northern_bound = 42.15
+        fig_x_length = 12
+        fig_y_length = 10
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=8
+        title_fontsize = 9
+        signature_fontsize=6
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 12
+        color_table_shrink = 0.6
+        aspect=30
+        tick=9
+        if gridspec == True:
+            fig_x_length = 10
+            fig_y_length = 7
+            color_table_shrink = 0.65
+            colorbar_fontsize = 8
+            sample_point_fontsize=12
+        if plot_category == 'nws':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.28
+            signature_y_position = 0.248
+        if plot_category == 'rtma':
+            title_fontsize = 7
+            subplot_title_fontsize=6
+            signature_x_position = 0.01
+            signature_y_position = 0.12
+        if plot_category == 'spc':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.28
+            signature_y_position = 0.248
+            title_fontsize = 9
+            subplot_title_fontsize=8
+
+    if gacc_region == 'GBCC' or gacc_region == 'gbcc' or gacc_region == 'GB' or gacc_region == 'gb':
+        western_bound = -120.5
+        eastern_bound = -107.47
+        southern_bound = 33
+        northern_bound = 46.4
+        fig_x_length = 12
+        fig_y_length = 10
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=9
+        title_fontsize = 11
+        signature_fontsize=10
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 12
+        color_table_shrink = 0.6
+        aspect=30
+        tick=9
+        if gridspec == True:
+            fig_x_length = 10
+            fig_y_length = 7
+            color_table_shrink = 0.65
+            colorbar_fontsize = 8
+            sample_point_fontsize=12
+        if plot_category == 'nws':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.26
+            signature_y_position = 0.248
+            if plot_type == 'Dry and Windy Forecast' or plot_type == 'Dry and Gusty Forecast':
+                signature_x_position = 0.01
+                signature_y_position = 0.1
+                subplot_title_fontsize=8
+                title_fontsize = 9
+        if plot_category == 'rtma':
+            title_fontsize = 7
+            subplot_title_fontsize=6
+            signature_x_position = 0.01
+            signature_y_position = 0.12
+        if plot_category == 'spc':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.26
+            signature_y_position = 0.248
+            title_fontsize = 10
+            subplot_title_fontsize=9
+
+    if gacc_region == 'NRCC' or gacc_region == 'nrcc' or gacc_region == 'NR' or gacc_region == 'nr':
+        western_bound = -117.7
+        eastern_bound = -96
+        southern_bound = 41.5
+        northern_bound = 50
+        fig_y_length = 7
+        fig_x_length = 12
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=9
+        title_fontsize = 11
+        signature_fontsize=10
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 12
+        color_table_shrink = 0.8
+        aspect=30
+        tick=9
+        if gridspec == True:
+            fig_x_length = 10
+            fig_y_length = 7
+            color_table_shrink = 0.65
+            colorbar_fontsize = 8
+            sample_point_fontsize=12
+        if plot_category == 'nws':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.25
             signature_y_position = 0.248
         if plot_category == 'rtma':
@@ -2641,96 +2765,210 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec):
             signature_x_position = 0.01
             signature_y_position = 0.12
         if plot_category == 'spc':
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
             signature_y_position = 0.245
             title_fontsize = 14
             subplot_title_fontsize=12
 
-    if gacc_region == 'ONCC' or gacc_region == 'oncc' or gacc_region == 'NOPS' or gacc_region == 'nops':
-        if ndfd_grids == True:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
-        western_bound = -124.8
-        eastern_bound = -119.1
-        southern_bound = 35.9
-        northern_bound = 42.15
-        signature_x_position = 0.23
-        signature_y_position = 0.255
-
-    if gacc_region == 'GBCC' or gacc_region == 'gbcc' or gacc_region == 'GB' or gacc_region == 'gb':
-        if ndfd_grids == True:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
-        western_bound = -120.5
-        eastern_bound = -107.47
-        southern_bound = 33
-        northern_bound = 46.4
-        signature_x_position = 0.21
-        signature_y_position = 0.255
-
-    if gacc_region == 'NRCC' or gacc_region == 'nrcc' or gacc_region == 'NR' or gacc_region == 'nr':
-        if ndfd_grids == True:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
-        western_bound = -117.7
-        eastern_bound = -96
-        southern_bound = 41.5
-        northern_bound = 50
-        fig_y_length = 7
-        signature_x_position = 0.14
-        signature_y_position = 0.255
-
     if gacc_region == 'RMCC' or gacc_region == 'rmcc' or gacc_region == 'RM' or gacc_region == 'rm':
-        if ndfd_grids == True:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -111.3
         eastern_bound = -94.2
         southern_bound = 35.2
         northern_bound = 46.8
+        fig_x_length = 12
         fig_y_length = 10
-        signature_x_position = 0.15
-        signature_y_position = 0.255
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=9
+        title_fontsize = 11
+        signature_fontsize=10
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 12
+        color_table_shrink = 0.8
+        aspect=30
+        tick=9
+        if gridspec == True:
+            fig_x_length = 10
+            fig_y_length = 7
+            color_table_shrink = 0.65
+            colorbar_fontsize = 8
+            sample_point_fontsize=12
+        if plot_category == 'nws':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.25
+            signature_y_position = 0.248
+        if plot_category == 'rtma':
+            title_fontsize = 7
+            subplot_title_fontsize=6
+            signature_x_position = 0.01
+            signature_y_position = 0.12
+        if plot_category == 'spc':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.13
+            signature_y_position = 0.245
+            title_fontsize = 14
+            subplot_title_fontsize=12
 
     if gacc_region == 'SWCC' or gacc_region == 'swcc' or gacc_region == 'SW' or gacc_region == 'sw':
-        if ndfd_grids == True:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -114.89
         eastern_bound = -101.7
         southern_bound = 30.2
         northern_bound = 38
-        fig_y_length = 9
-        signature_x_position = 0.15
-        signature_y_position = 0.255
+        fig_x_length = 12
+        fig_y_length = 10
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=9
+        title_fontsize = 11
+        signature_fontsize=10
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 12
+        color_table_shrink = 0.8
+        aspect=30
+        tick=9
+        if gridspec == True:
+            fig_x_length = 10
+            fig_y_length = 7
+            color_table_shrink = 0.65
+            colorbar_fontsize = 8
+            sample_point_fontsize=12
+        if plot_category == 'nws':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.25
+            signature_y_position = 0.248
+        if plot_category == 'rtma':
+            title_fontsize = 7
+            subplot_title_fontsize=6
+            signature_x_position = 0.01
+            signature_y_position = 0.12
+        if plot_category == 'spc':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.13
+            signature_y_position = 0.245
+            title_fontsize = 14
+            subplot_title_fontsize=12
 
     if gacc_region == 'SACC' or gacc_region == 'sacc' or gacc_region == 'SE' or gacc_region == 'se':
-        if ndfd_grids == True:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -106.88
         eastern_bound = -74.7
         southern_bound = 23.5
         northern_bound = 39.65
+        fig_x_length = 12
         fig_y_length = 8
-        signature_x_position = 0.15
-        signature_y_position = 0.255
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=9
+        title_fontsize = 11
+        signature_fontsize=10
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 12
+        color_table_shrink = 0.8
+        aspect=30
+        tick=9
+        if gridspec == True:
+            fig_x_length = 10
+            fig_y_length = 7
+            color_table_shrink = 0.65
+            colorbar_fontsize = 8
+            sample_point_fontsize=12
+        if plot_category == 'nws':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.25
+            signature_y_position = 0.248
+        if plot_category == 'rtma':
+            title_fontsize = 7
+            subplot_title_fontsize=6
+            signature_x_position = 0.01
+            signature_y_position = 0.12
+        if plot_category == 'spc':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.13
+            signature_y_position = 0.245
+            title_fontsize = 14
+            subplot_title_fontsize=12
 
     if gacc_region == 'EACC' or gacc_region == 'eacc' or gacc_region == 'E' or gacc_region == 'e':
-        if ndfd_grids == True:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
         western_bound = -97.35
         eastern_bound = -66.18
         southern_bound = 33.5
         northern_bound = 49.65
+        fig_x_length = 12
         fig_y_length = 8
-        signature_x_position = 0.15
-        signature_y_position = 0.255
-
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=9
+        title_fontsize = 11
+        signature_fontsize=10
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 12
+        color_table_shrink = 0.8
+        aspect=30
+        tick=9
+        if gridspec == True:
+            fig_x_length = 10
+            fig_y_length = 7
+            color_table_shrink = 0.65
+            colorbar_fontsize = 8
+            sample_point_fontsize=12
+        if plot_category == 'nws':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.25
+            signature_y_position = 0.248
+        if plot_category == 'rtma':
+            title_fontsize = 7
+            subplot_title_fontsize=6
+            signature_x_position = 0.01
+            signature_y_position = 0.12
+        if plot_category == 'spc':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            signature_x_position = 0.13
+            signature_y_position = 0.245
+            title_fontsize = 14
+            subplot_title_fontsize=12
     if gacc_region == 'PNW' or gacc_region == 'pnw' or gacc_region == 'NWCC' or gacc_region == 'nwcc' or gacc_region == 'NW' or gacc_region == 'nw':
-        if ndfd_grids == True:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
         western_bound = -125
         eastern_bound = -116.25
         southern_bound = 41
         northern_bound = 49.1
-        signature_x_position = 0.17
-        signature_y_position = 0.255
+        fig_x_length = 12
+        fig_y_length = 10
+        signature_x_position = 0.10
+        signature_y_position = 0.05
+        subplot_title_fontsize=9
+        title_fontsize = 11
+        signature_fontsize=10
+        sample_point_fontsize=10
+        colorbar_fontsize=12
+        legend_fontsize = 12
+        color_table_shrink = 0.8
+        aspect=30
+        tick=9
+        if gridspec == True:
+            fig_x_length = 10
+            fig_y_length = 7
+            color_table_shrink = 0.65
+            colorbar_fontsize = 8
+            sample_point_fontsize=12
+        if plot_category == 'nws':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
+            signature_x_position = 0.25
+            signature_y_position = 0.248
+        if plot_category == 'rtma':
+            title_fontsize = 7
+            subplot_title_fontsize=6
+            signature_x_position = 0.01
+            signature_y_position = 0.12
+        if plot_category == 'spc':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
+            signature_x_position = 0.13
+            signature_y_position = 0.245
+            title_fontsize = 14
+            subplot_title_fontsize=12
 
 
     return directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick
