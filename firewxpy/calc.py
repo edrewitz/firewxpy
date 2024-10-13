@@ -256,6 +256,144 @@ class scaling:
 
             if state == 'KY' or state == 'ky':
                 decimate = 300
+
+            if state == 'ME' or state == 'me':
+                decimate = 300
+
+            if state == 'NH' or state == 'nh':
+                decimate = 300
+
+            if state == 'VT' or state == 'vt':
+                decimate = 300
+
+            if state == 'MA' or state == 'ma':
+                decimate = 300
+
+            if state == 'RI' or state == 'ri':
+                decimate = 300
+
+            if state == 'CT' or state == 'ct':
+                decimate = 300
+
+            if state == 'NJ' or state == 'nj':
+                decimate = 300
+
+            if state == 'DE' or state == 'de':
+                decimate = 300
+
+            if state == 'PA' or state == 'pa':
+                decimate = 300
+
+            if state == 'OH' or state == 'oh':
+                decimate = 300
+
+            if state == 'MI' or state == 'mi':
+                decimate = 300
+
+            if state == 'MN' or state == 'mn':
+                decimate = 300
+
+            if state == 'WI' or state == 'wi':
+                decimate = 300
+
+            if state == 'IA' or state == 'ia':
+                decimate = 300
+
+            if state == 'IN' or state == 'in':
+                decimate = 300
+
+            if state == 'MO' or state == 'mo':
+                decimate = 300
+
+            if state == 'IL' or state == 'il':
+                decimate = 300
+
+            if state == 'ND' or state == 'nd':
+                decimate = 300
+
+            if state == 'SD' or state == 'sd':
+                decimate = 300
+
+            if state == 'NE' or state == 'ne':
+                decimate = 300
+
+            if state == 'MD' or state == 'md':
+                decimate = 300
+
+            if state == 'VA' or state == 'va':
+                decimate = 300
+
+            if state == 'SC' or state == 'sc':
+                decimate = 300
+
+            if state == 'KY' or state == 'ky':
+                decimate = 300
+
+            if state == 'WV' or state == 'wv':
+                decimate = 300
+
+            if state == 'NC' or state == 'nc':
+                decimate = 300
+
+            if state == 'NV' or state == 'nv':
+                decimate = 300
+
+            if state == 'FL' or state == 'fl':
+                decimate = 300
+
+            if state == 'OR' or state == 'or':
+                decimate = 300
+
+            if state == 'WA' or state == 'wa':
+                decimate = 300 
+                
+            if state == 'ID' or state == 'id':
+                decimate = 300
+                
+            if state == 'GA' or state == 'ga':
+                decimate = 300
+                
+            if state == 'AL' or state == 'al':
+                decimate = 300
+                
+            if state == 'MS' or state == 'ms':
+                decimate = 300
+                
+            if state == 'LA' or state == 'la':
+                decimate = 300
+                
+            if state == 'AR' or state == 'ar':
+                decimate = 300
+                
+            if state == 'TX' or state == 'tx':
+                decimate = 300
+                
+            if state == 'OK' or state == 'ok':
+                decimate = 300
+                
+            if state == 'NM' or state == 'nm':
+                decimate = 300
+                
+            if state == 'AZ' or state == 'az':
+                decimate = 300
+                
+            if state == 'UT' or state == 'ut':
+                decimate = 300
+                
+            if state == 'CO' or state == 'co':
+                decimate = 300
+                
+            if state == 'WY' or state == 'wy':
+                decimate = 300
+                
+            if state == 'MT' or state == 'mt':
+                decimate = 300
+                
+            if state == 'KS' or state == 'ks':
+                decimate = 300
+                
+            if state == 'TN' or state == 'tn':
+                decimate = 300
         
         return decimate
             
