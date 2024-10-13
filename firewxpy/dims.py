@@ -1,4 +1,219 @@
 
+def get_metar_mask(state, gacc_region, rtma_ws=False):
+
+    if rtma_ws == False:
+        if state != None and gacc_region == None:
+            
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                mask = 250000
+            if state == 'CA' or state == 'ca':
+                mask = 80000
+            if state == 'FL' or state == 'fl':
+                mask = 60000
+            if state == 'ME' or state == 'me':
+                mask = 30000
+            if state == 'NH' or state == 'nh':
+                mask = 30000
+            if state == 'VT' or state == 'vt':
+                mask = 30000
+            if state == 'MA' or state == 'ma':
+                mask = 30000
+            if state == 'RI' or state == 'ri':
+                mask = 30000
+            if state == 'NY' or state == 'ny':
+                mask = 30000
+            if state == 'CT' or state == 'ct':
+                mask = 30000
+            if state == 'NJ' or state == 'nj':
+                mask = 30000
+            if state == 'DE' or state == 'de':
+                mask = 30000
+            if state == 'PA' or state == 'pa':
+                mask = 30000
+            if state == 'OH' or state == 'oh':
+                mask = 30000
+            if state == 'MI' or state == 'mi':
+                mask = 50000
+            if state == 'MN' or state == 'mn':
+                mask = 50000
+            if state == 'WI' or state == 'wi':
+                mask = 30000
+            if state == 'IA' or state == 'ia':
+                mask = 30000
+            if state == 'IN' or state == 'in':
+                mask = 30000
+            if state == 'MO' or state == 'mo':
+                mask = 30000
+            if state == 'IL' or state == 'il':
+                mask = 30000
+            if state == 'ND' or state == 'nd':
+                mask = 30000
+            if state == 'SD' or state == 'sd':
+                mask = 30000
+            if state == 'NE' or state == 'ne':
+                mask = 30000
+            if state == 'MD' or state == 'md':
+                mask = 30000
+            if state == 'VA' or state == 'va':
+                mask = 30000
+            if state == 'SC' or state == 'sc':
+                mask = 30000
+            if state == 'KY' or state == 'ky':
+                mask = 30000
+            if state == 'WV' or state == 'wv':
+                mask = 30000
+            if state == 'NC' or state == 'nc':
+                mask = 40000
+            if state == 'NV' or state == 'nv':
+                mask = 30000
+            if state == 'FL' or state == 'fl':
+                mask = 30000
+            if state == 'OR' or state == 'or':
+                mask = 30000
+            if state == 'WA' or state == 'wa':
+                mask = 30000 
+            if state == 'ID' or state == 'id':
+                mask = 30000
+            if state == 'GA' or state == 'ga':
+                mask = 30000
+            if state == 'AL' or state == 'al':
+                mask = 30000
+            if state == 'MS' or state == 'ms':
+                mask = 30000
+            if state == 'LA' or state == 'la':
+                mask = 30000
+            if state == 'AR' or state == 'ar':
+                mask = 30000
+            if state == 'TX' or state == 'tx':
+                mask = 70000
+            if state == 'OK' or state == 'ok':
+                mask = 30000 
+            if state == 'NM' or state == 'nm':
+                mask = 30000
+            if state == 'AZ' or state == 'az':
+                mask = 30000 
+            if state == 'UT' or state == 'ut':
+                mask = 30000 
+            if state == 'CO' or state == 'co':
+                mask = 30000
+            if state == 'WY' or state == 'wy':
+                mask = 30000 
+            if state == 'MT' or state == 'mt':
+                mask = 30000
+            if state == 'KS' or state == 'ks':
+                mask = 30000 
+            if state == 'TN' or state == 'tn':
+                mask = 30000
+
+    if rtma_ws == True:
+        if state != None and gacc_region == None:
+            
+            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+                mask = 100000
+            if state == 'CA' or state == 'ca':
+                mask = 300
+            if state == 'FL' or state == 'fl':
+                mask = 300
+            if state == 'GA' or state == 'ga':
+                mask = 300
+            if state == 'TN' or state == 'tn':
+                mask = 300
+            if state == 'KY' or state == 'ky':
+                mask = 300    
+            if state == 'ME' or state == 'me':
+                mask = 10    
+            if state == 'NH' or state == 'nh':
+                mask = 10    
+            if state == 'VT' or state == 'vt':
+                mask = 10    
+            if state == 'MA' or state == 'ma':
+                mask = 10  
+            if state == 'RI' or state == 'ri':
+                mask = 10  
+            if state == 'CT' or state == 'ct':
+                mask = 10  
+            if state == 'NJ' or state == 'nj':
+                mask = 10  
+            if state == 'DE' or state == 'de':
+                mask = 10  
+            if state == 'PA' or state == 'pa':
+                mask = 10  
+            if state == 'OH' or state == 'oh':
+                mask = 10  
+            if state == 'MI' or state == 'mi':
+                mask = 10  
+            if state == 'MN' or state == 'mn':
+                mask = 10  
+            if state == 'WI' or state == 'wi':
+                mask = 10  
+            if state == 'IA' or state == 'ia':
+                mask = 10  
+            if state == 'IN' or state == 'in':
+                mask = 10 
+            if state == 'MO' or state == 'mo':
+                mask = 10  
+            if state == 'IL' or state == 'il':
+                mask = 10  
+            if state == 'ND' or state == 'nd':
+                mask = 10 
+            if state == 'SD' or state == 'sd':
+                mask = 10 
+            if state == 'NE' or state == 'ne':
+                mask = 10 
+            if state == 'MD' or state == 'md':
+                mask = 10 
+            if state == 'VA' or state == 'va':
+                mask = 10 
+            if state == 'SC' or state == 'sc':
+                mask = 10 
+            if state == 'KY' or state == 'ky':
+                mask = 10 
+            if state == 'WV' or state == 'wv':
+                mask = 10 
+            if state == 'NV' or state == 'nv':
+                mask = 10 
+            if state == 'NC' or state == 'nc':
+                mask = 10 
+            if state == 'FL' or state == 'fl':
+                mask = 10 
+            if state == 'OR' or state == 'or':
+                mask = 10 
+            if state == 'WA' or state == 'wa':
+                mask = 10 
+            if state == 'ID' or state == 'id':
+                mask = 10 
+            if state == 'GA' or state == 'ga':
+                mask = 10 
+            if state == 'AL' or state == 'al':
+                mask = 10 
+            if state == 'MS' or state == 'ms':
+                mask = 10 
+            if state == 'LA' or state == 'la':
+                mask = 10 
+            if state == 'AR' or state == 'ar':
+                mask = 10 
+            if state == 'TX' or state == 'tx':
+                mask = 10 
+            if state == 'OK' or state == 'ok':
+                mask = 10 
+            if state == 'NM' or state == 'nm':
+                mask = 10 
+            if state == 'AZ' or state == 'az':
+                mask = 10 
+            if state == 'UT' or state == 'ut':
+                mask = 10 
+            if state == 'CO' or state == 'co':
+                mask = 10 
+            if state == 'WY' or state == 'wy':
+                mask = 10 
+            if state == 'MT' or state == 'mt':
+                mask = 10 
+            if state == 'KS' or state == 'ks':
+                mask = 10 
+            if state == 'TN' or state == 'tn':
+                mask = 10 
+
+    return mask
 
 def get_quiver_dims(state, gacc_region):
 
@@ -1109,695 +1324,742 @@ def get_gridspec_dims(state, gacc_region):
     return row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 
 
 
-def get_colorbar_label_coords(state, plot_type):
+def get_colorbar_label_coords(state, gacc_region, plot_type):
 
     state = state 
-    plot_type
-
-    if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.25
-            x2 = 0.65
-            x3 = None
-            y = 0.195
-
-    if state == 'CA' or state == 'ca':
-
-        if plot_type == 'critical fire':
-            x1 = 0.278
-            x2 = 0.46
-            x3 = 0.64
-            y = 0.207
-
-        if plot_type == 'dry lightning':
-            x1 = 0.325
-            x2 = 0.585
-            x3 = None
-            y = 0.205
-
-    if state == 'ME' or state == 'me':
-
-        if plot_type == 'critical fire':
-            x1 = 0.278
-            x2 = 0.46
-            x3 = 0.64
-            y = 0.207
-
-        if plot_type == 'dry lightning':
-            x1 = 0.33
-            x2 = 0.585
-            x3 = None
-            y = 0.205
-
-    if state == 'NH' or state == 'nh':
-
-        if plot_type == 'critical fire':
-            x1 = 0.278
-            x2 = 0.46
-            x3 = 0.64
-            y = 0.207
-
-        if plot_type == 'dry lightning':
-            x1 = 0.355
-            x2 = 0.56
-            x3 = None
-            y = 0.21
-
-    if state == 'VT' or state == 'vt':
-
-        if plot_type == 'critical fire':
-            x1 = 0.278
-            x2 = 0.46
-            x3 = 0.64
-            y = 0.207
-
-        if plot_type == 'dry lightning':
-            x1 = 0.34
-            x2 = 0.56
-            x3 = None
-            y = 0.205
-
-    if state == 'MA' or state == 'ma':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.18
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.63
-            x3 = None
-            y = 0.185
-
-    if state == 'RI' or state == 'ri':
-
-        if plot_type == 'critical fire':
-            x1 = 0.26
-            x2 = 0.465
-            x3 = 0.66
-            y = 0.205
-
-        if plot_type == 'dry lightning':
-            x1 = 0.325
-            x2 = 0.59
-            x3 = None
-            y = 0.205
-
-    if state == 'CT' or state == 'ct':
-
-        if plot_type == 'critical fire':
-            x1 = 0.25
-            x2 = 0.465
-            x3 = 0.67
-            y = 0.19
-
-        if plot_type == 'dry lightning':
-            x1 = 0.32
-            x2 = 0.59
-            x3 = None
-            y = 0.1925
-
-    if state == 'NJ' or state == 'nj':
-
-        if plot_type == 'critical fire':
-            x1 = 0.36
-            x2 = 0.48
-            x3 = 0.59
-            y = 0.21
-
-        if plot_type == 'dry lightning':
-            x1 = 0.38
-            x2 = 0.555
-            x3 = None
-            y = 0.211
-
-    if state == 'DE' or state == 'de':
-
-        if plot_type == 'critical fire':
-            x1 = 0.34
-            x2 = 0.48
-            x3 = 0.605
-            y = 0.21
-
-        if plot_type == 'dry lightning':
-            x1 = 0.37
-            x2 = 0.56
-            x3 = None
-            y = 0.21
-
-    if state == 'NY' or state == 'ny':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'PA' or state == 'pa':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'OH' or state == 'oh':
-
-        if plot_type == 'critical fire':
-            x1 = 0.32
-            x2 = 0.475
-            x3 = 0.625
-            y = 0.205
-
-        if plot_type == 'dry lightning':
-            x1 = 0.35
-            x2 = 0.585
-            x3 = None
-            y = 0.205
-
-    if state == 'MI' or state == 'mi':
-
-        if plot_type == 'critical fire':
-            x1 = 0.285
-            x2 = 0.47
-            x3 = 0.66
-            y = 0.205
-
-        if plot_type == 'dry lightning':
-            x1 = 0.35
-            x2 = 0.585
-            x3 = None
-            y = 0.205
-
-    if state == 'MN' or state == 'mn':
-
-        if plot_type == 'critical fire':
-            x1 = 0.21
-            x2 = 0.47
-            x3 = 0.715
-            y = 0.2
-            
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.2
-
-    if state == 'WI' or state == 'wi':
-
-        if plot_type == 'critical fire':
-            x1 = 0.27
-            x2 = 0.47
-            x3 = 0.68
-            y = 0.2
-            
-        if plot_type == 'dry lightning':
-            x1 = 0.32
-            x2 = 0.61
-            x3 = None
-            y = 0.2
-
-    if state == 'IA' or state == 'ia':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'IN' or state == 'in':
-
-        if plot_type == 'critical fire':
-            x1 = 0.345
-            x2 = 0.48
-            x3 = 0.595
-            y = 0.21
-
-        if plot_type == 'dry lightning':
-            x1 = 0.36
-            x2 = 0.55
-            x3 = None
-            y = 0.21
-
-    if state == 'MO' or state == 'mo':
-
-        if plot_type == 'critical fire':
-            x1 = 0.205
-            x2 = 0.47
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.28
-            x2 = 0.63
-            x3 = None
-            y = 0.195
-
-    if state == 'IL' or state == 'il':
-
-        if plot_type == 'critical fire':
-            x1 = 0.36
-            x2 = 0.475
-            x3 = 0.59
-            y = 0.21
-
-        if plot_type == 'dry lightning':
-            x1 = 0.365
-            x2 = 0.55
-            x3 = None
-            y = 0.21
-
-    if state == 'ND' or state == 'nd':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'SD' or state == 'sd':
-
-        if plot_type == 'critical fire':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'NE' or state == 'ne':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'MD' or state == 'md':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'VA' or state == 'va':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'SC' or state == 'sc':
-
-        if plot_type == 'critical fire':
-            x1 = 0.26
-            x2 = 0.47
-            x3 = 0.68
-            y = 0.197
-
-        if plot_type == 'dry lightning':
-            x1 = 0.32
-            x2 = 0.61
-            x3 = None
-            y = 0.197
-
-    if state == 'KY' or state == 'ky':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'WV' or state == 'wv':
-
-        if plot_type == 'critical fire':
-            x1 = 0.26
-            x2 = 0.475
-            x3 = 0.68
-            y = 0.197
-
-        if plot_type == 'dry lightning':
-            x1 = 0.32
-            x2 = 0.61
-            x3 = None
-            y = 0.197
-
-    if state == 'NC' or state == 'nc':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'NV' or state == 'nv':
-
-        if plot_type == 'critical fire':
-            x1 = 0.32
-            x2 = 0.475
-            x3 = 0.62
-            y = 0.205
-
-        if plot_type == 'dry lightning':
-            x1 = 0.35
-            x2 = 0.585
-            x3 = None
-            y = 0.205
-
-    if state == 'FL' or state == 'fl':
-
-        if plot_type == 'critical fire':
-            x1 = 0.26
-            x2 = 0.47
-            x3 = 0.68
-            y = 0.197
-
-        if plot_type == 'dry lightning':
-            x1 = 0.31
-            x2 = 0.61
-            x3 = None
-            y = 0.197
-
-    if state == 'OR' or state == 'or':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'WA' or state == 'wa':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'ID' or state == 'id':
-
-        if plot_type == 'critical fire':
-            x1 = 0.34
-            x2 = 0.47
-            x3 = 0.62
-            y = 0.205
-
-        if plot_type == 'dry lightning':
-            x1 = 0.365
-            x2 = 0.57
-            x3 = None
-            y = 0.205
-
-    if state == 'GA' or state == 'ga':
-
-        if plot_type == 'critical fire':
-            x1 = 0.305
-            x2 = 0.47
-            x3 = 0.62
-            y = 0.205
-
-        if plot_type == 'dry lightning':
-            x1 = 0.365
-            x2 = 0.55
-            x3 = None
-            y = 0.205
-
-    if state == 'AL' or state == 'al':
-
-        if plot_type == 'critical fire':
-            x1 = 0.35
-            x2 = 0.475
-            x3 = 0.61
-            y = 0.205
-
-        if plot_type == 'dry lightning':
-            x1 = 0.365
-            x2 = 0.55
-            x3 = None
-            y = 0.205
-
-    if state == 'MS' or state == 'ms':
-
-        if plot_type == 'critical fire':
-            x1 = 0.35
-            x2 = 0.475
-            x3 = 0.61
-            y = 0.205
-
-        if plot_type == 'dry lightning':
-            x1 = 0.38
-            x2 = 0.56
-            x3 = None
-            y = 0.207
-
-    if state == 'LA' or state == 'la':
-
-        if plot_type == 'critical fire':
-            x1 = 0.26
-            x2 = 0.47
-            x3 = 0.68
-            y = 0.197
-
-        if plot_type == 'dry lightning':
-            x1 = 0.32
-            x2 = 0.61
-            x3 = None
-            y = 0.197
-
-    if state == 'AR' or state == 'ar':
-
-        if plot_type == 'critical fire':
-            x1 = 0.32
-            x2 = 0.61
-            x3 = None
-            y = 0.197
-
-        if plot_type == 'dry lightning':
-            x1 = 0.31
-            x2 = 0.61
-            x3 = None
-            y = 0.197
-
-    if state == 'TX' or state == 'tx':
-
-        if plot_type == 'critical fire':
-            x1 = 0.26
-            x2 = 0.47
-            x3 = 0.68
-            y = 0.197
-
-        if plot_type == 'dry lightning':
-            x1 = 0.325
-            x2 = 0.585
-            x3 = None
-            y = 0.195
-
-    if state == 'OK' or state == 'ok':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'NM' or state == 'nm':
-
-        if plot_type == 'critical fire':
-            x1 = 0.3
-            x2 = 0.475
-            x3 = 0.64
-            y = 0.205
-
-        if plot_type == 'dry lightning':
-            x1 = 0.365
-            x2 = 0.57
-            x3 = None
-            y = 0.205
-
-    if state == 'AZ' or state == 'az':
-
-        if plot_type == 'critical fire':
-            x1 = 0.3
-            x2 = 0.475
-            x3 = 0.64
-            y = 0.205
-
-        if plot_type == 'dry lightning':
-            x1 = 0.365
-            x2 = 0.57
-            x3 = None
-            y = 0.205
-
-    if state == 'UT' or state == 'ut':
-
-        if plot_type == 'critical fire':
-            x1 = 0.3
-            x2 = 0.475
-            x3 = 0.64
-            y = 0.205
-
-        if plot_type == 'dry lightning':
-            x1 = 0.365
-            x2 = 0.57
-            x3 = None
-            y = 0.205
-
-    if state == 'CO' or state == 'co':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'WY' or state == 'wy':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'MT' or state == 'mt':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'KS' or state == 'ks':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
-
-    if state == 'TN' or state == 'tn':
-
-        if plot_type == 'critical fire':
-            x1 = 0.2
-            x2 = 0.465
-            x3 = 0.72
-            y = 0.195
-
-        if plot_type == 'dry lightning':
-            x1 = 0.27
-            x2 = 0.64
-            x3 = None
-            y = 0.195
+    gacc_region = gacc_region
+
+    if state != None and gacc_region == None:
+
+        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.25
+                x2 = 0.65
+                x3 = None
+                y = 0.195
+    
+        if state == 'CA' or state == 'ca':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.278
+                x2 = 0.46
+                x3 = 0.64
+                y = 0.207
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.325
+                x2 = 0.585
+                x3 = None
+                y = 0.205
+    
+        if state == 'ME' or state == 'me':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.278
+                x2 = 0.46
+                x3 = 0.64
+                y = 0.207
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.33
+                x2 = 0.585
+                x3 = None
+                y = 0.205
+    
+        if state == 'NH' or state == 'nh':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.278
+                x2 = 0.46
+                x3 = 0.64
+                y = 0.207
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.355
+                x2 = 0.56
+                x3 = None
+                y = 0.21
+    
+        if state == 'VT' or state == 'vt':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.278
+                x2 = 0.46
+                x3 = 0.64
+                y = 0.207
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.34
+                x2 = 0.56
+                x3 = None
+                y = 0.205
+    
+        if state == 'MA' or state == 'ma':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.18
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.63
+                x3 = None
+                y = 0.185
+    
+        if state == 'RI' or state == 'ri':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.26
+                x2 = 0.465
+                x3 = 0.66
+                y = 0.205
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.325
+                x2 = 0.59
+                x3 = None
+                y = 0.205
+    
+        if state == 'CT' or state == 'ct':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.25
+                x2 = 0.465
+                x3 = 0.67
+                y = 0.19
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.32
+                x2 = 0.59
+                x3 = None
+                y = 0.1925
+    
+        if state == 'NJ' or state == 'nj':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.36
+                x2 = 0.48
+                x3 = 0.59
+                y = 0.21
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.38
+                x2 = 0.555
+                x3 = None
+                y = 0.211
+    
+        if state == 'DE' or state == 'de':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.34
+                x2 = 0.48
+                x3 = 0.605
+                y = 0.21
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.37
+                x2 = 0.56
+                x3 = None
+                y = 0.21
+    
+        if state == 'NY' or state == 'ny':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'PA' or state == 'pa':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'OH' or state == 'oh':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.32
+                x2 = 0.475
+                x3 = 0.625
+                y = 0.205
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.35
+                x2 = 0.585
+                x3 = None
+                y = 0.205
+    
+        if state == 'MI' or state == 'mi':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.285
+                x2 = 0.47
+                x3 = 0.66
+                y = 0.205
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.35
+                x2 = 0.585
+                x3 = None
+                y = 0.205
+    
+        if state == 'MN' or state == 'mn':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.21
+                x2 = 0.47
+                x3 = 0.715
+                y = 0.2
+                
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.2
+    
+        if state == 'WI' or state == 'wi':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.27
+                x2 = 0.47
+                x3 = 0.68
+                y = 0.2
+                
+            if plot_type == 'dry lightning':
+                x1 = 0.32
+                x2 = 0.61
+                x3 = None
+                y = 0.2
+    
+        if state == 'IA' or state == 'ia':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'IN' or state == 'in':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.345
+                x2 = 0.48
+                x3 = 0.595
+                y = 0.21
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.36
+                x2 = 0.55
+                x3 = None
+                y = 0.21
+    
+        if state == 'MO' or state == 'mo':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.205
+                x2 = 0.47
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.28
+                x2 = 0.63
+                x3 = None
+                y = 0.195
+    
+        if state == 'IL' or state == 'il':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.36
+                x2 = 0.475
+                x3 = 0.59
+                y = 0.21
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.365
+                x2 = 0.55
+                x3 = None
+                y = 0.21
+    
+        if state == 'ND' or state == 'nd':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'SD' or state == 'sd':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'NE' or state == 'ne':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'MD' or state == 'md':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'VA' or state == 'va':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'SC' or state == 'sc':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.26
+                x2 = 0.47
+                x3 = 0.68
+                y = 0.197
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.32
+                x2 = 0.61
+                x3 = None
+                y = 0.197
+    
+        if state == 'KY' or state == 'ky':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'WV' or state == 'wv':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.26
+                x2 = 0.475
+                x3 = 0.68
+                y = 0.197
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.32
+                x2 = 0.61
+                x3 = None
+                y = 0.197
+    
+        if state == 'NC' or state == 'nc':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'NV' or state == 'nv':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.32
+                x2 = 0.475
+                x3 = 0.62
+                y = 0.205
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.35
+                x2 = 0.585
+                x3 = None
+                y = 0.205
+    
+        if state == 'FL' or state == 'fl':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.26
+                x2 = 0.47
+                x3 = 0.68
+                y = 0.197
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.31
+                x2 = 0.61
+                x3 = None
+                y = 0.197
+    
+        if state == 'OR' or state == 'or':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'WA' or state == 'wa':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'ID' or state == 'id':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.34
+                x2 = 0.47
+                x3 = 0.62
+                y = 0.205
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.365
+                x2 = 0.57
+                x3 = None
+                y = 0.205
+    
+        if state == 'GA' or state == 'ga':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.305
+                x2 = 0.47
+                x3 = 0.62
+                y = 0.205
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.365
+                x2 = 0.55
+                x3 = None
+                y = 0.205
+    
+        if state == 'AL' or state == 'al':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.35
+                x2 = 0.475
+                x3 = 0.61
+                y = 0.205
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.365
+                x2 = 0.55
+                x3 = None
+                y = 0.205
+    
+        if state == 'MS' or state == 'ms':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.35
+                x2 = 0.475
+                x3 = 0.61
+                y = 0.205
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.38
+                x2 = 0.56
+                x3 = None
+                y = 0.207
+    
+        if state == 'LA' or state == 'la':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.26
+                x2 = 0.47
+                x3 = 0.68
+                y = 0.197
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.32
+                x2 = 0.61
+                x3 = None
+                y = 0.197
+    
+        if state == 'AR' or state == 'ar':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.32
+                x2 = 0.61
+                x3 = None
+                y = 0.197
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.31
+                x2 = 0.61
+                x3 = None
+                y = 0.197
+    
+        if state == 'TX' or state == 'tx':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.26
+                x2 = 0.47
+                x3 = 0.68
+                y = 0.197
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.325
+                x2 = 0.585
+                x3 = None
+                y = 0.195
+    
+        if state == 'OK' or state == 'ok':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'NM' or state == 'nm':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.3
+                x2 = 0.475
+                x3 = 0.64
+                y = 0.205
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.365
+                x2 = 0.57
+                x3 = None
+                y = 0.205
+    
+        if state == 'AZ' or state == 'az':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.3
+                x2 = 0.475
+                x3 = 0.64
+                y = 0.205
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.365
+                x2 = 0.57
+                x3 = None
+                y = 0.205
+    
+        if state == 'UT' or state == 'ut':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.3
+                x2 = 0.475
+                x3 = 0.64
+                y = 0.205
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.365
+                x2 = 0.57
+                x3 = None
+                y = 0.205
+    
+        if state == 'CO' or state == 'co':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'WY' or state == 'wy':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'MT' or state == 'mt':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'KS' or state == 'ks':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+    
+        if state == 'TN' or state == 'tn':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.2
+                x2 = 0.465
+                x3 = 0.72
+                y = 0.195
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+
+    if state == None and gacc_region != None:
+
+        if gacc_region == 'OSCC' or gacc_region == 'oscc' or gacc_region == 'SOPS' or gacc_region == 'sops':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.26
+                x2 = 0.47
+                x3 = 0.68
+                y = 0.2
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+
+        if gacc_region == 'ONCC' or gacc_region == 'oncc' or gacc_region == 'NOPS' or gacc_region == 'nops':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.32
+                x2 = 0.475
+                x3 = 0.63
+                y = 0.205
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+
+        if gacc_region == 'GBCC' or gacc_region == 'gbcc' or gacc_region == 'GB' or gacc_region == 'gb':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.32
+                x2 = 0.475
+                x3 = 0.63
+                y = 0.205
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+        
 
     return x1, x2, x3, y
 
