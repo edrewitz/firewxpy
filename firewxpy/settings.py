@@ -2657,7 +2657,7 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec, plot_t
         signature_y_position = 0.05
         subplot_title_fontsize=8
         title_fontsize = 9
-        signature_fontsize=6
+        signature_fontsize=8
         sample_point_fontsize=10
         colorbar_fontsize=12
         legend_fontsize = 12
@@ -2678,7 +2678,7 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec, plot_t
             title_fontsize = 7
             subplot_title_fontsize=6
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.10
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.28
@@ -2763,7 +2763,7 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec, plot_t
             title_fontsize = 7
             subplot_title_fontsize=6
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.18
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
@@ -2862,7 +2862,7 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec, plot_t
         signature_y_position = 0.05
         subplot_title_fontsize=9
         title_fontsize = 11
-        signature_fontsize=10
+        signature_fontsize=8
         sample_point_fontsize=10
         colorbar_fontsize=12
         legend_fontsize = 12
@@ -2883,7 +2883,7 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec, plot_t
             title_fontsize = 7
             subplot_title_fontsize=6
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.13
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
@@ -2923,7 +2923,7 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec, plot_t
             title_fontsize = 7
             subplot_title_fontsize=6
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.15
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
             signature_x_position = 0.13
@@ -2945,7 +2945,7 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec, plot_t
         sample_point_fontsize=10
         colorbar_fontsize=12
         legend_fontsize = 12
-        color_table_shrink = 0.8
+        color_table_shrink = 0.7
         aspect=30
         tick=9
         if gridspec == True:
@@ -2957,12 +2957,12 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec, plot_t
         if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
             signature_x_position = 0.25
-            signature_y_position = 0.248
+            signature_y_position = 0.235
         if plot_category == 'rtma':
             title_fontsize = 7
             subplot_title_fontsize=6
             signature_x_position = 0.01
-            signature_y_position = 0.12
+            signature_y_position = 0.11
         if plot_category == 'spc':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/'
             signature_x_position = 0.13
