@@ -105,6 +105,26 @@ def get_metar_mask(state, gacc_region, rtma_ws=False):
             if state == 'TN' or state == 'tn':
                 mask = 30000
 
+        if state == None and gacc_region != None:
+            if gacc_region == 'OSCC' or gacc_region == 'oscc' or gacc_region == 'SOPS' or gacc_region == 'sops':
+                mask = 40000
+            if gacc_region == 'ONCC' or gacc_region == 'oncc' or gacc_region == 'NOPS' or gacc_region == 'nops':
+                mask = 40000
+            if gacc_region == 'GBCC' or gacc_region == 'gbcc' or gacc_region == 'GB' or gacc_region == 'gb':
+                mask = 70000
+            if gacc_region == 'NRCC' or gacc_region == 'nrcc' or gacc_region == 'NR' or gacc_region == 'nr':
+                mask = 70000
+            if gacc_region == 'RMCC' or gacc_region == 'rmcc' or gacc_region == 'RM' or gacc_region == 'rm':
+                mask = 60000
+            if gacc_region == 'SWCC' or gacc_region == 'swcc' or gacc_region == 'SW' or gacc_region == 'sw':
+                mask = 30000
+            if gacc_region == 'SACC' or gacc_region == 'sacc' or gacc_region == 'SE' or gacc_region == 'se':
+                mask = 160000
+            if gacc_region == 'EACC' or gacc_region == 'eacc' or gacc_region == 'E' or gacc_region == 'e':
+                mask = 160000
+            if gacc_region == 'PNW' or gacc_region == 'pnw' or gacc_region == 'NWCC' or gacc_region == 'nwcc' or gacc_region == 'NW' or gacc_region == 'nw':
+                mask = 30000
+
     if rtma_ws == True:
         if state != None and gacc_region == None:
             
@@ -212,6 +232,26 @@ def get_metar_mask(state, gacc_region, rtma_ws=False):
                 mask = 10 
             if state == 'TN' or state == 'tn':
                 mask = 10 
+                
+        if state == None and gacc_region != None:
+            if gacc_region == 'OSCC' or gacc_region == 'oscc' or gacc_region == 'SOPS' or gacc_region == 'sops':
+                mask = 10
+            if gacc_region == 'ONCC' or gacc_region == 'oncc' or gacc_region == 'NOPS' or gacc_region == 'nops':
+                mask = 10
+            if gacc_region == 'GBCC' or gacc_region == 'gbcc' or gacc_region == 'GB' or gacc_region == 'gb':
+                mask = 10
+            if gacc_region == 'NRCC' or gacc_region == 'nrcc' or gacc_region == 'NR' or gacc_region == 'nr':
+                mask = 10
+            if gacc_region == 'RMCC' or gacc_region == 'rmcc' or gacc_region == 'RM' or gacc_region == 'rm':
+                mask = 10
+            if gacc_region == 'SWCC' or gacc_region == 'swcc' or gacc_region == 'SW' or gacc_region == 'sw':
+                mask = 10
+            if gacc_region == 'SACC' or gacc_region == 'sacc' or gacc_region == 'SE' or gacc_region == 'se':
+                mask = 60000
+            if gacc_region == 'EACC' or gacc_region == 'eacc' or gacc_region == 'E' or gacc_region == 'e':
+                mask = 60000
+            if gacc_region == 'PNW' or gacc_region == 'pnw' or gacc_region == 'NWCC' or gacc_region == 'nwcc' or gacc_region == 'NW' or gacc_region == 'nw':
+                mask = 10
 
     return mask
 
@@ -477,8 +517,38 @@ def get_label_coords(state, gacc_region):
 
         if gacc_region == 'OSCC' or gacc_region == 'oscc' or gacc_region == 'SOPS' or gacc_region == 'sops':
 
-            x_coord = 0.82
-            y_coord = 0.9     
+            x_coord = 0.85
+            y_coord = 0.93   
+
+        if gacc_region == 'ONCC' or gacc_region == 'oncc' or gacc_region == 'NOPS' or gacc_region == 'nops':
+
+            x_coord = 0.01
+            y_coord = 0.12   
+
+        if gacc_region == 'GBCC' or gacc_region == 'gbcc' or gacc_region == 'GB' or gacc_region == 'gb':
+
+            x_coord = 0.84
+            y_coord = 0.93  
+
+        if gacc_region == 'NRCC' or gacc_region == 'nrcc' or gacc_region == 'NR' or gacc_region == 'nr':
+
+            x_coord = 0.88
+            y_coord = 0.9 
+
+        if gacc_region == 'RMCC' or gacc_region == 'rmcc' or gacc_region == 'RM' or gacc_region == 'rm':
+
+            x_coord = 0.88
+            y_coord = 0.9 
+
+        if gacc_region == 'SWCC' or gacc_region == 'swcc' or gacc_region == 'SW' or gacc_region == 'sw':
+
+            x_coord = 0.88
+            y_coord = 0.9 
+
+        if gacc_region == 'SACC' or gacc_region == 'sacc' or gacc_region == 'SE' or gacc_region == 'se':
+
+            x_coord = 0.01
+            y_coord = 0.15 
     
     return x_coord, y_coord
 
