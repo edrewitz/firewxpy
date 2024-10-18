@@ -285,8 +285,8 @@ def get_label_coords(state, gacc_region):
 
         if state == 'CA' or state == 'ca':
 
-            x_coord = 0.73
-            y_coord = 0.92
+            x_coord = 0.8
+            y_coord = 0.94
 
         if state == 'ME' or state == 'me':
 
@@ -549,6 +549,16 @@ def get_label_coords(state, gacc_region):
 
             x_coord = 0.01
             y_coord = 0.15 
+
+        if gacc_region == 'EACC' or gacc_region == 'eacc' or gacc_region == 'E' or gacc_region == 'e':
+
+            x_coord = 0.88
+            y_coord = 0.93
+
+        if gacc_region == 'PNW' or gacc_region == 'pnw' or gacc_region == 'NWCC' or gacc_region == 'nwcc' or gacc_region == 'NW' or gacc_region == 'nw':
+
+            x_coord = 0.85
+            y_coord = 0.01
     
     return x_coord, y_coord
 
@@ -2129,7 +2139,90 @@ def get_colorbar_label_coords(state, gacc_region, plot_type):
                 x2 = 0.64
                 x3 = None
                 y = 0.195
-        
+
+        if gacc_region == 'NRCC' or gacc_region == 'nrcc' or gacc_region == 'NR' or gacc_region == 'nr':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.27
+                x2 = 0.475
+                x3 = 0.685
+                y = 0.192
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+
+        if gacc_region == 'RMCC' or gacc_region == 'rmcc' or gacc_region == 'RM' or gacc_region == 'rm':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.27
+                x2 = 0.475
+                x3 = 0.685
+                y = 0.198
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+
+        if gacc_region == 'SWCC' or gacc_region == 'swcc' or gacc_region == 'SW' or gacc_region == 'sw':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.27
+                x2 = 0.475
+                x3 = 0.685
+                y = 0.198
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+
+        if gacc_region == 'SACC' or gacc_region == 'sacc' or gacc_region == 'SE' or gacc_region == 'se':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.27
+                x2 = 0.475
+                x3 = 0.685
+                y = 0.196
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+
+        if gacc_region == 'EACC' or gacc_region == 'eacc' or gacc_region == 'E' or gacc_region == 'e':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.27
+                x2 = 0.475
+                x3 = 0.685
+                y = 0.196
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
+
+        if gacc_region == 'PNW' or gacc_region == 'pnw' or gacc_region == 'NWCC' or gacc_region == 'nwcc' or gacc_region == 'NW' or gacc_region == 'nw':
+    
+            if plot_type == 'critical fire':
+                x1 = 0.29
+                x2 = 0.475
+                x3 = 0.65
+                y = 0.202
+    
+            if plot_type == 'dry lightning':
+                x1 = 0.27
+                x2 = 0.64
+                x3 = None
+                y = 0.195
 
     return x1, x2, x3, y
 
@@ -2332,6 +2425,20 @@ def get_colorbar_coords(state, gacc_region):
         if state == 'TN' or state == 'tn':
 
             x1, x2, y, x_size, fontsize = 0.13, 0.55, 0.33, 0.35, 12
+
+    if state == None and gacc_region != None:
+
+        if gacc_region == 'OSCC' or gacc_region == 'oscc' or gacc_region == 'SOPS' or gacc_region == 'sops':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.53, 0.07, 0.37, 12
+
+        if gacc_region == 'ONCC' or gacc_region == 'oncc' or gacc_region == 'NOPS' or gacc_region == 'nops':
+
+            x1, x2, y, x_size, fontsize = 0.22, 0.55, 0.07, 0.25, 12
+
+        if gacc_region == 'GBCC' or gacc_region == 'gbcc' or gacc_region == 'GB' or gacc_region == 'gb':
+
+            x1, x2, y, x_size, fontsize = 0.2, 0.53, 0.07, 0.3, 12
 
     return x1, x2, y, x_size, fontsize
         
