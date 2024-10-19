@@ -7,4 +7,4 @@ from firewxpy.NWS_Forecast_Graphics import relative_humidity as nws_relative_hum
 from firewxpy.NWS_Forecast_Graphics import dry_and_windy as nws_dry_and_windy_forecast
 from firewxpy.observations import graphical_daily_summary
 from firewxpy.soundings import plot_observed_sounding, plot_observed_sounding_custom_date_time
-from firewxpy.settings import get_metar_mask
+from firewxpy.dims import get_metar_mask
