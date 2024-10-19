@@ -176,7 +176,7 @@ class Thermodynamics:
         i = 0
         for i in range(0, df_len):
             if temperature.iloc[i+1] >= temperature.iloc[i]:
-                val = height[i+1]
+                val = height.iloc[i+1]
                 vals.append(val)
     
         mixing_height = vals[0]
