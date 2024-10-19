@@ -2624,6 +2624,7 @@ def get_gacc_region_data_and_coords(gacc_region, plot_category, gridspec, plot_t
             colorbar_fontsize = 8
             color_table_shrink = 1
             sample_point_fontsize=12
+            signature_fontsize=8
         if plot_category == 'nws':
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/'
             signature_x_position = 0.195
