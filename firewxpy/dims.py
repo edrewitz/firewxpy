@@ -1400,6 +1400,161 @@ def get_gridspec_dims(state, gacc_region):
             col5 = 5
             col6 = 10
 
+    if state == None and gacc_region != None:
+
+        if gacc_region == 'OSCC' or gacc_region == 'oscc' or gacc_region == 'SOPS' or gacc_region == 'sops':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 7
+
+            row3 = 0
+            row4 = 5
+            col3 = 7
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 7
+            col6 = 10
+
+        if gacc_region == 'ONCC' or gacc_region == 'oncc' or gacc_region == 'NOPS' or gacc_region == 'nops':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 7
+
+            row3 = 0
+            row4 = 5
+            col3 = 7
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 7
+            col6 = 10
+
+        if gacc_region == 'GBCC' or gacc_region == 'gbcc' or gacc_region == 'GB' or gacc_region == 'gb':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 7
+
+            row3 = 0
+            row4 = 5
+            col3 = 7
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 7
+            col6 = 10
+
+        if gacc_region == 'NRCC' or gacc_region == 'nrcc' or gacc_region == 'NR' or gacc_region == 'nr':
+
+            row1 = 0
+            row2 = 9 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if gacc_region == 'RMCC' or gacc_region == 'rmcc' or gacc_region == 'RM' or gacc_region == 'rm':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 7
+
+            row3 = 0
+            row4 = 5
+            col3 = 7
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 7
+            col6 = 10
+
+        if gacc_region == 'SWCC' or gacc_region == 'swcc' or gacc_region == 'SW' or gacc_region == 'sw':
+
+            row1 = 0
+            row2 = 6 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if gacc_region == 'SACC' or gacc_region == 'sacc' or gacc_region == 'SE' or gacc_region == 'se':
+
+            row1 = 0
+            row2 = 9 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if gacc_region == 'EACC' or gacc_region == 'eacc' or gacc_region == 'E' or gacc_region == 'e':
+
+            row1 = 0
+            row2 = 9 
+            col1 = 0
+            col2 = 10
+
+            row3 = 6
+            row4 = 10
+            col3 = 0
+            col4 = 5
+
+            row5 = 6
+            row6 = 10
+            col5 = 5
+            col6 = 10
+
+        if gacc_region == 'PNW' or gacc_region == 'pnw' or gacc_region == 'NWCC' or gacc_region == 'nwcc' or gacc_region == 'NW' or gacc_region == 'nw':
+
+            row1 = 0
+            row2 = 10 
+            col1 = 0
+            col2 = 7
+
+            row3 = 0
+            row4 = 5
+            col3 = 7
+            col4 = 10
+
+            row5 = 5
+            row6 = 10
+            col5 = 7
+            col6 = 10
+
 
     return row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 
 
@@ -2107,10 +2262,10 @@ def get_colorbar_label_coords(state, gacc_region, plot_type):
                 y = 0.2
     
             if plot_type == 'dry lightning':
-                x1 = 0.27
-                x2 = 0.64
+                x1 = 0.31
+                x2 = 0.62
                 x3 = None
-                y = 0.195
+                y = 0.2
 
         if gacc_region == 'ONCC' or gacc_region == 'oncc' or gacc_region == 'NOPS' or gacc_region == 'nops':
     
@@ -2121,10 +2276,10 @@ def get_colorbar_label_coords(state, gacc_region, plot_type):
                 y = 0.205
     
             if plot_type == 'dry lightning':
-                x1 = 0.27
-                x2 = 0.64
+                x1 = 0.35
+                x2 = 0.58
                 x3 = None
-                y = 0.195
+                y = 0.205
 
         if gacc_region == 'GBCC' or gacc_region == 'gbcc' or gacc_region == 'GB' or gacc_region == 'gb':
     
@@ -2135,10 +2290,10 @@ def get_colorbar_label_coords(state, gacc_region, plot_type):
                 y = 0.205
     
             if plot_type == 'dry lightning':
-                x1 = 0.27
-                x2 = 0.64
+                x1 = 0.35
+                x2 = 0.58
                 x3 = None
-                y = 0.195
+                y = 0.205
 
         if gacc_region == 'NRCC' or gacc_region == 'nrcc' or gacc_region == 'NR' or gacc_region == 'nr':
     
@@ -2149,10 +2304,10 @@ def get_colorbar_label_coords(state, gacc_region, plot_type):
                 y = 0.192
     
             if plot_type == 'dry lightning':
-                x1 = 0.27
-                x2 = 0.64
+                x1 = 0.32
+                x2 = 0.61
                 x3 = None
-                y = 0.195
+                y = 0.192
 
         if gacc_region == 'RMCC' or gacc_region == 'rmcc' or gacc_region == 'RM' or gacc_region == 'rm':
     
@@ -2163,10 +2318,10 @@ def get_colorbar_label_coords(state, gacc_region, plot_type):
                 y = 0.198
     
             if plot_type == 'dry lightning':
-                x1 = 0.27
-                x2 = 0.64
+                x1 = 0.32
+                x2 = 0.61
                 x3 = None
-                y = 0.195
+                y = 0.198
 
         if gacc_region == 'SWCC' or gacc_region == 'swcc' or gacc_region == 'SW' or gacc_region == 'sw':
     
@@ -2177,10 +2332,10 @@ def get_colorbar_label_coords(state, gacc_region, plot_type):
                 y = 0.198
     
             if plot_type == 'dry lightning':
-                x1 = 0.27
-                x2 = 0.64
+                x1 = 0.32
+                x2 = 0.61
                 x3 = None
-                y = 0.195
+                y = 0.198
 
         if gacc_region == 'SACC' or gacc_region == 'sacc' or gacc_region == 'SE' or gacc_region == 'se':
     
@@ -2191,10 +2346,10 @@ def get_colorbar_label_coords(state, gacc_region, plot_type):
                 y = 0.196
     
             if plot_type == 'dry lightning':
-                x1 = 0.27
-                x2 = 0.64
+                x1 = 0.32
+                x2 = 0.61
                 x3 = None
-                y = 0.195
+                y = 0.196
 
         if gacc_region == 'EACC' or gacc_region == 'eacc' or gacc_region == 'E' or gacc_region == 'e':
     
@@ -2205,10 +2360,10 @@ def get_colorbar_label_coords(state, gacc_region, plot_type):
                 y = 0.196
     
             if plot_type == 'dry lightning':
-                x1 = 0.27
-                x2 = 0.64
+                x1 = 0.32
+                x2 = 0.61
                 x3 = None
-                y = 0.195
+                y = 0.196
 
         if gacc_region == 'PNW' or gacc_region == 'pnw' or gacc_region == 'NWCC' or gacc_region == 'nwcc' or gacc_region == 'NW' or gacc_region == 'nw':
     
@@ -2219,10 +2374,10 @@ def get_colorbar_label_coords(state, gacc_region, plot_type):
                 y = 0.202
     
             if plot_type == 'dry lightning':
-                x1 = 0.27
-                x2 = 0.64
+                x1 = 0.33
+                x2 = 0.6
                 x3 = None
-                y = 0.195
+                y = 0.202
 
     return x1, x2, x3, y
 
@@ -2439,6 +2594,30 @@ def get_colorbar_coords(state, gacc_region):
         if gacc_region == 'GBCC' or gacc_region == 'gbcc' or gacc_region == 'GB' or gacc_region == 'gb':
 
             x1, x2, y, x_size, fontsize = 0.2, 0.53, 0.07, 0.3, 12
+
+        if gacc_region == 'NRCC' or gacc_region == 'nrcc' or gacc_region == 'NR' or gacc_region == 'nr':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.53, 0.19, 0.36, 12
+
+        if gacc_region == 'RMCC' or gacc_region == 'rmcc' or gacc_region == 'RM' or gacc_region == 'rm':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.54, 0.15, 0.35, 12
+
+        if gacc_region == 'SWCC' or gacc_region == 'swcc' or gacc_region == 'SW' or gacc_region == 'sw':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.54, 0.18, 0.35, 12
+
+        if gacc_region == 'SACC' or gacc_region == 'sacc' or gacc_region == 'SE' or gacc_region == 'se':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.54, 0.18, 0.35, 12
+
+        if gacc_region == 'EACC' or gacc_region == 'eacc' or gacc_region == 'E' or gacc_region == 'e':
+
+            x1, x2, y, x_size, fontsize = 0.13, 0.54, 0.16, 0.35, 12
+
+        if gacc_region == 'PNW' or gacc_region == 'pnw' or gacc_region == 'NWCC' or gacc_region == 'nwcc' or gacc_region == 'NW' or gacc_region == 'nw':
+
+            x1, x2, y, x_size, fontsize = 0.17, 0.54, 0.07, 0.3, 12
 
     return x1, x2, y, x_size, fontsize
         
