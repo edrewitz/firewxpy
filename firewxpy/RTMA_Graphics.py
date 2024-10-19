@@ -594,12 +594,16 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=15, high_rh_threshold=8
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
 
+        x1, x2, y, x_size, colorbar_fontsize = dims.get_colorbar_coords(state, gacc_region)
+
 
     if state == None and gacc_region != None:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'rtma', False, 'Low and High RH')
 
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
+
+        x1, x2, y, x_size, colorbar_fontsize = dims.get_colorbar_coords(state, gacc_region)
 
 
     if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
@@ -616,6 +620,11 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=15, high_rh_threshold=8
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
         aspect=aspect
+        x1 = x1 
+        x2 = x2
+        y = y
+        x_size = x_size
+        colorbar_fontsize = colorbar_fontsize
         labels_low = contourf_low[::labels_low_increment]
         labels_high = contourf_high[::labels_high_increment]
     
@@ -754,16 +763,6 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=15, high_rh_threshold=8
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
     ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
-
-    if x1 == None and x2 == None and y == None and x_size == None and colorbar_fontsize == None:
-        x1, x2, y, x_size, colorbar_fontsize = dims.get_colorbar_coords(state, gacc_region)
-    else:
-        x1 = x1 
-        x2 = x2
-        y = y
-        x_size = x_size
-        colorbar_fontsize = colorbar_fontsize
-        
 
     if x_size <= 0.25:
         labels_low = contourf_low[::5]
