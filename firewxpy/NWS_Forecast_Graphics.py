@@ -32,7 +32,7 @@ import firewxpy.settings as settings
 import firewxpy.standard as standard
 import os
 import imageio
-import dims
+import firewxpy.dims
 
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
