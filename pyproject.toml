@@ -1,6 +1,6 @@
 [project]
 name = "firewxpy"
-version = "1.0.0.72"
+version = "1.0.0.73"
 authors = [
   { name="Eric J Drewitz, USDA/USFS"},
 ]
