@@ -13968,7 +13968,6 @@ class dry_and_windy:
                     print("Successfully built new branch to directory!")
                     
             else:
-                print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
 
                 if os.path.exists(f"Weather Data"):
                     print("Already Satisfied: f:Weather Data exists!")
@@ -13976,6 +13975,8 @@ class dry_and_windy:
                     print("f:Weather Data does not exist. Building automatically...")
                     os.mkdir(f"Weather Data")
                     print("Successfully built f:Weather Data")
+                    
+                print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
                     
                 # Building directory for still images
                 os.mkdir(f"Weather Data/NWS Forecasts")
@@ -13988,13 +13989,6 @@ class dry_and_windy:
             ########################
             # GIF IMAGES DIRECTORY #
             ########################
-
-            if os.path.exists(f"Weather Data"):
-                print("Already Satisfied: Weather Data parent directory exists.")
-            else:
-                print("Weather Data parent directory does not exist.\nBuilding the directory automatically...")
-                os.mkdir(f"Weather Data")
-                print("Successfully built f:Weather Data")
                 
             if os.path.exists(f"Weather Data/NWS Forecasts"):
                 print("Already Satisfied: NWS Forecasts Directory exists.")
@@ -14037,6 +14031,14 @@ class dry_and_windy:
                         
                     
             else:
+
+                if os.path.exists(f"Weather Data"):
+                    print("Already Satisfied: f:Weather Data exists!")
+                else:
+                    print("f:Weather Data does not exist. Building automatically...")
+                    os.mkdir(f"Weather Data")
+                    print("Successfully built f:Weather Data")
+                    
                 print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
                 
                 # Building directory for still images
@@ -14097,6 +14099,14 @@ class dry_and_windy:
                     print("Successfully built new branch to directory!")
                     
             else:
+                
+                if os.path.exists(f"Weather Data"):
+                    print("Already Satisfied: f:Weather Data exists!")
+                else:
+                    print("f:Weather Data does not exist. Building automatically...")
+                    os.mkdir(f"Weather Data")
+                    print("Successfully built f:Weather Data")
+
                 print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
                 
                 # Building directory for still images
@@ -14152,8 +14162,16 @@ class dry_and_windy:
                         
                     
             else:
+
+                if os.path.exists(f"Weather Data"):
+                    print("Already Satisfied: f:Weather Data exists!")
+                else:
+                    print("f:Weather Data does not exist. Building automatically...")
+                    os.mkdir(f"Weather Data")
+                    print("Successfully built f:Weather Data")
+                    
                 print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
-                
+
                 # Building directory for still images
                 os.mkdir(f"Weather Data/NWS Forecasts")
                 os.mkdir(f"Weather Data/NWS Forecasts/GIFs/")
@@ -14502,13 +14520,6 @@ class dry_and_windy:
                 # STILL IMAGES DIRECTORY #
                 ##########################
 
-            if os.path.exists(f"Weather Data"):
-                print("Already Satisfied: Weather Data parent directory exists.")
-            else:
-                print("Weather Data parent directory does not exist.\nBuilding the directory automatically...")
-                os.mkdir(f"Weather Data")
-                print("Successfully built f:Weather Data")
-
             if os.path.exists(f"Weather Data/NWS Forecasts"):
                 print("Already Satisfied: NWS Forecasts Directory exists.")
 
@@ -14540,6 +14551,14 @@ class dry_and_windy:
                     print("Successfully built new branch to directory!")
                     
             else:
+
+                if os.path.exists(f"Weather Data"):
+                    print("Already Satisfied: f:Weather Data exists!")
+                else:
+                    print("f:Weather Data does not exist. Building automatically...")
+                    os.mkdir(f"Weather Data")
+                    print("Successfully built f:Weather Data")
+                
                 print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
                 
                 # Building directory for still images
@@ -14553,13 +14572,6 @@ class dry_and_windy:
             ########################
             # GIF IMAGES DIRECTORY #
             ########################
-
-            if os.path.exists(f"Weather Data"):
-                print("Already Satisfied: Weather Data parent directory exists.")
-            else:
-                print("Weather Data parent directory does not exist.\nBuilding the directory automatically...")
-                os.mkdir(f"Weather Data")
-                print("Successfully built f:Weather Data")
                 
             if os.path.exists(f"Weather Data/NWS Forecasts"):
                 print("Already Satisfied: NWS Forecasts Directory exists.")
@@ -14602,6 +14614,14 @@ class dry_and_windy:
                         
                     
             else:
+
+                if os.path.exists(f"Weather Data"):
+                    print("Already Satisfied: f:Weather Data exists!")
+                else:
+                    print("f:Weather Data does not exist. Building automatically...")
+                    os.mkdir(f"Weather Data")
+                    print("Successfully built f:Weather Data")
+                
                 print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
                 
                 # Building directory for still images
@@ -14662,6 +14682,14 @@ class dry_and_windy:
                     print("Successfully built new branch to directory!")
                     
             else:
+
+                if os.path.exists(f"Weather Data"):
+                    print("Already Satisfied: f:Weather Data exists!")
+                else:
+                    print("f:Weather Data does not exist. Building automatically...")
+                    os.mkdir(f"Weather Data")
+                    print("Successfully built f:Weather Data")
+                
                 print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
                 
                 # Building directory for still images
@@ -14717,7 +14745,6 @@ class dry_and_windy:
                         
                     
             else:
-                print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
 
                 if os.path.exists(f"Weather Data"):
                     print("Already Satisfied: f:Weather Data exists!")
@@ -14725,6 +14752,8 @@ class dry_and_windy:
                     print("f:Weather Data does not exist. Building automatically...")
                     os.mkdir(f"Weather Data")
                     print("Successfully built f:Weather Data")
+                    
+                print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
                 
                 # Building directory for still images
                 os.mkdir(f"Weather Data/NWS Forecasts")
