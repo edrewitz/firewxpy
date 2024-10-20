@@ -13987,6 +13987,13 @@ class dry_and_windy:
             ########################
             # GIF IMAGES DIRECTORY #
             ########################
+
+            if os.path.exists(f"Weather Data"):
+                print("Already Satisfied: Weather Data parent directory exists.")
+            else:
+                print("Weather Data parent directory does not exist.\nBuilding the directory automatically...")
+                os.mkdir(f"Weather Data")
+                print("Successfully built f:Weather Data")
                 
             if os.path.exists(f"Weather Data/NWS Forecasts"):
                 print("Already Satisfied: NWS Forecasts Directory exists.")
@@ -14545,6 +14552,13 @@ class dry_and_windy:
             ########################
             # GIF IMAGES DIRECTORY #
             ########################
+
+            if os.path.exists(f"Weather Data"):
+                print("Already Satisfied: Weather Data parent directory exists.")
+            else:
+                print("Weather Data parent directory does not exist.\nBuilding the directory automatically...")
+                os.mkdir(f"Weather Data")
+                print("Successfully built f:Weather Data")
                 
             if os.path.exists(f"Weather Data/NWS Forecasts"):
                 print("Already Satisfied: NWS Forecasts Directory exists.")
@@ -14822,3 +14836,4 @@ class dry_and_windy:
                     image = imageio.v2.imread(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/{file}")
                     writer.append_data(image)
             print("GIF Created and saved in f:"+GIF_path)
+            
