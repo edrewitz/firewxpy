@@ -13971,10 +13971,10 @@ class dry_and_windy:
                 print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
 
                 if os.path.exists(f"Weather Data"):
-                    print('Already Satisfied: f:Weather Data exists!")
+                    print("Already Satisfied: f:Weather Data exists!")
                 else:
                     print("f:Weather Data does not exist. Building automatically...")
-                    os.mkdir(f"Weather Data)
+                    os.mkdir(f"Weather Data")
                     print("Successfully built f:Weather Data")
                     
                 # Building directory for still images
@@ -14720,10 +14720,10 @@ class dry_and_windy:
                 print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
 
                 if os.path.exists(f"Weather Data"):
-                    print('Already Satisfied: f:Weather Data exists!")
+                    print("Already Satisfied: f:Weather Data exists!")
                 else:
                     print("f:Weather Data does not exist. Building automatically...")
-                    os.mkdir(f"Weather Data)
+                    os.mkdir(f"Weather Data")
                     print("Successfully built f:Weather Data")
                 
                 # Building directory for still images
