@@ -271,6 +271,12 @@ def get_quiver_dims(state, gacc_region):
             minshaft=0.000000000000000000000000005  
             headlength=20 
             headwidth=17
+
+    if state == None and gacc_region != None:
+
+            minshaft=0.000000000000000000000000005  
+            headlength=20 
+            headwidth=17
         
     return minshaft, headlength, headwidth
 
