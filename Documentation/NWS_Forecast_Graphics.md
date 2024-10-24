@@ -26,7 +26,7 @@ The `relative_humidity` class hosts 7 functions that plot the NWS Relative Humid
 
   <img width="628" alt="Screenshot 2024-08-03 150711" src="https://github.com/user-attachments/assets/72c217b5-9f9e-411b-9ca9-94835a6c5aa6">
 
-  This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/src/NWS_Forecast_Graphics.py#L64)
+  This function plots the latest available NOAA/NWS Poor Overnight Recovery RH Forecast. [Source Code](https://github.com/edrewitz/FireWxPy/blob/main/firewxpy/NWS_Forecast_Graphics.py#L64)
 
   Required Arguments: None
 
