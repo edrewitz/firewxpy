@@ -4218,9 +4218,9 @@ The `nws_dry_and_windy_forecast` class hosts 2 functions that plot the NWS Forec
 
 ##### Dry And Windy Forecast
 
-This function plots the latest available NOAA/NWS Dry and Windy Forecast.
+This function plots the latest available NOAA/NWS Dry and Windy Forecast. [Source Code](https://github.com/edrewitz/firewxpy/blob/main/firewxpy/NWS_Forecast_Graphics.py#L14404)
 
-Areas where the relative humidity <= low_minimum_rh_threshold AND wind speed >= wind_speed_threshold are shaded in red. [Source Code](https://github.com/edrewitz/firewxpy/blob/main/firewxpy/NWS_Forecast_Graphics.py#L14404)
+Areas where the relative humidity <= low_minimum_rh_threshold AND wind speed >= wind_speed_threshold are shaded in red. 
 
 Required Arguments: None
 
