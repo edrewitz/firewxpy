@@ -7636,23 +7636,23 @@ class temperature:
 
         Required Arguments: None
 
-        Optional Arguments: 1) start_of_warm_season_month (Integer) - The numeric value for the month the warm season begins. 
+        Optional Arguments: 1) start_of_warm_season_month (Integer) - Default = 4 (April). The numeric value for the month the warm season begins. 
 
-                            2) end_of_warm_season_month (Integer) - The numeric value for the month the warm season ends. 
+                            2) end_of_warm_season_month (Integer) - Default = 10 (October). The numeric value for the month the warm season ends. 
 
-                            3) start_of_cool_season_month (Integer) - The numeric value for the month the cool season begins. 
+                            3) start_of_cool_season_month (Integer) - Default = 11 (November). The numeric value for the month the cool season begins. 
 
-                            4) end_of_cool_season_month (Integer) - The numeric value for the month the cool season ends.
+                            4) end_of_cool_season_month (Integer) - Default = 3 (March). The numeric value for the month the cool season ends.
 
-                            5) temp_scale_warm_start (Integer) - The bottom bound temperature value in Fahrenheit of the warm season temperature range. 
+                            5) temp_scale_warm_start (Integer) - Default = 100. The bottom bound temperature value in Fahrenheit of the warm season temperature range. 
 
-                            6) temp_scale_warm_stop (Integer) - The top bound temperature value in Fahrenheit of the warm season temperature range.
+                            6) temp_scale_warm_stop (Integer) - Default = 120. The top bound temperature value in Fahrenheit of the warm season temperature range.
 
-                            7) temp_scale_cool_start (Integer) - The bottom bound temperature value in Fahrenheit of the cool season temperature range. 
+                            7) temp_scale_cool_start (Integer) - Default = 90. The bottom bound temperature value in Fahrenheit of the cool season temperature range. 
 
-                            8) temp_scale_cool_stop (Integer) - The top bound temperature value in Fahrenheit of the cool season temperature range. 
+                            8) temp_scale_cool_stop (Integer) - Default = 110. The top bound temperature value in Fahrenheit of the cool season temperature range. 
 
-                            9) temp_scale_step (Integer) - The interval at which the temperature scale increases/decreases by in Fahrenheit. 
+                            9) temp_scale_step (Integer) - Default = 1. The interval at which the temperature scale increases/decreases by in Fahrenheit. 
                                                            (Example: temp_scale_step = 5 means the plot will be contoured every 5 degrees Fahrenheit)
 
                             10) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
@@ -8703,23 +8703,23 @@ class temperature:
     
         Required Arguments: None
 
-        Optional Arguments: 1) start_of_warm_season_month (Integer) - The numeric value for the month the warm season begins. 
+        Optional Arguments: 1) start_of_warm_season_month (Integer) - Default = 4 (April). The numeric value for the month the warm season begins. 
 
-                            2) end_of_warm_season_month (Integer) - The numeric value for the month the warm season ends. 
+                            2) end_of_warm_season_month (Integer) - Default = 10 (October). The numeric value for the month the warm season ends. 
 
-                            3) start_of_cool_season_month (Integer) - The numeric value for the month the cool season begins. 
+                            3) start_of_cool_season_month (Integer) - Default = 11 (November). The numeric value for the month the cool season begins. 
 
-                            4) end_of_cool_season_month (Integer) - The numeric value for the month the cool season ends.
+                            4) end_of_cool_season_month (Integer) - Default = 3 (March). The numeric value for the month the cool season ends.
 
-                            5) temp_scale_warm_start (Integer) - The bottom bound temperature value in Fahrenheit of the warm season temperature range. 
+                            5) temp_scale_warm_start (Integer) - Default = 70. The bottom bound temperature value in Fahrenheit of the warm season temperature range. 
 
-                            6) temp_scale_warm_stop (Integer) - The top bound temperature value in Fahrenheit of the warm season temperature range.
+                            6) temp_scale_warm_stop (Integer) - Default = 90. The top bound temperature value in Fahrenheit of the warm season temperature range.
 
-                            7) temp_scale_cool_start (Integer) - The bottom bound temperature value in Fahrenheit of the cool season temperature range. 
+                            7) temp_scale_cool_start (Integer) - Default = 60. The bottom bound temperature value in Fahrenheit of the cool season temperature range. 
 
-                            8) temp_scale_cool_stop (Integer) - The top bound temperature value in Fahrenheit of the cool season temperature range. 
+                            8) temp_scale_cool_stop (Integer) - Default = 80. The top bound temperature value in Fahrenheit of the cool season temperature range. 
 
-                            9) temp_scale_step (Integer) - The interval at which the temperature scale increases/decreases by in Fahrenheit. 
+                            9) temp_scale_step (Integer) - Default = 1. The interval at which the temperature scale increases/decreases by in Fahrenheit. 
                                                            (Example: temp_scale_step = 5 means the plot will be contoured every 5 degrees Fahrenheit)
 
                             10) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
@@ -9771,7 +9771,7 @@ class temperature:
 
         Required Arguments: None
 
-        Optional Arguments: 1) temperature_bottom_bound (Integer) - The temperature value in Fahrenheit for the bottom bound of the temperature scale. 
+        Optional Arguments: 1) temperature_bottom_bound (Integer) - Default = -10. The temperature value in Fahrenheit for the bottom bound of the temperature scale. 
                                                                     This value must be less than 32.  
         
                             2) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
