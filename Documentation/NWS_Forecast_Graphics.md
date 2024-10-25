@@ -1,12 +1,13 @@
 # **National Weather Service Forecast Graphics**
 
 ### **Classes**
-1) [Relative Humidity](#relative-humidity-class) (`relative_humidity`)
-2) [Temperature](#temperature-class) (`temperature`)
+1) [Relative Humidity](#relative-humidity-class) (`nws_relative_humidity_forecast`)
+2) [Temperature](#temperature-class) (`nws_temperature_forecast`)
+3) Dry and Windy
 
 #### Relative Humidity Class
 
-The `relative_humidity` class hosts 7 functions that plot the NWS Relative Humidity Forecasts:
+The `nws_relative_humidity_forecast` class hosts 7 functions that plot the NWS Relative Humidity Forecasts:
 
 1) [Poor Overnight Recovery Forecast](#poor-overnight-recovery-forecast) 
 
@@ -2073,7 +2074,7 @@ Return: Saves individual images to a folder and creates a GIF from those images.
 
   #### Temperature Class
 
-The `temperature` class hosts 7 functions that plot the NWS Relative Humidity Forecasts:
+The `nws_temperature_forecast` class hosts 7 functions that plot the NWS Relative Humidity Forecasts:
 
 1) [Extreme Heat Forecast](#extreme-heat-forecast)
 
@@ -4206,3 +4207,8 @@ Reference Systems:
 54) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
 
 Return: Saves individual images to a folder and creates a GIF from those images. 
+
+#### Dry And Windy Class
+
+The `dry_and_windy` 
+
