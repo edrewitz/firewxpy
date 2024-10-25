@@ -4214,7 +4214,7 @@ The `nws_dry_and_windy_forecast` class hosts 2 functions that plot the NWS Forec
 
 1) [Dry And Windy Forecast](#dry-and-windy-forecast)
 
-2) [Dry And Gusty Forecast]
+2) [Dry And Gusty Forecast](#dry-and-gusty-forecast)
 
 ##### Dry And Windy Forecast
 
