@@ -3,7 +3,7 @@
 ### **Classes**
 1) [Relative Humidity](#relative-humidity-class) (`nws_relative_humidity_forecast`)
 2) [Temperature](#temperature-class) (`nws_temperature_forecast`)
-3) Dry and Windy (`nws_dry_and_windy_forecast`)
+3) [Dry and Windy](#dry-and-windy-class) (`nws_dry_and_windy_forecast`)
 
 #### Relative Humidity Class
 
