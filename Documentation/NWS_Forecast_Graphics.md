@@ -4212,9 +4212,9 @@ Return: Saves individual images to a folder and creates a GIF from those images.
 
 The `nws_dry_and_windy_forecast` class hosts 2 functions that plot the NWS Forecasts for Dry and Windy as well as Dry and Gusty conditons. 
 
-1) Dry And Windy Forecast
+1) [Dry And Windy Forecast](#dry-and-windy-forecast)
 
-2) Dry And Gusty Forecast
+2) [Dry And Gusty Forecast]
 
 ##### Dry And Windy Forecast
 
