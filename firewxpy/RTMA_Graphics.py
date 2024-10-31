@@ -226,9 +226,12 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
                                 Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
                                 Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
 
-                            46) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            46) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                                the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            47) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+                            47) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+
+                            48) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
     
