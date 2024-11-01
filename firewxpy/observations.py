@@ -41,10 +41,9 @@ def graphical_daily_summary(station_id):
 
     Required Arguments: 1) station_id (String) - The 4-letter station identifier of the ASOS station
 
-    Optional Arguments: 1) file_save_path (String) - The file path at which the user wants to save the image to. Default is set to None
-                                                     which returns the figure without saving it anywhere. 
+    Optional Arguments: None
 
-    Returns: A figure showing a graphical daily weather summary and solar information for the previous day's ASOS observations. 
+    Returns: A saved figure to the observations folder showing a graphical daily weather summary and solar information for the previous day's ASOS observations. 
              The parameters on this daily weather summary are: 1) Temperature
                                                                2) Relative Humidity
                                                                3) Wind Speed
