@@ -8201,7 +8201,7 @@ class temperature:
 
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             labels = temp_scale_warm
-        if utc_time.month >= start_of_cool_season_month and utc_time.month <= end_of_cool_season_month:
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
             labels = temp_scale_cool
     
         figs = [] 
@@ -9270,7 +9270,7 @@ class temperature:
 
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             labels = temp_scale_warm
-        if utc_time.month >= start_of_cool_season_month and utc_time.month <= end_of_cool_season_month:
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
             labels = temp_scale_cool
     
         figs = [] 
@@ -11321,7 +11321,7 @@ class temperature:
 
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             labels = temp_scale_warm[::5]
-        if utc_time.month >= start_of_cool_season_month and utc_time.month <= end_of_cool_season_month:
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
             labels = temp_scale_cool[::5]
     
         figs = [] 
@@ -12305,7 +12305,7 @@ class temperature:
 
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
             labels = temp_scale_warm[::5]
-        if utc_time.month >= start_of_cool_season_month and utc_time.month <= end_of_cool_season_month:
+        if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
             labels = temp_scale_cool[::5]
     
         figs = [] 
