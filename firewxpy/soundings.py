@@ -28,6 +28,17 @@ pd.options.mode.copy_on_write = True
 
 def clean_height_data(height_data):
 
+    r'''
+    This function cleans potentially bad height data. 
+
+    Required Arguments: height_data (Dataframe) - The height dataframe. 
+
+    Optional Arguments: None
+
+    Returns: A corrected height dataframe (if necessary). 
+
+    '''
+
     height_data = height_data
     
     end = len(height_data) - 1
