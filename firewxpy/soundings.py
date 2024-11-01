@@ -45,6 +45,19 @@ def clean_height_data(height_data):
 
 def plot_observed_sounding(station_id):
 
+    r'''
+    This function downloads the latest avaliable sounding data from the University of Wyoming and plots the upper-air profiles. 
+
+    Required Arguments: 1) station_id (String) - The 3 or 4 letter station identifier for the upper-air site. 
+
+    Example: San Diego, CA will be entered as plot_observed_sounding('nkx')
+
+    Optional Arguments: None
+
+    Returns: Saves the upper-air profiles graphic to the Soundings folder. 
+
+    '''
+
     local_time, utc_time = standard.plot_creation_time()
 
     station_id = station_id
