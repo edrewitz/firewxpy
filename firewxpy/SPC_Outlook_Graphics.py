@@ -221,7 +221,7 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
                                 Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
                                 Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
     
-        Return: A list of figures for each forecast day. 
+        Return: Saves individual images to a folder and creates a GIF from those images. 
     '''
 
 
@@ -931,7 +931,7 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
                                 Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
                                 Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
     
-        Return: A list of figures for each forecast day. 
+        Return: Saves individual images to a folder and creates a GIF from those images. 
     '''
 
     if gacc_region != None:
