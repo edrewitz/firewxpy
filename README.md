@@ -4,6 +4,13 @@
 
 # FireWxPy
 
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/version.svg)](https://anaconda.org/conda-forge/firewxpy)
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/latest_release_date.svg)](https://anaconda.org/conda-forge/firewxpy)
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/latest_release_relative_date.svg)](https://anaconda.org/conda-forge/firewxpy)
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/platforms.svg)](https://anaconda.org/conda-forge/firewxpy)
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/license.svg)](https://anaconda.org/conda-forge/firewxpy)
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/downloads.svg)](https://anaconda.org/conda-forge/firewxpy)
+
 Thank you for checking out FireWxPy! A user friendly Python package to create visualizations of data specific to fire weather and fire weather forecasting. 
 
 This repository consists of functions to make plots of weather data with an emphasis on fire weather. 
