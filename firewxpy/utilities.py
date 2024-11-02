@@ -262,6 +262,23 @@ class file_functions:
 
             GIF = GIF_path+"/NWS Maximum RH Trend.gif"
 
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                except Exception as e:
+                    pass
+
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, None)
 
             save.make_NDFD_Outlook_GIF(GIF, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, None, None)
@@ -280,6 +297,26 @@ class file_functions:
             file_path_7 = path+"/Night 7.png" 
 
             GIF = GIF_path+"/NWS Maximum RH.gif"
+
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+                os.remove(file_path_7)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                    os.remove(file_path_6)
+                except Exception as e:
+                    pass
+                
 
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)
 
@@ -300,6 +337,25 @@ class file_functions:
 
             GIF = GIF_path+"/NWS Poor Overnight Recovery.gif"
 
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+                os.remove(file_path_7)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                    os.remove(file_path_6)
+                except Exception as e:
+                    pass
+
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)
 
             save.make_NDFD_Outlook_GIF(GIF, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, None)
@@ -318,6 +374,25 @@ class file_functions:
             file_path_7 = path+"/Night 7.png" 
 
             GIF = GIF_path+"/NWS Excellent Overnight Recovery.gif"
+
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+                os.remove(file_path_7)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                    os.remove(file_path_6)
+                except Exception as e:
+                    pass
 
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)
 
@@ -338,6 +413,25 @@ class file_functions:
 
             GIF = GIF_path+"/NWS Low Minimum RH.gif"
 
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+                os.remove(file_path_7)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                    os.remove(file_path_6)
+                except Exception as e:
+                    pass
+
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)
 
             save.make_NDFD_Outlook_GIF(GIF, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, None)
@@ -357,6 +451,25 @@ class file_functions:
 
             GIF = GIF_path+"/NWS Minimum RH.gif"
 
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+                os.remove(file_path_7)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                    os.remove(file_path_6)
+                except Exception as e:
+                    pass
+
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)
 
             save.make_NDFD_Outlook_GIF(GIF, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, None)
@@ -374,6 +487,23 @@ class file_functions:
             file_path_6 = path+"/Day 7.png" 
 
             GIF = GIF_path+"/NWS Minimum RH Trend.gif"
+
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                except Exception as e:
+                    pass
 
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, None)
 
@@ -394,6 +524,25 @@ class file_functions:
 
             GIF = GIF_path+"/NWS Extreme Heat.gif"
 
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+                os.remove(file_path_7)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                    os.remove(file_path_6)
+                except Exception as e:
+                    pass
+
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)
 
             save.make_NDFD_Outlook_GIF(GIF, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, None)
@@ -413,6 +562,25 @@ class file_functions:
 
             GIF = GIF_path+"/NWS Max T.gif"
 
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+                os.remove(file_path_7)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                    os.remove(file_path_6)
+                except Exception as e:
+                    pass
+
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)
 
             save.make_NDFD_Outlook_GIF(GIF, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, None)
@@ -430,6 +598,23 @@ class file_functions:
             file_path_6 = path+"/Day 7.png" 
 
             GIF = GIF_path+"/NWS Max T Trend.gif"
+
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                except Exception as e:
+                    pass
 
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, None)
 
@@ -450,6 +635,25 @@ class file_functions:
 
             GIF = GIF_path+"/NWS Warm Min T.gif"
 
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+                os.remove(file_path_7)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                    os.remove(file_path_6)
+                except Exception as e:
+                    pass
+
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)
 
             save.make_NDFD_Outlook_GIF(GIF, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, None)
@@ -468,6 +672,25 @@ class file_functions:
             file_path_7 = path+"/Night 7.png" 
 
             GIF = GIF_path+"/NWS Min T.gif"
+
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+                os.remove(file_path_7)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                    os.remove(file_path_6)
+                except Exception as e:
+                    pass
 
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)
 
@@ -506,6 +729,23 @@ class file_functions:
 
             GIF = GIF_path+"/NWS Min T Trend.gif"
 
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                except Exception as e:
+                    pass
+
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, None)
 
             save.make_NDFD_Outlook_GIF(GIF, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, None, None)
@@ -525,6 +765,25 @@ class file_functions:
 
             GIF = GIF_path+"/SPC CRITICAL FIRE WEATHER OUTLOOK.gif"
 
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+                os.remove(file_path_7)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                    os.remove(file_path_6)
+                except Exception as e:
+                    pass
+
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)
 
             save.make_NDFD_Outlook_GIF(GIF, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7, None)
@@ -543,6 +802,25 @@ class file_functions:
             file_path_7 = path+"/Day 7.png" 
 
             GIF = GIF_path+"/SPC DRY LIGHTNING OUTLOOK.gif"
+
+            try:
+                os.remove(file_path_1)
+                os.remove(file_path_2)
+                os.remove(file_path_3)
+                os.remove(file_path_4)
+                os.remove(file_path_5)
+                os.remove(file_path_6)
+                os.remove(file_path_7)
+            except Exception as e:
+                try:
+                    os.remove(file_path_1)
+                    os.remove(file_path_2)
+                    os.remove(file_path_3)
+                    os.remove(file_path_4)
+                    os.remove(file_path_5)
+                    os.remove(file_path_6)
+                except Exception as e:
+                    pass
 
             save.extract_NDFD_figures(figure_list, file_path_1, file_path_2, file_path_3, file_path_4, file_path_5, file_path_6, file_path_7)
 
