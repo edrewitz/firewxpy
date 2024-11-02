@@ -15,10 +15,10 @@ Required Arguments: None
 Optional Arguments: 
 
 1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees. 
- The default setting is None. If set to None, the user must select a state or gacc_region. 
- This setting should be changed from None to an integer or float value if the user wishes to
- have a custom area selected. Negative values denote the western hemisphere and positive 
- values denote the eastern hemisphere. 
+The default setting is None. If set to None, the user must select a state or gacc_region. 
+This setting should be changed from None to an integer or float value if the user wishes to
+have a custom area selected. Negative values denote the western hemisphere and positive 
+values denote the eastern hemisphere. 
 
 2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees. 
 The default setting is None. If set to None, the user must select a state or gacc_region. 
@@ -127,105 +127,105 @@ This setting is to be edited if the user wishes to make a plot with custom bound
 state and/or gacc boundary plots, the correct directory name is automatically returned from the settings 
 module. Default setting is CONUS. 
 
-    Here is the list of abbreviations for other directory names if the user wishes to change this setting: 
-    
-    CONUS: 'CONUS' or 'US' or 'USA' or 'conus' or 'us' or 'usa'
-    
-    Central Great Lakes: 'Central Great Lakes' or 'CGL' or 'central great lakes' or 'cgl'
-    
-    Central Mississippi Valley: 'Central Mississippi Valley'  'central mississippi valley'  'CMV'  'cmv'
-    
-    Central Plains: 'Central Plains'  'central plains'  'CP'  'cp'
-    
-    Central Rockies: 'Central Rockies'  'central rockies'  'CR'  'cr'
-    
-    Eastern Great Lakes: 'Eastern Great Lakes'  'eastern great lakes'  'EGL'  'egl'
-    
-    Mid Atlantic: 'Mid Atlantic'  'Mid-Atlantic'  'mid atlantic'  'mid-atlantic'  'ma'  'Mid Atl'  'mid atl'  'Mid-Atl'  'mid-atl'
-    
-    Northeast: 'Northeast'  'northeast'  'neast'  'NE'  'ne'  'NEAST'  'Neast'
-    
-    Alaska: 'Alaska'  'AK'  'ak'  'alaska'
-    
-    Guam: 'GUAM'  'Guam'  'guam'  'GM'  'gm'
-    
-    Hawaii: 'Hawaii'  'HAWAII'  'HI'  'hi'
-    
-    Northern Hemisphere: 'Northern Hemisphere'  'NHemisphere'  'northern hemisphere'  'nhemisphere'  'NH'  'nh'
-    
-    North Pacific Ocean: 'North Pacific Ocean'  'NORTH PACIFIC OCEAN'  'north pacific ocean'  'npo'  'NPO'
-    
-    Northern Plains: 'Northern Plains'  'NORTHERN PLAINS'  'northern plains'  'NP'  'np'  'NPLAINS'  'nplains'
-    
-    Northern Rockies: 'Northern Rockies'  'northern rockies'  'NR'  'nr'
-    
-    Oceanic: 'Oceanic'  'OCEANIC'  'oceanic'  'o'  'O'
-    
-    Pacific Northwest: 'Pacific Northwest'  'PACIFIC NORTHWEST'  'pacific northwest'  'PNW'  'pnw'  'PACNW'  'pacnw'
-    
-    Pacific Southwest: 'Pacific Southwest'  'PACIFIC SOUTHWEST'  'pacific southwest'  'PSW'  'psw'  'PACSW'  'pacsw'
-    
-    Puerto Rico: 'Puerto Rico'  'PUERTO RICO'  'puerto rico'  'PR'  'pr'
-    
-    Southeast: 'Southeast'  'SOUTHEAST'  'southeast'  'SEAST'  'seast'  'SE'  'se'
-    
-    Southern Mississippi Valley: 'Southern Mississippi Valley'  'southern mississippi valley'  'SMV'  'smv'
-    
-    Southern Plains: 'Southern Plains'  'SOUTHERN PLAINS'  'southern plains'  'SPLAINS'  'splains'  'SP'  'sp'
-    
-    Southern Rockies: 'Southern Rockies'  'southern rockies'  'SR'  'sr'
-    
-    Upper Mississippi Valley: 'Upper Mississippi Valley'  'upper mississippi valley'  'UMV'  'umv'
+Here is the list of abbreviations for other directory names if the user wishes to change this setting: 
 
-29) file_path (String) - The local file path of the downloaded binary file from the NWS FTP Server (e.g. 'ds.maxt.bin' for the Maximum Temperature Forecast) 
+CONUS: 'CONUS' or 'US' or 'USA' or 'conus' or 'us' or 'usa'
+
+Central Great Lakes: 'Central Great Lakes' or 'CGL' or 'central great lakes' or 'cgl'
+
+Central Mississippi Valley: 'Central Mississippi Valley'  'central mississippi valley'  'CMV'  'cmv'
+
+Central Plains: 'Central Plains'  'central plains'  'CP'  'cp'
+
+Central Rockies: 'Central Rockies'  'central rockies'  'CR'  'cr'
+
+Eastern Great Lakes: 'Eastern Great Lakes'  'eastern great lakes'  'EGL'  'egl'
+
+Mid Atlantic: 'Mid Atlantic'  'Mid-Atlantic'  'mid atlantic'  'mid-atlantic'  'ma'  'Mid Atl'  'mid atl'  'Mid-Atl'  'mid-atl'
+
+Northeast: 'Northeast'  'northeast'  'neast'  'NE'  'ne'  'NEAST'  'Neast'
+
+Alaska: 'Alaska'  'AK'  'ak'  'alaska'
+
+Guam: 'GUAM'  'Guam'  'guam'  'GM'  'gm'
+
+Hawaii: 'Hawaii'  'HAWAII'  'HI'  'hi'
+
+Northern Hemisphere: 'Northern Hemisphere'  'NHemisphere'  'northern hemisphere'  'nhemisphere'  'NH'  'nh'
+
+North Pacific Ocean: 'North Pacific Ocean'  'NORTH PACIFIC OCEAN'  'north pacific ocean'  'npo'  'NPO'
+
+Northern Plains: 'Northern Plains'  'NORTHERN PLAINS'  'northern plains'  'NP'  'np'  'NPLAINS'  'nplains'
+
+Northern Rockies: 'Northern Rockies'  'northern rockies'  'NR'  'nr'
+
+Oceanic: 'Oceanic'  'OCEANIC'  'oceanic'  'o'  'O'
+
+Pacific Northwest: 'Pacific Northwest'  'PACIFIC NORTHWEST'  'pacific northwest'  'PNW'  'pnw'  'PACNW'  'pacnw'
+
+Pacific Southwest: 'Pacific Southwest'  'PACIFIC SOUTHWEST'  'pacific southwest'  'PSW'  'psw'  'PACSW'  'pacsw'
+
+Puerto Rico: 'Puerto Rico'  'PUERTO RICO'  'puerto rico'  'PR'  'pr'
+
+Southeast: 'Southeast'  'SOUTHEAST'  'southeast'  'SEAST'  'seast'  'SE'  'se'
+
+Southern Mississippi Valley: 'Southern Mississippi Valley'  'southern mississippi valley'  'SMV'  'smv'
+
+Southern Plains: 'Southern Plains'  'SOUTHERN PLAINS'  'southern plains'  'SPLAINS'  'splains'  'SP'  'sp'
+
+Southern Rockies: 'Southern Rockies'  'southern rockies'  'SR'  'sr'
+
+Upper Mississippi Valley: 'Upper Mississippi Valley'  'upper mississippi valley'  'UMV'  'umv'
+
+28) file_path (String) - The local file path of the downloaded binary file from the NWS FTP Server (e.g. 'ds.maxt.bin' for the Maximum Temperature Forecast) 
 This setting is only to be changed if the user wants to limit the times the file downloads in the script and downloads the 
 binary file outside of the functions (which is to be done at the beginning of the script before these plotting functions are called). 
 Default setting is None. Please see the documentation for the data_access module if the user wishes to download the data outside of this
 function. 
 
-30) count_short (Integer) - This is the number of GRIB timestamps in the short-term forecast. This value
+29) count_short (Integer) - This is the number of GRIB timestamps in the short-term forecast. This value
 is returned by the function that downloads the NWS Forecast data in the FTP_Downloads class of the 
 data_access module. This value is to be passed in if and only if the user downloads the data outside 
 of this function. Default setting is None. 
 
-31) count_extended (Integer) - This is the number of GRIB timestamps in the extended forecast. This value
+30) count_extended (Integer) - This is the number of GRIB timestamps in the extended forecast. This value
 is returned by the function that downloads the NWS Forecast data in the FTP_Downloads class of the 
 data_access module. This value is to be passed in if and only if the user downloads the data outside 
 of this function. Default setting is None. 
 
-32) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+31) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
 If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
 or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
 acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
 changed to None. 
 
-33) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+32) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
 If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
 None and the gacc_region variable must be set to one of the acceptable abbreviations. 
 
-    Here is a list of acceptable gacc_region abbreviations:
-    
-    South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
-    
-    North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
-    
-    Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
-    
-    Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
-    
-    Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
-    
-    Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
-    
-    Southern: 'SACC' or 'sacc' or 'SE' or 'se'
-    
-    Eastern: 'EACC' or 'eacc' or 'E' or 'e'
-    
-    Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
-    
-    Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
-    
-Return: A list of figures for each forecast day. 
+Here is a list of acceptable gacc_region abbreviations:
+
+South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+
+North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+
+Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+
+Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+
+Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+
+Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+
+Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+
+Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+
+Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+
+Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+Return: Saves individual images to a folder and creates a GIF from those images. 
 
 #### Dry Lightning Forecast
 
@@ -236,10 +236,10 @@ Required Arguments: None
 Optional Arguments: 
 
 1) western_bound (Integer or Float) - Western extent of the plot in decimal degrees. 
- The default setting is None. If set to None, the user must select a state or gacc_region. 
- This setting should be changed from None to an integer or float value if the user wishes to
- have a custom area selected. Negative values denote the western hemisphere and positive 
- values denote the eastern hemisphere. 
+The default setting is None. If set to None, the user must select a state or gacc_region. 
+This setting should be changed from None to an integer or float value if the user wishes to
+have a custom area selected. Negative values denote the western hemisphere and positive 
+values denote the eastern hemisphere. 
 
 2) eastern_bound (Integer or Float) - Eastern extent of the plot in decimal degrees. 
 The default setting is None. If set to None, the user must select a state or gacc_region. 
@@ -348,103 +348,103 @@ This setting is to be edited if the user wishes to make a plot with custom bound
 state and/or gacc boundary plots, the correct directory name is automatically returned from the settings 
 module. Default setting is CONUS. 
 
-    Here is the list of abbreviations for other directory names if the user wishes to change this setting: 
-    
-    CONUS: 'CONUS' or 'US' or 'USA' or 'conus' or 'us' or 'usa'
-    
-    Central Great Lakes: 'Central Great Lakes' or 'CGL' or 'central great lakes' or 'cgl'
-    
-    Central Mississippi Valley: 'Central Mississippi Valley'  'central mississippi valley'  'CMV'  'cmv'
-    
-    Central Plains: 'Central Plains'  'central plains'  'CP'  'cp'
-    
-    Central Rockies: 'Central Rockies'  'central rockies'  'CR'  'cr'
-    
-    Eastern Great Lakes: 'Eastern Great Lakes'  'eastern great lakes'  'EGL'  'egl'
-    
-    Mid Atlantic: 'Mid Atlantic'  'Mid-Atlantic'  'mid atlantic'  'mid-atlantic'  'ma'  'Mid Atl'  'mid atl'  'Mid-Atl'  'mid-atl'
-    
-    Northeast: 'Northeast'  'northeast'  'neast'  'NE'  'ne'  'NEAST'  'Neast'
-    
-    Alaska: 'Alaska'  'AK'  'ak'  'alaska'
-    
-    Guam: 'GUAM'  'Guam'  'guam'  'GM'  'gm'
-    
-    Hawaii: 'Hawaii'  'HAWAII'  'HI'  'hi'
-    
-    Northern Hemisphere: 'Northern Hemisphere'  'NHemisphere'  'northern hemisphere'  'nhemisphere'  'NH'  'nh'
-    
-    North Pacific Ocean: 'North Pacific Ocean'  'NORTH PACIFIC OCEAN'  'north pacific ocean'  'npo'  'NPO'
-    
-    Northern Plains: 'Northern Plains'  'NORTHERN PLAINS'  'northern plains'  'NP'  'np'  'NPLAINS'  'nplains'
-    
-    Northern Rockies: 'Northern Rockies'  'northern rockies'  'NR'  'nr'
-    
-    Oceanic: 'Oceanic'  'OCEANIC'  'oceanic'  'o'  'O'
-    
-    Pacific Northwest: 'Pacific Northwest'  'PACIFIC NORTHWEST'  'pacific northwest'  'PNW'  'pnw'  'PACNW'  'pacnw'
-    
-    Pacific Southwest: 'Pacific Southwest'  'PACIFIC SOUTHWEST'  'pacific southwest'  'PSW'  'psw'  'PACSW'  'pacsw'
-    
-    Puerto Rico: 'Puerto Rico'  'PUERTO RICO'  'puerto rico'  'PR'  'pr'
-    
-    Southeast: 'Southeast'  'SOUTHEAST'  'southeast'  'SEAST'  'seast'  'SE'  'se'
-    
-    Southern Mississippi Valley: 'Southern Mississippi Valley'  'southern mississippi valley'  'SMV'  'smv'
-    
-    Southern Plains: 'Southern Plains'  'SOUTHERN PLAINS'  'southern plains'  'SPLAINS'  'splains'  'SP'  'sp'
-    
-    Southern Rockies: 'Southern Rockies'  'southern rockies'  'SR'  'sr'
-    
-    Upper Mississippi Valley: 'Upper Mississippi Valley'  'upper mississippi valley'  'UMV'  'umv'
+Here is the list of abbreviations for other directory names if the user wishes to change this setting: 
 
-29) file_path (String) - The local file path of the downloaded binary file from the NWS FTP Server (e.g. 'ds.maxt.bin' for the Maximum Temperature Forecast) 
+CONUS: 'CONUS' or 'US' or 'USA' or 'conus' or 'us' or 'usa'
+
+Central Great Lakes: 'Central Great Lakes' or 'CGL' or 'central great lakes' or 'cgl'
+
+Central Mississippi Valley: 'Central Mississippi Valley'  'central mississippi valley'  'CMV'  'cmv'
+
+Central Plains: 'Central Plains'  'central plains'  'CP'  'cp'
+
+Central Rockies: 'Central Rockies'  'central rockies'  'CR'  'cr'
+
+Eastern Great Lakes: 'Eastern Great Lakes'  'eastern great lakes'  'EGL'  'egl'
+
+Mid Atlantic: 'Mid Atlantic'  'Mid-Atlantic'  'mid atlantic'  'mid-atlantic'  'ma'  'Mid Atl'  'mid atl'  'Mid-Atl'  'mid-atl'
+
+Northeast: 'Northeast'  'northeast'  'neast'  'NE'  'ne'  'NEAST'  'Neast'
+
+Alaska: 'Alaska'  'AK'  'ak'  'alaska'
+
+Guam: 'GUAM'  'Guam'  'guam'  'GM'  'gm'
+
+Hawaii: 'Hawaii'  'HAWAII'  'HI'  'hi'
+
+Northern Hemisphere: 'Northern Hemisphere'  'NHemisphere'  'northern hemisphere'  'nhemisphere'  'NH'  'nh'
+
+North Pacific Ocean: 'North Pacific Ocean'  'NORTH PACIFIC OCEAN'  'north pacific ocean'  'npo'  'NPO'
+
+Northern Plains: 'Northern Plains'  'NORTHERN PLAINS'  'northern plains'  'NP'  'np'  'NPLAINS'  'nplains'
+
+Northern Rockies: 'Northern Rockies'  'northern rockies'  'NR'  'nr'
+
+Oceanic: 'Oceanic'  'OCEANIC'  'oceanic'  'o'  'O'
+
+Pacific Northwest: 'Pacific Northwest'  'PACIFIC NORTHWEST'  'pacific northwest'  'PNW'  'pnw'  'PACNW'  'pacnw'
+
+Pacific Southwest: 'Pacific Southwest'  'PACIFIC SOUTHWEST'  'pacific southwest'  'PSW'  'psw'  'PACSW'  'pacsw'
+
+Puerto Rico: 'Puerto Rico'  'PUERTO RICO'  'puerto rico'  'PR'  'pr'
+
+Southeast: 'Southeast'  'SOUTHEAST'  'southeast'  'SEAST'  'seast'  'SE'  'se'
+
+Southern Mississippi Valley: 'Southern Mississippi Valley'  'southern mississippi valley'  'SMV'  'smv'
+
+Southern Plains: 'Southern Plains'  'SOUTHERN PLAINS'  'southern plains'  'SPLAINS'  'splains'  'SP'  'sp'
+
+Southern Rockies: 'Southern Rockies'  'southern rockies'  'SR'  'sr'
+
+Upper Mississippi Valley: 'Upper Mississippi Valley'  'upper mississippi valley'  'UMV'  'umv'
+
+28) file_path (String) - The local file path of the downloaded binary file from the NWS FTP Server (e.g. 'ds.maxt.bin' for the Maximum Temperature Forecast) 
 This setting is only to be changed if the user wants to limit the times the file downloads in the script and downloads the 
 binary file outside of the functions (which is to be done at the beginning of the script before these plotting functions are called). 
 Default setting is None. Please see the documentation for the data_access module if the user wishes to download the data outside of this
 function. 
 
-30) count_short (Integer) - This is the number of GRIB timestamps in the short-term forecast. This value
+29) count_short (Integer) - This is the number of GRIB timestamps in the short-term forecast. This value
 is returned by the function that downloads the NWS Forecast data in the FTP_Downloads class of the 
 data_access module. This value is to be passed in if and only if the user downloads the data outside 
 of this function. Default setting is None. 
 
-31) count_extended (Integer) - This is the number of GRIB timestamps in the extended forecast. This value
+30) count_extended (Integer) - This is the number of GRIB timestamps in the extended forecast. This value
 is returned by the function that downloads the NWS Forecast data in the FTP_Downloads class of the 
 data_access module. This value is to be passed in if and only if the user downloads the data outside 
 of this function. Default setting is None. 
 
-32) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+31) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
 If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
 or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
 acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
 changed to None. 
 
-33) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+32) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
 If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
 None and the gacc_region variable must be set to one of the acceptable abbreviations. 
 
-    Here is a list of acceptable gacc_region abbreviations:
-    
-    South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
-    
-    North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
-    
-    Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
-    
-    Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
-    
-    Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
-    
-    Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
-    
-    Southern: 'SACC' or 'sacc' or 'SE' or 'se'
-    
-    Eastern: 'EACC' or 'eacc' or 'E' or 'e'
-    
-    Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
-    
-    Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
-    
-Return: A list of figures for each forecast day. 
+Here is a list of acceptable gacc_region abbreviations:
+
+South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+
+North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+
+Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+
+Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+
+Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+
+Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+
+Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+
+Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+
+Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+
+Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+Return: Saves individual images to a folder and creates a GIF from those images. 
 
