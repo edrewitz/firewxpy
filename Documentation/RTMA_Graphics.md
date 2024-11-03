@@ -4,7 +4,7 @@
 
 1) [plot_relative_humidity()](#plot_relative_humidity)
 2) [plot_low_and_high_relative_humidity()](#plot_low_and_high_relative_humidity)
-3) [plot_24_hour_relative_humidity_comparison()]
+3) [plot_24_hour_relative_humidity_comparison()](#plot_low_and_high_relative_humidity)
 4) [plot_temperature()]
 5) [plot_temperature_advection()]
 6) [plot_dew_point_advection]
