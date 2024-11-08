@@ -561,7 +561,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
 
     plt.style.use('seaborn-v0_8-darkgrid')
     
-    fig = plt.figure(figsize=(10,10))
+    fig = plt.figure(figsize=(12,10))
     fig.set_facecolor('aliceblue')
     fig.suptitle("Santa Ana Wildfire Threat Index (SAWTI)", fontsize=16, fontweight='bold')
     
@@ -614,8 +614,11 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     ax4.axhspan(zone_4_threshold_4, 60, color='purple', alpha=0.3, zorder=1)
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+    box = dict(boxstyle='round', facecolor='lavender', alpha=1)
 
     fig.text(0.1, 0.05, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: sdge.sdsc.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=12, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)    
+
+    fig.text(0.55, 0, f"                                 Weighting of LFP Components By Zone\nZone 1: Wind: {zone_1_W_weight} | Dew Point Depression: {zone_1_DD_weight} | Fuel Moisture Component: {zone_1_FMC_weight}\nZone 2: Wind: {zone_2_W_weight} | Dew Point Depression: {zone_2_DD_weight} | Fuel Moisture Component: {zone_2_FMC_weight}\nZone 3: Wind: {zone_3_W_weight} | Dew Point Depression: {zone_3_DD_weight} | Fuel Moisture Component: {zone_3_FMC_weight}\nZone 4: Wind: {zone_4_W_weight} | Dew Point Depression: {zone_4_DD_weight} | Fuel Moisture Component: {zone_4_FMC_weight}", fontsize=9, fontweight='bold', bbox=box)
 
     if zone_1_W_weight == 1 and zone_1_DD_weight == 1 and zone_1_FMC_weight == 1 and zone_2_W_weight ==1 and zone_2_DD_weight == 1 and zone_2_FMC_weight == 1 and zone_3_W_weight == 1 and zone_3_DD_weight == 1 and zone_3_FMC_weight == 1 and zone_4_W_weight == 1 and zone_4_DD_weight == 1 and zone_4_FMC_weight == 1:
 
