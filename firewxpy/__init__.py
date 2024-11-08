@@ -8,3 +8,4 @@ from firewxpy.NWS_Forecast_Graphics import dry_and_windy as nws_dry_and_windy_fo
 from firewxpy.observations import graphical_daily_summary
 from firewxpy.soundings import plot_observed_sounding, plot_observed_sounding_custom_date_time
 from firewxpy.dims import get_metar_mask
+from firewxpy.sawti import sawti
