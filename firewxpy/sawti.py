@@ -13,6 +13,19 @@ mpl.rcParams['font.weight'] = 'bold'
 
 def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, zone_1_threshold_4=40, zone_2_threshold_1=9, zone_2_threshold_2=13, zone_2_threshold_3=20, zone_2_threshold_4=28, zone_3_threshold_1=10, zone_3_threshold_2=16, zone_3_threshold_3=24, zone_3_threshold_4=36, zone_4_threshold_1=9, zone_4_threshold_2=12, zone_4_threshold_3=15, zone_4_threshold_4=25, zone_1_W_weight=1, zone_1_DD_weight=1, zone_1_FMC_weight=1, zone_2_W_weight=1, zone_2_DD_weight=1, zone_2_FMC_weight=1, zone_3_W_weight=1, zone_3_DD_weight=1, zone_3_FMC_weight=1, zone_4_W_weight=1, zone_4_DD_weight=1, zone_4_FMC_weight=1):
 
+    r'''
+    This function calculates the The Santa Ana Wildfire Threat Index from Rolinski et al. 2016. The function downloads the .CSV files holding the data, performs the Large Fire Potential (LFP) calculation and makes a bar graph
+    for each zone. 
+
+    Literature Citation: Rolinski, T., S. B. Capps, R. G. Fovell, Y. Cao, B. J. D’Agostino, and S. Vanderburg, 2016: The Santa Ana Wildfire Threat Index: Methodology and Operational Implementation. Wea. Forecasting, 31, 1881–1897, https://doi.org/10.1175/WAF-D-15-0141.1.
+
+    Required Arguments: None
+
+    Optional Arguments: 1) zone_1_threshold_1 (Integer) - Default = 10. This is the LFP threshold that seprates no rating (green zone) and a marginal risk (yellow zone) for zone 1. 
+                        2) zone_1_threshold_2
+    '''
+
+    
     local_time, utc_time = standard.plot_creation_time()
 
     now = datetime.utcnow()
