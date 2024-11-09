@@ -109,20 +109,20 @@ The `nws_relative_humidity_forecast` class hosts 7 functions that plot the NWS R
 16) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
     wishes to use a reference system not on this list, please see items 17-23. 
 
-Reference Systems:
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems:
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
                        
 
 18) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -404,20 +404,20 @@ This function plots the latest available NOAA/NWS Excellent Overnight Recovery R
 16) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
     wishes to use a reference system not on this list, please see items 17-23. 
 
-Reference Systems:
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems:
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
                        
 
 18) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -695,20 +695,20 @@ Optional Arguments:
 15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
     wishes to use a reference system not on this list, please see items 17-23. 
 
-Reference Systems:
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems:
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
                        
 
 17) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -987,20 +987,20 @@ Optional Arguments:
 15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
     wishes to use a reference system not on this list, please see items 17-23. 
 
-Reference Systems:
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems:
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
                        
 
 17) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -1282,20 +1282,20 @@ Optional Arguments:
 16) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
     wishes to use a reference system not on this list, please see items 17-23. 
 
-Reference Systems:
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems:
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
                        
 
 18) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -1572,20 +1572,20 @@ Optional Arguments:
 15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
     wishes to use a reference system not on this list, please see items 17-23. 
 
-Reference Systems:
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems:
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
                        
 
 17) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -1863,20 +1863,20 @@ Optional Arguments:
 15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
     wishes to use a reference system not on this list, please see items 17-23. 
 
-Reference Systems:
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems:
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
                        
 
 17) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -2191,20 +2191,20 @@ Optional Arguments:
 24) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
     wishes to use a reference system not on this list, please see items 17-23. 
 
-Reference Systems:
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems:
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
                        
 
 26) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -2501,20 +2501,20 @@ Optional Arguments:
 24) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
     wishes to use a reference system not on this list, please see items 17-23.
     
-Reference Systems:
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems:
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
 
 26) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
     Default setting is False. Users should change this value to False if they wish to hide state borders. 
@@ -2795,20 +2795,20 @@ Optional Arguments:
 16) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
   wishes to use a reference system not on this list, please see items 17-23.
 
-Reference Systems: 
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+  Reference Systems: 
+  1) 'States & Counties'
+  2) 'States Only'
+  3) 'GACC Only'
+  4) 'GACC & PSA'
+  5) 'CWA Only'
+  6) 'NWS CWAs & NWS Public Zones'
+  7) 'NWS CWAs & NWS Fire Weather Zones'
+  8) 'NWS CWAs & Counties'
+  9) 'GACC & PSA & NWS Fire Weather Zones'
+  10) 'GACC & PSA & NWS Public Zones'
+  11) 'GACC & PSA & NWS CWA'
+  12) 'GACC & PSA & Counties'
+  13) 'GACC & Counties'
                      
 
 18) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -3105,20 +3105,20 @@ Optional Arguments:
 24) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
   wishes to use a reference system not on this list, please see items 17-23. 
   
-Reference Systems: 
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems: 
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
                      
 
 25) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -3416,20 +3416,20 @@ Default setting is True. Users should change this value to False if they wish to
 24) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
 wishes to use a reference system not on this list, please see items 17-23. 
 
-Reference Systems:
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+  Reference Systems:
+  1) 'States & Counties'
+  2) 'States Only'
+  3) 'GACC Only'
+  4) 'GACC & PSA'
+  5) 'CWA Only'
+  6) 'NWS CWAs & NWS Public Zones'
+  7) 'NWS CWAs & NWS Fire Weather Zones'
+  8) 'NWS CWAs & Counties'
+  9) 'GACC & PSA & NWS Fire Weather Zones'
+  10) 'GACC & PSA & NWS Public Zones'
+  11) 'GACC & PSA & NWS CWA'
+  12) 'GACC & PSA & Counties'
+  13) 'GACC & Counties'
 
 
 25) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -3708,20 +3708,20 @@ Optional Arguments:
 15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
     wishes to use a reference system not on this list, please see items 17-23. 
 
-Reference Systems:
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems:
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
                        
 
 17) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -3999,20 +3999,20 @@ Optional Arguments:
 15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
     wishes to use a reference system not on this list, please see items 17-23. 
 
-Reference Systems:
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems:
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
                        
 
 17) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -4307,20 +4307,20 @@ Default setting is True. Users should change this value to False if they wish to
 17) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
 wishes to use a reference system not on this list, please see items 17-23. 
 
-Reference Systems: 
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems: 
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
 
 
 18) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
@@ -4607,20 +4607,20 @@ Default setting is True. Users should change this value to False if they wish to
 17) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
 wishes to use a reference system not on this list, please see items 17-23. 
 
-Reference Systems:
-1) 'States & Counties'
-2) 'States Only'
-3) 'GACC Only'
-4) 'GACC & PSA'
-5) 'CWA Only'
-6) 'NWS CWAs & NWS Public Zones'
-7) 'NWS CWAs & NWS Fire Weather Zones'
-8) 'NWS CWAs & Counties'
-9) 'GACC & PSA & NWS Fire Weather Zones'
-10) 'GACC & PSA & NWS Public Zones'
-11) 'GACC & PSA & NWS CWA'
-12) 'GACC & PSA & Counties'
-13) 'GACC & Counties'
+    Reference Systems:
+    1) 'States & Counties'
+    2) 'States Only'
+    3) 'GACC Only'
+    4) 'GACC & PSA'
+    5) 'CWA Only'
+    6) 'NWS CWAs & NWS Public Zones'
+    7) 'NWS CWAs & NWS Fire Weather Zones'
+    8) 'NWS CWAs & Counties'
+    9) 'GACC & PSA & NWS Fire Weather Zones'
+    10) 'GACC & PSA & NWS Public Zones'
+    11) 'GACC & PSA & NWS CWA'
+    12) 'GACC & PSA & Counties'
+    13) 'GACC & Counties'
 
 
 18) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
