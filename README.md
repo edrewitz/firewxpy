@@ -31,7 +31,7 @@ Copyright (C) Meteorologist Eric J. Drewitz 2024
 This package is largely inspired by the MetPy package which was developed and is currently being maintained by Unidata (please see citation below in the citations section).
 
 # FireWxPy Documentation 
-https://github.com/edrewitz/FireWxPy/blob/main/FireWxPy_docs.md
+[https://github.com/edrewitz/FireWxPy/blob/main/FireWxPy_docs.md](https://github.com/edrewitz/firewxpy/tree/main/Documentation)
 
 # Author
 Eric J. Drewitz
