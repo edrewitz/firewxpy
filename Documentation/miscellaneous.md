@@ -1,7 +1,7 @@
 # **Table of Contents**
 1) [Data Access Module](#data-access-module)
-2) [Standard Module]
-3) [Dims Module]
+2) [Standard Module](#standard-module)
+3) [Dims Module](#dims-module)
 
 
 
@@ -34,7 +34,7 @@ This function retrieves the latest RTMA Dataset for the user.
 
 Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
 
-Required Argument: 1) Current Time in UTC (please see the [standard module]() for more information on how to get the current time. 
+Required Argument: 1) Current Time in UTC (please see the [standard module](#standard-module) for more information on how to get the current time. 
 
 Returns: 
 
@@ -49,7 +49,7 @@ This function retrieves the latest RTMA Dataset and the RTMA Dataset for 24-Hour
 
 Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
 
-Required Argument: 1) Current Time in UTC (please see the [standard module]() for more information on how to get the current time. 
+Required Argument: 1) Current Time in UTC (please see the [standard module](#standard-module) for more information on how to get the current time. 
 
 Returns: 
 
@@ -70,9 +70,9 @@ Data Source: UCAR/THREDDS (https://thredds.ucar.edu/)
 
 Required Argument: 
 
-1) Current Time in UTC (please see the [standard module]() for more information on how to get the current time. 
+1) Current Time in UTC (please see the [standard module](#standard-module) for more information on how to get the current time. 
 
-2) (Mask) Minimum radius allowed between points. If units are not provided, meters is assumed (please see the [dims module]() for more information on how to get the mask. 
+2) (Mask) Minimum radius allowed between points. If units are not provided, meters is assumed (please see the [dims module](#dims-module) for more information on how to get the mask. 
 
 Returns: A list of all the aformentioned data:
 
@@ -96,9 +96,9 @@ Inputs:
 1) parameter (String) - The weather parameter the user wishes to download. 
 To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
 
-2) current_time (Datetime) - Current date and time in UTC (please see the [standard module]() for more information on how to get the current time.  
+2) current_time (Datetime) - Current date and time in UTC (please see the [standard module](#standard-module) for more information on how to get the current time.  
 3) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed
-                     (please see the [dims module]() for more information on how to get the mask  
+                     (please see the [dims module](#dims-module) for more information on how to get the mask  
 
 Returns: 
 
@@ -118,7 +118,7 @@ This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale A
 
 Inputs:
 
-1) current_time (Datetime) - Current time in UTC (please see the [standard module]() for more information on how to get the current time.  
+1) current_time (Datetime) - Current time in UTC (please see the [standard module](#standard-module) for more information on how to get the current time.  
 2) parameter (String) - The weather parameter the user wishes to download. 
 To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
 
@@ -302,7 +302,7 @@ This function may also return an error message for either:
 
 ***Functions***
 
-1) [plot_creation_time()]
+1) [plot_creation_time()](#plot_creation_time)
 
 #### plot_creation_time()
 
@@ -326,7 +326,7 @@ Returns:
 
 ***Functions***
 
-1) [get_metar_mask(state, gacc_region, rtma_ws=False)]
+1) [get_metar_mask(state, gacc_region, rtma_ws=False)](#get_metar_maskstate-gacc_region-rtma_wsfalse)
 
 #### get_metar_mask(state, gacc_region, rtma_ws=False)
 
@@ -345,27 +345,27 @@ Required Arguments:
                             If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
                             None and the gacc_region variable must be set to one of the acceptable abbreviations. 
 
-                            Here is a list of acceptable gacc_region abbreviations:
+Here is a list of acceptable gacc_region abbreviations:
 
-                            South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
-   
-                            North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
-   
-                            Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
-   
-                            Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
-   
-                            Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
-   
-                            Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
-   
-                            Southern: 'SACC' or 'sacc' or 'SE' or 'se'
-   
-                            Eastern: 'EACC' or 'eacc' or 'E' or 'e'
-   
-                            Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
-   
-                            Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown.
+South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+
+North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+
+Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+
+Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+
+Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+
+Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+
+Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+
+Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+
+Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+
+Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown.
 
   Optional Arguments:
   
