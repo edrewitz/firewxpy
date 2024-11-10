@@ -298,18 +298,81 @@ This function may also return an error message for either:
 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
 
 
+## ***Standard Module***
+
+***Functions***
+
+1) [plot_creation_time()]
+
+#### plot_creation_time()
+
+This function uses the datetime module to find the time at which the script ran. 
+
+This can be used in many ways:
+
+1) Timestamp for graphic in both local time and UTC
+2) When downloading data with functions in the data_access module, this function is called to find 
+the time which is passed into the data downloading functions in order for the latest data to be
+downloaded. 
+
+There are no variables to pass into this function. 
+
+Returns: 
+
+1) Current Local Time
+2) Current UTC Time
+
+## ***Dims Module***
+
+***Functions***
+
+1) [get_metar_mask(state, gacc_region, rtma_ws=False)]
+
+#### get_metar_mask(state, gacc_region, rtma_ws=False)
+
+This function returns the METAR mask for a given state or GACC region. 
+
+Required Arguments:
+
+1) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                            If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                            or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                            acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                            changed to None. 
 
 
+2) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                            If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                            None and the gacc_region variable must be set to one of the acceptable abbreviations. 
 
+                            Here is a list of acceptable gacc_region abbreviations:
 
+                            South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+   
+                            North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+   
+                            Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+   
+                            Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+   
+                            Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+   
+                            Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+   
+                            Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+   
+                            Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+   
+                            Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+   
+                            Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown.
 
+  Optional Arguments:
+  
+  1) rtma_ws (Boolean) - Default = False. When set to False, the mask value returned is for when the user wants to create full station plots.
+     When rtma_ws=True, the mask returned is for when the user is only plotting wind barbs of observed winds from the METAR observations rather than the full station plot.
 
-
-
-
-
-
-
+Returns: The value of the mask applied to the METAR observations. This way station plots aren't cluttered over each other. 
 
 
 
