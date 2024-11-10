@@ -36,7 +36,7 @@ This package is largely inspired by the MetPy package which was developed and is
 # Author
 Eric J. Drewitz
 
-USDA/USFS Meteorologist
+USDA/USFS Predictive Services Meteorologist
 
 Southern California Geographic Area Coordination Center
 
