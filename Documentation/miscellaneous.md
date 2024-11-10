@@ -138,9 +138,141 @@ This is the recommended method for users who wish to create a large amount of gr
 
 ***Functions***
 
-1) 
+1) [download_NDFD_grids(directory_name, parameter)]
+2) [download_short_term_NDFD_grids(directory_name, parameter)]
+3) [download_extended_NDFD_grids(directory_name, parameter)]
+4) [get_NWS_NDFD_7_Day_grid_data(directory_name, parameter)]
+
+#### Directory Paths
+
+ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
+CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
+CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
+CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
+CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
+CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
+EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
+GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
+HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
+MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
+NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
+NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
+NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
+NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
+NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
+OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
+PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
+PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
+PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
+SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
+SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
+SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
+SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
+UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
 
 
+
+#### download_NDFD_grids(directory_name, parameter)
+
+This function retrieves the latest NWS Forecast (NDFD) files from the NWS FTP Server. 
+
+Scripts that download files from the CONUS directory are recommended to be run between the 48th and 15th 
+minute to avoid the script idiling. The reason is because the files in the CONUS directory update between the 15th
+and 48th minute of the hour (and downloading them during that time makes them extremely hard to work with!!). Due
+to this, if there is an issue with the data, the program will automatically idle until the 48th minute and resume and try again to download the latest data. 
+
+Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
+
+Required Arguments: 
+
+1) The name of the directory (see FireWxPy documentation for [directory paths])
+
+2) The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
+
+Returns: 
+
+1) The files holding the forecast data in a GRIB2 format. 
+
+2) An xarray data-array of the same forecast data. 
+
+3) The count of the number of files in the short-term forecast period. 
+
+4) The count of the number of files in the extended forecast period. 
+
+
+#### download_short_term_NDFD_grids(directory_name, parameter)
+
+This function retrieves the latest NWS Forecast (NDFD) files from the NWS FTP Server. 
+
+Scripts that download files from the CONUS directory are recommended to be run between the 48th and 15th 
+minute to avoid the script idiling. The reason is because the files in the CONUS directory update between the 15th
+and 48th minute of the hour (and downloading them during that time makes them extremely hard to work with!!). Due
+to this, if there is an issue with the data, the program will automatically idle until the 48th minute and resume and try again to download the latest data. 
+
+Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
+
+Required Arguments: 
+
+1) The name of the directory (see FireWxPy documentation for [directory paths])
+
+2) The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
+
+Returns: 
+
+1) The files holding the forecast data in a GRIB2 format. 
+
+2) An xarray data-array of the same forecast data. 
+
+3) The count of the number of files in the short-term forecast period. 
+
+4) The count of the number of files in the extended forecast period. 
+
+#### download_extended_NDFD_grids(directory_name, parameter)
+
+This function retrieves the latest NWS Forecast (NDFD) files from the NWS FTP Server. 
+
+Scripts that download files from the CONUS directory are recommended to be run between the 48th and 15th 
+minute to avoid the script idiling. The reason is because the files in the CONUS directory update between the 15th
+and 48th minute of the hour (and downloading them during that time makes them extremely hard to work with!!). Due
+to this, if there is an issue with the data, the program will automatically idle until the 48th minute and resume and try again to download the latest data. 
+
+Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
+
+Required Arguments: 
+
+1) The name of the directory (see FireWxPy documentation for [directory paths])
+
+2) The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
+
+Returns: 
+
+1) The files holding the forecast data in a GRIB2 format. 
+
+2) An xarray data-array of the same forecast data. 
+
+3) The count of the number of files in the short-term forecast period. 
+
+4) The count of the number of files in the extended forecast period.
+
+
+#### get_NWS_NDFD_7_Day_grid_data(directory_name, parameter)
+
+This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
+This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
+
+Inputs:
+1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
+The directory determines the domain the forecast data is valid for. See [directory paths] for more information on each proper path. 
+
+2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
+Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
+https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
+
+Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
+This function may also return an error message for either: 
+
+1) A bad file path (invalid directory_name)
+2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
 
 
 
