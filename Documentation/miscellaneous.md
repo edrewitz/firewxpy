@@ -1,5 +1,5 @@
-# **Table of Contents
-1) [Data Access Module]
+# **Table of Contents**
+1) [Data Access Module](#data-access-module)
 2) [Standard Module]
 3) [Dims Module]
 
@@ -7,9 +7,9 @@
 
 ## ***Data Access Module***
 
-## **Classes**
-1) [RTMA_CONUS]
-2) [NDFD_CONUS]
+ **Classes**
+1) [RTMA_CONUS](#rtma_conus-class)
+2) [NDFD_CONUS](#ndfd_conus-class)
 
 ### RTMA_CONUS Class
 
@@ -22,11 +22,11 @@ This is the recommended method for users who wish to create a large amount of gr
 
 ***Functions***
 
-1) [get_RTMA_dataset(current_time)]
-2) [get_RTMA_24_hour_comparison_datasets(current_time)]
-3) [RTMA_Relative_Humidity_Synced_With_METAR(current_time, mask)]
-4) [RTMA_Synced_With_METAR(parameter, current_time, mask)]
-5) [get_current_rtma_data(current_time, parameter)]
+1) [get_RTMA_dataset(current_time)](#get_rtma_datasetcurrent_time)
+2) [get_RTMA_24_hour_comparison_datasets(current_time)](#get_rtma_24_hour_comparison_datasetscurrent_time)
+3) [RTMA_Relative_Humidity_Synced_With_METAR(current_time, mask)](#rtma_relative_humidity_synced_with_metarcurrent_time-mask)
+4) [RTMA_Synced_With_METAR(parameter, current_time, mask)](#get_current_rtma_datacurrent_time-parameter)
+5) [get_current_rtma_data(current_time, parameter)](#get_current_rtma_datacurrent_time-parameter)
 
 #### get_RTMA_dataset(current_time)
 
@@ -138,10 +138,10 @@ This is the recommended method for users who wish to create a large amount of gr
 
 ***Functions***
 
-1) [download_NDFD_grids(directory_name, parameter)]
-2) [download_short_term_NDFD_grids(directory_name, parameter)]
-3) [download_extended_NDFD_grids(directory_name, parameter)]
-4) [get_NWS_NDFD_7_Day_grid_data(directory_name, parameter)]
+1) [download_NDFD_grids(directory_name, parameter)](#download_ndfd_gridsdirectory_name-parameter)
+2) [download_short_term_NDFD_grids(directory_name, parameter)](#download_short_term_ndfd_gridsdirectory_name-parameter)
+3) [download_extended_NDFD_grids(directory_name, parameter)](#download_extended_ndfd_gridsdirectory_name-parameter)
+4) [get_NWS_NDFD_7_Day_grid_data(directory_name, parameter)](#get_nws_ndfd_7_day_grid_datadirectory_name-parameter)
 
 #### Directory Paths
 
@@ -208,7 +208,7 @@ Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
 
 Required Arguments: 
 
-1) The name of the directory (see FireWxPy documentation for [directory paths])
+1) The name of the directory (see FireWxPy documentation for [directory paths](#directory-paths))
 
 2) The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
 
@@ -236,7 +236,7 @@ Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
 
 Required Arguments: 
 
-1) The name of the directory (see FireWxPy documentation for [directory paths])
+1) The name of the directory (see FireWxPy documentation for [directory paths](#directory-paths))
 
 2) The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
 
@@ -263,7 +263,7 @@ Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
 
 Required Arguments: 
 
-1) The name of the directory (see FireWxPy documentation for [directory paths])
+1) The name of the directory (see FireWxPy documentation for [directory paths](#directory-paths))
 
 2) The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
 
@@ -285,7 +285,7 @@ This function is specifically for downloading the entire National Weather Servic
 
 Inputs:
 1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
-The directory determines the domain the forecast data is valid for. See [directory paths] for more information on each proper path. 
+The directory determines the domain the forecast data is valid for. See [directory paths](#directory-paths) for more information on each proper path. 
 
 2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
 Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
