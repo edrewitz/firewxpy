@@ -77,13 +77,21 @@ Required Argument:
 Returns: A list of all the aformentioned data:
 
 RTMA RH Data = data[0]
+
 The time corresponding to the dataset = data[1]
+
 Surface METAR Data = data[2]
+
 METAR u-component of wind (kt) = data[3]
+
 METAR v-component of wind (kt) = data[4]
+
 METAR RH Data = data[5]
+
 Mask (Minimum radius allowed between points) = data[6]
+
 Time of METAR Observations = data[7]
+
 Projection for the data = data[8]  
 
 #### RTMA_Synced_With_METAR(parameter, current_time, mask)
