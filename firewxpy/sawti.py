@@ -54,7 +54,6 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
                         
     '''
 
-    
     local_time, utc_time = standard.plot_creation_time()
 
     now = datetime.utcnow()
@@ -79,7 +78,12 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
                 os.remove('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv')
                 print('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv has been deleted')
             except Exception as e:
-                pass
+                try:
+                    os.remove('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_00z.csv')
+                    print('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_00z.csv has been deleted')
+                    print("\n")
+                except Exception as e:
+                    pass
     
     # Zone 2
     try:
@@ -94,7 +98,12 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
                 os.remove('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv')
                 print('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv has been deleted')
             except Exception as e:
-                pass
+                try:
+                    os.remove('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_00z.csv')
+                    print('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_00z.csv has been deleted')
+                    print("\n")
+                except Exception as e:
+                    pass
     
     # Zone 3
     try:
@@ -109,7 +118,12 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
                 os.remove('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv')
                 print('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv has been deleted')
             except Exception as e:
-                pass
+                try:
+                    os.remove('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_00z.csv')
+                    print('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_00z.csv has been deleted')
+                    print("\n")
+                except Exception as e:
+                    pass
     
     try:
         os.remove('seaspace_zone4_'+now.strftime('%m%d%Y')+'_12z.csv')
@@ -126,7 +140,12 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
                 print('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv has been deleted')
                 print("\n")
             except Exception as e:
-                pass
+                try:
+                    os.remove('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_00z.csv')
+                    print('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_00z.csv has been deleted')
+                    print("\n")
+                except Exception as e:
+                    pass
         
     
     '''
