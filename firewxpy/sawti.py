@@ -66,86 +66,111 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     day7 = now + timedelta(days=6)
     
     # Zone 1
-    try:
+
+    if os.path.exists('seaspace_zone1_'+now.strftime('%m%d%Y')+'_12z.csv'):
         os.remove('seaspace_zone1_'+now.strftime('%m%d%Y')+'_12z.csv')
         print('seaspace_zone1_'+now.strftime('%m%d%Y')+'_12z.csv has been deleted')
-    except Exception as e:
-        try:
-            os.remove('seaspace_zone1_'+now.strftime('%m%d%Y')+'_00z.csv')
-            print('seaspace_zone1_'+now.strftime('%m%d%Y')+'_00z.csv has been deleted')
-        except Exception as e:
-            try:
-                os.remove('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv')
-                print('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv has been deleted')
-            except Exception as e:
-                try:
-                    os.remove('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_00z.csv')
-                    print('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_00z.csv has been deleted')
-                    print("\n")
-                except Exception as e:
-                    pass
+    else:
+        pass
+        
+    if os.path.exists('seaspace_zone1_'+now.strftime('%m%d%Y')+'_00z.csv'):
+        os.remove('seaspace_zone1_'+now.strftime('%m%d%Y')+'_00z.csv')
+        print('seaspace_zone1_'+now.strftime('%m%d%Y')+'_00z.csv has been deleted')
+    else:
+        pass
+
+    if os.path.exists('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv'):
+        os.remove('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv')
+        print('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv has been deleted')
+    else:
+        pass
+        
+    if os.path.exists('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_00z.csv'):
+        os.remove('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_00z.csv')
+        print('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_00z.csv has been deleted')
+    else:
+        pass   
+
     
     # Zone 2
-    try:
+    if os.path.exists('seaspace_zone2_'+now.strftime('%m%d%Y')+'_12z.csv'):
         os.remove('seaspace_zone2_'+now.strftime('%m%d%Y')+'_12z.csv')
         print('seaspace_zone2_'+now.strftime('%m%d%Y')+'_12z.csv has been deleted')
-    except Exception as e:
-        try:
-            os.remove('seaspace_zone2_'+now.strftime('%m%d%Y')+'_00z.csv')
-            print('seaspace_zone2_'+now.strftime('%m%d%Y')+'_00z.csv has been deleted')
-        except Exception as e:
-            try:
-                os.remove('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv')
-                print('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv has been deleted')
-            except Exception as e:
-                try:
-                    os.remove('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_00z.csv')
-                    print('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_00z.csv has been deleted')
-                    print("\n")
-                except Exception as e:
-                    pass
+    else:
+        pass
+        
+    if os.path.exists('seaspace_zone2_'+now.strftime('%m%d%Y')+'_00z.csv'):
+        os.remove('seaspace_zone2_'+now.strftime('%m%d%Y')+'_00z.csv')
+        print('seaspace_zone2_'+now.strftime('%m%d%Y')+'_00z.csv has been deleted')
+    else:
+        pass
+
+    if os.path.exists('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv'):
+        os.remove('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv')
+        print('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv has been deleted')
+    else:
+        pass
+        
+    if os.path.exists('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_00z.csv'):
+        os.remove('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_00z.csv')
+        print('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_00z.csv has been deleted')
+    else:
+        pass   
     
     # Zone 3
-    try:
+    if os.path.exists('seaspace_zone3_'+now.strftime('%m%d%Y')+'_12z.csv'):
         os.remove('seaspace_zone3_'+now.strftime('%m%d%Y')+'_12z.csv')
         print('seaspace_zone3_'+now.strftime('%m%d%Y')+'_12z.csv has been deleted')
-    except Exception as e:
-        try:
-            os.remove('seaspace_zone3_'+now.strftime('%m%d%Y')+'_00z.csv')
-            print('seaspace_zone3_'+now.strftime('%m%d%Y')+'_00z.csv has been deleted')
-        except Exception as e:
-            try:
-                os.remove('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv')
-                print('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv has been deleted')
-            except Exception as e:
-                try:
-                    os.remove('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_00z.csv')
-                    print('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_00z.csv has been deleted')
-                    print("\n")
-                except Exception as e:
-                    pass
+    else:
+        pass
+        
+    if os.path.exists('seaspace_zone3_'+now.strftime('%m%d%Y')+'_00z.csv'):
+        os.remove('seaspace_zone3_'+now.strftime('%m%d%Y')+'_00z.csv')
+        print('seaspace_zone3_'+now.strftime('%m%d%Y')+'_00z.csv has been deleted')
+    else:
+        pass
+
+    if os.path.exists('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv'):
+        os.remove('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv')
+        print('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv has been deleted')
+    else:
+        pass
+        
+    if os.path.exists('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_00z.csv'):
+        os.remove('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_00z.csv')
+        print('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_00z.csv has been deleted')
+    else:
+        pass  
+
+    # Zone 4
     
-    try:
+    if os.path.exists('seaspace_zone4_'+now.strftime('%m%d%Y')+'_12z.csv'):
         os.remove('seaspace_zone4_'+now.strftime('%m%d%Y')+'_12z.csv')
         print('seaspace_zone4_'+now.strftime('%m%d%Y')+'_12z.csv has been deleted')
-        print("\n")
-    except Exception as e:
-        try:
-            os.remove('seaspace_zone4_'+now.strftime('%m%d%Y')+'_00z.csv')
-            print('seaspace_zone4_'+now.strftime('%m%d%Y')+'_00z.csv has been deleted')
-            print("\n")
-        except Exception as e:
-            try:
-                os.remove('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv')
-                print('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv has been deleted')
-                print("\n")
-            except Exception as e:
-                try:
-                    os.remove('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_00z.csv')
-                    print('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_00z.csv has been deleted')
-                    print("\n")
-                except Exception as e:
-                    pass
+        print('\n')
+    else:
+        pass
+        
+    if os.path.exists('seaspace_zone4_'+now.strftime('%m%d%Y')+'_00z.csv'):
+        os.remove('seaspace_zone4_'+now.strftime('%m%d%Y')+'_00z.csv')
+        print('seaspace_zone4_'+now.strftime('%m%d%Y')+'_00z.csv has been deleted')
+        print('\n')
+    else:
+        pass
+
+    if os.path.exists('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv'):
+        os.remove('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv')
+        print('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv has been deleted')
+        print('\n')
+    else:
+        pass
+        
+    if os.path.exists('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_00z.csv'):
+        os.remove('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_00z.csv')
+        print('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_00z.csv has been deleted')
+        print('\n')
+    else:
+        pass   
         
     
     '''
@@ -352,7 +377,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
         else:
             z1_FMC_6 = z1_FMC_6
 
-        z1_FMC_7 = zone_1_FMC_weight * df1['FMC'].iloc[7]
+        z1_FMC_7 = zone_1_FMC_weight * df1['FMC'].iloc[6]
         if z1_FMC_7 > 1:
             z1_FMC_7 = 1
             print("FMC ranges between 0 and 1. The weight applied puts this value over 1. Setting the FMC value to 1.")
@@ -430,7 +455,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
         else:
             z2_FMC_6 = z2_FMC_6
 
-        z2_FMC_7 = zone_2_FMC_weight * df2['FMC'].iloc[7]
+        z2_FMC_7 = zone_2_FMC_weight * df2['FMC'].iloc[6]
         if z2_FMC_7 > 1:
             z2_FMC_7 = 1
             print("FMC ranges between 0 and 1. The weight applied puts this value over 1. Setting the FMC value to 1.")
@@ -508,7 +533,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
         else:
             z3_FMC_6 = z3_FMC_6
 
-        z3_FMC_7 = zone_3_FMC_weight * df3['FMC'].iloc[7]
+        z3_FMC_7 = zone_3_FMC_weight * df3['FMC'].iloc[6]
         if z3_FMC_7 > 1:
             z3_FMC_7 = 1
             print("FMC ranges between 0 and 1. The weight applied puts this value over 1. Setting the FMC value to 1.")
@@ -586,7 +611,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
         else:
             z4_FMC_6 = z4_FMC_6
 
-        z4_FMC_7 = zone_4_FMC_weight * df4['FMC'].iloc[7]
+        z4_FMC_7 = zone_4_FMC_weight * df4['FMC'].iloc[6]
         if z4_FMC_7 > 1:
             z4_FMC_7 = 1
             print("FMC ranges between 0 and 1. The weight applied puts this value over 1. Setting the FMC value to 1.")
@@ -627,7 +652,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     fig.suptitle("Santa Ana Wildfire Threat Index (SAWTI)", fontsize=16, fontweight='bold')
     
     ax1 = fig.add_subplot(2, 2, 1)
-    ax1.bar(dates, zone_1_LFP_values, color='red', zorder=2)
+    ax1.bar(dates, zone_1_LFP_values, color='red', align='edge', zorder=2, width=0.4)
     ax1.set_title("Zone 1: Los Angeles & Ventura", fontweight='bold')
     ax1.set_xlabel("Date", fontweight='bold')
     ax1.xaxis.set_major_formatter(md.DateFormatter('%m/%d'))
@@ -639,7 +664,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     ax1.axhspan(zone_1_threshold_4, 60, color='purple', alpha=0.3, zorder=1)
 
     ax2 = fig.add_subplot(2, 2, 2)
-    ax2.bar(dates, zone_2_LFP_values, color='red')
+    ax2.bar(dates, zone_2_LFP_values, color='red', align='edge', zorder=2, width=0.4)
     ax2.set_title("Zone 2: Orange County & Inland Empire", fontweight='bold')
     ax2.set_xlabel("Date", fontweight='bold')
     ax2.xaxis.set_major_formatter(md.DateFormatter('%m/%d'))
@@ -651,7 +676,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     ax2.axhspan(zone_2_threshold_4, 60, color='purple', alpha=0.3, zorder=1)
 
     ax3 = fig.add_subplot(2, 2, 3)
-    ax3.bar(dates, zone_3_LFP_values, color='red')
+    ax3.bar(dates, zone_3_LFP_values, color='red', align='edge', zorder=2, width=0.4)
     ax3.set_title("Zone 3: San Diego", fontweight='bold')
     ax3.set_xlabel("Date", fontweight='bold')
     ax3.xaxis.set_major_formatter(md.DateFormatter('%m/%d'))
@@ -663,7 +688,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     ax3.axhspan(zone_3_threshold_4, 60, color='purple', alpha=0.3, zorder=1)
 
     ax4 = fig.add_subplot(2, 2, 4)
-    ax4.bar(dates, zone_4_LFP_values, color='red')
+    ax4.bar(dates, zone_4_LFP_values, color='red', align='edge', zorder=2, width=0.4)
     ax4.set_title("Zone 4: Santa Barbara", fontweight='bold')
     ax4.set_xlabel("Date", fontweight='bold')
     ax4.xaxis.set_major_formatter(md.DateFormatter('%m/%d'))
