@@ -295,43 +295,29 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
         df4 = df4.transpose()
         print('seaspace_zone4_'+now.strftime('%m%d%Y')+'_12z.csv has been converted to a dataframe')
         print("\n")
-        previous_day_utc = False
     except Exception as e:
         try:
             df4 = pd.read_csv('seaspace_zone4_'+now.strftime('%m%d%Y')+'_00z.csv')
             df4 = df4.transpose()
             print('seaspace_zone1_'+now.strftime('%m%d%Y')+'_00z.csv has been converted to a dataframe')
             print("\n")
-            previous_day_utc = False
         except Exception as e:
             try:
                 df4 = pd.read_csv('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv')
                 df4 = df4.transpose()
                 print('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv has been converted to a dataframe')
                 print("\n")
-                previous_day_utc = True
             except Exception as e:
                 pass
 
-    if previous_day_utc == False:
-        dates = []
-        dates.append(now)
-        dates.append(day2)
-        dates.append(day3)
-        dates.append(day4)
-        dates.append(day5)
-        dates.append(day6)
-        dates.append(day7)
-        
-    else:
-        dates = []
-        dates.append(yday)
-        dates.append(now)
-        dates.append(day2)
-        dates.append(day3)
-        dates.append(day4)
-        dates.append(day5)
-        dates.append(day6)
+    dates = []
+    dates.append(now)
+    dates.append(day2)
+    dates.append(day3)
+    dates.append(day4)
+    dates.append(day5)
+    dates.append(day6)
+    dates.append(day7)
         
     try:
 
@@ -645,14 +631,14 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
         pass
 
 
-    plt.style.use('seaborn-v0_8-darkgrid')
+    #plt.style.use('seaborn-v0_8-darkgrid')
     
     fig = plt.figure(figsize=(12,10))
     fig.set_facecolor('aliceblue')
     fig.suptitle("Santa Ana Wildfire Threat Index (SAWTI)", fontsize=16, fontweight='bold')
     
     ax1 = fig.add_subplot(2, 2, 1)
-    ax1.bar(dates, zone_1_LFP_values, color='red', align='edge', zorder=2, width=0.4)
+    ax1.bar(dates, zone_1_LFP_values, color='red', align='center', zorder=2, width=0.4)
     ax1.set_title("Zone 1: Los Angeles & Ventura", fontweight='bold')
     ax1.set_xlabel("Date", fontweight='bold')
     ax1.xaxis.set_major_formatter(md.DateFormatter('%a %m/%d'))
@@ -665,7 +651,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     ax1.axhspan(zone_1_threshold_4, 60, color='purple', alpha=0.3, zorder=1)
 
     ax2 = fig.add_subplot(2, 2, 2)
-    ax2.bar(dates, zone_2_LFP_values, color='red', align='edge', zorder=2, width=0.4)
+    ax2.bar(dates, zone_2_LFP_values, color='red', align='center', zorder=2, width=0.4)
     ax2.set_title("Zone 2: Orange County & Inland Empire", fontweight='bold')
     ax2.set_xlabel("Date", fontweight='bold')
     ax2.xaxis.set_major_formatter(md.DateFormatter('%a %m/%d'))
@@ -678,7 +664,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     ax2.axhspan(zone_2_threshold_4, 60, color='purple', alpha=0.3, zorder=1)
 
     ax3 = fig.add_subplot(2, 2, 3)
-    ax3.bar(dates, zone_3_LFP_values, color='red', align='edge', zorder=2, width=0.4)
+    ax3.bar(dates, zone_3_LFP_values, color='red', align='center', zorder=2, width=0.4)
     ax3.set_title("Zone 3: San Diego", fontweight='bold')
     ax3.set_xlabel("Date", fontweight='bold')
     ax3.xaxis.set_major_formatter(md.DateFormatter('%a %m/%d'))
@@ -691,7 +677,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     ax3.axhspan(zone_3_threshold_4, 60, color='purple', alpha=0.3, zorder=1)
 
     ax4 = fig.add_subplot(2, 2, 4)
-    ax4.bar(dates, zone_4_LFP_values, color='red', align='edge', zorder=2, width=0.4)
+    ax4.bar(dates, zone_4_LFP_values, color='red', align='center', zorder=2, width=0.4)
     ax4.set_title("Zone 4: Santa Barbara", fontweight='bold')
     ax4.set_xlabel("Date", fontweight='bold')
     ax4.xaxis.set_major_formatter(md.DateFormatter('%a %m/%d'))
