@@ -643,9 +643,9 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     fig.suptitle("Santa Ana Wildfire Threat Index (SAWTI)", fontsize=16, fontweight='bold')
     
     ax1 = fig.add_subplot(2, 2, 1)
-    if hour > 10 and hour < 22:
+    if hour > 4 and hour < 22:
         ax1.bar(dates, zone_1_LFP_values, color='red', align='center', zorder=2, width=0.4)
-    if hour >= 22 or hour <= 10:
+    if hour >= 22 or hour <= 4:
         ax1.bar(dates, zone_1_LFP_values, color='red', align='edge', zorder=2, width=0.4)
     ax1.set_title("Zone 1: Los Angeles & Ventura", fontweight='bold')
     ax1.set_xlabel("Date", fontweight='bold')
@@ -659,9 +659,9 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     ax1.axhspan(zone_1_threshold_4, 60, color='purple', alpha=0.3, zorder=1)
 
     ax2 = fig.add_subplot(2, 2, 2)
-    if hour > 10 and hour < 22:
+    if hour > 4 and hour < 22:
         ax2.bar(dates, zone_2_LFP_values, color='red', align='center', zorder=2, width=0.4)
-    if hour >= 22 or hour <= 10:
+    if hour >= 22 or hour <= 4:
         ax2.bar(dates, zone_2_LFP_values, color='red', align='edge', zorder=2, width=0.4)
     ax2.set_title("Zone 2: Orange County & Inland Empire", fontweight='bold')
     ax2.set_xlabel("Date", fontweight='bold')
@@ -675,9 +675,9 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     ax2.axhspan(zone_2_threshold_4, 60, color='purple', alpha=0.3, zorder=1)
 
     ax3 = fig.add_subplot(2, 2, 3)
-    if hour > 10 and hour < 22:
+    if hour > 4 and hour < 22:
         ax3.bar(dates, zone_3_LFP_values, color='red', align='center', zorder=2, width=0.4)
-    if hour >= 22 or hour <= 10:
+    if hour >= 22 or hour <= 4:
         ax3.bar(dates, zone_3_LFP_values, color='red', align='edge', zorder=2, width=0.4)
     ax3.set_title("Zone 3: San Diego", fontweight='bold')
     ax3.set_xlabel("Date", fontweight='bold')
@@ -691,9 +691,9 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     ax3.axhspan(zone_3_threshold_4, 60, color='purple', alpha=0.3, zorder=1)
 
     ax4 = fig.add_subplot(2, 2, 4)
-    if hour > 10 and hour < 22:
+    if hour > 4 and hour < 22:
         ax4.bar(dates, zone_4_LFP_values, color='red', align='center', zorder=2, width=0.4)
-    if hour >= 22 or hour <= 10:
+    if hour >= 22 or hour <= 4:
         ax4.bar(dates, zone_4_LFP_values, color='red', align='edge', zorder=2, width=0.4)
     ax4.set_title("Zone 4: Santa Barbara", fontweight='bold')
     ax4.set_xlabel("Date", fontweight='bold')
