@@ -55,6 +55,58 @@ class NDFD:
         return ds, ds1, stepUnits
 
 
+    def ndfd_step_count(ds_short, ds_extended):
+
+        ds_short = ds_short
+        ds_extended = ds_extended
+
+        try:
+            if ds_short['step'][3]:
+                print("There are 4 short-term step intervals.")
+                short_steps = 4
+        except Exception as e:
+            try:
+                if ds_short['step'][2]:
+                    print("There are 3 short-term step intervals.")
+                    short_steps = 3
+            except Exception as e:
+                try:
+                    if ds_short['step'][1]:
+                        print("There are 2 short-term step intervals.")
+                        short_steps = 2
+                except Exception as e:
+                    print("There is 1 short-term step interval.")
+                    short_steps = 1
+        
+        try:
+            if ds_extended['step'][4]:
+                print("There are 5 extended step intervals.")
+                extended_steps = 5
+        except Exception as e:
+            try:
+                if ds_extended['step'][3]:
+                    print("There are 4 extended step intervals.")
+                    extended_steps = 4
+            except Exception as e:
+                try:
+                    if ds_extended['step'][2]:
+                        print("There are 3 extended step intervals.")
+                        extended_steps = 3
+                except Exception as e:
+                    try:
+                        if ds_extended['step'][1]:
+                            print("There are 2 extended step intervals.")
+                            extended_steps = 2
+                    except Exception as e:
+                        print("There is 1 extended step interval.")
+                        extended_steps = 1
+        
+        steps = short_steps + extended_steps  
+        print(f"There are {steps} total time steps.")
+        
+        return steps, short_steps, extended_steps
+
+
     def parse_GRIB_files_full_forecast_period(file_path, grid_time_interval, convert_temperature, count_short, count_extended, directory_name):
 
         GRIB_File_List = pygrib.open(file_path)
