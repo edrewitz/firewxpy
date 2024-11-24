@@ -1917,9 +1917,9 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
     if month >= 5 and month <= 9:
         contourf = np.arange(30, 111, 1)
     if month == 4 or month == 10:
-        contourf = np.arange(10, 91, 1)
+        contourf = np.arange(10, 101, 1)
     if month >= 11 or month <= 3:
-        contourf = np.arange(-10, 71, 1)
+        contourf = np.arange(-20, 91, 1)
 
     labels = contourf[::4]
 
