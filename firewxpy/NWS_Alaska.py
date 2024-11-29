@@ -3778,7 +3778,7 @@ class relative_humidity:
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
         file_path = file_path
-        cmap = colormaps.relative_humidity_colormap()
+        cmap = colormaps.relative_humidity_change_colormap()
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
         directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
