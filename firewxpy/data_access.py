@@ -27,6 +27,8 @@ import numpy as np
 import netCDF4
 import time as t
 import firewxpy.standard as standard
+import warnings
+warnings.filterwarnings('ignore')
 
 from ftplib import FTP
 from siphon.catalog import TDSCatalog
