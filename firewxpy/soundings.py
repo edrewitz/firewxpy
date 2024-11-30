@@ -10,6 +10,8 @@ import numpy as np
 import metpy.calc as mpcalc
 import firewxpy.standard as standard
 import time
+import warnings
+warnings.filterwarnings('ignore')
 
 from firewxpy.calc import Thermodynamics
 from matplotlib import transforms as transform
