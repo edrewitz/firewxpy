@@ -2,6 +2,9 @@ import os
 import imageio
 import matplotlib.pyplot as plt
 import time
+import warnings
+warnings.filterwarnings('ignore')
+
 from zipfile import ZipFile
 from PIL import Image
 from datetime import datetime
