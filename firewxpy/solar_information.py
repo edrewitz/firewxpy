@@ -128,7 +128,6 @@ def plot_daily_solar_information(latitude, longitude):
     ax1.xaxis.set_major_formatter(md.DateFormatter('%H', tz=to_zone))
     ax1.set_xlabel("Hour", color='black', fontsize=12, fontweight='bold')
     ax1.set_ylabel("Solar Elevation Angle (Degrees)", color='black', fontsize=12, fontweight='bold')
-    ax1.set_title("Solar Elevation Angle", color='black', fontsize=13, fontweight='bold')
     ax1.axhline(0, c='black', linestyle='--', linewidth=2)
     ax1.tick_params(axis='x', colors='black')
     ax1.tick_params(axis='y', colors='black')
