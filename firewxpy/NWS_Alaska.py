@@ -34,6 +34,8 @@ import standard
 import os
 import dims
 import imageio
+import warnings
+warnings.filterwarnings('ignore')
 
 from metpy.plots import USCOUNTIES
 from dateutil import tz
