@@ -437,6 +437,8 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
     
     figs = [] 
 
+    print("Creating Images - Please Wait...")
+
     fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig1.set_facecolor('aliceblue')
     
@@ -1148,6 +1150,8 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
 
     
     figs = [] 
+
+    print("Creating Images - Please Wait...")
 
     fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig1.set_facecolor('aliceblue')
