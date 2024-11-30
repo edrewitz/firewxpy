@@ -128,7 +128,6 @@ def plot_daily_solar_information(latitude, longitude):
     ax1.set_ylabel("Solar Elevation Angle (Degrees)", color='black', fontsize=12, fontweight='bold')
     ax1.set_title("Solar Elevation Angle", color='black', fontsize=13, fontweight='bold')
     ax1.axhline(0, c='black', linestyle='--', linewidth=2)
-    #fig.text(0.55, 0.855, "Elevation Angle > 0 = Day\nElevation Angle < 0 = Night", fontsize=9, fontweight='bold')
     ax1.tick_params(axis='x', colors='black')
     ax1.tick_params(axis='y', colors='black')
     ax1.legend(loc=(0.88,0.9), prop={'size': 8})
