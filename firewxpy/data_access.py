@@ -232,12 +232,204 @@ class info:
         """
         print(error_msg)
 
+class RTMA_Alaska:
+
+    r'''
+    
+    This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for Alaska. 
+
+    This class hosts the functions the users will import and call if the users wish to download the data outside of the 
+    plotting function and pass the data into the plotting function.
+    
+    This is the recommended method for users who wish to create a large amount of graphics at one time to limit the number of server requests. 
+
+    '''
+
+    def get_RTMA_dataset(current_time):
+    
+        r'''
+    
+        This function retrieves the latest RTMA Dataset for the user. 
+
+        Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
+
+        Required Argument: 1) Current Time in UTC
+
+        Returns: 1) The latest 2.5km x 2.5km RTMA Dataset
+
+                 2) The time corresponding to the dataset
+    
+        '''
+        
+        times = []
+        for i in range(0, 5):
+            time = pd.to_datetime(current_time - timedelta(hours=i))
+            times.append(time)
+    
+        url_0 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[0].strftime('%Y%m%d')+'/akrtma_anl_'+times[0].strftime('%H')+'z'
+        url_1 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[1].strftime('%Y%m%d')+'/akrtma_anl_'+times[1].strftime('%H')+'z'
+        url_2 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[2].strftime('%Y%m%d')+'/akrtma_anl_'+times[2].strftime('%H')+'z'
+        url_3 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[3].strftime('%Y%m%d')+'/akrtma_anl_'+times[3].strftime('%H')+'z'
+        url_4 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[4].strftime('%Y%m%d')+'/akrtma_anl_'+times[4].strftime('%H')+'z'
+    
+        try:
+            ds = xr.open_dataset(url_0, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+            print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
+            strtime = times[0]
+            return ds, strtime
+            
+        except Exception as a:
+            try:
+                print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
+                ds = xr.open_dataset(url_1, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
+                strtime = times[1]
+                return ds, strtime
+                
+            except Exception as b:
+                    try:
+                        print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
+                        ds = xr.open_dataset(url_2, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                        print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
+                        strtime = times[2]
+                        return ds, strtime
+                        
+                    except Exception as c:
+                        try:
+                            print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
+                            ds = xr.open_dataset(url_3, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                            print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
+                            strtime = times[3]
+                            return ds, strtime
+                        except Exception as d:
+    
+                            try:
+                                print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
+                                ds = xr.open_dataset(url_4, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                                print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
+                                strtime = times[4]
+                                return ds, strtime
+                                
+                            except Exception as e:
+                                print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
+    
+            
+        except Exception as f:
+            error = info.invalid_parameter_NOMADS_RTMA_Alaska()
+            print(error)
+
+
+    def get_RTMA_24_hour_comparison_datasets(current_time):
+    
+        r'''
+        
+        This function retrieves the latest RTMA Dataset and the RTMA Dataset for 24-Hours prior to the current dataset for the user for Alaska. 
+
+        Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
+
+        Required Argument: 1) Current Time in UTC
+
+        Returns: 1) The latest 2.5km x 2.5km RTMA Dataset
+
+                 2) 1) The 2.5km x 2.5km RTMA Dataset from 24-Hours prior to the current dataset
+
+                 3) The time corresponding to the dataset
+
+                 4) The time corresponding to the dataset from 24-Hours prior to the current dataset 
+    
+        '''
+        
+        times = []
+        new_times = []
+        for i in range(0, 5):
+            time = pd.to_datetime(current_time - timedelta(hours=i))
+            times.append(time)
+    
+        for t in times:
+            new_time = t - timedelta(hours=24)
+            new_times.append(new_time)
+    
+        url_0 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[0].strftime('%Y%m%d')+'/akrtma_anl_'+times[0].strftime('%H')+'z'
+        url_1 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[1].strftime('%Y%m%d')+'/akrtma_anl_'+times[1].strftime('%H')+'z'
+        url_2 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[2].strftime('%Y%m%d')+'/akrtma_anl_'+times[2].strftime('%H')+'z'
+        url_3 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[3].strftime('%Y%m%d')+'/akrtma_anl_'+times[3].strftime('%H')+'z'
+        url_4 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[4].strftime('%Y%m%d')+'/akrtma_anl_'+times[4].strftime('%H')+'z'
+    
+        url_5 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[0].strftime('%Y%m%d')+'/akrtma_anl_'+times[0].strftime('%H')+'z'
+        url_6 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[1].strftime('%Y%m%d')+'/akrtma_anl_'+times[1].strftime('%H')+'z'
+        url_7 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[2].strftime('%Y%m%d')+'/akrtma_anl_'+times[2].strftime('%H')+'z'
+        url_8 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[3].strftime('%Y%m%d')+'/akrtma_anl_'+times[3].strftime('%H')+'z'
+        url_9 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[4].strftime('%Y%m%d')+'/akrtma_anl_'+times[4].strftime('%H')+'z'
+    
+        try:
+            ds = xr.open_dataset(url_0, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+            print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
+            ds_24 = xr.open_dataset(url_5, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+            print("Data was successfully retrieved for " + new_times[0].strftime('%m/%d/%Y %HZ'))
+            strtime = times[0]
+            strtime_24 = new_times[0]
+            return ds, ds_24, strtime, strtime_24
+            
+        except Exception as a:
+            try:
+                print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
+                ds = xr.open_dataset(url_1, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
+                ds_24 = xr.open_dataset(url_6, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                print("Data was successfully retrieved for " + new_times[1].strftime('%m/%d/%Y %HZ'))
+                strtime = times[1]
+                strtime_24 = new_times[1]
+                return ds, ds_24, strtime, strtime_24
+                
+            except Exception as b:
+                    try:
+                        print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
+                        ds = xr.open_dataset(url_2, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                        print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
+                        ds_24 = xr.open_dataset(url_7, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                        print("Data was successfully retrieved for " + new_times[2].strftime('%m/%d/%Y %HZ'))
+                        strtime = times[2]
+                        strtime_24 = new_times[2]
+                        return ds, ds_24, strtime, strtime_24
+                        
+                    except Exception as c:
+                        try:
+                            print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
+                            ds = xr.open_dataset(url_3, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                            print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
+                            ds_24 = xr.open_dataset(url_8, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                            print("Data was successfully retrieved for " + new_times[3].strftime('%m/%d/%Y %HZ'))
+                            strtime = times[3]
+                            strtime_24 = new_times[3]
+                            return ds, ds_24, strtime, strtime_24
+                            
+                        except Exception as d:
+    
+                            try:
+                                print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
+                                ds = xr.open_dataset(url_4, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                                print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
+                                ds_24 = xr.open_dataset(url_9, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                                print("Data was successfully retrieved for " + new_times[4].strftime('%m/%d/%Y %HZ'))
+                                strtime = times[4]
+                                strtime_24 = new_times[4]
+                                return ds, ds_24, strtime, strtime_24
+                                
+                            except Exception as e:
+                                print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
+    
+            
+        except Exception as f:
+            error = info.invalid_parameter_NOMADS_RTMA_Alaska()
+            print(error)
+
+    
 
 class RTMA_CONUS:
 
     r'''
     
-    This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data. 
+    This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for CONUS. 
 
     This class hosts the functions the users will import and call if the users wish to download the data outside of the 
     plotting function and pass the data into the plotting function.
@@ -953,6 +1145,73 @@ class NDFD_CONUS:
     
         return ds
 
+class NDFD_Alaska:
+
+    def get_short_and_extended_grids(parameter):
+    
+        '''
+                 This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
+                 This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids for Alaska. 
+        
+                 Inputs:
+                     1) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
+                                            Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
+                                            https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
+        
+                Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
+                         This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
+                 
+        '''
+    
+        ###################################################
+        # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
+        ###################################################
+    
+        ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
+        ftp = FTP('tgftp.nws.noaa.gov')
+        ftp.login()
+    
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+    
+        ### SEARCHES FOR THE CORRECT DIRECTORY ###
+
+        dirName_short = directory_name + 'VP.001-003/'
+        param = parameter
+        files = ftp.cwd(dirName_short)
+    
+        ### SEARCHES FOR THE CORRECT PARAMETER ###
+        #try:
+            ################################
+            # DOWNLOADS THE NWS NDFD GRIDS #
+            ################################
+            
+        with open(param, 'wb') as fp:
+            ftp.retrbinary('RETR ' + param, fp.write)
+            
+        ds_short = xr.open_dataset(param, engine='cfgrib')
+        ds_short = ds_short.metpy.parse_cf()
+
+        dirName_extended = directory_name + 'VP.004-007/'
+        files = ftp.cwd(dirName_extended)
+
+        with open(param, 'wb') as fp:
+            ftp.retrbinary('RETR ' + param, fp.write)
+        
+        ftp.close()
+        
+        #########################
+        # DATA ARRAYS PARAMETER #
+        #########################
+        ds_extended = xr.open_dataset(param, engine='cfgrib')
+        ds_extended = ds_extended.metpy.parse_cf()
+        
+        return ds_short, ds_extended
+
+        ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
+
+        #except Exception as a:
+            #param_error = info.parameter_name_error()
+            #return param_error
 
 
 def get_NWS_NDFD_7_Day_grid_data(directory_name, parameter):
