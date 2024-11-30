@@ -13,6 +13,8 @@ import matplotlib.gridspec as gridspec
 import firewxpy.settings as settings
 import firewxpy.standard as standard
 import firewxpy.dims as dims
+import warnings
+warnings.filterwarnings('ignore')
 
 
 from matplotlib.patheffects import withStroke
