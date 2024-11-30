@@ -26,6 +26,8 @@ import firewxpy.colormaps as colormaps
 import firewxpy.standard as standard
 import firewxpy.settings as settings
 import firewxpy.dims as dims
+import warnings
+warnings.filterwarnings('ignore')
 
 from metpy.plots import USCOUNTIES
 from metpy.plots import colortables
