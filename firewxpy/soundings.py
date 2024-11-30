@@ -524,6 +524,9 @@ def plot_observed_sounding(station_id):
         barb_mask_24 = (pressure_24 >= 100 * units.hPa)
         pres_24 = pressure_24[barb_mask_24]
         idx_24 = mpcalc.resample_nn_1d(pres_24, interval_24)
+
+        print("Creating Image - Please Wait...")
+        
         fig = plt.figure(figsize=(12, 10))
         gs = gridspec.GridSpec(10, 13)
         skew = SkewT(fig, rotation=45, subplot=gs[0:12, 0:13])
@@ -927,6 +930,9 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         barb_mask_24 = (pressure_24 >= 100 * units.hPa)
         pres_24 = pressure_24[barb_mask_24]
         idx_24 = mpcalc.resample_nn_1d(pres_24, interval_24)
+
+        print("Creating Image - Please Wait...")
+        
         fig = plt.figure(figsize=(12, 10))
         gs = gridspec.GridSpec(10, 13)
         skew = SkewT(fig, rotation=45, subplot=gs[0:12, 0:13])
