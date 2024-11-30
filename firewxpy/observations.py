@@ -118,7 +118,8 @@ def graphical_daily_summary(station_id):
 
 
     plt.style.use('seaborn-v0_8-darkgrid')
-    
+            
+    print("Creating Image - Please Wait...")
     
     fig = plt.figure(figsize=(10,12))
     fig.suptitle(station_id + " Daily Weather Summary | Date: " + previous_day_utc.strftime('%m/%d/%Y'), color='white', fontsize=28, fontweight='bold')
@@ -131,8 +132,6 @@ def graphical_daily_summary(station_id):
         fig.text(0.125, 0.925, "Station Latitude: " + str(round(abs(latitude), 1)) + " (\N{DEGREE SIGN}S) | Station Longitude: " + str(round(abs(longitude), 1)) + " (\N{DEGREE SIGN}W)", color='white', fontsize=20, fontweight='bold')
     if latitude < 0 and longitude > 0:
         fig.text(0.125, 0.925, "Station Latitude: " + str(round(abs(latitude), 1)) + " (\N{DEGREE SIGN}S) | Station Longitude: " + str(round(abs(longitude), 1)) + " (\N{DEGREE SIGN}E)", color='white', fontsize=20, fontweight='bold')
-    
-    
     
     fig.set_facecolor('gray')
     gs = gridspec.GridSpec(3, 2)
