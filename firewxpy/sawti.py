@@ -639,6 +639,8 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     hour = now_la.hour
 
     plt.style.use('seaborn-v0_8-darkgrid')
+
+    print("Creating Image - Please Wait...")
     
     fig = plt.figure(figsize=(12,10))
     fig.set_facecolor('aliceblue')
