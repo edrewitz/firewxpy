@@ -604,6 +604,8 @@ class relative_humidity:
         local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
@@ -1571,6 +1573,8 @@ class relative_humidity:
         local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
@@ -2521,6 +2525,8 @@ class relative_humidity:
         local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
@@ -3487,6 +3493,8 @@ class relative_humidity:
         local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
@@ -4413,6 +4421,8 @@ class relative_humidity:
         local_time, utc_time = standard.plot_creation_time()    
         
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         try:
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
@@ -5814,6 +5824,9 @@ class relative_humidity:
         local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
+        
         try:
             fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig1.set_facecolor('aliceblue')
@@ -7240,6 +7253,8 @@ class relative_humidity:
         local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
@@ -8207,6 +8222,8 @@ class temperature:
             labels = temp_scale_cool
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
@@ -9276,6 +9293,8 @@ class temperature:
             labels = temp_scale_cool
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
@@ -10315,6 +10334,8 @@ class temperature:
         local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
@@ -11327,6 +11348,8 @@ class temperature:
             labels = temp_scale_cool[::5]
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
@@ -12311,6 +12334,8 @@ class temperature:
             labels = temp_scale_cool[::5]
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
@@ -13259,6 +13284,8 @@ class temperature:
         local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
@@ -14103,6 +14130,8 @@ class temperature:
         local_time, utc_time = standard.plot_creation_time()
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
@@ -15162,6 +15191,7 @@ class dry_and_windy:
         except Exception as e:
             pass
 
+        print("Creating Images - Please Wait...")
         
         for i in range(0, (len(times_short) - 1)):
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
@@ -16009,6 +16039,7 @@ class dry_and_windy:
         except Exception as e:
             pass
 
+        print("Creating Images - Please Wait...")
         
         for i in range(0, (len(times_short) - 1)):
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
