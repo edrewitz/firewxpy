@@ -107,13 +107,13 @@ def plot_daily_solar_information(latitude, longitude):
     fig.suptitle("Daily Solar Information | Date: " + local.strftime('%m/%d/%Y'), color='black', fontsize=28, fontweight='bold')
     
     if latitude >= 0 and longitude <= 0:
-        fig.text(0.315, 0.915, "Latitude: " + str(abs(latitude)) + " (\N{DEGREE SIGN}N) | Longitude: " + str(abs(longitude)) + " (\N{DEGREE SIGN}W)", color='black', fontsize=16, fontweight='bold')
+        fig.text(0.315, 0.9, "Latitude: " + str(abs(latitude)) + " (\N{DEGREE SIGN}N) | Longitude: " + str(abs(longitude)) + " (\N{DEGREE SIGN}W)", color='black', fontsize=16, fontweight='bold')
     if latitude >= 0 and longitude > 0:
-        fig.text(0.315, 0.915, "Latitude: " + str(abs(latitude)) + " (\N{DEGREE SIGN}N) | Longitude: " + str(abs(longitude)) + " (\N{DEGREE SIGN}E)", color='black', fontsize=16, fontweight='bold')
+        fig.text(0.315, 0.9, "Latitude: " + str(abs(latitude)) + " (\N{DEGREE SIGN}N) | Longitude: " + str(abs(longitude)) + " (\N{DEGREE SIGN}E)", color='black', fontsize=16, fontweight='bold')
     if latitude < 0 and longitude <= 0:
-        fig.text(0.315, 0.915, "Latitude: " + str(abs(latitude)) + " (\N{DEGREE SIGN}S) | Longitude: " + str(abs(longitude)) + " (\N{DEGREE SIGN}W)", color='black', fontsize=16, fontweight='bold')
+        fig.text(0.315, 0.9, "Latitude: " + str(abs(latitude)) + " (\N{DEGREE SIGN}S) | Longitude: " + str(abs(longitude)) + " (\N{DEGREE SIGN}W)", color='black', fontsize=16, fontweight='bold')
     if latitude < 0 and longitude > 0:
-        fig.text(0.315, 0.915, "Latitude: " + str(abs(latitude)) + " (\N{DEGREE SIGN}S) | Longitude: " + str(abs(longitude)) + " (\N{DEGREE SIGN}E)", color='black', fontsize=16, fontweight='bold')
+        fig.text(0.315, 0.9, "Latitude: " + str(abs(latitude)) + " (\N{DEGREE SIGN}S) | Longitude: " + str(abs(longitude)) + " (\N{DEGREE SIGN}E)", color='black', fontsize=16, fontweight='bold')
     
     ax1 = fig.add_subplot(gs[0:2, 0:4])
     ax1.plot(times_list, solar_elevation, c='orange', label=start.strftime('%b %d'), alpha=1)
