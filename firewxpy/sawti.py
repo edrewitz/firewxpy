@@ -7,6 +7,8 @@ import matplotlib.dates as md
 import matplotlib as mpl
 import firewxpy.standard as standard
 import pytz
+import warnings
+warnings.filterwarnings('ignore')
 
 from datetime import datetime, timedelta
 
