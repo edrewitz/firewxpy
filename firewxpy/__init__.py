@@ -9,3 +9,4 @@ from firewxpy.observations import graphical_daily_summary
 from firewxpy.soundings import plot_observed_sounding, plot_observed_sounding_custom_date_time
 from firewxpy.dims import get_metar_mask
 from firewxpy.sawti import sawti
+from firewxpy.solar_information import plot_daily_solar_information
