@@ -1,4 +1,4 @@
-import standard
+import firewxpy.standard
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import matplotlib.dates as md
