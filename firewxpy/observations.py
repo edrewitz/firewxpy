@@ -22,6 +22,8 @@ import pandas as pd
 import matplotlib.gridspec as gridspec
 import matplotlib.dates as md
 import firewxpy.standard as standard
+import warnings
+warnings.filterwarnings('ignore')
 
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
