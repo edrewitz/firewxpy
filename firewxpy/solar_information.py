@@ -97,6 +97,8 @@ def plot_daily_solar_information(latitude, longitude):
     plt.style.use('fivethirtyeight')
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
     props_table = dict(boxstyle='round', facecolor='darkslateblue', alpha=1)
+
+    print("Creating Image - Please Wait...")
     
     fig = plt.figure(figsize=(15,9))
     fig.set_facecolor('silver')
