@@ -17,6 +17,8 @@ import firewxpy.calc as calc
 import cartopy.crs as ccrs
 import xarray as xr
 import os
+import warnings
+warnings.filterwarnings('ignore')
 
 from datetime import datetime, timedelta
 from metpy.units import units
