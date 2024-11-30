@@ -1,4 +1,6 @@
 import matplotlib.colors
+import warnings
+warnings.filterwarnings('ignore')
 
 def temperature_colormap():
     temperature_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("temperature", ["darkviolet", "blue", "deepskyblue", "white", "orangered", "red", "darkred"])
