@@ -459,6 +459,8 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -1020,6 +1022,8 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=15, high_rh_threshold=8
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -1598,7 +1602,9 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
     
     rtma_time_24 = rtma_time_24.replace(tzinfo=from_zone)
     rtma_time_24 = rtma_time_24.astimezone(to_zone)
-    rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)   
+    rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)  
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -2106,6 +2112,8 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -2611,6 +2619,8 @@ def plot_temperature_advection(western_bound=None, eastern_bound=None, southern_
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -3122,6 +3132,8 @@ def plot_dew_point_advection(western_bound=None, eastern_bound=None, southern_bo
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -3642,6 +3654,8 @@ def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, sou
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -4143,6 +4157,8 @@ def plot_frost_freeze(western_bound=None, eastern_bound=None, southern_bound=Non
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -4643,6 +4659,8 @@ def plot_extreme_heat(temperature_threshold=100, western_bound=None, eastern_bou
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -5181,6 +5199,8 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
     rtma_time_24 = rtma_time_24.astimezone(to_zone)
     rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)   
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -5683,6 +5703,8 @@ def plot_dew_point(western_bound=None, eastern_bound=None, southern_bound=None, 
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -6221,6 +6243,8 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
     rtma_time_24 = rtma_time_24.astimezone(to_zone)
     rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)   
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -6715,6 +6739,8 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -7247,6 +7273,8 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
     rtma_time_24 = rtma_time_24.astimezone(to_zone)
     rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)   
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -7745,6 +7773,8 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -8281,7 +8311,9 @@ def plot_24_hour_wind_speed_comparison(western_bound=None, eastern_bound=None, s
     
     rtma_time_24 = rtma_time_24.replace(tzinfo=from_zone)
     rtma_time_24 = rtma_time_24.astimezone(to_zone)
-    rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)   
+    rtma_time_utc_24 = rtma_time_24.astimezone(from_zone) 
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -8809,6 +8841,8 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.patch.set_facecolor('aliceblue')
@@ -9397,6 +9431,8 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
     rtma_time_24 = rtma_time_24.replace(tzinfo=from_zone)
     rtma_time_24 = rtma_time_24.astimezone(to_zone)
     rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)   
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.patch.set_facecolor('aliceblue')
@@ -10036,6 +10072,8 @@ def plot_dry_and_windy_areas(low_rh_threshold=15, high_wind_threshold=25, wester
 
     lons = ds['lon']
     lats = ds['lat']
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -10794,6 +10832,8 @@ def plot_dry_and_gusty_areas(low_rh_threshold=15, high_wind_threshold=25, wester
     lons = ds['lon']
     lats = ds['lat']
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -11406,6 +11446,8 @@ def plot_relative_humidity_with_metar_obs(western_bound=None, eastern_bound=None
 
     cmap = colormaps.relative_humidity_colormap()
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -11908,6 +11950,8 @@ def plot_low_relative_humidity_with_metar_obs(low_rh_threshold=15, western_bound
     PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.low_relative_humidity_colormap()
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -12420,6 +12464,8 @@ def plot_wind_speed_with_observed_winds(western_bound=None, eastern_bound=None, 
     PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.wind_speed_colormap()
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -12949,6 +12995,8 @@ def plot_wind_gust_with_observed_winds(western_bound=None, eastern_bound=None, s
     PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.wind_speed_colormap()
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
