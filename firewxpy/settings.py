@@ -10,6 +10,8 @@ This file hosts all the functions that return the settings for each plot for eac
 '''
 
 import cartopy.crs as ccrs
+import warnings
+warnings.filterwarnings('ignore')
 
 def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
 
