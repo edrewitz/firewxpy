@@ -1,3 +1,5 @@
+import warnings
+warnings.filterwarnings('ignore')
 
 def get_metar_mask(state, gacc_region, rtma_ws=False):
 
