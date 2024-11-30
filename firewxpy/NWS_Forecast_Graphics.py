@@ -33,6 +33,8 @@ import firewxpy.standard as standard
 import os
 import imageio
 import firewxpy.dims as dims
+import warnings
+warnings.filterwarnings('ignore')
 
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
