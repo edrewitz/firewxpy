@@ -138,7 +138,35 @@ class file_functions:
 
             fig = fig.savefig(path+'/RTMA DRY & GUSTY AREAS.png', bbox_inches='tight')
 
-            print("Image saved to: "+path+"/RTMA DRY & GUSTY AREAS.png")    
+            print("Image saved to: "+path+"/RTMA DRY & GUSTY AREAS.png")   
+
+            fig = fig.savefig(path+'/RTMA DRY & WINDY AREAS WIND VECTORS.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA DRY & WINDY AREAS WIND VECTORS.png")
+
+        if plot_type == 'RTMA HOT DRY & WINDY AREAS WIND BARBS':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA HOT DRY & WINDY AREAS WIND BARBS.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA HOT DRY & WINDY AREAS WIND BARBS.png")
+
+        if plot_type == 'RTMA HOT DRY & WINDY AREAS SAMPLE POINTS':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA DRY & WINDY AREAS SAMPLE POINTS.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA DRY & WINDY AREAS SAMPLE POINTS.png")  
+
+        if plot_type == 'RTMA HOT DRY & GUSTY AREAS':
+
+            fig = figure_list
+
+            fig = fig.savefig(path+'/RTMA HOT DRY & GUSTY AREAS.png', bbox_inches='tight')
+
+            print("Image saved to: "+path+"/RTMA HOT DRY & GUSTY AREAS.png")    
            
 
         if plot_type == 'RTMA WIND SPEED & DIRECTION WIND VECTORS':
@@ -1527,7 +1555,7 @@ class file_functions:
             print("Setting up the Weather Data folder and the rest of the file structure...")
             os.mkdir("Weather Data")
     
-        if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON' or plot_type == 'RTMA TEMPERATURE' or plot_type == '24HR RTMA TEMPERATURE COMPARISON' or plot_type == '24HR RTMA TOTAL CLOUD COVER COMPARISON' or plot_type == 'RTMA TOTAL CLOUD COVER' or plot_type == '24HR RTMA DEW POINT COMPARISON' or plot_type == 'RTMA DEW POINT' or plot_type == 'RTMA WIND SPEED' or plot_type == '24HR RTMA WIND SPEED COMPARISON' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND BARBS' or plot_type == 'RTMA DRY & WINDY AREAS SAMPLE POINTS' or plot_type == 'RTMA DRY & WINDY AREAS WIND BARBS' or plot_type == 'RTMA DRY & WINDY AREAS WIND VECTORS' or plot_type == 'RTMA DRY & GUSTY AREAS' or plot_type == 'RTMA RH & METAR' or plot_type == 'RTMA LOW RH & METAR' or plot_type == 'RTMA FROST FREEZE' or plot_type == 'RTMA EXTREME HEAT' or plot_type == 'RTMA TEMPERATURE ADVECTION' or plot_type == 'RTMA RH ADVECTION' or plot_type == 'RTMA DEW POINT ADVECTION' or plot_type == 'RTMA WIND GUST & OBS' or plot_type == 'RTMA WIND SPEED & OBS' or plot_type == 'RTMA LOW AND HIGH RH':
+        if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON' or plot_type == 'RTMA TEMPERATURE' or plot_type == '24HR RTMA TEMPERATURE COMPARISON' or plot_type == '24HR RTMA TOTAL CLOUD COVER COMPARISON' or plot_type == 'RTMA TOTAL CLOUD COVER' or plot_type == '24HR RTMA DEW POINT COMPARISON' or plot_type == 'RTMA DEW POINT' or plot_type == 'RTMA WIND SPEED' or plot_type == '24HR RTMA WIND SPEED COMPARISON' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND BARBS' or plot_type == 'RTMA HOT DRY & WINDY AREAS SAMPLE POINTS' or plot_type == 'RTMA HOT DRY & WINDY AREAS WIND BARBS' or plot_type == 'RTMA HOT DRY & WINDY AREAS WIND VECTORS' or plot_type == 'RTMA HOT DRY & GUSTY AREAS' or plot_type == 'RTMA RH & METAR' or plot_type == 'RTMA LOW RH & METAR' or plot_type == 'RTMA FROST FREEZE' or plot_type == 'RTMA EXTREME HEAT' or plot_type == 'RTMA TEMPERATURE ADVECTION' or plot_type == 'RTMA RH ADVECTION' or plot_type == 'RTMA DEW POINT ADVECTION' or plot_type == 'RTMA WIND GUST & OBS' or plot_type == 'RTMA WIND SPEED & OBS' or plot_type == 'RTMA LOW AND HIGH RH':
     
             if cwa == None:
     
@@ -2548,3 +2576,4 @@ class save:
         times.append(rtma_time_8)
 
         return data, times
+
