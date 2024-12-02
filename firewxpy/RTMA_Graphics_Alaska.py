@@ -461,7 +461,7 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
 
-    print("Preparing Graphic - Please Wait...")
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -2162,6 +2162,8 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -2684,6 +2686,8 @@ def plot_temperature_advection(western_bound=None, eastern_bound=None, southern_
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -3211,6 +3215,8 @@ def plot_dew_point_advection(western_bound=None, eastern_bound=None, southern_bo
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -3748,6 +3754,8 @@ def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, sou
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -4266,6 +4274,8 @@ def plot_frost_freeze(western_bound=None, eastern_bound=None, southern_bound=Non
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -4782,6 +4792,8 @@ def plot_extreme_heat(temperature_threshold=70, western_bound=None, eastern_boun
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -5336,6 +5348,8 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
     rtma_time_24 = rtma_time_24.astimezone(to_zone)
     rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)   
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -5855,6 +5869,8 @@ def plot_dew_point(western_bound=None, eastern_bound=None, southern_bound=None, 
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -6410,6 +6426,8 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
     rtma_time_24 = rtma_time_24.astimezone(to_zone)
     rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)   
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -6920,6 +6938,8 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -7468,6 +7488,8 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
     rtma_time_24 = rtma_time_24.astimezone(to_zone)
     rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)   
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
 
@@ -7982,6 +8004,8 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
     rtma_time = rtma_time.replace(tzinfo=from_zone)
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
+
+    print("Creating Image - Please Wait...")
 
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.set_facecolor('aliceblue')
@@ -9079,6 +9103,8 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.patch.set_facecolor('aliceblue')
 
@@ -9173,7 +9199,7 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
 
     if barbs == False:
 
-        minshaft, headlength, headwidth = dims.get_quiver_dims(state, gacc_region)
+        minshaft, headlength, headwidth = 0.000005, 5, 3
 
         ax.quiver(lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate], u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='lime', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=9, linewidth=quiver_linewidth, transform=ccrs.PlateCarree())
 
@@ -9419,12 +9445,6 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
     time_24 = time_24
     state = 'ak'
     cwa = cwa
-
-    if gacc_region == 'OSCC' or gacc_region == 'oscc' or gacc_region == 'SOPS' or gacc_region == 'sops' or gacc_region == 'RMCC' or gacc_region == 'rmcc' or gacc_region == 'RM' or gacc_region == 'rm':
-        if barb_quiver_fontsize <= 6:
-            barb_quiver_fontsize = 8
-    else:
-        pass
 
 
     if barbs_or_quivers == 'barbs' or barbs_or_quivers == 'Barbs' or barbs_or_quivers == 'BARBS' or barbs_or_quivers == 'B' or barbs_or_quivers == 'b':
@@ -9683,6 +9703,8 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
     rtma_time_24 = rtma_time_24.astimezone(to_zone)
     rtma_time_utc_24 = rtma_time_24.astimezone(from_zone)   
 
+    print("Creating Image - Please Wait...")
+
     fig = plt.figure(figsize=(fig_x_length, fig_y_length))
     fig.patch.set_facecolor('aliceblue')
 
@@ -9779,7 +9801,7 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
 
     if barbs == False:
 
-        minshaft, headlength, headwidth = dims.get_quiver_dims(state, gacc_region)
+        minshaft, headlength, headwidth = 0.000005, 5, 3
 
         ax.quiver(lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate], u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='red', minshaft=minshaft, headlength=headlength, headwidth=headwidth, alpha=barb_quiver_alpha, label=rtma_time.strftime('%m/%d %H:00'), zorder=9, linewidth=quiver_linewidth, transform=ccrs.PlateCarree())
     
@@ -9790,7 +9812,16 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
     cbar = fig.colorbar(cs, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=labels)
     cbar.set_label(label="Wind Speed Difference (ΔMPH)", size=colorbar_fontsize, fontweight='bold')
 
-    x_loc, y_loc = dims.get_label_coords(state, gacc_region)
+    if cwa == None:
+        x_loc, y_loc = 0.87, 0.92
+    if cwa == 'AER' or cwa == 'aer':
+        x_loc, y_loc = 0.87, 0.92
+    if cwa == 'ALU' or cwa == 'alu':
+        x_loc, y_loc = 0.87, 0.92
+    if cwa == 'AJK' or cwa == 'ajk':
+        x_loc, y_loc = 0.87, 0.9
+    if cwa == 'AFG' or cwa == 'afg':
+        x_loc, y_loc = 0.85, 0.9
     
     leg = ax.legend(loc=(x_loc, y_loc), framealpha=1, fontsize='x-small')
     leg.set_zorder(12)
@@ -9801,7 +9832,7 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
     file_functions.update_images(fig, path, gif_path, fname)
 
 
-def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_greenup_temperature_threshold=15, low_rh_threshold=80, high_wind_threshold=5, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, sample_point_type='barbs', barb_quiver_linewidth=1, barb_fontsize=10, row1=None, row2=None, row3=None, row4=None, row5=None, row6=None, col1=None, col2=None, col3=None, col4=None, col5=None, col6=None, tick=9, aspect=30):
+def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=65, post_greenup_temperature_threshold=75, low_rh_threshold=25, high_wind_threshold=15, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, sample_point_type='barbs', barb_quiver_linewidth=1, barb_fontsize=10, row1=None, row2=None, row3=None, row4=None, row5=None, row6=None, col1=None, col2=None, col3=None, col4=None, col5=None, col6=None, tick=9, aspect=30):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Dry and Windy Areas along with the components. 
@@ -10079,6 +10110,9 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_green
 
     rh_contourf = np.arange(0, low_rh_thresh, 1)
 
+    temp_contourf = np.arange(pre_greenup_temperature_threshold, pre_greenup_temperature_threshold + 21, 1)
+    temp_labels = temp_contourf[::5]
+
     high_wind = high_wind_threshold + 36
     
     wind_speed_contourf = np.arange(high_wind_threshold, high_wind, 1)
@@ -10180,11 +10214,93 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_green
 
     directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', True, 'Dry and Windy Areas')
         
-
+    tick = 7
     mpl.rcParams['xtick.labelsize'] = tick
     mpl.rcParams['ytick.labelsize'] = tick
 
-    row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 = 0, 8, 5, 10, 5, 10, 0, 10, 0, 5, 5, 10
+    
+
+    color_table_shrink = 1
+
+    if cwa == None:
+        # Plot 1
+        row1, row2, col1, col2 = 0, 10, 0, 6
+        
+        # Plot 2
+        row3, row4, col3, col4 = 0, 10, 6, 12
+    
+        # Plot 3
+        row5, row6, col5, col6, = 5, 10, 0, 4
+    
+        # Plot 4
+        row7, row8, col7, col8 = 5, 10, 4, 8
+    
+        # Plot 5
+        row9, row10, col9, col10 = 5, 10, 8, 12
+
+    if cwa == 'AER' or cwa == 'aer':
+        # Plot 1
+        row1, row2, col1, col2 = 0, 8, 0, 6
+        
+        # Plot 2
+        row3, row4, col3, col4 = 0, 8, 6, 12
+    
+        # Plot 3
+        row5, row6, col5, col6, = 5, 10, 0, 4
+    
+        # Plot 4
+        row7, row8, col7, col8 = 5, 10, 4, 8
+    
+        # Plot 5
+        row9, row10, col9, col10 = 5, 10, 8, 12      
+
+    if cwa == 'ALU' or cwa == 'alu':
+        # Plot 1
+        row1, row2, col1, col2 = 0, 9, 0, 6
+        
+        # Plot 2
+        row3, row4, col3, col4 = 0, 9, 6, 12
+    
+        # Plot 3
+        row5, row6, col5, col6, = 5, 10, 0, 4
+    
+        # Plot 4
+        row7, row8, col7, col8 = 5, 10, 4, 8
+    
+        # Plot 5
+        row9, row10, col9, col10 = 5, 10, 8, 12
+
+    if cwa == 'AJK' or cwa == 'ajk':
+        # Plot 1
+        row1, row2, col1, col2 = 0, 10, 0, 6
+        
+        # Plot 2
+        row3, row4, col3, col4 = 0, 10, 6, 12
+    
+        # Plot 3
+        row5, row6, col5, col6, = 3, 10, 0, 4
+    
+        # Plot 4
+        row7, row8, col7, col8 = 3, 10, 4, 8
+    
+        # Plot 5
+        row9, row10, col9, col10 = 3, 10, 8, 12
+
+    if cwa == 'AFG' or cwa == 'afg':
+        # Plot 1
+        row1, row2, col1, col2 = 0, 10, 0, 6
+        
+        # Plot 2
+        row3, row4, col3, col4 = 0, 10, 6, 12
+    
+        # Plot 3
+        row5, row6, col5, col6, = 3, 10, 0, 4
+    
+        # Plot 4
+        row7, row8, col7, col8 = 3, 10, 4, 8
+    
+        # Plot 5
+        row9, row10, col9, col10 = 3, 10, 8, 12
     
     if cwa == None:
         title_fontsize, subplot_title_fontsize = 9, 8
@@ -10196,10 +10312,6 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_green
         title_fontsize, subplot_title_fontsize = 9, 8
     if cwa == 'ALU' or cwa == 'alu':
         title_fontsize, subplot_title_fontsize = 9, 8
-
-    fig_x_length = fig_x_length + 2
-    fig_y_length = fig_y_length + 2
-    sample_point_fontsize = sample_point_fontsize - 2
 
     local_time, utc_time = standard.plot_creation_time()
 
@@ -10324,10 +10436,12 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_green
     lons = ds['lon']
     lats = ds['lat']
 
-    fig = plt.figure(figsize=(fig_x_length, fig_y_length))
+    print("Creating Graphic - Please Wait...")
+    
+    fig = plt.figure(figsize=(14, 10))
     fig.set_facecolor('aliceblue')
     
-    gs = gridspec.GridSpec(10, 10)
+    gs = gridspec.GridSpec(10, 12)
 
     ax1 = fig.add_subplot(gs[row1:row2, col1:col2], projection=ccrs.PlateCarree())
     if cwa == None:
@@ -10342,7 +10456,7 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_green
         ax1.set_extent([-170, -140.75, 59, 72], datacrs)
     ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
     ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
-    ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=8)
+    ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=15)
     ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
     if show_rivers == True:
         ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -10377,26 +10491,31 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_green
         ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
     else:
         pass
-    
-    plt.title("RTMA Dry & Windy Areas\n[Relative Humidity <= "+str(low_rh_threshold)+" (%) & Wind Speed >= "+str(high_wind_threshold)+" (MPH)]", fontsize=title_fontsize, fontweight='bold', loc='left')
-    
-    plt.title("Analysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
+
+    ax1.set_title("Pre Green-Up", fontsize=9, fontweight='bold', loc='left')
+    ax1.set_title(f"[T >= {pre_greenup_temperature_threshold}°F & RH <= {low_rh_threshold}% & Wind Speed >= {high_wind_threshold} MPH]", fontsize=7, fontweight='bold', loc='right')
+
+    if cwa == None:
+        fig.suptitle("RTMA Hot Dry & Windy Areas\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", y=0.725, fontsize=14, fontweight='bold')
+    if cwa == 'AER' or cwa == 'aer':
+        fig.suptitle("RTMA Hot Dry & Windy Areas\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", y=0.825, fontsize=14, fontweight='bold')
+    if cwa == 'ALU' or cwa == 'alu':
+        fig.suptitle("RTMA Hot Dry & Windy Areas\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", y=0.78, fontsize=14, fontweight='bold')
+    if cwa == 'AJK' or cwa == 'ajk':
+        fig.suptitle("RTMA Hot Dry & Windy Areas\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", y=0.7, fontsize=14, fontweight='bold')
+    if cwa == 'AFG' or cwa == 'afg':
+        fig.suptitle("RTMA Hot Dry & Windy Areas\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", y=0.7, fontsize=14, fontweight='bold')
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax1.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    fig.text(0.125, 0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     try:
-        ax1.pcolormesh(lon_pre,lat_pre,mask_pre, transform=ccrs.PlateCarree(), color='red', zorder=2, alpha=0.3)
+        ax1.pcolormesh(lon_pre,lat_pre,mask_pre, transform=ccrs.PlateCarree(), cmap=cmap_pre, zorder=2, alpha=0.3)
 
     except Exception as e:
         pass   
 
-    try:
-        ax1.pcolormesh(lon_post,lat_post,mask_post, transform=ccrs.PlateCarree(), color='purple', zorder=3, alpha=0.3)
-
-    except Exception as e:
-        pass   
 
     ax2 = fig.add_subplot(gs[row3:row4, col3:col4], projection=ccrs.PlateCarree())
     if cwa == None:
@@ -10411,7 +10530,7 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_green
         ax2.set_extent([-170, -140.75, 59, 72], datacrs)
     ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
     ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
-    ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+    ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=15)
     ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
     if show_rivers == True:
         ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -10447,44 +10566,14 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_green
     else:
         pass
 
-    cs1 = ax2.contourf(lons, lats, rtma_rh[:, :], 
-                     transform=ccrs.PlateCarree(), levels=rh_contourf, cmap=low_rh_cmap, alpha=alpha)
+    try:
+        ax2.pcolormesh(lon_post,lat_post,mask_post, transform=ccrs.PlateCarree(), cmap=cmap_post, zorder=3, alpha=0.3)
 
-    cbar1 = fig.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=rh_labels)
-    cbar1.set_label(label="Relative Humidity (%)", size=colorbar_fontsize, fontweight='bold')
+    except Exception as e:
+        pass   
 
-    if cwa == None:
-        decimate = 60
-    if cwa == 'AER' or cwa == 'aer':
-        decimate = 20
-    if cwa == 'ALU' or cwa == 'alu':
-        decimate = 20
-    if cwa == 'AJK' or cwa == 'ajk':
-        decimate = 20
-    if cwa == 'AFG' or cwa == 'afg':
-        decimate = 40
-
-    decimate = decimate *2
-
-    plot_lon, plot_lat = np.meshgrid(lons[::decimate], lats[::decimate])
-    plot_lons, plot_lats = np.meshgrid(lons, lats)
-
-    if sp_font_default == False:
-        sample_point_fontsize = sp_fontsize
-    else:
-        sample_point_fontsize = sample_point_fontsize
-
-    if show_sample_points == True:
-
-        stn1 = mpplots.StationPlot(ax2, plot_lon.flatten(), plot_lat.flatten(),
-                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
-    
-        rtma_rh = rtma_rh[::decimate, ::decimate].to_numpy().flatten()
-    
-        stn1.plot_parameter('C', rtma_rh, color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-
-    else:
-        pass
+    ax2.set_title("Post Green-Up", fontsize=9, fontweight='bold', loc='left')
+    ax2.set_title(f"[T >= {post_greenup_temperature_threshold}°F & RH <= {low_rh_threshold}% & Wind Speed >= {high_wind_threshold} MPH]", fontsize=7, fontweight='bold', loc='right')
 
     ax3 = fig.add_subplot(gs[row5:row6, col5:col6], projection=ccrs.PlateCarree())
     if cwa == None:
@@ -10535,7 +10624,95 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_green
     else:
         pass
 
-    cs2 = ax3.contourf(lons, lats, rtma_wind[:, :], 
+    cs1 = ax3.contourf(lons, lats, rtma_rh[:, :], 
+                     transform=ccrs.PlateCarree(), levels=rh_contourf, cmap=low_rh_cmap, alpha=alpha)
+
+    cbar1 = fig.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=rh_labels)
+    cbar1.set_label(label="Relative Humidity (%)", size=colorbar_fontsize, fontweight='bold')
+
+    if cwa == None:
+        decimate = 60
+    if cwa == 'AER' or cwa == 'aer':
+        decimate = 20
+    if cwa == 'ALU' or cwa == 'alu':
+        decimate = 20
+    if cwa == 'AJK' or cwa == 'ajk':
+        decimate = 20
+    if cwa == 'AFG' or cwa == 'afg':
+        decimate = 40
+
+    decimate = decimate *2
+
+    plot_lon, plot_lat = np.meshgrid(lons[::decimate], lats[::decimate])
+    plot_lons, plot_lats = np.meshgrid(lons, lats)
+
+    if sp_font_default == False:
+        sample_point_fontsize = sp_fontsize
+    else:
+        sample_point_fontsize = sample_point_fontsize
+
+    if show_sample_points == True:
+
+        stn1 = mpplots.StationPlot(ax3, plot_lon.flatten(), plot_lat.flatten(),
+                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+    
+        rtma_rh = rtma_rh[::decimate, ::decimate].to_numpy().flatten()
+    
+        stn1.plot_parameter('C', rtma_rh, color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+
+    else:
+        pass
+
+    ax4 = fig.add_subplot(gs[row7:row8, col7:col8], projection=ccrs.PlateCarree())
+    if cwa == None:
+        ax4.set_extent([-170, -125, 50, 72], datacrs)
+    if cwa == 'AER' or cwa == 'aer':
+        ax4.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+    if cwa == 'ALU' or cwa == 'alu':
+        ax4.set_extent([-170, -151, 52, 62.9], datacrs)
+    if cwa == 'AJK' or cwa == 'ajk':
+        ax4.set_extent([-145, -129.5, 54, 60.75], datacrs)
+    if cwa == 'AFG' or cwa == 'afg':
+        ax4.set_extent([-170, -140.75, 59, 72], datacrs)
+    ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+    ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
+    ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+    ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+    if show_rivers == True:
+        ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+    else:
+        pass
+
+    if show_gacc_borders == True:
+        ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+    else:
+        pass
+    if show_psa_borders == True:
+        ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_county_borders == True:
+        ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_state_borders == True:
+        ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+    else:
+        pass
+    if show_cwa_borders == True:
+        ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_nws_firewx_zones == True:
+        ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+    else:
+        pass
+    if show_nws_public_zones == True:
+        ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+    else:
+        pass
+
+    cs2 = ax4.contourf(lons, lats, rtma_wind[:, :], 
                      transform=ccrs.PlateCarree(), levels=wind_speed_contourf, cmap=wind_cmap, alpha=alpha, extend='max', zorder=2)
 
     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=wind_labels)
@@ -10552,7 +10729,7 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_green
 
         if sample_point_type == 'points':
 
-            stn2 = mpplots.StationPlot(ax3, plot_lon.flatten(), plot_lat.flatten(),
+            stn2 = mpplots.StationPlot(ax4, plot_lon.flatten(), plot_lat.flatten(),
                                          transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
         
             rtma_wind = rtma_wind[::decimate, ::decimate].to_numpy().flatten()
@@ -10567,7 +10744,7 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_green
             barb_fontsize = 8
 
 
-            stn2 = mpplots.StationPlot(ax3, plot_lons[::decimate, ::decimate], plot_lats[::decimate, ::decimate],
+            stn2 = mpplots.StationPlot(ax4, plot_lons[::decimate, ::decimate], plot_lats[::decimate, ::decimate],
                              transform=ccrs.PlateCarree(), zorder=11, fontsize=barb_fontsize, clip_on=True)
     
             stn2.plot_barb(u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='lime', label=rtma_time.strftime('%m/%d %H:00'), zorder=11, linewidth=barb_quiver_linewidth)
@@ -10578,14 +10755,90 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_green
 
             minshaft, headlength, headwidth = 0.000005, 5, 3
     
-            ax3.quiver(plot_lons[::decimate, ::decimate], plot_lats[::decimate, ::decimate], u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='lime', minshaft=minshaft, headlength=headlength, headwidth=headwidth, zorder=11, linewidth=barb_quiver_linewidth, transform=ccrs.PlateCarree())
+            ax4.quiver(plot_lons[::decimate, ::decimate], plot_lats[::decimate, ::decimate], u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='lime', minshaft=minshaft, headlength=headlength, headwidth=headwidth, zorder=11, linewidth=barb_quiver_linewidth, transform=ccrs.PlateCarree())
     
             fname_end = ' WIND VECTORS'            
             
     else:
         pass
 
-    fname = 'RTMA DRY & WINDY AREAS' + fname_end
+
+    ax5 = fig.add_subplot(gs[row9:row10, col9:col10], projection=ccrs.PlateCarree())
+    if cwa == None:
+        ax5.set_extent([-170, -125, 50, 72], datacrs)
+    if cwa == 'AER' or cwa == 'aer':
+        ax5.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+    if cwa == 'ALU' or cwa == 'alu':
+        ax5.set_extent([-170, -151, 52, 62.9], datacrs)
+    if cwa == 'AJK' or cwa == 'ajk':
+        ax5.set_extent([-145, -129.5, 54, 60.75], datacrs)
+    if cwa == 'AFG' or cwa == 'afg':
+        ax5.set_extent([-170, -140.75, 59, 72], datacrs)
+    ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+    ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
+    ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+    ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+    if show_rivers == True:
+        ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+    else:
+        pass
+
+    if show_gacc_borders == True:
+        ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+    else:
+        pass
+    if show_psa_borders == True:
+        ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_county_borders == True:
+        ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_state_borders == True:
+        ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+    else:
+        pass
+    if show_cwa_borders == True:
+        ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_nws_firewx_zones == True:
+        ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+    else:
+        pass
+    if show_nws_public_zones == True:
+        ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+    else:
+        pass
+
+    cs3 = ax5.contourf(lons, lats, rtma_temp[:, :], 
+                     transform=ccrs.PlateCarree(), levels=temp_contourf, cmap=colormaps.reds(), alpha=alpha, extend='max')
+
+    cbar3 = fig.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=temp_labels)
+    cbar3.set_label(label="Temperature (°F)", size=colorbar_fontsize, fontweight='bold')
+
+    plot_lon, plot_lat = np.meshgrid(lons[::decimate], lats[::decimate])
+    plot_lons, plot_lats = np.meshgrid(lons, lats)
+
+    if sp_font_default == False:
+        sample_point_fontsize = sp_fontsize
+    else:
+        sample_point_fontsize = sample_point_fontsize
+
+    if show_sample_points == True:
+
+        stn3 = mpplots.StationPlot(ax5, plot_lon.flatten(), plot_lat.flatten(),
+                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+    
+        rtma_temp = rtma_temp[::decimate, ::decimate].to_numpy().flatten()
+    
+        stn3.plot_parameter('C', rtma_temp, color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+
+    else:
+        pass
+
+    fname = 'RTMA HOT DRY & WINDY AREAS' + fname_end
 
     path, gif_path = file_functions.check_file_paths_alaska(state, cwa, fname, reference_system)
     file_functions.update_images(fig, path, gif_path, fname)
@@ -10594,13 +10847,13 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=5, post_green
 def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_greenup_temperature_threshold=75, low_rh_threshold=25, high_wind_threshold=15, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, row1=None, row2=None, row3=None, row4=None, row5=None, row6=None, col1=None, col2=None, col3=None, col4=None, col5=None, col6=None, tick=9, aspect=30):
 
     r'''
-        This function plots the latest available Real Time Mesoscale Analysis (RTMA) Dry and Gusty Areas along with the components. 
+        This function plots the latest available Real Time Mesoscale Analysis (RTMA) Dry and Windy Areas along with the components. 
     
         Required Arguments: None
 
         Optional Arguments: 1) low_rh_threshold (Integer) - Default = 15%. Threshold for low relative humidity. Any value less than this threshold is considered "dry."
 
-                            2) high_wind_threshold (Integer) - Default = 25 MPH. Threshold for high wind gusts. Any value greater than this threshold is considered "gusty."         
+                            2) high_wind_threshold (Integer) - Default = 25 MPH. Threshold for high winds. Any value greater than this threshold is considered "windy."         
         
                             3) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
                                The default setting is None. If set to None, the user must select a state or gacc_region. 
@@ -10843,8 +11096,7 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
                             
                             65) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
     
-        Return: Saves individual images to the RTMA subfolder. 
-    
+        Return: Saves individual images to the RTMA subfolder.
     '''
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
@@ -10870,7 +11122,11 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
 
     rh_contourf = np.arange(0, low_rh_thresh, 1)
 
+    temp_contourf = np.arange(pre_greenup_temperature_threshold, pre_greenup_temperature_threshold + 21, 1)
+    temp_labels = temp_contourf[::5]
+
     high_wind = high_wind_threshold + 36
+    
     wind_speed_contourf = np.arange(high_wind_threshold, high_wind, 1)
 
     if low_rh_threshold <= 15:
@@ -10967,58 +11223,108 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', True, 'Dry and Gusty Areas')
-            
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-
-        row1, row2, row3, row4, row5, row6, col1, col2, col3, col4, col5, col6 = dims.get_gridspec_dims(state, gacc_region)
-
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
-    
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
-
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
-        row1 = row1
-        row2 = row2 
-        row3 = row3
-        row4 = row4 
-        row5 = row5
-        row6 = row6 
-        col1 = col1 
-        col2 = col2
-        col3 = col3 
-        col4 = col4 
-        col5 = col5 
-        col6 = col6
-
-    fig_x_length = fig_x_length + 2
-    fig_y_length = fig_y_length + 2
-    sample_point_fontsize = sample_point_fontsize - 2
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', True, 'Dry and Windy Areas')
+        
+    tick = 7
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
     
+
+    color_table_shrink = 1
+
+    if cwa == None:
+        # Plot 1
+        row1, row2, col1, col2 = 0, 10, 0, 6
+        
+        # Plot 2
+        row3, row4, col3, col4 = 0, 10, 6, 12
+    
+        # Plot 3
+        row5, row6, col5, col6, = 5, 10, 0, 4
+    
+        # Plot 4
+        row7, row8, col7, col8 = 5, 10, 4, 8
+    
+        # Plot 5
+        row9, row10, col9, col10 = 5, 10, 8, 12
+
+    if cwa == 'AER' or cwa == 'aer':
+        # Plot 1
+        row1, row2, col1, col2 = 0, 8, 0, 6
+        
+        # Plot 2
+        row3, row4, col3, col4 = 0, 8, 6, 12
+    
+        # Plot 3
+        row5, row6, col5, col6, = 5, 10, 0, 4
+    
+        # Plot 4
+        row7, row8, col7, col8 = 5, 10, 4, 8
+    
+        # Plot 5
+        row9, row10, col9, col10 = 5, 10, 8, 12      
+
+    if cwa == 'ALU' or cwa == 'alu':
+        # Plot 1
+        row1, row2, col1, col2 = 0, 9, 0, 6
+        
+        # Plot 2
+        row3, row4, col3, col4 = 0, 9, 6, 12
+    
+        # Plot 3
+        row5, row6, col5, col6, = 5, 10, 0, 4
+    
+        # Plot 4
+        row7, row8, col7, col8 = 5, 10, 4, 8
+    
+        # Plot 5
+        row9, row10, col9, col10 = 5, 10, 8, 12
+
+    if cwa == 'AJK' or cwa == 'ajk':
+        # Plot 1
+        row1, row2, col1, col2 = 0, 10, 0, 6
+        
+        # Plot 2
+        row3, row4, col3, col4 = 0, 10, 6, 12
+    
+        # Plot 3
+        row5, row6, col5, col6, = 3, 10, 0, 4
+    
+        # Plot 4
+        row7, row8, col7, col8 = 3, 10, 4, 8
+    
+        # Plot 5
+        row9, row10, col9, col10 = 3, 10, 8, 12
+
+    if cwa == 'AFG' or cwa == 'afg':
+        # Plot 1
+        row1, row2, col1, col2 = 0, 10, 0, 6
+        
+        # Plot 2
+        row3, row4, col3, col4 = 0, 10, 6, 12
+    
+        # Plot 3
+        row5, row6, col5, col6, = 3, 10, 0, 4
+    
+        # Plot 4
+        row7, row8, col7, col8 = 3, 10, 4, 8
+    
+        # Plot 5
+        row9, row10, col9, col10 = 3, 10, 8, 12
+    
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
+
     local_time, utc_time = standard.plot_creation_time()
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
@@ -11031,7 +11337,8 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
 
     PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
-    cmap = colormaps.red_flag_warning_criteria_colormap()
+    cmap_pre = colormaps.red_flag_warning_criteria_colormap()
+    cmap_post = colormaps.red_flag_warning_criteria_colormap_alt()
 
     low_rh_cmap = colormaps.low_relative_humidity_colormap()
 
@@ -11055,11 +11362,17 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
             temp = temp - 273.15
             dwpt = dwpt - 273.15
             rtma_wind = ds['gust10m']
+            u = ds['ugrd10m']
+            v = ds['vgrd10m']
+            u = unit_conversion.meters_per_second_to_mph(u)
+            v = unit_conversion.meters_per_second_to_mph(v)
             rtma_wind = unit_conversion.meters_per_second_to_mph(rtma_wind)
             rtma_rh = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
+            rtma_temp = unit_conversion.celsius_to_fahrenheit(temp)
     
             rtma_rh = rtma_rh[0, :, :]
             rtma_wind = rtma_wind[0, :, :] 
+            rtma_temp = rtma_temp[0, :, :]
                         
             print("Unpacked the data successfully!")
         except Exception as e:
@@ -11074,11 +11387,17 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
             temp = temp - 273.15
             dwpt = dwpt - 273.15
             rtma_wind = ds['gust10m']
+            u = ds['ugrd10m']
+            v = ds['vgrd10m']
+            u = unit_conversion.meters_per_second_to_mph(u)
+            v = unit_conversion.meters_per_second_to_mph(v)
             rtma_wind = unit_conversion.meters_per_second_to_mph(rtma_wind)
             rtma_rh = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
+            rtma_temp = unit_conversion.celsius_to_fahrenheit(temp)
     
             rtma_rh = rtma_rh[0, :, :]
             rtma_wind = rtma_wind[0, :, :] 
+            rtma_temp = rtma_temp[0, :, :]
             print("Unpacked the data successfully!")
         except Exception as e:
             print("There was a problem with the data passed in by the user.\nNo worries! FireWxPy will now try downloading and unpacking the data for you!")
@@ -11090,11 +11409,17 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
                 temp = temp - 273.15
                 dwpt = dwpt - 273.15
                 rtma_wind = ds['gust10m']
+                u = ds['ugrd10m']
+                v = ds['vgrd10m']
+                u = unit_conversion.meters_per_second_to_mph(u)
+                v = unit_conversion.meters_per_second_to_mph(v)
                 rtma_wind = unit_conversion.meters_per_second_to_mph(rtma_wind)
                 rtma_rh = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(temp, dwpt)
+                rtma_temp = unit_conversion.celsius_to_fahrenheit(temp)
         
                 rtma_rh = rtma_rh[0, :, :]
                 rtma_wind = rtma_wind[0, :, :] 
+                rtma_temp = rtma_temp[0, :, :]
                             
                 print("Unpacked the data successfully!")
             except Exception as e:
@@ -11109,17 +11434,26 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
     rtma_time = rtma_time.astimezone(to_zone)
     rtma_time_utc = rtma_time.astimezone(from_zone)
 
-    mask = (rtma_rh <= low_rh_threshold) & (rtma_wind >= high_wind_threshold)
-    lon = mask['lon']
-    lat = mask['lat']
+    mask_pre = (rtma_rh <= low_rh_threshold) & (rtma_wind >= high_wind_threshold) & (rtma_temp >= pre_greenup_temperature_threshold)
+    lon_pre = mask_pre['lon']
+    lat_pre = mask_pre['lat']
 
     lons = ds['lon']
     lats = ds['lat']
 
-    fig = plt.figure(figsize=(fig_x_length, fig_y_length))
-    fig.set_facecolor('aliceblue')
+    mask_post = (rtma_rh <= low_rh_threshold) & (rtma_wind >= high_wind_threshold) & (rtma_temp >= post_greenup_temperature_threshold)
+    lon_post = mask_post['lon']
+    lat_post = mask_post['lat']
 
-    gs = gridspec.GridSpec(10, 10)
+    lons = ds['lon']
+    lats = ds['lat']
+
+    print("Creating Graphic - Please Wait...")
+    
+    fig = plt.figure(figsize=(14, 10))
+    fig.set_facecolor('aliceblue')
+    
+    gs = gridspec.GridSpec(10, 12)
 
     ax1 = fig.add_subplot(gs[row1:row2, col1:col2], projection=ccrs.PlateCarree())
     if cwa == None:
@@ -11134,7 +11468,7 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
         ax1.set_extent([-170, -140.75, 59, 72], datacrs)
     ax1.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
     ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
-    ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=8)
+    ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=15)
     ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
     if show_rivers == True:
         ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -11169,20 +11503,31 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
         ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
     else:
         pass
-    
-    plt.title("RTMA Dry & Gusty Areas\n[Relative Humidity <= "+str(low_rh_threshold)+" (%) & Wind Gust >= "+str(high_wind_threshold)+" (MPH)]", fontsize=title_fontsize, fontweight='bold', loc='left')
-    
-    plt.title("Analysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
+
+    ax1.set_title("Pre Green-Up", fontsize=9, fontweight='bold', loc='left')
+    ax1.set_title(f"[T >= {pre_greenup_temperature_threshold}°F & RH <= {low_rh_threshold}% & Wind Gust >= {high_wind_threshold} MPH]", fontsize=7, fontweight='bold', loc='right')
+
+    if cwa == None:
+        fig.suptitle("RTMA Hot Dry & Gusty Areas\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", y=0.725, fontsize=14, fontweight='bold')
+    if cwa == 'AER' or cwa == 'aer':
+        fig.suptitle("RTMA Hot Dry & Gusty Areas\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", y=0.825, fontsize=14, fontweight='bold')
+    if cwa == 'ALU' or cwa == 'alu':
+        fig.suptitle("RTMA Hot Dry & Gusty Areas\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", y=0.78, fontsize=14, fontweight='bold')
+    if cwa == 'AJK' or cwa == 'ajk':
+        fig.suptitle("RTMA Hot Dry & Gusty Areas\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", y=0.7, fontsize=14, fontweight='bold')
+    if cwa == 'AFG' or cwa == 'afg':
+        fig.suptitle("RTMA Hot Dry & Gusty Areas\nAnalysis Valid: " + rtma_time.strftime('%m/%d/%Y %H:00 Local') + " (" + rtma_time_utc.strftime('%H:00 UTC')+")", y=0.7, fontsize=14, fontweight='bold')
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax1.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    fig.text(0.125, 0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     try:
-        ax1.pcolormesh(lon,lat,mask, transform=ccrs.PlateCarree(),cmap=cmap, zorder=2, alpha=alpha)
+        ax1.pcolormesh(lon_pre,lat_pre,mask_pre, transform=ccrs.PlateCarree(), cmap=cmap_pre, zorder=2, alpha=0.3)
 
     except Exception as e:
         pass   
+
 
     ax2 = fig.add_subplot(gs[row3:row4, col3:col4], projection=ccrs.PlateCarree())
     if cwa == None:
@@ -11197,7 +11542,7 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
         ax2.set_extent([-170, -140.75, 59, 72], datacrs)
     ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
     ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
-    ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+    ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=15)
     ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
     if show_rivers == True:
         ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -11233,43 +11578,14 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
     else:
         pass
 
-    cs1 = ax2.contourf(lons, lats, rtma_rh[:, :], 
-                     transform=ccrs.PlateCarree(), levels=rh_contourf, cmap=low_rh_cmap, alpha=alpha)
+    try:
+        ax2.pcolormesh(lon_post,lat_post,mask_post, transform=ccrs.PlateCarree(), cmap=cmap_post, zorder=3, alpha=0.3)
 
-    cbar1 = fig.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=rh_labels)
-    cbar1.set_label(label="Relative Humidity (%)", size=colorbar_fontsize, fontweight='bold')
+    except Exception as e:
+        pass   
 
-    if cwa == None:
-        decimate = 60
-    if cwa == 'AER' or cwa == 'aer':
-        decimate = 20
-    if cwa == 'ALU' or cwa == 'alu':
-        decimate = 20
-    if cwa == 'AJK' or cwa == 'ajk':
-        decimate = 20
-    if cwa == 'AFG' or cwa == 'afg':
-        decimate = 40
-
-    decimate = decimate * 2
-
-    plot_lon, plot_lat = np.meshgrid(lons[::decimate], lats[::decimate])
-
-    if sp_font_default == False:
-        sample_point_fontsize = sp_fontsize
-    else:
-        sample_point_fontsize = sample_point_fontsize
-
-    if show_sample_points == True:
-
-        stn1 = mpplots.StationPlot(ax2, plot_lon.flatten(), plot_lat.flatten(),
-                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
-    
-        rtma_rh = rtma_rh[::decimate, ::decimate].to_numpy().flatten()
-    
-        stn1.plot_parameter('C', rtma_rh, color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-
-    else:
-        pass
+    ax2.set_title("Post Green-Up", fontsize=9, fontweight='bold', loc='left')
+    ax2.set_title(f"[T >= {post_greenup_temperature_threshold}°F & RH <= {low_rh_threshold}% & Wind Gust >= {high_wind_threshold} MPH]", fontsize=7, fontweight='bold', loc='right')
 
     ax3 = fig.add_subplot(gs[row5:row6, col5:col6], projection=ccrs.PlateCarree())
     if cwa == None:
@@ -11320,7 +11636,95 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
     else:
         pass
 
-    cs2 = ax3.contourf(lons, lats, rtma_wind[:, :], 
+    cs1 = ax3.contourf(lons, lats, rtma_rh[:, :], 
+                     transform=ccrs.PlateCarree(), levels=rh_contourf, cmap=low_rh_cmap, alpha=alpha)
+
+    cbar1 = fig.colorbar(cs1, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=rh_labels)
+    cbar1.set_label(label="Relative Humidity (%)", size=colorbar_fontsize, fontweight='bold')
+
+    if cwa == None:
+        decimate = 60
+    if cwa == 'AER' or cwa == 'aer':
+        decimate = 20
+    if cwa == 'ALU' or cwa == 'alu':
+        decimate = 20
+    if cwa == 'AJK' or cwa == 'ajk':
+        decimate = 20
+    if cwa == 'AFG' or cwa == 'afg':
+        decimate = 40
+
+    decimate = decimate *2
+
+    plot_lon, plot_lat = np.meshgrid(lons[::decimate], lats[::decimate])
+    plot_lons, plot_lats = np.meshgrid(lons, lats)
+
+    if sp_font_default == False:
+        sample_point_fontsize = sp_fontsize
+    else:
+        sample_point_fontsize = sample_point_fontsize
+
+    if show_sample_points == True:
+
+        stn1 = mpplots.StationPlot(ax3, plot_lon.flatten(), plot_lat.flatten(),
+                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+    
+        rtma_rh = rtma_rh[::decimate, ::decimate].to_numpy().flatten()
+    
+        stn1.plot_parameter('C', rtma_rh, color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+
+    else:
+        pass
+
+    ax4 = fig.add_subplot(gs[row7:row8, col7:col8], projection=ccrs.PlateCarree())
+    if cwa == None:
+        ax4.set_extent([-170, -125, 50, 72], datacrs)
+    if cwa == 'AER' or cwa == 'aer':
+        ax4.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+    if cwa == 'ALU' or cwa == 'alu':
+        ax4.set_extent([-170, -151, 52, 62.9], datacrs)
+    if cwa == 'AJK' or cwa == 'ajk':
+        ax4.set_extent([-145, -129.5, 54, 60.75], datacrs)
+    if cwa == 'AFG' or cwa == 'afg':
+        ax4.set_extent([-170, -140.75, 59, 72], datacrs)
+    ax4.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+    ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
+    ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+    ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+    if show_rivers == True:
+        ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+    else:
+        pass
+
+    if show_gacc_borders == True:
+        ax4.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+    else:
+        pass
+    if show_psa_borders == True:
+        ax4.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_county_borders == True:
+        ax4.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_state_borders == True:
+        ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+    else:
+        pass
+    if show_cwa_borders == True:
+        ax4.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_nws_firewx_zones == True:
+        ax4.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+    else:
+        pass
+    if show_nws_public_zones == True:
+        ax4.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+    else:
+        pass
+
+    cs2 = ax4.contourf(lons, lats, rtma_wind[:, :], 
                      transform=ccrs.PlateCarree(), levels=wind_speed_contourf, cmap=wind_cmap, alpha=alpha, extend='max', zorder=2)
 
     cbar2 = fig.colorbar(cs2, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=wind_labels)
@@ -11335,16 +11739,93 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
 
     if show_sample_points == True:
 
-        stn2 = mpplots.StationPlot(ax3, plot_lon.flatten(), plot_lat.flatten(),
+
+        stn2 = mpplots.StationPlot(ax4, plot_lon.flatten(), plot_lat.flatten(),
                                      transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
     
         rtma_wind = rtma_wind[::decimate, ::decimate].to_numpy().flatten()
     
         stn2.plot_parameter('C', rtma_wind, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
 
+
+
+    ax5 = fig.add_subplot(gs[row9:row10, col9:col10], projection=ccrs.PlateCarree())
+    if cwa == None:
+        ax5.set_extent([-170, -125, 50, 72], datacrs)
+    if cwa == 'AER' or cwa == 'aer':
+        ax5.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+    if cwa == 'ALU' or cwa == 'alu':
+        ax5.set_extent([-170, -151, 52, 62.9], datacrs)
+    if cwa == 'AJK' or cwa == 'ajk':
+        ax5.set_extent([-145, -129.5, 54, 60.75], datacrs)
+    if cwa == 'AFG' or cwa == 'afg':
+        ax5.set_extent([-170, -140.75, 59, 72], datacrs)
+    ax5.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+    ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
+    ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+    ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+    if show_rivers == True:
+        ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
     else:
         pass
 
-    path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'RTMA DRY & GUSTY AREAS', reference_system)
-    file_functions.update_images(fig, path, gif_path, 'RTMA DRY & GUSTY AREAS')
+    if show_gacc_borders == True:
+        ax5.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+    else:
+        pass
+    if show_psa_borders == True:
+        ax5.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_county_borders == True:
+        ax5.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_state_borders == True:
+        ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+    else:
+        pass
+    if show_cwa_borders == True:
+        ax5.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+    else:
+        pass
+    if show_nws_firewx_zones == True:
+        ax5.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+    else:
+        pass
+    if show_nws_public_zones == True:
+        ax5.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+    else:
+        pass
+
+    cs3 = ax5.contourf(lons, lats, rtma_temp[:, :], 
+                     transform=ccrs.PlateCarree(), levels=temp_contourf, cmap=colormaps.reds(), alpha=alpha, extend='max')
+
+    cbar3 = fig.colorbar(cs3, shrink=color_table_shrink, pad=colorbar_pad, location='bottom', aspect=aspect, ticks=temp_labels)
+    cbar3.set_label(label="Temperature (°F)", size=colorbar_fontsize, fontweight='bold')
+
+    plot_lon, plot_lat = np.meshgrid(lons[::decimate], lats[::decimate])
+    plot_lons, plot_lats = np.meshgrid(lons, lats)
+
+    if sp_font_default == False:
+        sample_point_fontsize = sp_fontsize
+    else:
+        sample_point_fontsize = sample_point_fontsize
+
+    if show_sample_points == True:
+
+        stn3 = mpplots.StationPlot(ax5, plot_lon.flatten(), plot_lat.flatten(),
+                                     transform=ccrs.PlateCarree(), fontsize=sample_point_fontsize, zorder=7, clip_on=True)
+    
+        rtma_temp = rtma_temp[::decimate, ::decimate].to_numpy().flatten()
+    
+        stn3.plot_parameter('C', rtma_temp, color='blue', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+
+    else:
+        pass
+
+    fname = 'RTMA HOT DRY & GUSTY AREAS'
+
+    path, gif_path = file_functions.check_file_paths_alaska(state, cwa, fname, reference_system)
+    file_functions.update_images(fig, path, gif_path, fname)
 
