@@ -1929,7 +1929,7 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
     if month >= 11 or month <= 3:
         contourf = np.arange(-20, 91, 1)
 
-    labels = contourf[::4]
+    labels = contourf[::5]
 
     if reference_system == 'Custom' or reference_system == 'custom':
         show_state_borders = show_state_borders
