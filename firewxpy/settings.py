@@ -156,34 +156,49 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
                 subplot_title_fontsize = 6                 
 
     if state == 'HI' or state == 'hi':
-        if ndfd_grids == True:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/'
         western_bound = -160.36
         eastern_bound = -154.57
         southern_bound = 18.81
         northern_bound = 22.46
-        fig_x_length = 15
-        fig_y_length = 10
-        signature_x_position = 0.15
-        signature_y_position = 0.05
-        if plot_category == 'minrh':
-            title_fontsize=17 
-        if plot_category == 'poor recovery':
-            title_fontsize=15 
-        if plot_category == 'excellent recovery':
-            title_fontsize=14
-        if plot_category == 'maxrh':
-            title_fontsize=17
-        if plot_category == 'maxrh trend' or plot_category == 'minrh trend':
-            title_fontsize=15
-        if plot_category == 'low minrh':
-            title_fontsize=15
-        subplot_title_fontsize=20 
-        signature_fontsize=23
-        sample_point_fontsize=12
+        fig_x_length = 12
+        fig_y_length = 12
+        signature_x_position = 0.255
+        signature_y_position = 0.25
+        signature_fontsize=8
+        sample_point_fontsize=10
         colorbar_fontsize=12
-        if plot_category == 'maxrh trend' or plot_category == 'minrh trend':
-            colorbar_fontsize=8
+        title_fontsize = 8
+        subplot_title_fontsize=7
+        legend_fontsize = 12
+        color_table_shrink = 1
+        aspect=30
+        tick=9
+        if gridspec == True:
+            fig_x_length = 10
+            fig_y_length = 7
+            color_table_shrink = 0.65
+            colorbar_fontsize = 8
+            sample_point_fontsize=12
+        if plot_category == 'nws':
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            signature_x_position = 0.13
+            signature_y_position = 0.25
+            if plot_type == 'Dry and Windy Forecast' or plot_type == 'Dry and Gusty Forecast':
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+                signature_x_position = 0.01
+                signature_y_position = 0.12                
+        if plot_category == 'rtma':
+            signature_x_position = 0.01
+            signature_y_position = 0.12
+            title_fontsize = 6
+            subplot_title_fontsize=5
+            if plot_type == 'Dry and Windy Areas' or plot_type == 'Dry and Gusty Areas':
+                title_fontsize = 6
+                subplot_title_fontsize = 6  
+                sample_point_fontsize = 9
+            if plot_type == 'RTMA Wind Speed & Observed Wind Speed':
+                title_fontsize = 6
+                subplot_title_fontsize = 6    
 
     if state == 'ME' or state == 'me':       
         western_bound = -71.2
