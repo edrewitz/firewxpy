@@ -1180,6 +1180,123 @@ class RTMA_CONUS:
         if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
             print("Unable to connect to either the main or backup servers. Aborting!")
 
+class NDFD_Alaska:
+
+    r'''
+
+    This class hosts the active function that downloads the NOAA/NWS/NDFD Gridded Data for Alaska. 
+
+    This class hosts the function the users will import and call if the users wish to download the data outside of the 
+    plotting function and pass the data into the plotting function.
+    
+    This is the recommended method for users who wish to create a large amount of graphics at one time to limit the number of server requests. 
+
+    '''    
+
+    def get_short_and_extended_grids(parameter):
+        
+        '''
+                 This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
+                 This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
+        
+                 Inputs:
+
+                    1) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
+                                            Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
+                                            https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
+        
+                Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
+                         This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
+                 
+        '''
+    
+        ###################################################
+        # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
+        ###################################################
+
+        parameter = parameter
+
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+
+        ds_short = get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
+        print("Retrieved the short-term Alaska grids.")
+        ds_extended = get_NWS_NDFD_extended_grid_data(directory_name, parameter)
+        print("Retrieved the extended Alaska grids.")
+
+        return ds_short, ds_extended
+    
+
+
+    def get_NWS_NDFD_7_Day_grid_data(parameter):
+        
+        '''
+                 This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
+                 This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
+        
+                 Inputs:
+
+                    1) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
+                                            Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
+                                            https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
+        
+                Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
+                         This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
+                 
+        '''
+    
+        ###################################################
+        # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
+        ###################################################
+    
+        ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
+        ftp = FTP('tgftp.nws.noaa.gov')
+        ftp.login()
+
+        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+    
+        ### SEARCHES FOR THE CORRECT DIRECTORY ###
+        try:
+            dirName_short = directory_name + 'VP.001-003/'
+            param = parameter
+            files = ftp.cwd(dirName_short)
+    
+            ### SEARCHES FOR THE CORRECT PARAMETER ###
+            try:
+                ################################
+                # DOWNLOADS THE NWS NDFD GRIDS #
+                ################################
+                
+                with open(param, 'wb') as fp:
+                    ftp.retrbinary('RETR ' + param, fp.write)
+    
+                dirName_extended = directory_name + 'VP.004-007/'
+                param = parameter
+                files = ftp.cwd(dirName_extended)
+    
+                with open(param, 'ab') as fp:
+                    ftp.retrbinary('RETR ' + param, fp.write)
+                
+                ftp.close()
+    
+                
+                #########################
+                # DATA ARRAYS PARAMETER #
+                #########################
+                ds = xr.load_dataset(param, engine='cfgrib')
+                ds = ds.metpy.parse_cf()
+                return ds
+    
+            ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
+    
+            except Exception as a:
+                param_error = info.parameter_name_error()
+                return param_error
+    
+        ### ERROR MESSAGE WHEN THERE IS AN INVALID DIRECTORY NAME ###
+            
+        except Exception as e:
+            dir_error = info.directory_name_error()
+            return dir_error
 
 class NDFD_CONUS:
 
