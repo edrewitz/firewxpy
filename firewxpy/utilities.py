@@ -1968,11 +1968,6 @@ class file_functions:
                 GIF_path = f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}" 
 
         return path, GIF_path
-                    
-    
-        return path, GIF_path
-
-
         
 
 class save:
