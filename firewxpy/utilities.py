@@ -1516,6 +1516,9 @@ class file_functions:
         cwa = cwa
         plot_type = plot_type
         reference_system = reference_system
+        state = state.upper()
+        if cwa != None:
+            cwa = cwa.upper()
     
         if os.path.exists(f"Weather Data"):
             print("Already Satisfied: Weather Data folder exists.")
@@ -1526,8 +1529,6 @@ class file_functions:
         if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON' or plot_type == 'RTMA TEMPERATURE' or plot_type == '24HR RTMA TEMPERATURE COMPARISON' or plot_type == '24HR RTMA TOTAL CLOUD COVER COMPARISON' or plot_type == 'RTMA TOTAL CLOUD COVER' or plot_type == '24HR RTMA DEW POINT COMPARISON' or plot_type == 'RTMA DEW POINT' or plot_type == 'RTMA WIND SPEED' or plot_type == '24HR RTMA WIND SPEED COMPARISON' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND BARBS' or plot_type == 'RTMA HOT DRY & WINDY AREAS SAMPLE POINTS' or plot_type == 'RTMA HOT DRY & WINDY AREAS WIND BARBS' or plot_type == 'RTMA HOT DRY & WINDY AREAS WIND VECTORS' or plot_type == 'RTMA HOT DRY & GUSTY AREAS' or plot_type == 'RTMA RH & METAR' or plot_type == 'RTMA LOW RH & METAR' or plot_type == 'RTMA FROST FREEZE' or plot_type == 'RTMA EXTREME HEAT' or plot_type == 'RTMA TEMPERATURE ADVECTION' or plot_type == 'RTMA RH ADVECTION' or plot_type == 'RTMA DEW POINT ADVECTION' or plot_type == 'RTMA WIND GUST & OBS' or plot_type == 'RTMA WIND SPEED & OBS' or plot_type == 'RTMA LOW AND HIGH RH':
     
             if cwa == None:
-    
-                state = state.upper()
     
                 full_path = 'f:Weather Data/RTMA/'+plot_type+'/'+state+'/'+reference_system+'/STATE'
                 ref_path = 'f:Weather Data/RTMA/'+plot_type+'/'+state+'/'+reference_system
@@ -1592,9 +1593,6 @@ class file_functions:
     
             if cwa != None:
     
-                state = state.upper()
-                cwa = cwa.upper()
-    
                 full_path = 'f:Weather Data/RTMA/'+plot_type+'/'+state+'/'+reference_system+'/'+cwa
                 ref_path = 'f:Weather Data/RTMA/'+plot_type+'/'+state+'/'+reference_system
                 state_path = 'f:Weather Data/RTMA/'+plot_type+'/'+state
@@ -1657,9 +1655,6 @@ class file_functions:
         if plot_type == 'NWS Low Minimum RH' or plot_type == 'NWS Poor Overnight Recovery' or plot_type == 'NWS Excellent Overnight Recovery' or plot_type == 'NWS Maximum RH' or plot_type == 'NWS Maximum RH Trend' or plot_type == 'NWS Minimum RH' or plot_type == 'NWS Minimum RH Trend' or plot_type == 'NWS Extreme Heat' or plot_type == 'NWS Max T Trend' or plot_type == 'NWS Warm Min T' or plot_type == 'NWS Frost Freeze' or plot_type == 'NWS Max T' or plot_type == 'NWS Min T' or plot_type == 'NWS Min T Trend':
 
             if cwa != None:
-
-                state = state.upper()
-                cwa = cwa.upper()
 
                 full_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system+'/'+cwa
                 ref_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system
@@ -1804,9 +1799,6 @@ class file_functions:
                 path = f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}"
                 GIF_path = f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}"                    
             if cwa == None:
-
-                cwa = 'STATE'
-                state = state.upper()
             
                 ##########################
                 # STILL IMAGES DIRECTORY #
