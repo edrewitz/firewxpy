@@ -26,6 +26,8 @@ import firewxpy.calc as calc
 import numpy as np
 import netCDF4
 import time as t
+import urllib.request
+import os
 import firewxpy.standard as standard
 import warnings
 warnings.filterwarnings('ignore')
