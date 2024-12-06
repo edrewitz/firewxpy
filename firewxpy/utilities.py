@@ -2,9 +2,6 @@ import os
 import imageio
 import matplotlib.pyplot as plt
 import time
-import warnings
-warnings.filterwarnings('ignore')
-
 from zipfile import ZipFile
 from PIL import Image
 from datetime import datetime
@@ -138,35 +135,7 @@ class file_functions:
 
             fig = fig.savefig(path+'/RTMA DRY & GUSTY AREAS.png', bbox_inches='tight')
 
-            print("Image saved to: "+path+"/RTMA DRY & GUSTY AREAS.png")   
-
-            fig = fig.savefig(path+'/RTMA DRY & WINDY AREAS WIND VECTORS.png', bbox_inches='tight')
-
-            print("Image saved to: "+path+"/RTMA DRY & WINDY AREAS WIND VECTORS.png")
-
-        if plot_type == 'RTMA HOT DRY & WINDY AREAS WIND BARBS':
-
-            fig = figure_list
-
-            fig = fig.savefig(path+'/RTMA HOT DRY & WINDY AREAS WIND BARBS.png', bbox_inches='tight')
-
-            print("Image saved to: "+path+"/RTMA HOT DRY & WINDY AREAS WIND BARBS.png")
-
-        if plot_type == 'RTMA HOT DRY & WINDY AREAS SAMPLE POINTS':
-
-            fig = figure_list
-
-            fig = fig.savefig(path+'/RTMA DRY & WINDY AREAS SAMPLE POINTS.png', bbox_inches='tight')
-
-            print("Image saved to: "+path+"/RTMA DRY & WINDY AREAS SAMPLE POINTS.png")  
-
-        if plot_type == 'RTMA HOT DRY & GUSTY AREAS':
-
-            fig = figure_list
-
-            fig = fig.savefig(path+'/RTMA HOT DRY & GUSTY AREAS.png', bbox_inches='tight')
-
-            print("Image saved to: "+path+"/RTMA HOT DRY & GUSTY AREAS.png")    
+            print("Image saved to: "+path+"/RTMA DRY & GUSTY AREAS.png")    
            
 
         if plot_type == 'RTMA WIND SPEED & DIRECTION WIND VECTORS':
@@ -1541,7 +1510,6 @@ class file_functions:
         return path, GIF_path
 
 
-
     def check_file_paths_alaska(state, cwa, plot_type, reference_system):
     
         state = state
@@ -1837,16 +1805,22 @@ class file_functions:
                 GIF_path = f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}"                    
             if cwa == None:
 
-                ref_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system
-                state_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state
-                type_path = 'f:Weather Data/NWS Forecasts/'+plot_type
-
-                state_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state
-                type_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type
+                cwa = 'STATE'
+                state = state.upper()
             
                 ##########################
                 # STILL IMAGES DIRECTORY #
                 ##########################
+
+                full_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system+'/'+cwa
+                ref_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system
+                state_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state
+                type_path = 'f:Weather Data/NWS Forecasts/'+plot_type
+
+                full_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state+'/'+reference_system+'/'+cwa
+                ref_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state+'/'+reference_system
+                state_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state
+                type_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type
 
 
                 if os.path.exists(f"Weather Data/NWS Forecasts"):
@@ -1872,12 +1846,14 @@ class file_functions:
                             else:
                                 print(ref_path+' not found. Automatically building new branch to directory...')
                                 os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}")
                                 print("Successfully built new branch to directory!")                                
 
                         else:
                             print(state_path+' not found. Automatically building new branch to directory...')
                             os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
                             os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}")
                             print("Successfully built new branch to directory!")
                             
                     else:
@@ -1885,6 +1861,7 @@ class file_functions:
                         os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
                         os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
                         os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}")
                         print("Successfully built new branch to directory!")
                         
                 else:
@@ -1895,6 +1872,7 @@ class file_functions:
                     os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
                     os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
                     os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}")
 
                     print("Successfully built new directory!")
 
@@ -1928,12 +1906,14 @@ class file_functions:
                                 else:
                                     print(f"{ref_path_gif} not found. Building new branch to directory.")
                                     os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}")
                                     print("Successfully built new branch to directory!")   
 
                             else:
                                 print(state_path_gif+' not found. Building branch to directory.')
                                 os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
                                 os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}")
                                 print("Successfully built new branch to directory!")                                
 
                         else:
@@ -1941,6 +1921,7 @@ class file_functions:
                             os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
                             os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
                             os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}")
                             print("Successfully built new branch to directory!")
                             
 
@@ -1950,7 +1931,7 @@ class file_functions:
                         os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
                         os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
                         os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
-                            
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}")                            
                         
                 else:
                     print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
@@ -1961,14 +1942,14 @@ class file_functions:
                     os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
                     os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
                     os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}")
 
                     print("Successfully built new directory!")
 
-                path = f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}"
-                GIF_path = f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}" 
+                path = f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}"
+                GIF_path = f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}" 
 
         return path, GIF_path
-        
 
 class save:
 
@@ -2616,4 +2597,3 @@ class save:
         times.append(rtma_time_8)
 
         return data, times
-
