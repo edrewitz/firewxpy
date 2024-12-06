@@ -2871,7 +2871,8 @@ class relative_humidity:
 
         mapcrs = ccrs.PlateCarree()
         datacrs = ccrs.PlateCarree(central_longitude=0.1)
-    
+        #datacrs = ccrs.PlateCarree()
+        
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
@@ -4022,7 +4023,8 @@ class relative_humidity:
         count, short_steps, extended_steps = parsers.NDFD.ndfd_step_count(ds_short, ds_extended)
 
         mapcrs = ccrs.PlateCarree()
-        datacrs = ccrs.PlateCarree(central_longitude=0.1)
+        #datacrs = ccrs.PlateCarree(central_longitude=0.1)
+        datacrs = ccrs.PlateCarree()
     
         figs = [] 
     
@@ -4567,7 +4569,7 @@ class relative_humidity:
                         diff7 = ds_extended['maxrh'][3, :, :] - ds_extended['maxrh'][2, :, :]
                         cs7 = ax7.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], diff7, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2, extend='both')
                     if short_steps == 3:
-                        diff7 = ds_extended['maxrh'][4, :, :] - ds_extended['maxrh'][3, :, :]
+                        diff7 = ds_extended['maxrh'][3, :, :] - ds_extended['maxrh'][2, :, :]
                         cs7 = ax7.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], diff7, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2, extend='both')
                     if short_steps == 2:
                         diff7 = ds_extended['maxrh'][5, :, :] - ds_extended['maxrh'][4, :, :]
@@ -4581,7 +4583,11 @@ class relative_humidity:
                         diff7 = ds_extended['maxrh'][idx_extended, 3, :, :] - ds_extended['maxrh'][idx_extended, 2, :, :]
                         cs7 = ax7.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], diff7, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2, extend='both')
                     if short_steps == 3:
-                        diff7 = ds_extended['maxrh'][idx_extended, 4, :, :] - ds_extended['maxrh'][idx_extended, 3, :, :]
+                        try:
+                            diff7 = ds_extended['maxrh'][idx_extended, 4, :, :] - ds_extended['maxrh'][idx_extended, 3, :, :]
+                        except Exception as e:
+                            diff7 = ds_extended['maxrh'][0, 4, :, :] - ds_extended['maxrh'][0, 3, :, :]
+                            
                         cs7 = ax7.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], diff7, levels=levels, cmap=cmap, transform=datacrs, alpha=alpha, zorder=2, extend='both')
                     if short_steps == 2:
                         diff7 = ds_extended['maxrh'][idx_extended, 5, :, :] - ds_extended['maxrh'][idx_extended, 4, :, :]
@@ -6899,7 +6905,7 @@ class relative_humidity:
     
     
     
-    def plot_minimum_relative_humidity_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
+    def plot_minimum_relative_humidity_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Minimum RH Trend Forecast. 
