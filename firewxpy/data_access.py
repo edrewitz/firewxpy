@@ -1373,14 +1373,53 @@ class NDFD_Alaska:
         parameter = parameter
 
         directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        try:
+            ds_short = NDFD_Alaska.get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
+            print("Retrieved the short-term Alaska grids.")
+            ds_extended = NDFD_Alaska.get_NWS_NDFD_extended_grid_data(directory_name, parameter)
+            print("Retrieved the extended Alaska grids.")
+        except Exception as e:
+            print("Unable to connect to server via FTP.\nTrying the backup method to download the file...")
+            try:
+                ds_short, ds_extended = NDFD_Alaska.get_NWS_NDFD_7_Day_grid_data_backup(parameter)
+                with open('ds.maxrh.bin', 'wb') as myfile, open('ds.maxrh_short.bin', 'rb') as file1, open('ds.maxrh_extended.bin', 'rb') as file2:
+                    myfile.write(file1.read())
+                    myfile.write(file2.read())
+            except Exception as e:
+                print("Unable to connect to server. Please try again later.")
 
-        ds_short = NDFD_Alaska.get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
+        return ds_short, ds_extended
+
+
+
+    def get_NWS_NDFD_7_Day_grid_data_backup(parameter):
+
+        if parameter == 'ds.maxrh.bin':
+            short_term_fname = 'ds.maxrh_short.bin'
+            extended_fname = 'ds.maxrh_extended.bin'
+
+        if os.path.exists(short_term_fname):
+            os.remove(short_term_fname)
+            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/VP.001-003/{parameter}", f"{parameter}")
+            os.rename(parameter, short_term_fname)
+        else:
+            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/VP.001-003/{parameter}", f"{parameter}")
+            os.rename(parameter, short_term_fname)
+        
+        if os.path.exists(extended_fname):
+            os.remove(extended_fname)
+            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/VP.004-007/{parameter}", f"{parameter}")
+            os.rename(parameter, extended_fname)
+        else:
+            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/VP.004-007/{parameter}", f"{parameter}")
+            os.rename(parameter, extended_fname)
+
+        ds_short = xr.open_dataset(short_term_fname, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
         print("Retrieved the short-term Alaska grids.")
-        ds_extended = NDFD_Alaska.get_NWS_NDFD_extended_grid_data(directory_name, parameter)
+        ds_extended = xr.open_dataset(extended_fname, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
         print("Retrieved the extended Alaska grids.")
 
         return ds_short, ds_extended
-    
 
 
     def get_NWS_NDFD_7_Day_grid_data(parameter):
@@ -1509,36 +1548,25 @@ class NDFD_Alaska:
         ftp.login()
     
         ### SEARCHES FOR THE CORRECT DIRECTORY ###
-        try:
-            dirName = directory_name + 'VP.001-003/'
-            param = parameter
-            files = ftp.cwd(dirName)
-    
-            ### SEARCHES FOR THE CORRECT PARAMETER ###
-            try:
-                ################################
-                # DOWNLOADS THE NWS NDFD GRIDS #
-                ################################
-                
-                with open(param, 'wb') as fp:
-                    ftp.retrbinary('RETR ' + param, fp.write)
-                    
-                ftp.close()
-                ds = xr.load_dataset(param, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
-                ds = ds.metpy.parse_cf()
-                return ds
-    
-            ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
-    
-            except Exception as a:
-                param_error = info.parameter_name_error()
-                return param_error
-    
-        ### ERROR MESSAGE WHEN THERE IS AN INVALID DIRECTORY NAME ###
+        
+        dirName = directory_name + 'VP.001-003/'
+        param = parameter
+        files = ftp.cwd(dirName)
+
+        ### SEARCHES FOR THE CORRECT PARAMETER ###
+
+        ################################
+        # DOWNLOADS THE NWS NDFD GRIDS #
+        ################################
+        
+        with open(param, 'wb') as fp:
+            ftp.retrbinary('RETR ' + param, fp.write)
             
-        except Exception as e:
-            dir_error = info.directory_name_error()
-            return dir_error
+        ftp.close()
+        ds = xr.load_dataset(param, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
+        ds = ds.metpy.parse_cf()
+        return ds
+
     
     def get_NWS_NDFD_extended_grid_data(directory_name, parameter):
         
@@ -1594,36 +1622,22 @@ class NDFD_Alaska:
         ftp.login()
     
         ### SEARCHES FOR THE CORRECT DIRECTORY ###
-        try:
-            dirName = directory_name + 'VP.004-007/'
-            param = parameter
-            files = ftp.cwd(dirName)
-    
-            ### SEARCHES FOR THE CORRECT PARAMETER ###
-            try:
-                ################################
-                # DOWNLOADS THE NWS NDFD GRIDS #
-                ################################
-                
-                with open(param, 'wb') as fp:
-                    ftp.retrbinary('RETR ' + param, fp.write)
-    
-                ftp.close()
-                ds = xr.load_dataset(param, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
-                ds = ds.metpy.parse_cf()
-                return ds
-    
-            ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
-    
-            except Exception as a:
-                param_error = info.parameter_name_error()
-                return param_error
-    
-        ### ERROR MESSAGE WHEN THERE IS AN INVALID DIRECTORY NAME ###
-            
-        except Exception as e:
-            dir_error = info.directory_name_error()
-            return dir_error
+        dirName = directory_name + 'VP.004-007/'
+        param = parameter
+        files = ftp.cwd(dirName)
+
+        ### SEARCHES FOR THE CORRECT PARAMETER ###
+        ################################
+        # DOWNLOADS THE NWS NDFD GRIDS #
+        ################################
+        
+        with open(param, 'wb') as fp:
+            ftp.retrbinary('RETR ' + param, fp.write)
+
+        ftp.close()
+        ds = xr.load_dataset(param, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
+        ds = ds.metpy.parse_cf()
+        return ds
 
 def get_NWS_NDFD_7_Day_grid_data(directory_name, parameter):
     
