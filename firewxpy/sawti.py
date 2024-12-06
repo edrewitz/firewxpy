@@ -13,6 +13,7 @@ warnings.filterwarnings('ignore')
 from datetime import datetime, timedelta
 
 mpl.rcParams['font.weight'] = 'bold'
+mpl.rcParams['xtick.labelsize'] = 7
 
 def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, zone_1_threshold_4=40, zone_2_threshold_1=9, zone_2_threshold_2=13, zone_2_threshold_3=20, zone_2_threshold_4=28, zone_3_threshold_1=10, zone_3_threshold_2=16, zone_3_threshold_3=24, zone_3_threshold_4=36, zone_4_threshold_1=9, zone_4_threshold_2=12, zone_4_threshold_3=15, zone_4_threshold_4=25, zone_1_W_weight=1, zone_1_DD_weight=1, zone_1_FMC_weight=1, zone_2_W_weight=1, zone_2_DD_weight=1, zone_2_FMC_weight=1, zone_3_W_weight=1, zone_3_DD_weight=1, zone_3_FMC_weight=1, zone_4_W_weight=1, zone_4_DD_weight=1, zone_4_FMC_weight=1):
 
@@ -59,7 +60,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
 
     local_time, utc_time = standard.plot_creation_time()
 
-    now = datetime.utcnow()
+    now = utc_time
     yday = now - timedelta(days=1)
     day2 = now + timedelta(days=1)
     day3 = now + timedelta(days=2)
@@ -639,8 +640,6 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     hour = now_la.hour
 
     plt.style.use('seaborn-v0_8-darkgrid')
-
-    print("Creating Image - Please Wait...")
     
     fig = plt.figure(figsize=(12,10))
     fig.set_facecolor('aliceblue')
@@ -745,4 +744,4 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
         os.mkdir(f"Weather Data/SAWTI")
         print("Successfully built directory and current branch.")
         plt.savefig(f"Weather Data/SAWTI/{fname}", bbox_inches='tight')
-        print(f"Image Saved to f:Weather Data/SAWTI/{fname}")        
+        print(f"Image Saved to f:Weather Data/SAWTI/{fname}")             
