@@ -62,12 +62,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
 
     now = utc_time
     yday = now - timedelta(days=1)
-    day2 = now + timedelta(days=1)
-    day3 = now + timedelta(days=2)
-    day4 = now + timedelta(days=3)
-    day5 = now + timedelta(days=4)
-    day6 = now + timedelta(days=5)
-    day7 = now + timedelta(days=6)
+
     
     # Zone 1
 
@@ -184,14 +179,17 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     try:
         urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone1-LA-Ventura/seaspace_zone1_'+now.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone1_'+now.strftime('%m%d%Y')+'_12z.csv')
         print('seaspace_zone1_'+now.strftime('%m%d%Y')+'_12z.csv has been downloaded')
+        today = False
     except Exception as e:
         try:
             urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone1-LA-Ventura/seaspace_zone1_'+now.strftime('%m%d%Y')+'_00z.csv', 'seaspace_zone1_'+now.strftime('%m%d%Y')+'_00z.csv')
             print('seaspace_zone1_'+now.strftime('%m%d%Y')+'_00z.csv has been downloaded')
+            today = True
         except Exception as e:
             try:
                 urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone1-LA-Ventura/seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv')
                 print('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv has been downloaded')
+                today = False
             except Exception as e:
                 pass
     
@@ -199,14 +197,17 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     try:
         urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone2-Orange-InlandEmpire/seaspace_zone2_'+now.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone2_'+now.strftime('%m%d%Y')+'_12z.csv')
         print('seaspace_zone2_'+now.strftime('%m%d%Y')+'_12z.csv has been downloaded')
+        today = False
     except Exception as e:
         try:
             urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone2-Orange-InlandEmpire/seaspace_zone2_'+now.strftime('%m%d%Y')+'_00z.csv', 'seaspace_zone2_'+now.strftime('%m%d%Y')+'_00z.csv')
             print('seaspace_zone2_'+now.strftime('%m%d%Y')+'_00z.csv has been downloaded')
+            today = True
         except Exception as e:
             try:
                 urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone2-Orange-InlandEmpire/seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv')
                 print('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv has been downloaded')
+                today = False
             except Exception as e:
                 pass
     
@@ -214,14 +215,17 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     try:
         urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone3-SanDiego/seaspace_zone3_'+now.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone3_'+now.strftime('%m%d%Y')+'_12z.csv')
         print('seaspace_zone3_'+now.strftime('%m%d%Y')+'_12z.csv has been downloaded')
+        today = False
     except Exception as e:
         try:
             urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone3-SanDiego/seaspace_zone3_'+now.strftime('%m%d%Y')+'_00z.csv', 'seaspace_zone3_'+now.strftime('%m%d%Y')+'_00z.csv')
             print('seaspace_zone3_'+now.strftime('%m%d%Y')+'_00z.csv has been downloaded')
+            today = True
         except Exception as e:
             try:
                 urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone3-SanDiego/seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv')
                 print('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv has been downloaded')
+                today = False
             except Exception as e:
                 pass
     
@@ -230,16 +234,19 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
         urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone4-SantaBarbara/seaspace_zone4_'+now.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone4_'+now.strftime('%m%d%Y')+'_12z.csv')
         print('seaspace_zone4_'+now.strftime('%m%d%Y')+'_12z.csv has been downloaded')
         print("\n")
+        today = False
     except Exception as e:
         try:
             urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone4-SantaBarbara/seaspace_zone4_'+now.strftime('%m%d%Y')+'_00z.csv', 'seaspace_zone4_'+now.strftime('%m%d%Y')+'_00z.csv')
             print('seaspace_zone4_'+now.strftime('%m%d%Y')+'_00z.csv has been downloaded')
             print("\n")
+            today = True
         except Exception as e:
             try:
                 urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone4-SantaBarbara/seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv')
                 print('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv has been downloaded')
                 print("\n")
+                today = False
             except Exception as e:
                 pass
     
@@ -314,14 +321,123 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
             except Exception as e:
                 pass
 
-    dates = []
-    dates.append(now)
-    dates.append(day2)
-    dates.append(day3)
-    dates.append(day4)
-    dates.append(day5)
-    dates.append(day6)
-    dates.append(day7)
+    day2 = now + timedelta(days=1)
+    day3 = now + timedelta(days=2)
+    day4 = now + timedelta(days=3)
+    day5 = now + timedelta(days=4)
+    day6 = now + timedelta(days=5)
+    day7 = now + timedelta(days=6)
+    day8 = now + timedelta(days=7)
+
+    timezone = pytz.timezone('America/Los_Angeles')
+    if today == True:
+        now = now.astimezone(timezone)
+        day2 = day2.astimezone(timezone)
+        day3 = day3.astimezone(timezone)
+        day4 = day4.astimezone(timezone)
+        day5 = day5.astimezone(timezone)
+        day6 = day6.astimezone(timezone)
+        day7 = day7.astimezone(timezone)
+        
+        today_year = now.year
+        today_month = now.month
+        today_day = now.day
+    
+        day2_year = day2.year
+        day2_month = day2.month
+        day2_day = day2.day
+    
+        day3_year = day3.year
+        day3_month = day3.month
+        day3_day = day3.day   
+    
+        day4_year = day4.year
+        day4_month = day4.month
+        day4_day = day4.day
+    
+        day5_year = day5.year
+        day5_month = day5.month
+        day5_day = day5.day
+    
+        day6_year = day6.year
+        day6_month = day6.month
+        day6_day = day6.day
+    
+        day7_year = day7.year
+        day7_month = day7.month
+        day7_day = day7.day
+    
+        today_date = datetime(today_year, today_month, today_day)
+        day2 = datetime(day2_year, day2_month, day2_day)
+        day3 = datetime(day3_year, day3_month, day3_day)
+        day4 = datetime(day4_year, day4_month, day4_day)
+        day5 = datetime(day5_year, day5_month, day5_day)
+        day6 = datetime(day6_year, day6_month, day6_day)
+        day7 = datetime(day7_year, day7_month, day7_day)
+
+        dates = []
+        dates.append(today_date)
+        dates.append(day2)
+        dates.append(day3)
+        dates.append(day4)
+        dates.append(day5)
+        dates.append(day6)
+        dates.append(day7)
+
+    else:
+        day2 = day2.astimezone(timezone)
+        day3 = day3.astimezone(timezone)
+        day4 = day4.astimezone(timezone)
+        day5 = day5.astimezone(timezone)
+        day6 = day6.astimezone(timezone)
+        day7 = day7.astimezone(timezone)
+        day8 = day8.astimezone(timezone)
+    
+        day2_year = day2.year
+        day2_month = day2.month
+        day2_day = day2.day
+    
+        day3_year = day3.year
+        day3_month = day3.month
+        day3_day = day3.day   
+    
+        day4_year = day4.year
+        day4_month = day4.month
+        day4_day = day4.day
+    
+        day5_year = day5.year
+        day5_month = day5.month
+        day5_day = day5.day
+    
+        day6_year = day6.year
+        day6_month = day6.month
+        day6_day = day6.day
+    
+        day7_year = day7.year
+        day7_month = day7.month
+        day7_day = day7.day
+
+        day8_year = day8.year
+        day8_month = day8.month
+        day8_day = day8.day        
+
+        day2 = datetime(day2_year, day2_month, day2_day)
+        day3 = datetime(day3_year, day3_month, day3_day)
+        day4 = datetime(day4_year, day4_month, day4_day)
+        day5 = datetime(day5_year, day5_month, day5_day)
+        day6 = datetime(day6_year, day6_month, day6_day)
+        day7 = datetime(day7_year, day7_month, day7_day)        
+        day8 = datetime(day8_year, day8_month, day8_day) 
+
+        dates = []
+        dates.append(day2)
+        dates.append(day3)
+        dates.append(day4)
+        dates.append(day5)
+        dates.append(day6)
+        dates.append(day7)
+        dates.append(day8)
+
         
     try:
 
@@ -634,22 +750,17 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     except Exception as e:
         pass
 
-    local = datetime.now()
-    timezone = pytz.timezone('America/Los_Angeles')
-    now_la = local.astimezone(timezone)
-    hour = now_la.hour
 
     plt.style.use('seaborn-v0_8-darkgrid')
+
+    print("Creating Image - Please Wait...")
     
     fig = plt.figure(figsize=(12,10))
     fig.set_facecolor('aliceblue')
     fig.suptitle("Santa Ana Wildfire Threat Index (SAWTI)", fontsize=16, fontweight='bold')
     
     ax1 = fig.add_subplot(2, 2, 1)
-    if hour > 4 and hour < 22:
-        ax1.bar(dates, zone_1_LFP_values, color='red', align='center', zorder=2, width=0.4)
-    if hour >= 22 or hour <= 4:
-        ax1.bar(dates, zone_1_LFP_values, color='red', align='edge', zorder=2, width=0.4)
+    ax1.bar(dates, zone_1_LFP_values, color='red', align='center', zorder=2, width=0.4)
     ax1.set_title("Zone 1: Los Angeles & Ventura", fontweight='bold')
     ax1.set_xlabel("Date", fontweight='bold')
     ax1.xaxis.set_major_formatter(md.DateFormatter('%a %m/%d'))
@@ -662,10 +773,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     ax1.axhspan(zone_1_threshold_4, 60, color='purple', alpha=0.3, zorder=1)
 
     ax2 = fig.add_subplot(2, 2, 2)
-    if hour > 4 and hour < 22:
-        ax2.bar(dates, zone_2_LFP_values, color='red', align='center', zorder=2, width=0.4)
-    if hour >= 22 or hour <= 4:
-        ax2.bar(dates, zone_2_LFP_values, color='red', align='edge', zorder=2, width=0.4)
+    ax2.bar(dates, zone_2_LFP_values, color='red', align='center', zorder=2, width=0.4)
     ax2.set_title("Zone 2: Orange County & Inland Empire", fontweight='bold')
     ax2.set_xlabel("Date", fontweight='bold')
     ax2.xaxis.set_major_formatter(md.DateFormatter('%a %m/%d'))
@@ -678,10 +786,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     ax2.axhspan(zone_2_threshold_4, 60, color='purple', alpha=0.3, zorder=1)
 
     ax3 = fig.add_subplot(2, 2, 3)
-    if hour > 4 and hour < 22:
-        ax3.bar(dates, zone_3_LFP_values, color='red', align='center', zorder=2, width=0.4)
-    if hour >= 22 or hour <= 4:
-        ax3.bar(dates, zone_3_LFP_values, color='red', align='edge', zorder=2, width=0.4)
+    ax3.bar(dates, zone_3_LFP_values, color='red', align='center', zorder=2, width=0.4)
     ax3.set_title("Zone 3: San Diego", fontweight='bold')
     ax3.set_xlabel("Date", fontweight='bold')
     ax3.xaxis.set_major_formatter(md.DateFormatter('%a %m/%d'))
@@ -694,10 +799,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     ax3.axhspan(zone_3_threshold_4, 60, color='purple', alpha=0.3, zorder=1)
 
     ax4 = fig.add_subplot(2, 2, 4)
-    if hour > 4 and hour < 22:
-        ax4.bar(dates, zone_4_LFP_values, color='red', align='center', zorder=2, width=0.4)
-    if hour >= 22 or hour <= 4:
-        ax4.bar(dates, zone_4_LFP_values, color='red', align='edge', zorder=2, width=0.4)
+    ax4.bar(dates, zone_4_LFP_values, color='red', align='center', zorder=2, width=0.4)
     ax4.set_title("Zone 4: Santa Barbara", fontweight='bold')
     ax4.set_xlabel("Date", fontweight='bold')
     ax4.xaxis.set_major_formatter(md.DateFormatter('%a %m/%d'))
@@ -744,4 +846,4 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
         os.mkdir(f"Weather Data/SAWTI")
         print("Successfully built directory and current branch.")
         plt.savefig(f"Weather Data/SAWTI/{fname}", bbox_inches='tight')
-        print(f"Image Saved to f:Weather Data/SAWTI/{fname}")             
+        print(f"Image Saved to f:Weather Data/SAWTI/{fname}")                 
