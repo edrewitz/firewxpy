@@ -1383,8 +1383,8 @@ class NDFD_Alaska:
         except Exception as e:
             print("Unable to connect to server via FTP.\nTrying the backup method to download the file...")
             try:
-                ds_short, ds_extended = NDFD_Alaska.get_NWS_NDFD_7_Day_grid_data_backup(parameter)
-                with open('ds.maxrh.bin', 'wb') as myfile, open('ds.maxrh_short.bin', 'rb') as file1, open('ds.maxrh_extended.bin', 'rb') as file2:
+                ds_short, ds_extended, short_term_fname, extended_fname = NDFD_Alaska.get_NWS_NDFD_7_Day_grid_data_backup(parameter)
+                with open(parameter, 'wb') as myfile, open(short_term_fname, 'rb') as file1, open(extended_fname, 'rb') as file2:
                     myfile.write(file1.read())
                     myfile.write(file2.read())
             except Exception as e:
@@ -1399,6 +1399,18 @@ class NDFD_Alaska:
         if parameter == 'ds.maxrh.bin':
             short_term_fname = 'ds.maxrh_short.bin'
             extended_fname = 'ds.maxrh_extended.bin'
+    
+        if parameter == 'ds.minrh.bin':
+            short_term_fname = 'ds.minrh_short.bin'
+            extended_fname = 'ds.minrh_extended.bin'
+    
+        if parameter == 'ds.maxt.bin':
+            short_term_fname = 'ds.maxt_short.bin'
+            extended_fname = 'ds.maxt_extended.bin'
+    
+        if parameter == 'ds.mint.bin':
+            short_term_fname = 'ds.mint_short.bin'
+            extended_fname = 'ds.mint_extended.bin'
 
         if os.path.exists(short_term_fname):
             os.remove(short_term_fname)
@@ -1421,7 +1433,7 @@ class NDFD_Alaska:
         ds_extended = xr.open_dataset(extended_fname, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
         print("Retrieved the extended Alaska grids.")
 
-        return ds_short, ds_extended
+        return ds_short, ds_extended, short_term_fname, extended_fname
 
 
     def get_NWS_NDFD_7_Day_grid_data(parameter):
@@ -1691,64 +1703,155 @@ def get_NWS_NDFD_7_Day_grid_data(directory_name, parameter):
     ###################################################
 
     ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
-    ftp = FTP('tgftp.nws.noaa.gov')
-    ftp.login()
-
-    ### SEARCHES FOR THE CORRECT DIRECTORY ###
     try:
+        ftp = FTP('tgftp.nws.noaa.gov')
+        ftp.login()
+    
+        ### SEARCHES FOR THE CORRECT DIRECTORY ###
         dirName_short = directory_name + 'VP.001-003/'
         param = parameter
         files = ftp.cwd(dirName_short)
-
+    
         ### SEARCHES FOR THE CORRECT PARAMETER ###
-        try:
-            ################################
-            # DOWNLOADS THE NWS NDFD GRIDS #
-            ################################
-            
-            with open(param, 'wb') as fp:
-                ftp.retrbinary('RETR ' + param, fp.write)
+    
+        ################################
+        # DOWNLOADS THE NWS NDFD GRIDS #
+        ################################
+        
+        with open(param, 'wb') as fp:
+            ftp.retrbinary('RETR ' + param, fp.write)
 
-            grbs_short = pygrib.open(param)
-            grbs_short.seek(0)
-            count_short = 0
-            for grb in grbs_short:
-                count_short = count_short + 1
+        grbs_short = pygrib.open(param)
+        grbs_short.seek(0)
+        count_short = 0
+        for grb in grbs_short:
+            count_short = count_short + 1
 
-            dirName_extended = directory_name + 'VP.004-007/'
-            param = parameter
-            files = ftp.cwd(dirName_extended)
+        dirName_extended = directory_name + 'VP.004-007/'
+        param = parameter
+        files = ftp.cwd(dirName_extended)
 
-            with open(param, 'ab') as fp:
-                ftp.retrbinary('RETR ' + param, fp.write)
-            
-            ftp.close()
+        with open(param, 'ab') as fp:
+            ftp.retrbinary('RETR ' + param, fp.write)
+        
+        ftp.close()
 
-            
-            #########################
-            # DATA ARRAYS PARAMETER #
-            #########################
-            grbs = pygrib.open(param)
-            grbs.seek(0)
-            count = 0
-            for grb in grbs:
-                count = count + 1
-            count_extended = count - count_short
-            ds = xr.load_dataset(param, engine='cfgrib')
-            ds = ds.metpy.parse_cf()
-            return grbs, ds, count_short, count_extended
-
-        ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
-
-        except Exception as a:
-            param_error = info.parameter_name_error()
-            return param_error
-
-    ### ERROR MESSAGE WHEN THERE IS AN INVALID DIRECTORY NAME ###
+        #########################
+        # DATA ARRAYS PARAMETER #
+        #########################
+        grbs = pygrib.open(param)
+        grbs.seek(0)
+        count = 0
+        for grb in grbs:
+            count = count + 1
+        count_extended = count - count_short
+        ds = xr.load_dataset(param, engine='cfgrib')
+        ds = ds.metpy.parse_cf()
         
     except Exception as e:
-        dir_error = info.directory_name_error()
-        return dir_error
+        count_short = get_short_and_extended_grids(directory_name, param)
+
+        grbs = pygrib.open(param)
+        grbs.seek(0)
+        count = 0
+        for grb in grbs:
+            count = count + 1
+        count_extended = count - count_short
+        ds = xr.load_dataset(param, engine='cfgrib')
+        ds = ds.metpy.parse_cf()
+
+    print("Data retrieved successfully!")
+        
+    return grbs, ds, count_short, count_extended
+
+
+def get_short_and_extended_grids(directory_name, parameter):
+    
+    '''
+             This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
+             This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
+    
+             Inputs:
+
+                1) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
+                                        Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
+                                        https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
+    
+            Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
+                     This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
+             
+    '''
+
+    ###################################################
+    # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
+    ###################################################
+
+    parameter = parameter
+
+    directory_name = directory_name
+
+    try:
+        short_term_fname, extended_fname = get_NWS_NDFD_7_Day_grid_data_backup(directory_name, parameter)
+        with open(parameter, 'wb') as myfile, open(short_term_fname, 'rb') as file1, open(extended_fname, 'rb') as file2:
+            myfile.write(file1.read())
+            myfile.write(file2.read())
+
+        grbs = pygrib.open(short_term_fname)
+        grbs.seek(0)
+        count_short = 0
+        for grb in grbs:
+            count_short = count_short + 1
+        return count_short
+    except Exception as e:
+        print("Unable to connect to server. Please try again later.")
+
+
+
+def get_NWS_NDFD_7_Day_grid_data_backup(directory_name, parameter):
+
+    parameter = parameter
+
+    if parameter == 'ds.maxrh.bin':
+        short_term_fname = 'ds.maxrh_short.bin'
+        extended_fname = 'ds.maxrh_extended.bin'
+
+    if parameter == 'ds.minrh.bin':
+        short_term_fname = 'ds.minrh_short.bin'
+        extended_fname = 'ds.minrh_extended.bin'
+
+    if parameter == 'ds.maxt.bin':
+        short_term_fname = 'ds.maxt_short.bin'
+        extended_fname = 'ds.maxt_extended.bin'
+
+    if parameter == 'ds.mint.bin':
+        short_term_fname = 'ds.mint_short.bin'
+        extended_fname = 'ds.mint_extended.bin'
+
+    if parameter == 'ds.critfireo.bin':
+        short_term_fname = 'ds.critfireo_short.bin'
+        extended_fname = 'ds.critfireo_extended.bin'
+
+    if parameter == 'ds.dryfireo.bin':
+        short_term_fname = 'ds.dryfireo_short.bin'
+        extended_fname = 'ds.dryfireo_extended.bin'
+
+    if os.path.exists(short_term_fname):
+        os.remove(short_term_fname)
+        urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
+        os.rename(parameter, short_term_fname)
+    else:
+        urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
+        os.rename(parameter, short_term_fname)
+    
+    if os.path.exists(extended_fname):
+        os.remove(extended_fname)
+        urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+        os.rename(parameter, extended_fname)
+    else:
+        urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+        os.rename(parameter, extended_fname)
+
+    return short_term_fname, extended_fname
 
 
 def get_NWS_NDFD_short_term_grid_data(directory_name, parameter):
