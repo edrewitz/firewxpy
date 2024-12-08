@@ -1022,7 +1022,7 @@ class file_functions:
                             
 
                     else:
-                        print('NWS Forecasts GIFs Directory not found. Building directory...')
+                        print('SPC Outlooks GIFs Directory not found. Building directory...')
                         os.mkdir(f"Weather Data/SPC Outlooks/GIFs/")
                         os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}")
                         os.mkdir(f"Weather Data/SPC Outlooks/GIFs/{plot_type}/{state}")
@@ -1799,6 +1799,8 @@ class file_functions:
                 path = f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}"
                 GIF_path = f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}"                    
             if cwa == None:
+
+                cwa = 'STATE'
             
                 ##########################
                 # STILL IMAGES DIRECTORY #
