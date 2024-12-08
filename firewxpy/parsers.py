@@ -109,6 +109,232 @@ class NDFD:
         return steps, short_steps, extended_steps
 
 
+    def find_ds_vals(ds_short, ds_extended, steps, short_steps, extended_steps, time_var, time_idx, parameter, diff=False):
+
+        ds_short = ds_short
+        ds_extended = ds_extended
+        steps = steps
+        short_steps = short_steps
+        extended_steps = extended_steps
+        time_var = time_var
+        time_idx = time_idx
+        parameter = parameter
+        diff = diff
+
+        if diff == True:
+            if steps == 8:
+                if time_var == True:
+                    if short_steps == 4:
+                        diff1 = ds_short[parameter][time_idx, 2, :, :] - ds_short[parameter][time_idx, 1, :, :]
+                        diff2 = ds_short[parameter][time_idx, 3, :, :] - ds_short[parameter][time_idx, 2, :, :]
+                        diff3 = ds_extended[parameter][0, 0, :, :] - ds_short[parameter][time_idx, 3, :, :]
+                        diff4 = ds_extended[parameter][0, 1, :, :] - ds_extended[parameter][0, 0, :, :]
+                        diff5 = ds_extended[parameter][0, 2, :, :] - ds_extended[parameter][0, 1, :, :]
+                        diff6 = ds_extended[parameter][0, 3, :, :] - ds_extended[parameter][0, 2, :, :]
+                    if short_steps == 3:
+                        diff1 = ds_short[parameter][time_idx, 2, :, :] - ds_short[parameter][time_idx, 1, :, :]
+                        diff2 = ds_extended[parameter][0, 0, :, :] - ds_short[parameter][time_idx, 2, :, :]
+                        diff3 = ds_extended[parameter][0, 1, :, :] - ds_extended[parameter][0, 0, :, :]
+                        diff4 = ds_extended[parameter][0, 2, :, :] - ds_extended[parameter][0, 1, :, :]
+                        diff5 = ds_extended[parameter][0, 3, :, :] - ds_extended[parameter][0, 2, :, :]
+                        diff6 = ds_extended[parameter][0, 4, :, :] - ds_extended[parameter][0, 3, :, :]
+                if time_var == False:
+                    if short_steps == 4:
+                        diff1 = ds_short[parameter][2, :, :] - ds_short[parameter][1, :, :]
+                        diff2 = ds_short[parameter][3, :, :] - ds_short[parameter][2, :, :]
+                        diff3 = ds_extended[parameter][0, :, :] - ds_short[parameter][3, :, :]
+                        diff4 = ds_extended[parameter][1, :, :] - ds_extended[parameter][0, :, :]
+                        diff5 = ds_extended[parameter][2, :, :] - ds_extended[parameter][1, :, :]
+                        diff6 = ds_extended[parameter][3, :, :] - ds_extended[parameter][2, :, :]
+                    if short_steps == 3:
+                        diff1 = ds_short[parameter][2, :, :] - ds_short[parameter][1, :, :]
+                        diff2 = ds_extended[parameter][0, :, :] - ds_short[parameter][2, :, :]
+                        diff3 = ds_extended[parameter][1, :, :] - ds_extended[parameter][0, :, :]
+                        diff4 = ds_extended[parameter][2, :, :] - ds_extended[parameter][1, :, :]
+                        diff5 = ds_extended[parameter][3, :, :] - ds_extended[parameter][2, :, :]
+                        diff6 = ds_extended[parameter][4, :, :] - ds_extended[parameter][3, :, :]
+            if steps == 7:
+                if time_var == True:
+                    if short_steps == 3:
+                        diff1 = ds_short[parameter][time_idx, 1, :, :] - ds_short[parameter][time_idx, 0, :, :]
+                        diff2 = ds_short[parameter][time_idx, 2, :, :] - ds_short[parameter][time_idx, 1, :, :]
+                        diff3 = ds_extended[parameter][0, 0, :, :] - ds_short[parameter][time_idx, 2, :, :]
+                        diff4 = ds_extended[parameter][0, 1, :, :] - ds_extended[parameter][0, 0, :, :]
+                        diff5 = ds_extended[parameter][0, 2, :, :] - ds_extended[parameter][0, 1, :, :]
+                        diff6 = ds_extended[parameter][0, 3, :, :] - ds_extended[parameter][0, 2, :, :]
+                    if short_steps == 2:
+                        diff1 = ds_short[parameter][time_idx, 1, :, :] - ds_short[parameter][time_idx, 0, :, :]
+                        diff2 = ds_extended[parameter][0, 0, :, :] - ds_short[parameter][time_idx, 1, :, :]
+                        diff3 = ds_extended[parameter][0, 1, :, :] - ds_extended[parameter][0, 0, :, :]
+                        diff4 = ds_extended[parameter][0, 2, :, :] - ds_extended[parameter][0, 1, :, :]
+                        diff5 = ds_extended[parameter][0, 3, :, :] - ds_extended[parameter][0, 2, :, :]
+                        diff6 = ds_extended[parameter][0, 4, :, :] - ds_extended[parameter][0, 3, :, :] 
+                if time_var == False:
+                    if short_steps == 3:
+                        diff1 = ds_short[parameter][1, :, :] - ds_short[parameter][0, :, :]
+                        diff2 = ds_short[parameter][2, :, :] - ds_short[parameter][1, :, :]
+                        diff3 = ds_extended[parameter][0, :, :] - ds_short[parameter][2, :, :]
+                        diff4 = ds_extended[parameter][1, :, :] - ds_extended[parameter][0, :, :]
+                        diff5 = ds_extended[parameter][2, :, :] - ds_extended[parameter][1, :, :]
+                        diff6 = ds_extended[parameter][3, :, :] - ds_extended[parameter][2, :, :]
+                    if short_steps == 2:
+                        diff1 = ds_short[parameter][1, :, :] - ds_short[parameter][0, :, :]
+                        diff2 = ds_extended[parameter][0, :, :] - ds_short[parameter][1, :, :]
+                        diff3 = ds_extended[parameter][1, :, :] - ds_extended[parameter][0, :, :]
+                        diff4 = ds_extended[parameter][2, :, :] - ds_extended[parameter][1, :, :]
+                        diff5 = ds_extended[parameter][3, :, :] - ds_extended[parameter][2, :, :]
+                        diff6 = ds_extended[parameter][4, :, :] - ds_extended[parameter][3, :, :]    
+            if steps == 6:
+                if time_var == True:
+                    if short_steps == 2:
+                        diff1 = ds_short[parameter][time_idx, 1, :, :] - ds_short[parameter][time_idx, 0, :, :]
+                        diff2 = ds_extended[parameter][0, 0, :, :] - ds_short[parameter][time_idx, 1, :, :]
+                        diff3 = ds_extended[parameter][0, 1, :, :] - ds_extended[parameter][0, 0, :, :]
+                        diff4 = ds_extended[parameter][0, 2, :, :] - ds_extended[parameter][0, 1, :, :]
+                        diff5 = ds_extended[parameter][0, 3, :, :] - ds_extended[parameter][0, 2, :, :]
+                        diff6 = None
+                    if short_steps == 1:
+                        diff1 = ds_extended[parameter][0, 0, :, :] - ds_short[parameter][time_idx, 0, :, :]
+                        diff2 = ds_extended[parameter][0, 1, :, :] - ds_extended[parameter][0, 0, :, :]
+                        diff3 = ds_extended[parameter][0, 2, :, :] - ds_extended[parameter][0, 1, :, :]
+                        diff4 = ds_extended[parameter][0, 3, :, :] - ds_extended[parameter][0, 2, :, :]
+                        diff5 = ds_extended[parameter][0, 4, :, :] - ds_extended[parameter][0, 3, :, :]
+                        diff6 = None
+                if time_var == False:
+                    if short_steps == 2:
+                        diff1 = ds_short[parameter][1, :, :] - ds_short[parameter][0, :, :]
+                        diff2 = ds_extended[parameter][0, :, :] - ds_short[parameter][1, :, :]
+                        diff3 = ds_extended[parameter][1, :, :] - ds_extended[parameter][0, :, :]
+                        diff4 = ds_extended[parameter][2, :, :] - ds_extended[parameter][1, :, :]
+                        diff5 = ds_extended[parameter][3, :, :] - ds_extended[parameter][2, :, :]
+                        diff6 = None
+                    if short_steps == 1:
+                        diff1 = ds_extended[parameter][0, :, :] - ds_short[parameter][0, :, :]
+                        diff2 = ds_extended[parameter][1, :, :] - ds_extended[parameter][0, :, :]
+                        diff3 = ds_extended[parameter][2, :, :] - ds_extended[parameter][1, :, :]
+                        diff4 = ds_extended[parameter][3, :, :] - ds_extended[parameter][2, :, :]
+                        diff5 = ds_extended[parameter][4, :, :] - ds_extended[parameter][3, :, :]
+                        diff6 = None
+
+            val1 = diff1
+            val2 = diff2
+            val3 = diff3
+            val4 = diff4
+            val5 = diff5
+            val6 = diff6
+            val7 = None
+
+        if diff == False:
+            if steps == 8:
+                if time_var == True:
+                    if short_steps == 4:
+                        val1 = ds_short[parameter][time_idx, 1, :, :]
+                        val2 = ds_short[parameter][time_idx, 2, :, :]
+                        val3 = ds_short[parameter][time_idx, 3, :, :]
+                        val4 = ds_extended[parameter][0, 0, :, :]
+                        val5 = ds_extended[parameter][0, 1, :, :]
+                        val6 = ds_extended[parameter][0, 2, :, :]
+                        val7 = ds_extended[parameter][0, 3, :, :]
+                    if short_steps == 3:
+                        val1 = ds_short[parameter][time_idx, 1, :, :]
+                        val2 = ds_short[parameter][time_idx, 2, :, :]
+                        val3 = ds_extended[parameter][0, 0, :, :]
+                        val4 = ds_extended[parameter][0, 1, :, :]
+                        val5 = ds_extended[parameter][0, 2, :, :]
+                        val6 = ds_extended[parameter][0, 3, :, :]
+                        val7 = ds_extended[parameter][0, 4, :, :] 
+                if time_var == False:
+                    if short_steps == 4:
+                        val1 = ds_short[parameter][1, :, :]
+                        val2 = ds_short[parameter][2, :, :]
+                        val3 = ds_short[parameter][3, :, :]
+                        val4 = ds_extended[parameter][0, :, :]
+                        val5 = ds_extended[parameter][1, :, :]
+                        val6 = ds_extended[parameter][2, :, :]
+                        val7 = ds_extended[parameter][3, :, :]
+                    if short_steps == 3:
+                        val1 = ds_short[parameter][1, :, :]
+                        val2 = ds_short[parameter][2, :, :]
+                        val3 = ds_extended[parameter][0, :, :]
+                        val4 = ds_extended[parameter][1, :, :]
+                        val5 = ds_extended[parameter][2, :, :]
+                        val6 = ds_extended[parameter][3, :, :]
+                        val7 = ds_extended[parameter][4, :, :]
+            if steps == 7:
+                if time_var == True:
+                    if short_steps == 3:
+                        val1 = ds_short[parameter][time_idx, 0, :, :]
+                        val2 = ds_short[parameter][time_idx, 1, :, :]
+                        val3 = ds_short[parameter][time_idx, 2, :, :]
+                        val4 = ds_extended[parameter][0, 0, :, :]
+                        val5 = ds_extended[parameter][0, 1, :, :]
+                        val6 = ds_extended[parameter][0, 2, :, :]
+                        val7 = ds_extended[parameter][0, 3, :, :]
+                    if short_steps == 2:
+                        val1 = ds_short[parameter][time_idx, 0, :, :]
+                        val2 = ds_short[parameter][time_idx, 1, :, :]  
+                        val3 = ds_extended[parameter][0, 0, :, :]
+                        val4 = ds_extended[parameter][0, 1, :, :]
+                        val5 = ds_extended[parameter][0, 2, :, :]
+                        val6 = ds_extended[parameter][0, 3, :, :]
+                        val7 = ds_extended[parameter][0, 4, :, :]
+                if time_var == False:
+                    if short_steps == 3:
+                        val1 = ds_short[parameter][0, :, :]
+                        val2 = ds_short[parameter][1, :, :]
+                        val3 = ds_short[parameter][2, :, :]
+                        val4 = ds_extended[parameter][0, :, :]
+                        val5 = ds_extended[parameter][1, :, :]
+                        val6 = ds_extended[parameter][2, :, :]
+                        val7 = ds_extended[parameter][3, :, :]
+                    if short_steps == 2:
+                        val1 = ds_short[parameter][0, :, :]
+                        val2 = ds_short[parameter][1, :, :]  
+                        val3 = ds_extended[parameter][0, :, :]
+                        val4 = ds_extended[parameter][1, :, :]
+                        val5 = ds_extended[parameter][2, :, :]
+                        val6 = ds_extended[parameter][3, :, :]
+                        val7 = ds_extended[parameter][4, :, :]
+            if steps == 6:
+                if time_var == True:
+                    if short_steps == 2:
+                        val1 = ds_short[parameter][time_idx, 0, :, :]
+                        val2 = ds_short[parameter][time_idx, 1, :, :]
+                        val3 = ds_extended[parameter][0, 0, :, :]
+                        val4 = ds_extended[parameter][0, 1, :, :]
+                        val5 = ds_extended[parameter][0, 2, :, :]
+                        val6 = ds_extended[parameter][0, 3, :, :]
+                        val7 = None
+                    if short_steps == 1:
+                        val1 = ds_short[parameter][time_idx, 0, :, :]
+                        val2 = ds_extended[parameter][0, 0, :, :]
+                        val3 = ds_extended[parameter][0, 1, :, :]
+                        val4 = ds_extended[parameter][0, 2, :, :]
+                        val5 = ds_extended[parameter][0, 3, :, :]
+                        val6 = ds_extended[parameter][0, 4, :, :]
+                        val7 = None 
+                if time_var == False:
+                    if short_steps == 2:
+                        val1 = ds_short[parameter][0, :, :]
+                        val2 = ds_short[parameter][1, :, :]
+                        val3 = ds_extended[parameter][0, :, :]
+                        val4 = ds_extended[parameter][1, :, :]
+                        val5 = ds_extended[parameter][2, :, :]
+                        val6 = ds_extended[parameter][3, :, :]
+                        val7 = None
+                    if short_steps == 1:
+                        val1 = ds_short[parameter][0, :, :]
+                        val2 = ds_extended[parameter][0, :, :]
+                        val3 = ds_extended[parameter][1, :, :]
+                        val4 = ds_extended[parameter][2, :, :]
+                        val5 = ds_extended[parameter][3, :, :]
+                        val6 = ds_extended[parameter][4, :, :]
+                        val7 = None                     
+
+        return val1, val2, val3, val4, val5, val6, val7        
+        
+
+
     def parse_GRIB_files_full_forecast_period(file_path, grid_time_interval, convert_temperature, count_short, count_extended, directory_name):
 
         GRIB_File_List = pygrib.open(file_path)
