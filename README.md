@@ -10,6 +10,8 @@
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/platforms.svg)](https://anaconda.org/conda-forge/firewxpy)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/license.svg)](https://anaconda.org/conda-forge/firewxpy)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/downloads.svg)](https://anaconda.org/conda-forge/firewxpy)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14318635.svg)](https://doi.org/10.5281/zenodo.14318635)
+
 
 Thank you for checking out FireWxPy! A user friendly Python package to create visualizations of data specific to fire weather and fire weather forecasting. 
 
