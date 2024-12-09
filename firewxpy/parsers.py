@@ -1200,7 +1200,7 @@ class NDFD:
                     
                 else:
                     if local_hour < 4 or local_hour >= 16:
-                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 04:00 (4AM)\nThe first maximum temperature grid is still returned.")
+                        print("The " +file_path+ " forecast period began at " + grb_1_start.strftime('%m/%d/%Y %HZ') + "\nThe current time of " +local.strftime('%m/%d/%Y %H:00 Local')+ " is before 04:00 (4AM)\nThe first minimum temperature grid is still returned.")
     
                         year = utc.year
                         month = utc.month
