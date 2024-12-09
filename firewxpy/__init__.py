@@ -1,7 +1,7 @@
 import firewxpy.RTMA_Graphics_CONUS as rtma_conus
 import firewxpy.SPC_Outlook_Graphics as spc
 import firewxpy.standard as standard
-from firewxpy.data_access import RTMA_CONUS, NDFD_CONUS
+from firewxpy.data_access import RTMA_CONUS, NDFD_CONUS, NDFD_Alaska, RTMA_Alaska, RTMA_Hawaii
 from firewxpy.NWS_Forecast_Graphics import temperature as nws_temperature_forecast_conus
 from firewxpy.NWS_Forecast_Graphics import relative_humidity as nws_relative_humidity_forecast_conus
 from firewxpy.NWS_Forecast_Graphics import dry_and_windy as nws_dry_and_windy_forecast
