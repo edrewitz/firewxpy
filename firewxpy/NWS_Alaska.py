@@ -69,7 +69,7 @@ class relative_humidity:
 
     '''
 
-    def plot_poor_overnight_recovery_relative_humidity_forecast(poor_overnight_recovery_rh_threshold=50, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array_short=None, data_array_extended=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
+    def plot_poor_overnight_recovery_relative_humidity_forecast(poor_overnight_recovery_rh_threshold=50, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, ds_short=None, ds_extended=None, ds=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Minimum RH Forecast. 
@@ -473,6 +473,8 @@ class relative_humidity:
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
     
         try:
             if grb_7_vals.all() != None:
@@ -1106,7 +1108,7 @@ class relative_humidity:
     
     
     
-    def plot_excellent_overnight_recovery_relative_humidity_forecast(excellent_overnight_recovery_rh_threshold=80, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array_short=None, data_array_extended=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
+    def plot_excellent_overnight_recovery_relative_humidity_forecast(excellent_overnight_recovery_rh_threshold=80, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, ds_short=None, ds_extended=None, ds=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Minimum RH Forecast. 
@@ -1506,6 +1508,8 @@ class relative_humidity:
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
     
         try:
             if grb_7_vals.all() != None:
@@ -2139,7 +2143,7 @@ class relative_humidity:
         file_functions.update_images(figs, path, gif_path, 'NWS Excellent Overnight Recovery')
     
     
-    def plot_maximum_relative_humidity_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array_short=None, data_array_extended=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
+    def plot_maximum_relative_humidity_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, ds_short=None, ds_extended=None, ds=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Maximum RH Forecast. 
@@ -2535,6 +2539,8 @@ class relative_humidity:
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
     
         try:
             if grb_7_vals.all() != None:
@@ -3165,7 +3171,7 @@ class relative_humidity:
         file_functions.update_images(figs, path, gif_path, 'NWS Maximum RH')
     
 
-    def plot_maximum_relative_humidity_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array_short=None, data_array_extended=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
+    def plot_maximum_relative_humidity_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, ds_short=None, ds_extended=None, ds=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Maximum RH Forecast. 
@@ -3561,6 +3567,8 @@ class relative_humidity:
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
     
         try:
             if grb_7_vals.all() != None:
@@ -4124,7 +4132,7 @@ class relative_humidity:
         file_functions.update_images(figs, path, gif_path, 'NWS Maximum RH Trend')
         
     
-    def plot_low_minimum_relative_humidity_forecast(low_minimum_rh_threshold=25, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array_short=None, data_array_extended=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
+    def plot_low_minimum_relative_humidity_forecast(low_minimum_rh_threshold=25, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, ds_short=None, ds_extended=None, ds=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Minimum RH Forecast. 
@@ -4522,6 +4530,8 @@ class relative_humidity:
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
     
         try:
             if grb_7_vals.all() != None:
@@ -5131,7 +5141,7 @@ class relative_humidity:
         file_functions.update_images(figs, path, gif_path, 'NWS Low Minimum RH')
     
     
-    def plot_minimum_relative_humidity_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array_short=None, data_array_extended=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
+    def plot_minimum_relative_humidity_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, ds_short=None, ds_extended=None, ds=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Minimum RH Forecast. 
@@ -5527,6 +5537,8 @@ class relative_humidity:
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
     
         try:
             if grb_7_vals.all() != None:
@@ -6156,7 +6168,7 @@ class relative_humidity:
     
     
     
-    def plot_minimum_relative_humidity_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array_short=None, data_array_extended=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
+    def plot_minimum_relative_humidity_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, ds_short=None, ds_extended=None, ds=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Minimum RH Forecast. 
@@ -6553,6 +6565,8 @@ class relative_humidity:
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
     
         try:
             if grb_7_vals.all() != None:
@@ -7135,7 +7149,7 @@ class temperature:
     '''
 
 
-    def plot_extreme_heat_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=100, temp_scale_warm_stop=120, temp_scale_cool_start=90, temp_scale_cool_stop=110, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
+    def plot_extreme_heat_forecast(start_of_warm_season_month=5, end_of_warm_season_month=9, start_of_cool_season_month=10, end_of_cool_season_month=4, temp_scale_warm_start=70, temp_scale_warm_stop=90, temp_scale_cool_start=60, temp_scale_cool_stop=80, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, ds_short=None, ds_extended=None, ds=None,count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Extreme Heat Forecast. 
@@ -7443,14 +7457,9 @@ class temperature:
         show_sample_points = show_sample_points
         sample_point_fontsize = sample_point_fontsize
         alpha = alpha
-        state = state
-        gacc_region = gacc_region
+        state = 'ak'
+        cwa = cwa
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
-
-        if gacc_region != None:
-            state = None
-        else:
-            state = state
     
         temp_scale_cool = np.arange(temp_scale_cool_start, temp_scale_cool_stop_corrected, temp_scale_step)
     
@@ -7545,55 +7554,16 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
-    
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
 
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-                
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
-    
-            fig_x_length = fig_x_length
-            fig_y_length = fig_y_length
-            signature_x_position = signature_x_position
-            signature_y_position = signature_y_position
-            western_bound = western_bound
-            eastern_bound = eastern_bound
-            southern_bound = southern_bound
-            northern_bound = northern_bound
-            state = 'Custom'
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-            aspect=aspect
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
 
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
-            else:
-                decimate = decimate
-
-            if file_path == None:
-                directory_name = settings.check_NDFD_directory_name('us')
-            else:
-                directory_name = settings.check_NDFD_directory_name(directory_name)
-    
+        if decimate == 'default':
+            decimate = scaling.get_NDFD_decimation_by_state(state)
         else:
-            pass
+            decimate = decimate
+
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -7606,9 +7576,10 @@ class temperature:
         PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
-        ds = data_array
     
         if file_path == None:
+
+            ds_short, ds_extended = NDFD_Alaska.get_short_and_extended_grids('ds.maxt.bin')
 
             grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.maxt.bin')
 
@@ -7617,14 +7588,9 @@ class temperature:
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
-    
-    
-        grb_1_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_1_vals)
-        grb_2_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_2_vals)
-        grb_3_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_3_vals)
-        grb_4_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_4_vals)
-        grb_5_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_5_vals)
-        grb_6_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_6_vals)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
+
         
         try:
             if grb_7_vals.all() != None:
@@ -7700,6 +7666,41 @@ class temperature:
     
         except Exception as g:
             no_vals = True
+
+
+        try:
+            if ds_short['time'][1]:
+                time_idx = 1
+                time_var = True
+            else:
+                time_idx  = 0
+                time_var = True
+        except Exception as e:
+            time_var = False
+            time_idx = None
+            
+        try:
+            if ds_extended['time'][1]:
+                time_var = True
+            else:
+                time_var = True
+
+        except Exception as e:
+            time_var = False
+            time_idx = None
+
+        steps, short_steps, extended_steps = parsers.NDFD.ndfd_step_count(ds_short, ds_extended)
+
+        val1, val2, val3, val4, val5, val6, val7 = parsers.NDFD.find_ds_vals(ds_short, ds_extended, steps, short_steps, extended_steps, time_var, time_idx, 'tmax')
+
+        val1 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val1)
+        val2 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val2)
+        val3 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val3)
+        val4 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val4)
+        val5 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val5)
+        val6 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val6)
+        val7 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val7)
+        
             
         files = count
 
@@ -7717,10 +7718,22 @@ class temperature:
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
-        ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax1.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax1.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax1.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax1.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax1.set_extent([-170, -140.75, 59, 72], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
         if show_gacc_borders == True:
@@ -7771,10 +7784,10 @@ class temperature:
             pass
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs1 = ax1.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val1, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs1 = ax1.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val1, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
     
         cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
@@ -7785,10 +7798,22 @@ class temperature:
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
-        ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax2.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax2.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax2.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax2.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax2.set_extent([-170, -140.75, 59, 72], datacrs)
         ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
         if show_gacc_borders == True:
@@ -7839,10 +7864,10 @@ class temperature:
             pass
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs2 = ax2.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val2, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs2 = ax2.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val2, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
     
         cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
@@ -7853,10 +7878,22 @@ class temperature:
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
-        ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax3.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax3.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax3.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax3.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax3.set_extent([-170, -140.75, 59, 72], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-        ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+        ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
         if show_gacc_borders == True:
@@ -7906,10 +7943,10 @@ class temperature:
             pass
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs3 = ax3.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val3, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs3 = ax3.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val3, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
     
         cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
@@ -7920,10 +7957,22 @@ class temperature:
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
-        ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax4.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax4.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax4.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax4.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax4.set_extent([-170, -140.75, 59, 72], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-        ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+        ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
         if show_gacc_borders == True:
@@ -7973,10 +8022,10 @@ class temperature:
             pass
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs4 = ax4.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val4, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs4 = ax4.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val4, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar4.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -7986,10 +8035,22 @@ class temperature:
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
-        ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax5.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax5.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax5.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax5.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax5.set_extent([-170, -140.75, 59, 72], datacrs)
         ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-        ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+        ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
         if show_gacc_borders == True:
@@ -8039,10 +8100,10 @@ class temperature:
             pass
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs5 = ax5.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val5, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs5 = ax5.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val5, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar5.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8052,10 +8113,22 @@ class temperature:
         fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
-        ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax6.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax6.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax6.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax6.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax6.set_extent([-170, -140.75, 59, 72], datacrs)
         ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-        ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+        ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
         if show_gacc_borders == True:
@@ -8105,10 +8178,10 @@ class temperature:
             pass
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs6 = ax6.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val6, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs6 = ax6.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val6, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar6.set_label(label="Maximum Temperature (\N{DEGREE SIGN}F)", fontweight='bold')
@@ -8120,10 +8193,22 @@ class temperature:
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
-            ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            if cwa == None:
+                ax7.set_extent([-170, -125, 50, 72], datacrs)
+            if cwa == 'AER' or cwa == 'aer':
+                ax7.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+            if cwa == 'ALU' or cwa == 'alu':
+                ax7.set_extent([-170, -151, 52, 62.9], datacrs)
+            if cwa == 'AJK' or cwa == 'ajk':
+                ax7.set_extent([-145, -129.5, 54, 60.75], datacrs)
+            if cwa == 'AFG' or cwa == 'afg':
+                ax7.set_extent([-170, -140.75, 59, 72], datacrs)
             ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-            ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+                ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+            if cwa == 'AER' or cwa == 'aer':
+                ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+            ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
             if show_rivers == True:
                 ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
             if show_gacc_borders == True:
@@ -8173,11 +8258,10 @@ class temperature:
                 pass
     
             if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
-    
-    
+                cs7 = ax7.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val7, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
+        
             if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-                cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+                cs7 = ax7.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val7, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
     
             cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
@@ -8199,10 +8283,10 @@ class temperature:
             figs.append(fig5)
             figs.append(fig6)
     
-        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Extreme Heat', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'NWS Extreme Heat', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Extreme Heat')
 
-    def plot_extremely_warm_low_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=70, temp_scale_warm_stop=90, temp_scale_cool_start=60, temp_scale_cool_stop=80, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
+    def plot_extremely_warm_low_temperature_forecast(start_of_warm_season_month=5, end_of_warm_season_month=9, start_of_cool_season_month=10, end_of_cool_season_month=4, temp_scale_warm_start=60, temp_scale_warm_stop=80, temp_scale_cool_start=10, temp_scale_cool_stop=30, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, ds_short=None, ds_extended=None, ds=None,count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Extremely Warm Low Temperature Forecast. 
@@ -8510,17 +8594,12 @@ class temperature:
         show_sample_points = show_sample_points
         sample_point_fontsize = sample_point_fontsize
         alpha = alpha
-        state = state
-        gacc_region = gacc_region
-        ds = data_array
+        state = 'ak'
+        cwa = cwa
 
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-        if gacc_region != None:
-            state = None
-        else:
-            state = state
-    
+
         temp_scale_cool = np.arange(temp_scale_cool_start, temp_scale_cool_stop_corrected, temp_scale_step)
     
         temp_scale_warm = np.arange(temp_scale_warm_start, temp_scale_warm_stop_corrected, temp_scale_step)
@@ -8614,55 +8693,15 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
-    
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
 
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
 
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
-    
-            fig_x_length = fig_x_length
-            fig_y_length = fig_y_length
-            signature_x_position = signature_x_position
-            signature_y_position = signature_y_position
-            western_bound = western_bound
-            eastern_bound = eastern_bound
-            southern_bound = southern_bound
-            northern_bound = northern_bound
-            state = 'Custom'
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-            aspect=aspect
-
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
-            else:
-                decimate = decimate
-
-            if file_path == None:
-                directory_name = settings.check_NDFD_directory_name('us')
-            else:
-                directory_name = settings.check_NDFD_directory_name(directory_name)
-    
+        if decimate == 'default':
+            decimate = scaling.get_NDFD_decimation_by_state(state)
         else:
-            pass
+            decimate = decimate
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -8675,9 +8714,10 @@ class temperature:
         PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
-        ds = data_array
-    
+
         if file_path == None:
+
+            ds_short, ds_extended = NDFD_Alaska.get_short_and_extended_grids('ds.mint.bin')
 
             grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.mint.bin')
 
@@ -8686,14 +8726,8 @@ class temperature:
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
-    
-    
-        grb_1_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_1_vals)
-        grb_2_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_2_vals)
-        grb_3_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_3_vals)
-        grb_4_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_4_vals)
-        grb_5_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_5_vals)
-        grb_6_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_6_vals)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
         
         try:
             if grb_7_vals.all() != None:
@@ -8769,6 +8803,39 @@ class temperature:
     
         except Exception as g:
             no_vals = True
+
+        try:
+            if ds_short['time'][1]:
+                time_idx = 1
+                time_var = True
+            else:
+                time_idx  = 0
+                time_var = True
+        except Exception as e:
+            time_var = False
+            time_idx = None
+            
+        try:
+            if ds_extended['time'][1]:
+                time_var = True
+            else:
+                time_var = True
+
+        except Exception as e:
+            time_var = False
+            time_idx = None
+
+        steps, short_steps, extended_steps = parsers.NDFD.ndfd_step_count(ds_short, ds_extended)
+
+        val1, val2, val3, val4, val5, val6, val7 = parsers.NDFD.find_ds_vals(ds_short, ds_extended, steps, short_steps, extended_steps, time_var, time_idx, 'tmin')
+
+        val1 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val1)
+        val2 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val2)
+        val3 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val3)
+        val4 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val4)
+        val5 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val5)
+        val6 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val6)
+        val7 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val7)
             
         files = count
 
@@ -8786,10 +8853,22 @@ class temperature:
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
-        ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax1.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax1.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax1.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax1.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax1.set_extent([-170, -140.75, 59, 72], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+        ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
         if show_gacc_borders == True:
@@ -8840,10 +8919,10 @@ class temperature:
             pass
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs1 = ax1.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val1, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs1 = ax1.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val1, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
     
         cbar1 = fig1.colorbar(cs1, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
@@ -8854,10 +8933,22 @@ class temperature:
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
-        ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax2.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax2.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax2.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax2.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax2.set_extent([-170, -140.75, 59, 72], datacrs)
         ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+        ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
         if show_gacc_borders == True:
@@ -8907,10 +8998,10 @@ class temperature:
             pass
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs2 = ax2.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val2, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs2 = ax2.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val2, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
     
         cbar2 = fig2.colorbar(cs2, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
@@ -8921,10 +9012,22 @@ class temperature:
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
-        ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax3.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax3.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax3.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax3.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax3.set_extent([-170, -140.75, 59, 72], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-        ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+        ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
         if show_gacc_borders == True:
@@ -8974,10 +9077,11 @@ class temperature:
             pass
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs3 = ax3.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val3, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs3 = ax3.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val3, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
+    
     
     
         cbar3 = fig3.colorbar(cs3, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
@@ -8988,10 +9092,22 @@ class temperature:
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
-        ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax4.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax4.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax4.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax4.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax4.set_extent([-170, -140.75, 59, 72], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-        ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+        ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
         if show_gacc_borders == True:
@@ -9041,10 +9157,11 @@ class temperature:
             pass
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs4 = ax4.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val4, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs4 = ax4.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val4, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
+    
     
         cbar4 = fig4.colorbar(cs4, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar4.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -9054,10 +9171,22 @@ class temperature:
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
-        ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax5.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax5.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax5.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax5.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax5.set_extent([-170, -140.75, 59, 72], datacrs)
         ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-        ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+        ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
         if show_gacc_borders == True:
@@ -9107,10 +9236,11 @@ class temperature:
             pass
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs5 = ax5.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val5, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs5 = ax5.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val5, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
+    
     
         cbar5 = fig5.colorbar(cs5, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar5.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -9120,10 +9250,22 @@ class temperature:
         fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
-        ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax6.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax6.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax6.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax6.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax6.set_extent([-170, -140.75, 59, 72], datacrs)
         ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-        ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+        ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
         if show_gacc_borders == True:
@@ -9173,10 +9315,11 @@ class temperature:
             pass
     
         if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-            cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs6 = ax6.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val6, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
     
         if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-            cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+            cs6 = ax6.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val6, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
+    
     
         cbar6 = fig6.colorbar(cs6, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
         cbar6.set_label(label="Minimum Temperature (\N{DEGREE SIGN}F)", fontsize=colorbar_fontsize, fontweight='bold')
@@ -9188,10 +9331,22 @@ class temperature:
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
-            ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            if cwa == None:
+                ax7.set_extent([-170, -125, 50, 72], datacrs)
+            if cwa == 'AER' or cwa == 'aer':
+                ax7.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+            if cwa == 'ALU' or cwa == 'alu':
+                ax7.set_extent([-170, -151, 52, 62.9], datacrs)
+            if cwa == 'AJK' or cwa == 'ajk':
+                ax7.set_extent([-145, -129.5, 54, 60.75], datacrs)
+            if cwa == 'AFG' or cwa == 'afg':
+                ax7.set_extent([-170, -140.75, 59, 72], datacrs)
             ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=2)
-            ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=2)
+            if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+                ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+            if cwa == 'AER' or cwa == 'aer':
+                ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+            ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
             if show_rivers == True:
                 ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=2)
             if show_gacc_borders == True:
@@ -9241,11 +9396,11 @@ class temperature:
                 pass
     
             if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=temp_scale_warm, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
-    
-    
+                cs7 = ax7.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val7, levels=temp_scale_warm, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
+        
             if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-                cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=temp_scale_cool, cmap='hot', alpha=alpha, transform=datacrs, extend='max')
+                cs7 = ax7.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val7, levels=temp_scale_cool, cmap='hot_r', alpha=alpha, transform=datacrs, extend='max', zorder=2)
+    
     
     
             cbar7 = fig7.colorbar(cs7, location='bottom', ticks=labels, aspect=aspect, shrink=color_table_shrink, pad=0.02)
@@ -9267,10 +9422,10 @@ class temperature:
             figs.append(fig5)
             figs.append(fig6)
     
-        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Warm Min T', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'NWS Warm Min T', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Warm Min T')
     
-    def plot_frost_freeze_forecast(temperature_bottom_bound=-10, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9): 
+    def plot_frost_freeze_forecast(temperature_bottom_bound=-10, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, ds_short=None, ds_extended=None, ds=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Frost/Freeze Forecast. 
@@ -9553,15 +9708,10 @@ class temperature:
         show_sample_points = show_sample_points
         sample_point_fontsize = sample_point_fontsize
         alpha = alpha
-        state = state
-        gacc_region = gacc_region
+        state = 'ak'
+        cwa = cwa
 
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
-
-        if gacc_region != None:
-            state = None
-        else:
-            state = state
     
         cmap = colormaps.cool_temperatures_colormap()
         
@@ -9657,55 +9807,17 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
-    
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
 
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
 
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
-    
-            fig_x_length = fig_x_length
-            fig_y_length = fig_y_length
-            signature_x_position = signature_x_position
-            signature_y_position = signature_y_position
-            western_bound = western_bound
-            eastern_bound = eastern_bound
-            southern_bound = southern_bound
-            northern_bound = northern_bound
-            state = 'Custom'
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-            aspect=aspect
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
 
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
-            else:
-                decimate = decimate
-
-            if file_path == None:
-                directory_name = settings.check_NDFD_directory_name('us')
-            else:
-                directory_name = settings.check_NDFD_directory_name(directory_name)
-    
+        if decimate == 'default':
+            decimate = scaling.get_NDFD_decimation_by_state(state)
         else:
-            pass
+            decimate = decimate
+
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -9718,9 +9830,10 @@ class temperature:
         PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
-        ds = data_array
     
         if file_path == None:
+
+            ds_short, ds_extended = NDFD_Alaska.get_short_and_extended_grids('ds.mint.bin')
 
             grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.mint.bin')
 
@@ -9729,14 +9842,8 @@ class temperature:
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
-    
-    
-        grb_1_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_1_vals)
-        grb_2_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_2_vals)
-        grb_3_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_3_vals)
-        grb_4_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_4_vals)
-        grb_5_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_5_vals)
-        grb_6_vals = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(grb_6_vals)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
     
     
         try:
@@ -9817,17 +9924,64 @@ class temperature:
         files = count
 
         local_time, utc_time = standard.plot_creation_time()
+
+        try:
+            if ds_short['time'][1]:
+                time_idx = 1
+                time_var = True
+            else:
+                time_idx  = 0
+                time_var = True
+        except Exception as e:
+            time_var = False
+            time_idx = None
+            
+        try:
+            if ds_extended['time'][1]:
+                time_var = True
+            else:
+                time_var = True
+
+        except Exception as e:
+            time_var = False
+            time_idx = None
+
+        steps, short_steps, extended_steps = parsers.NDFD.ndfd_step_count(ds_short, ds_extended)
+
+        val1, val2, val3, val4, val5, val6, val7 = parsers.NDFD.find_ds_vals(ds_short, ds_extended, steps, short_steps, extended_steps, time_var, time_idx, 'tmin')
+
+        val1 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val1)
+        val2 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val2)
+        val3 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val3)
+        val4 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val4)
+        val5 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val5)
+        val6 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val6)
+        val7 = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(val7)
     
         figs = [] 
+
+        print("Creating Images - Please Wait...")
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
-        ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax1.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax1.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax1.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax1.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax1.set_extent([-170, -140.75, 59, 72], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -9864,7 +10018,7 @@ class temperature:
         
         ax1.set_title('Start: '+ grb_1_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_1_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
-        cs1 = ax1.contourf(lons_1, lats_1, grb_1_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
+        cs1 = ax1.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val1, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, extend='min', zorder=2)
     
         if show_sample_points == True and no_vals == False:
     
@@ -9884,9 +10038,21 @@ class temperature:
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
-        ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax2.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax2.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax2.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax2.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax2.set_extent([-170, -140.75, 59, 72], datacrs)
         ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -9923,7 +10089,7 @@ class temperature:
         
         ax2.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
-        cs2 = ax2.contourf(lons_2, lats_2, grb_2_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
+        cs2 = ax2.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val2, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, extend='min', zorder=2)
     
         if show_sample_points == True and no_vals == False:
     
@@ -9942,10 +10108,22 @@ class temperature:
         fig3.set_facecolor('aliceblue')
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
-        ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
-        ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
+        if cwa == None:
+            ax3.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax3.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax3.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax3.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax3.set_extent([-170, -140.75, 59, 72], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -9982,7 +10160,7 @@ class temperature:
         
         ax3.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
-        cs3 = ax3.contourf(lons_3, lats_3, grb_3_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
+        cs3 = ax3.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val3, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, extend='min', zorder=2)
     
         if show_sample_points == True and no_vals == False:
     
@@ -10002,9 +10180,21 @@ class temperature:
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
-        ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax4.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax4.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax4.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax4.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax4.set_extent([-170, -140.75, 59, 72], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -10041,7 +10231,7 @@ class temperature:
         
         ax4.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
-        cs4 = ax4.contourf(lons_4, lats_4, grb_4_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
+        cs4 = ax4.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val4, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, extend='min', zorder=2)
     
         if show_sample_points == True and no_vals == False:
     
@@ -10061,9 +10251,21 @@ class temperature:
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
-        ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax5.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax5.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax5.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax5.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax5.set_extent([-170, -140.75, 59, 72], datacrs)
         ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -10100,7 +10302,7 @@ class temperature:
         
         ax5.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
-        cs5 = ax5.contourf(lons_5, lats_5, grb_5_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
+        cs5 = ax5.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val5, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, extend='min', zorder=2)
     
         if show_sample_points == True and no_vals == False:
     
@@ -10120,9 +10322,21 @@ class temperature:
         fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
-        ax6.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax6.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax6.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax6.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax6.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax6.set_extent([-170, -140.75, 59, 72], datacrs)
         ax6.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax6.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax6.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax6.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -10159,7 +10373,7 @@ class temperature:
         
         ax6.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
-        cs6 = ax6.contourf(lons_6, lats_6, grb_6_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
+        cs6 = ax6.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val6, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, extend='min', zorder=2)
     
         if show_sample_points == True and no_vals == False:
     
@@ -10181,9 +10395,21 @@ class temperature:
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
-            ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            if cwa == None:
+                ax7.set_extent([-170, -125, 50, 72], datacrs)
+            if cwa == 'AER' or cwa == 'aer':
+                ax7.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+            if cwa == 'ALU' or cwa == 'alu':
+                ax7.set_extent([-170, -151, 52, 62.9], datacrs)
+            if cwa == 'AJK' or cwa == 'ajk':
+                ax7.set_extent([-145, -129.5, 54, 60.75], datacrs)
+            if cwa == 'AFG' or cwa == 'afg':
+                ax7.set_extent([-170, -140.75, 59, 72], datacrs)
             ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+                ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+            if cwa == 'AER' or cwa == 'aer':
+                ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
             ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
             if show_rivers == True:
                 ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -10220,7 +10446,7 @@ class temperature:
             
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
     
-            cs7 = ax7.contourf(lons_7, lats_7, grb_7_vals, levels=levels, cmap=cmap , transform=datacrs, extend='min')
+            cs7 = ax7.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], val7, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, extend='min', zorder=2)
     
             if show_sample_points == True and no_vals == False:
     
@@ -10251,11 +10477,11 @@ class temperature:
             figs.append(fig5)
             figs.append(fig6)
     
-        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Frost Freeze', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'NWS Frost Freeze', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Frost Freeze')
     
     
-    def plot_maximum_temperature_forecast(start_of_warm_season_month=5, end_of_warm_season_month=9, start_of_cool_season_month=10, end_of_cool_season_month=4, temp_scale_warm_start=30, temp_scale_warm_stop=90, temp_scale_cool_start=-20, temp_scale_cool_stop=50, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9): 
+    def plot_maximum_temperature_forecast(start_of_warm_season_month=5, end_of_warm_season_month=9, start_of_cool_season_month=10, end_of_cool_season_month=4, temp_scale_warm_start=30, temp_scale_warm_stop=90, temp_scale_cool_start=-20, temp_scale_cool_stop=50, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, ds_short=None, ds_extended=None, ds=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Maximum Temperature Forecast. 
@@ -10695,8 +10921,6 @@ class temperature:
         PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
-        ds = data_array
-
 
         if file_path == None:
 
@@ -10709,6 +10933,8 @@ class temperature:
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
         
         try:
             if grb_7_vals.all() != None:
@@ -11324,7 +11550,7 @@ class temperature:
         path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'NWS Max T', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Max T')
     
-    def plot_minimum_temperature_forecast(start_of_warm_season_month=5, end_of_warm_season_month=9, start_of_cool_season_month=10, end_of_cool_season_month=4, temp_scale_warm_start=10, temp_scale_warm_stop=60, temp_scale_cool_start=-30, temp_scale_cool_stop=40, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9): 
+    def plot_minimum_temperature_forecast(start_of_warm_season_month=5, end_of_warm_season_month=9, start_of_cool_season_month=10, end_of_cool_season_month=4, temp_scale_warm_start=10, temp_scale_warm_stop=60, temp_scale_cool_start=-30, temp_scale_cool_stop=40, temp_scale_step=1, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, ds_short=None, ds_extended=None, ds=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9): 
     
         r'''
         This function plots the latest available NOAA/NWS Minimum Temperature Forecast. 
@@ -11764,8 +11990,6 @@ class temperature:
         PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
-        ds = data_array
-
 
         if file_path == None:
 
@@ -11778,6 +12002,8 @@ class temperature:
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
         
         try:
             if grb_7_vals.all() != None:
@@ -12394,7 +12620,7 @@ class temperature:
         file_functions.update_images(figs, path, gif_path, 'NWS Min T')
     
     
-    def plot_minimum_temperature_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
+    def plot_minimum_temperature_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, ds_short=None, ds_extended=None, ds=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Minimum Temperature Trend Forecast. 
@@ -12663,13 +12889,10 @@ class temperature:
         show_sample_points = show_sample_points
         sample_point_fontsize = sample_point_fontsize
         alpha = alpha
+        state = 'ak'
+        cwa = cwa
 
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
-
-        if gacc_region != None:
-            state = None
-        else:
-            state = state
 
         levels = np.arange(-25, 26, 1)
         labels = levels[::2]
@@ -12677,8 +12900,7 @@ class temperature:
         cmap = colormaps.temperature_change_colormap()
         
         reference_system = reference_system
-        mapcrs = ccrs.PlateCarree()
-        datacrs = ccrs.PlateCarree()
+
         
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -12765,55 +12987,16 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
-    
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
 
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
 
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
-    
-            fig_x_length = fig_x_length
-            fig_y_length = fig_y_length
-            signature_x_position = signature_x_position
-            signature_y_position = signature_y_position
-            western_bound = western_bound
-            eastern_bound = eastern_bound
-            southern_bound = southern_bound
-            northern_bound = northern_bound
-            state = 'Custom'
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-            aspect=aspect
-
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
-            else:
-                decimate = decimate
-
-            if file_path == None:
-                directory_name = settings.check_NDFD_directory_name('us')
-            else:
-                directory_name = settings.check_NDFD_directory_name(directory_name)
-    
+        if decimate == 'default':
+            decimate = scaling.get_NDFD_decimation_by_state(state)
         else:
-            pass
+            decimate = decimate
+
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -12826,9 +13009,10 @@ class temperature:
         PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
-        ds = data_array
     
         if file_path == None:
+
+            ds_short, ds_extended = NDFD_Alaska.get_short_and_extended_grids('ds.mint.bin')
 
             grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.mint.bin')
                     
@@ -12837,6 +13021,8 @@ class temperature:
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
     
         try:
             if grb_7_vals.all() != None:
@@ -12932,6 +13118,42 @@ class temperature:
         files = count
 
         local_time, utc_time = standard.plot_creation_time()
+
+
+        try:
+            if ds_short['time'][1]:
+                time_idx = 1
+                time_var = True
+            else:
+                time_idx  = 0
+                time_var = True
+        except Exception as e:
+            time_var = False
+            time_idx = None
+            
+        try:
+            if ds_extended['time'][1]:
+                time_var = True
+            else:
+                time_var = True
+
+        except Exception as e:
+            time_var = False
+            time_idx = None
+
+        steps, short_steps, extended_steps = parsers.NDFD.ndfd_step_count(ds_short, ds_extended)
+
+        val1, val2, val3, val4, val5, val6, val7 = parsers.NDFD.find_ds_vals(ds_short, ds_extended, steps, short_steps, extended_steps, time_var, time_idx, 'tmin', diff=True)
+
+        val1 = unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(val1)
+        val2 = unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(val2)
+        val3 = unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(val3)
+        val4 = unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(val4)
+        val5 = unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(val5)
+        val6 = unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(val6)
+
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
     
         figs = [] 
     
@@ -12940,9 +13162,21 @@ class temperature:
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
-        ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax1.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax1.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax1.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax1.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax1.set_extent([-170, -140.75, 59, 72], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -12967,7 +13201,7 @@ class temperature:
         
         ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
-        cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs1 = ax1.contourf(ds_short['longitude'], ds_short['latitude'], val1, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
@@ -12987,9 +13221,21 @@ class temperature:
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
-        ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax2.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax2.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax2.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax2.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax2.set_extent([-170, -140.75, 59, 72], datacrs)
         ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -13014,7 +13260,7 @@ class temperature:
         
         ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
-        cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs2 = ax2.contourf(ds_short['longitude'], ds_short['latitude'], val2, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
@@ -13034,9 +13280,21 @@ class temperature:
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
-        ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax3.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax3.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax3.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax3.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax3.set_extent([-170, -140.75, 59, 72], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -13061,7 +13319,7 @@ class temperature:
         
         ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
-        cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs3 = ax3.contourf(ds_short['longitude'], ds_short['latitude'], val3, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
@@ -13081,9 +13339,21 @@ class temperature:
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
-        ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax4.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax4.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax4.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax4.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax4.set_extent([-170, -140.75, 59, 72], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -13108,7 +13378,7 @@ class temperature:
         
         ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
-        cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs4 = ax4.contourf(ds_short['longitude'], ds_short['latitude'], val4, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
@@ -13128,9 +13398,21 @@ class temperature:
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
-        ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax5.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax5.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax5.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax5.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax5.set_extent([-170, -140.75, 59, 72], datacrs)
         ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -13155,7 +13437,7 @@ class temperature:
         
         ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
-        cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs5 = ax5.contourf(ds_short['longitude'], ds_short['latitude'], val5, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
@@ -13177,9 +13459,21 @@ class temperature:
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
-            ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            if cwa == None:
+                ax7.set_extent([-170, -125, 50, 72], datacrs)
+            if cwa == 'AER' or cwa == 'aer':
+                ax7.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+            if cwa == 'ALU' or cwa == 'alu':
+                ax7.set_extent([-170, -151, 52, 62.9], datacrs)
+            if cwa == 'AJK' or cwa == 'ajk':
+                ax7.set_extent([-145, -129.5, 54, 60.75], datacrs)
+            if cwa == 'AFG' or cwa == 'afg':
+                ax7.set_extent([-170, -140.75, 59, 72], datacrs)
             ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+                ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+            if cwa == 'AER' or cwa == 'aer':
+                ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
             ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
             if show_rivers == True:
                 ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -13204,7 +13498,7 @@ class temperature:
             
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
-            cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
+            cs7 = ax7.contourf(ds_short['longitude'], ds_short['latitude'], val6, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
             if show_sample_points == True and no_vals == False:
     
@@ -13233,11 +13527,11 @@ class temperature:
             figs.append(fig4)
             figs.append(fig5)
     
-        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Min T Trend', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'NWS Min T Trend', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Min T Trend')
     
     
-    def plot_maximum_temperature_trend_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, decimate='default', state='us', gacc_region=None, cwa=None, aspect=30, tick=9):
+    def plot_maximum_temperature_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, directory_name='CONUS', file_path=None, ds_short=None, ds_extended=None, ds=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
     
         r'''
         This function plots the latest available NOAA/NWS Maximum Temperature Trend Forecast. 
@@ -13400,7 +13694,7 @@ class temperature:
                             40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determaxes the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
@@ -13493,7 +13787,7 @@ class temperature:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
-        
+    
         decimate = decimate
         state_border_linewidth = state_border_linewidth
         county_border_linewidth = county_border_linewidth
@@ -13506,25 +13800,21 @@ class temperature:
         show_sample_points = show_sample_points
         sample_point_fontsize = sample_point_fontsize
         alpha = alpha
+        state = 'ak'
+        cwa = cwa
 
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
         levels = np.arange(-25, 26, 1)
         labels = levels[::2]
-
-        if gacc_region != None:
-            state = None
-        else:
-            state = state
     
         cmap = colormaps.temperature_change_colormap()
         
+        reference_system = reference_system
+
+        
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
-    
-        reference_system = reference_system
-        mapcrs = ccrs.PlateCarree()
-        datacrs = ccrs.PlateCarree()
 
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -13608,55 +13898,16 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
-    
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False)
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
 
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
 
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
-    
-            fig_x_length = fig_x_length
-            fig_y_length = fig_y_length
-            signature_x_position = signature_x_position
-            signature_y_position = signature_y_position
-            western_bound = western_bound
-            eastern_bound = eastern_bound
-            southern_bound = southern_bound
-            northern_bound = northern_bound
-            state = 'Custom'
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-            aspect=aspect
-
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'us')
-            else:
-                decimate = decimate
-
-            if file_path == None:
-                directory_name = settings.check_NDFD_directory_name('us')
-            else:
-                directory_name = settings.check_NDFD_directory_name(directory_name)
-    
+        if decimate == 'default':
+            decimate = scaling.get_NDFD_decimation_by_state(state)
         else:
-            pass
+            decimate = decimate
+
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -13669,17 +13920,20 @@ class temperature:
         PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
-        ds = data_array
     
         if file_path == None:
 
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.maxt.bin')
+            ds_short, ds_extended = NDFD_Alaska.get_short_and_extended_grids('ds.maxt.bin')
 
+            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.maxt.bin')
+                    
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxt.bin', 12, False, count_short, count_extended, directory_name)
     
         if file_path != None:
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period(file_path, 12, False, count_short, count_extended, directory_name)
+
+            ds_short, ds_extended, ds = ds_short, ds_extended, ds
     
         try:
             if grb_7_vals.all() != None:
@@ -13736,7 +13990,6 @@ class temperature:
     
         
         try:
-
             vals = parsers.checks.parse_NWS_GRIB_data_array(ds, 'tmax', count, True, count_short, count_extended, discard)
             
             df1 = vals[0]
@@ -13776,17 +14029,65 @@ class temperature:
         files = count
 
         local_time, utc_time = standard.plot_creation_time()
+
+
+        try:
+            if ds_short['time'][1]:
+                time_idx = 1
+                time_var = True
+            else:
+                time_idx  = 0
+                time_var = True
+        except Exception as e:
+            time_var = False
+            time_idx = None
+            
+        try:
+            if ds_extended['time'][1]:
+                time_var = True
+            else:
+                time_var = True
+
+        except Exception as e:
+            time_var = False
+            time_idx = None
+
+        steps, short_steps, extended_steps = parsers.NDFD.ndfd_step_count(ds_short, ds_extended)
+
+        val1, val2, val3, val4, val5, val6, val7 = parsers.NDFD.find_ds_vals(ds_short, ds_extended, steps, short_steps, extended_steps, time_var, time_idx, 'tmax', diff=True)
+
+        val1 = unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(val1)
+        val2 = unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(val2)
+        val3 = unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(val3)
+        val4 = unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(val4)
+        val5 = unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(val5)
+        val6 = unit_conversion.Temperature_Or_Dewpoint_Change_to_Fahrenheit(val6)
+
+        mapcrs = ccrs.PlateCarree()
+        datacrs = ccrs.PlateCarree()
     
         figs = [] 
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
         fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-    
+
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
-        ax1.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax1.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax1.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax1.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax1.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax1.set_extent([-170, -140.75, 59, 72], datacrs)
         ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -13806,12 +14107,12 @@ class temperature:
             ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
-            
+    
         ax1.set_title('National Weather Service Forecast [Day 2]\nMaximum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax1.set_title('Start: '+ grb_2_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_2_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
-        cs1 = ax1.contourf(lons_1, lats_1, diff1, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs1 = ax1.contourf(ds_short['longitude'], ds_short['latitude'], val1, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
@@ -13831,9 +14132,21 @@ class temperature:
         fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
-        ax2.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax2.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax2.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax2.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax2.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax2.set_extent([-170, -140.75, 59, 72], datacrs)
         ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -13853,11 +14166,12 @@ class temperature:
             ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
+    
         ax2.set_title('National Weather Service Forecast [Day 3]\nMaximum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax2.set_title('Start: '+ grb_3_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_3_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
-        cs2 = ax2.contourf(lons_2, lats_2, diff2, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs2 = ax2.contourf(ds_short['longitude'], ds_short['latitude'], val2, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
@@ -13877,9 +14191,21 @@ class temperature:
         fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
-        ax3.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax3.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax3.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax3.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax3.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax3.set_extent([-170, -140.75, 59, 72], datacrs)
         ax3.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax3.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax3.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax3.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -13899,11 +14225,12 @@ class temperature:
             ax3.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
+    
         ax3.set_title('National Weather Service Forecast [Day 4]\nMaximum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax3.set_title('Start: '+ grb_4_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_4_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
-        cs3 = ax3.contourf(lons_3, lats_3, diff3, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs3 = ax3.contourf(ds_short['longitude'], ds_short['latitude'], val3, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
@@ -13921,11 +14248,23 @@ class temperature:
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
         fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-
+    
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
-        ax4.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax4.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax4.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax4.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax4.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax4.set_extent([-170, -140.75, 59, 72], datacrs)
         ax4.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax4.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax4.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax4.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -13945,11 +14284,12 @@ class temperature:
             ax4.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
+    
         ax4.set_title('National Weather Service Forecast [Day 5]\nMaximum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax4.set_title('Start: '+ grb_5_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_5_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
-        cs4 = ax4.contourf(lons_4, lats_4, diff4, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs4 = ax4.contourf(ds_short['longitude'], ds_short['latitude'], val4, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
@@ -13967,11 +14307,23 @@ class temperature:
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
         fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
-
+        
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
-        ax5.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+        if cwa == None:
+            ax5.set_extent([-170, -125, 50, 72], datacrs)
+        if cwa == 'AER' or cwa == 'aer':
+            ax5.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+        if cwa == 'ALU' or cwa == 'alu':
+            ax5.set_extent([-170, -151, 52, 62.9], datacrs)
+        if cwa == 'AJK' or cwa == 'ajk':
+            ax5.set_extent([-145, -129.5, 54, 60.75], datacrs)
+        if cwa == 'AFG' or cwa == 'afg':
+            ax5.set_extent([-170, -140.75, 59, 72], datacrs)
         ax5.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+        if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+        if cwa == 'AER' or cwa == 'aer':
+            ax5.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
         ax5.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
         if show_rivers == True:
             ax5.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -13991,11 +14343,12 @@ class temperature:
             ax5.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
         else:
             pass
+    
         ax5.set_title('National Weather Service Forecast [Day 6]\nMaximum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
         
         ax5.set_title('Start: '+ grb_6_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_6_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
             
-        cs5 = ax5.contourf(lons_5, lats_5, diff5, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
+        cs5 = ax5.contourf(ds_short['longitude'], ds_short['latitude'], val5, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
         if show_sample_points == True and no_vals == False:
     
@@ -14017,9 +14370,21 @@ class temperature:
             fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
-            ax7.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
+            if cwa == None:
+                ax7.set_extent([-170, -125, 50, 72], datacrs)
+            if cwa == 'AER' or cwa == 'aer':
+                ax7.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+            if cwa == 'ALU' or cwa == 'alu':
+                ax7.set_extent([-170, -151, 52, 62.9], datacrs)
+            if cwa == 'AJK' or cwa == 'ajk':
+                ax7.set_extent([-145, -129.5, 54, 60.75], datacrs)
+            if cwa == 'AFG' or cwa == 'afg':
+                ax7.set_extent([-170, -140.75, 59, 72], datacrs)
             ax7.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=4)
+            if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+                ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+            if cwa == 'AER' or cwa == 'aer':
+                ax7.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
             ax7.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
             if show_rivers == True:
                 ax7.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -14039,11 +14404,12 @@ class temperature:
                 ax7.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
+    
             ax7.set_title('National Weather Service Forecast [Day 7]\nMaximum Temperature Trend [Δ\N{DEGREE SIGN}F]', fontsize=title_fontsize, fontweight='bold', loc='left')
             
             ax7.set_title('Start: '+ grb_7_start.strftime('%a %m/%d %H:00 Local') + '\nEnd: '+ grb_7_end.strftime('%a %m/%d %H:00 Local'), fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
                 
-            cs7 = ax7.contourf(lons_7, lats_7, diff6, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
+            cs7 = ax7.contourf(ds_short['longitude'], ds_short['latitude'], val6, levels=levels, cmap=cmap, alpha=alpha, transform=datacrs, zorder=2, extend='both')
     
             if show_sample_points == True and no_vals == False:
     
@@ -14072,13 +14438,13 @@ class temperature:
             figs.append(fig4)
             figs.append(fig5)
     
-        path, gif_path = file_functions.check_file_paths(state, gacc_region, 'NWS Max T Trend', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'NWS Max T Trend', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Max T Trend')
 
 class dry_and_windy:
 
 
-    def plot_dry_and_windy_forecast(low_minimum_rh_threshold=15, wind_speed_threshold=25, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=1, directory_name='CONUS', ds_ws_short=None, ds_rh_short=None, state='us', gacc_region=None, cwa=None, aspect=30, tick=9, fps=1):
+    def plot_dry_and_windy_forecast(pre_greenup_temperature_threshold=65, post_greenup_temperature_threshold=75, low_minimum_rh_threshold=25, wind_speed_threshold=15, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=1, ds_temp_short=None, ds_ws_short=None, ds_rh_short=None, state='us', gacc_region=None, cwa=None, aspect=30, tick=9, fps=1):
 
         r'''
         This function plots the latest available NOAA/NWS Dry and Windy Forecast.
@@ -14361,10 +14727,8 @@ class dry_and_windy:
 
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-        if gacc_region != None:
-            state = None
-        else:
-            state = state
+        state = 'ak'
+        cwa = cwa
         
         cmap = colormaps.red_flag_warning_criteria_colormap()
 
@@ -14459,41 +14823,10 @@ class dry_and_windy:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False, plot_type='Dry and Windy Forecast')
-    
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False, plot_type='Dry and Windy Forecast')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False, plot_type='Dry and Windy Forecast')
 
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
-    
-            fig_x_length = fig_x_length
-            fig_y_length = fig_y_length
-            signature_x_position = signature_x_position
-            signature_y_position = signature_y_position
-            western_bound = western_bound
-            eastern_bound = eastern_bound
-            southern_bound = southern_bound
-            northern_bound = northern_bound
-            state = 'Custom'
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-            aspect=aspect
-
-
-            if file_path == None:
-                directory_name = settings.check_NDFD_directory_name('us')
-            else:
-                directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        else:
-            pass
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -14520,12 +14853,18 @@ class dry_and_windy:
                 os.remove('ds.rhm.bin')
             else:
                 pass
+            ds_temp_short = NDFD_CONUS.download_short_term_NDFD_grids(directory_name, 'ds.temp.bin')
+            if os.path.exists('ds.temp.bin'):
+                os.remove('ds.temp.bin')
+            else:
+                pass
 
     
-        if ds_ws_short != None and ds_rh_short != None:
+        if ds_ws_short != None and ds_rh_short != None and ds_temp_short != None:
     
             ds_ws_short = ds_ws_short
             ds_rh_short = ds_rh_short
+            ds_temp_short = ds_temp_short
 
         valid_time_short = ds_ws_short['valid_time']
         valid_time_short = valid_time_short.to_dataframe()
@@ -14542,27 +14881,34 @@ class dry_and_windy:
             i = i.strftime('%m/%d %H:00 Local')
             times_short_local.append(i)
             
+        ds_temp_short['temp'] = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Celsius(ds_temp_short['t2m'])
         
         ds_ws_short['si10'] = ds_ws_short['si10'] * 2.23694
         
-        mask_short = (ds_ws_short['si10'] >= wind_speed_threshold) & (ds_rh_short['r2'] <= low_minimum_rh_threshold)
+        mask_short_pre = (ds_ws_short['si10'] >= wind_speed_threshold) & (ds_rh_short['r2'] <= low_minimum_rh_threshold) & (ds_temp_short['temp'] >= pre_greenup_temperature_threshold)
+        mask_short_post = (ds_ws_short['si10'] >= wind_speed_threshold) & (ds_rh_short['r2'] <= low_minimum_rh_threshold) & (ds_temp_short['temp'] >= post_greenup_temperature_threshold)
         
         lat_short = ds_ws_short['latitude']
         lon_short = ds_ws_short['longitude']
-        mask_lat_short = mask_short['latitude']
-        mask_lon_short = mask_short['longitude']
+        mask_lat_short_pre = mask_short['latitude']
+        mask_lon_short_pre = mask_short['longitude']
+        mask_lat_short_post = mask_short['latitude']
+        mask_lon_short_post = mask_short['longitude']
 
         plot_type = 'NWS Dry and Windy Areas'
 
-        if state != None and gacc_region == None:
+        if cwa != None:
 
             state = state.upper()
+            cwa = cwa.upper()
         
-            full_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system
+            full_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system+'/'+cwa
+            ref_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system
             state_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state
             type_path = 'f:Weather Data/NWS Forecasts/'+plot_type
 
-            full_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state+'/'+reference_system
+            full_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state+'/'+reference_system+'/'+cwa
+            ref_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state+'/'+reference_system
             state_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state
             type_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type
 
@@ -14581,17 +14927,27 @@ class dry_and_windy:
                         print('Already Satisfied: '+state_path+' exists.')
 
                         if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}"):
-                            print('Already Satisfied: '+full_path+' exists')
+                            print('Already Satisfied: '+ref_path+' exists')
+
+                            if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}"):
+                                print('Already Satisfied: '+full_path+' exists')
+
+                            else:
+                                print(full_path+' not found. Automatically building new branch to directory...')
+                                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}")
+                                print("Successfully built new branch to directory!")  
 
                         else:
-                            print(full_path+' not found. Automatically building new branch to directory...')
+                            print(ref_path+' not found. Automatically building new branch to directory...')
                             os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}")
                             print("Successfully built new branch to directory!")                                
 
                     else:
                         print(state_path+' not found. Automatically building new branch to directory...')
                         os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
                         os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}")
                         print("Successfully built new branch to directory!")
                         
                 else:
@@ -14599,6 +14955,7 @@ class dry_and_windy:
                     os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
                     os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
                     os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}")
                     print("Successfully built new branch to directory!")
                     
             else:
@@ -14617,6 +14974,7 @@ class dry_and_windy:
                 os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
                 os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
                 os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}")
 
                 print("Successfully built new directory!")
 
@@ -14637,15 +14995,27 @@ class dry_and_windy:
                             print('Already Satisfied: '+state_path_gif+ ' exists.')
 
                             if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}"):
-                                print('Already Satisfied: '+full_path_gif+ ' exists.')
+                                print('Already Satisfied: '+ref_path_gif+ ' exists.')
+
+                                if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}"):
+                                    print('Already Satisfied: '+full_path_gif+ ' exists.')
+
+                                else:
+                                    print(full_path_gif+' not found. Building branch to directory.')
+                                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}")
+                                    print("Successfully built new branch to directory!")   
+                                
                             else:
+                                print(ref_path_gif+' not found. Building branch to directory.')
                                 os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}")
                                 print("Successfully built new branch to directory!")   
 
                         else:
                             print(state_path_gif+' not found. Building branch to directory.')
                             os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
                             os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}")
                             print("Successfully built new branch to directory!")                                
 
                     else:
@@ -14653,6 +15023,7 @@ class dry_and_windy:
                         os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
                         os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
                         os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}")
                         print("Successfully built new branch to directory!")
                         
 
@@ -14662,6 +15033,7 @@ class dry_and_windy:
                     os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
                     os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
                     os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}")
                         
                     
             else:
@@ -14681,25 +15053,27 @@ class dry_and_windy:
                 os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
                 os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
                 os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{cwa}")
 
                 print("Successfully built new directory!")
 
-        if state == None and gacc_region != None:
+        if cwa == None:
 
-            gacc_region = gacc_region.upper()
+            state = state.upper()
         
-            full_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+gacc_region+'/'+reference_system
-            gacc_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+gacc_region
+            full_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system+'/STATE'
+            ref_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system
+            state_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state
             type_path = 'f:Weather Data/NWS Forecasts/'+plot_type
 
-            full_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+gacc_region+'/'+reference_system
-            gacc_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+gacc_region
+            full_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state+'/'+reference_system+'/STATE'
+            ref_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state+'/'+reference_system
+            state_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state
             type_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type
 
-
-            ##########################
-            # STILL IMAGES DIRECTORY #
-            ##########################
+                ##########################
+                # STILL IMAGES DIRECTORY #
+                ##########################
 
 
             if os.path.exists(f"Weather Data/NWS Forecasts"):
@@ -14708,46 +15082,58 @@ class dry_and_windy:
                 if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}"):
                     print('Already Satisfied: '+type_path+ ' exists.')
                     
-                    if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}"):
-                        print('Already Satisfied: '+gacc_path+' exists.')
+                    if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{state}"):
+                        print('Already Satisfied: '+state_path+' exists.')
 
-                        if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}"):
-                            print('Already Satisfied: '+full_path+' exists')
+                        if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}"):
+                            print('Already Satisfied: '+ref_path+' exists')
+
+                            if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/STATE"):
+                                print('Already Satisfied: '+full_path+' exists')
+
+                            else:
+                                print(full_path+' not found. Automatically building new branch to directory...')
+                                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/STATE")
+                                print("Successfully built new branch to directory!")  
 
                         else:
-                            print(full_path+' not found. Automatically building new branch to directory...')
-                            os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}")
+                            print(ref_path+' not found. Automatically building new branch to directory...')
+                            os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/STATE")
                             print("Successfully built new branch to directory!")                                
 
                     else:
-                        print(gacc_path+' not found. Automatically building new branch to directory...')
-                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}")
-                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}")
+                        print(state_path+' not found. Automatically building new branch to directory...')
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/STATE")
                         print("Successfully built new branch to directory!")
                         
                 else:
                     print(type_path+' not found. Automatically building new branch to directory...')
                     os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
-                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}")
-                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/STATE")
                     print("Successfully built new branch to directory!")
                     
             else:
-                
+
                 if os.path.exists(f"Weather Data"):
                     print("Already Satisfied: f:Weather Data exists!")
                 else:
                     print("f:Weather Data does not exist. Building automatically...")
                     os.mkdir(f"Weather Data")
                     print("Successfully built f:Weather Data")
-
+                    
                 print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
-                
+                    
                 # Building directory for still images
                 os.mkdir(f"Weather Data/NWS Forecasts")
                 os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
-                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}")
-                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}")
+                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
+                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/STATE")
 
                 print("Successfully built new directory!")
 
@@ -14764,26 +15150,39 @@ class dry_and_windy:
                     if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}"):
                         print('Already Satisfied: '+type_path_gif+ ' exists.')
 
-                        if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}"):
-                            print('Already Satisfied: '+gacc_path_gif+ ' exists.')
+                        if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}"):
+                            print('Already Satisfied: '+state_path_gif+ ' exists.')
 
-                            if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}/{reference_system}"):
-                                print('Already Satisfied: '+full_path_gif+ ' exists.')
+                            if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}"):
+                                print('Already Satisfied: '+ref_path_gif+ ' exists.')
+
+                                if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/STATE"):
+                                    print('Already Satisfied: '+full_path_gif+ ' exists.')
+
+                                else:
+                                    print(full_path_gif+' not found. Building branch to directory.')
+                                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/STATE")
+                                    print("Successfully built new branch to directory!")   
+                                
                             else:
-                                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+                                print(ref_path_gif+' not found. Building branch to directory.')
+                                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/STATE")
                                 print("Successfully built new branch to directory!")   
 
                         else:
-                            print(gacc_path_gif+' not found. Building branch to directory.')
-                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}")
-                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+                            print(state_path_gif+' not found. Building branch to directory.')
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/STATE")
                             print("Successfully built new branch to directory!")                                
 
                     else:
                         print(type_path_gif+' not found. Building branch to directory.')
                         os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
-                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}")
-                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/STATE")
                         print("Successfully built new branch to directory!")
                         
 
@@ -14791,8 +15190,9 @@ class dry_and_windy:
                     print('NWS Forecasts GIFs Directory not found. Building directory...')
                     os.mkdir(f"Weather Data/NWS Forecasts/GIFs/")
                     os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
-                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}")
-                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/STATE")
                         
                     
             else:
@@ -14805,16 +15205,18 @@ class dry_and_windy:
                     print("Successfully built f:Weather Data")
                     
                 print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
-
+                
                 # Building directory for still images
                 os.mkdir(f"Weather Data/NWS Forecasts")
                 os.mkdir(f"Weather Data/NWS Forecasts/GIFs/")
                 os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
-                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}")
-                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{gacc_region}/{reference_system}")
+                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/STATE")
 
                 print("Successfully built new directory!")
 
+        
         short_times = []
         for t in times_short:
             short_times.append(t.strftime('%H:00 UTC'))
@@ -14824,109 +15226,124 @@ class dry_and_windy:
         for i in times_short:
             name = i.strftime('%Y_%m_%d_%H')+".jpg"
             save_names_short.append(name)
+
+        if cwa == None:
             
-        try:
-            for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}"):
-                os.remove(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{file}")
-        except Exception as e:
-            pass
+            try:
+                for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/STATE"):
+                    os.remove(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/STATE/{file}")
+            except Exception as e:
+                pass
 
-        try:
-            for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}"):
-                os.remove(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/{file}")
-        except Exception as e:
-            pass
-
+        else:
+            try:
+                for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}"):
+                    os.remove(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}/{file}")
+            except Exception as e:
+                pass
         
         for i in range(0, (len(times_short) - 1)):
             fig = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig.set_facecolor('aliceblue')
             
-            ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
-            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], ccrs.PlateCarree())
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=8)
-            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
+            ax1 = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+            if cwa == None:
+                ax1.set_extent([-170, -125, 50, 72], datacrs)
+            if cwa == 'AER' or cwa == 'aer':
+                ax1.set_extent([-155, -140.75, 55.5, 64.5], datacrs)
+            if cwa == 'ALU' or cwa == 'alu':
+                ax1.set_extent([-170, -151, 52, 62.9], datacrs)
+            if cwa == 'AJK' or cwa == 'ajk':
+                ax1.set_extent([-145, -129.5, 54, 60.75], datacrs)
+            if cwa == 'AFG' or cwa == 'afg':
+                ax1.set_extent([-170, -140.75, 59, 72], datacrs)
+            ax1.add_feature(cfeature.LAND, color='beige', zorder=1)
+            if cwa == None or cwa == 'AJK' or cwa == 'ajk':
+                ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=3)
+            if cwa == 'AER' or cwa == 'aer':
+                ax1.add_feature(cfeature.OCEAN, color='lightcyan', zorder=11)       
+            ax1.add_feature(cfeature.LAKES, color='lightcyan', zorder=4)
             if show_rivers == True:
-                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                ax1.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
                 pass
         
             if show_gacc_borders == True:
-                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                ax1.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
             else:
                 pass
             if show_psa_borders == True:
-                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                ax1.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
             else:
                 pass
             if show_county_borders == True:
-                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                ax1.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
             else:
                 pass
             if show_state_borders == True:
-                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                ax1.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
             else:
                 pass
             if show_cwa_borders == True:
-                ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                ax1.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
             else:
                 pass
             if show_nws_firewx_zones == True:
-                ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                ax1.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
             else:
                 pass
             if show_nws_public_zones == True:
-                ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                ax1.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
             else:
                 pass
 
             props = dict(boxstyle='round', facecolor='wheat', alpha=1)
         
-            ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NWS/NDFD\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+            ax1.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NWS/NDFD\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+
+            fig.suptitle("National Weather Service Forecast: Dry & Windy Areas\n[Relative Humidity <= "+str(low_minimum_rh_threshold)+" (%) & Wind Speed >= "+str(wind_speed_threshold)+" (MPH)]", fontsize=title_fontsize, fontweight='bold', loc='left')
         
-            ax.set_title("National Weather Service Forecast: Dry & Windy Areas\n[Relative Humidity <= "+str(low_minimum_rh_threshold)+" (%) & Wind Speed >= "+str(wind_speed_threshold)+" (MPH)]", fontsize=title_fontsize, fontweight='bold', loc='left')
-            ax.set_title(f"Valid Time: {times_short_local[i]} ({short_times[i]})", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
+            ax1.set_title("National Weather Service Forecast: Dry & Windy Areas\n[Relative Humidity <= "+str(low_minimum_rh_threshold)+" (%) & Wind Speed >= "+str(wind_speed_threshold)+" (MPH)]", fontsize=title_fontsize, fontweight='bold', loc='left')
+            ax1.set_title(f"Valid Time: {times_short_local[i]} ({short_times[i]})", fontsize=subplot_title_fontsize, fontweight='bold', loc='right')
         
             try:
-                ax.pcolormesh(mask_lon_short, mask_lat_short, mask_short[i], transform=ccrs.PlateCarree(), cmap=cmap, zorder=2, alpha=alpha)
+                ax1.pcolormesh(mask_lon_short_pre, mask_lat_short_pre, mask_short_pre[i], transform=ccrs.PlateCarree(), cmap=cmap, zorder=2, alpha=alpha)
             except Exception as e:
                 pass   
 
 
-            if state != None and gacc_region == None:
+            if cwa != None:
 
-                fig.savefig(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{save_names_short[i]}", bbox_inches='tight')
+                fig.savefig(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}/{save_names_short[i]}", bbox_inches='tight')
                 plt.close(fig)
                 
-            if state == None and gacc_region != None:
+            if cwa == None:
 
-                fig.savefig(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/{save_names_short[i]}", bbox_inches='tight')
+                fig.savefig(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/STATE/{save_names_short[i]}", bbox_inches='tight')
                 plt.close(fig)
 
 
-        if state != None and gacc_region == None:
+        if cwa != None:
 
-            GIF_path = "Weather Data/NWS Forecasts/GIFs/"+plot_type+"/"+state+"/"+reference_system+"/NWS Dry and Windy Areas.gif"               
+            GIF_path = "Weather Data/NWS Forecasts/GIFs/"+plot_type+"/"+state+"/"+reference_system+"/"+cwa+"/NWS Dry and Windy Areas.gif"               
             with imageio.get_writer(GIF_path, fps=fps) as writer:
-                for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}"):
-                    image = imageio.v2.imread(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{file}")
+                for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}"):
+                    image = imageio.v2.imread(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{cwa}/{file}")
                     writer.append_data(image)
             print("GIF Created and saved in f:"+GIF_path)
 
-        if state == None and gacc_region != None:
+        if cwa == None:
            
-            GIF_path = "Weather Data/NWS Forecasts/GIFs/"+plot_type+"/"+gacc_region+"/"+reference_system+"/NWS Dry and Windy Areas.gif" 
+            GIF_path = "Weather Data/NWS Forecasts/GIFs/"+plot_type+"/"+gacc_region+"/"+reference_system+"STATE/NWS Dry and Windy Areas.gif" 
                         
             with imageio.get_writer(GIF_path, fps=fps) as writer:
-                for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}"):
-                    image = imageio.v2.imread(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/{file}")
+                for file in os.listdir(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/STATE"):
+                    image = imageio.v2.imread(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/STATE/{file}")
                     writer.append_data(image)
             print("GIF Created and saved in f:"+GIF_path)
     
 
-    def plot_dry_and_gusty_forecast(low_minimum_rh_threshold=15, wind_gust_threshold=25, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=1, directory_name='CONUS', ds_ws_short=None, ds_rh_short=None, state='us', gacc_region=None, cwa=None, aspect=30, tick=9, fps=1):
+    def plot_dry_and_gusty_forecast(low_minimum_rh_threshold=15, wind_gust_threshold=25, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=1, ds_temp_short=None, ds_ws_short=None, ds_rh_short=None, cwa=None, aspect=30, tick=9, fps=1):
 
         r'''
         This function plots the latest available NOAA/NWS Dry and Windy Forecast.
@@ -15213,10 +15630,8 @@ class dry_and_windy:
 
         local_time, utc_time = standard.plot_creation_time()
 
-        if gacc_region != None:
-            state = None
-        else:
-            state = state
+        state = 'ak'
+        cwa = cwa
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -15307,41 +15722,11 @@ class dry_and_windy:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
         
-        if state != None and gacc_region == None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False, plot_type='Dry and Gusty Forecast')
-    
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-    
-        if state == None and gacc_region != None:
-            directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_gacc_region_data_and_coords(gacc_region, 'nws', False, plot_type='Dry and Gusty Forecast')
+        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False, plot_type='Dry and Gusty Forecast')
 
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-
-        if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and gacc_region == None:
+        mpl.rcParams['xtick.labelsize'] = tick
+        mpl.rcParams['ytick.labelsize'] = tick
     
-            fig_x_length = fig_x_length
-            fig_y_length = fig_y_length
-            signature_x_position = signature_x_position
-            signature_y_position = signature_y_position
-            western_bound = western_bound
-            eastern_bound = eastern_bound
-            southern_bound = southern_bound
-            northern_bound = northern_bound
-            state = 'Custom'
-            mpl.rcParams['xtick.labelsize'] = tick
-            mpl.rcParams['ytick.labelsize'] = tick
-            aspect=aspect
-
-
-            if file_path == None:
-                directory_name = settings.check_NDFD_directory_name('us')
-            else:
-                directory_name = settings.check_NDFD_directory_name(directory_name)
-    
-        else:
-            pass
     
         PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
@@ -15773,5 +16158,3 @@ class dry_and_windy:
             print("GIF Created and saved in f:"+GIF_path)
             
         
-
-
