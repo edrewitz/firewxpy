@@ -10,8 +10,6 @@ This file hosts all the functions that return the settings for each plot for eac
 '''
 
 import cartopy.crs as ccrs
-import warnings
-warnings.filterwarnings('ignore')
 
 def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
 
@@ -127,7 +125,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         color_table_shrink = 1
         aspect=30
         tick=9
-        datacrs = ccrs.PlateCarree(central_longitude=0.1)
+        datacrs = ccrs.PlateCarree()
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
