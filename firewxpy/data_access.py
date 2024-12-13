@@ -1275,9 +1275,9 @@ class NDFD_CONUS:
         parameter = parameter
     
         try:
-    
+
             ds = get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
-    
+                
             print("Downloaded data successfully!")
         except Exception as a:
     
@@ -1904,40 +1904,40 @@ def get_NWS_NDFD_short_term_grid_data(directory_name, parameter):
     ###################################################
 
     ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
-    ftp = FTP('tgftp.nws.noaa.gov')
-    ftp.login()
 
-    ### SEARCHES FOR THE CORRECT DIRECTORY ###
     try:
+        ftp = FTP('tgftp.nws.noaa.gov')
+        ftp.login()
+    
+        ### SEARCHES FOR THE CORRECT DIRECTORY ###
+    
         dirName = directory_name + 'VP.001-003/'
         param = parameter
         files = ftp.cwd(dirName)
-
+    
         ### SEARCHES FOR THE CORRECT PARAMETER ###
-        try:
-            ################################
-            # DOWNLOADS THE NWS NDFD GRIDS #
-            ################################
-            
-            with open(param, 'wb') as fp:
-                ftp.retrbinary('RETR ' + param, fp.write)
-                
-            ftp.close()
-            ds = xr.load_dataset(param, engine='cfgrib')
-            ds = ds.metpy.parse_cf()
-            return ds
-
-        ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
-
-        except Exception as a:
-            param_error = info.parameter_name_error()
-            return param_error
-
-    ### ERROR MESSAGE WHEN THERE IS AN INVALID DIRECTORY NAME ###
+        ################################
+        # DOWNLOADS THE NWS NDFD GRIDS #
+        ################################
         
+        with open(param, 'wb') as fp:
+            ftp.retrbinary('RETR ' + param, fp.write)
+            
+        ftp.close()
+        ds = xr.load_dataset(param, engine='cfgrib')
+        ds = ds.metpy.parse_cf()
+
     except Exception as e:
-        dir_error = info.directory_name_error()
-        return dir_error
+
+        urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
+        ds = xr.load_dataset(parameter, engine='cfgrib')
+        ds = ds.metpy.parse_cf()
+        
+    return ds
+
+    ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
+
+
 
 def get_NWS_NDFD_extended_grid_data(directory_name, parameter):
     
