@@ -1924,14 +1924,30 @@ def get_NWS_NDFD_short_term_grid_data(directory_name, parameter):
             ftp.retrbinary('RETR ' + param, fp.write)
             
         ftp.close()
-        ds = xr.load_dataset(param, engine='cfgrib')
-        ds = ds.metpy.parse_cf()
+
+        if directory_name == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/':
+
+            ds = xr.load_dataset(param, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
+            ds = ds.metpy.parse_cf()
+
+        else:
+        
+            ds = xr.load_dataset(param, engine='cfgrib')
+            ds = ds.metpy.parse_cf()
 
     except Exception as e:
 
         urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
-        ds = xr.load_dataset(parameter, engine='cfgrib')
-        ds = ds.metpy.parse_cf()
+        
+        if directory_name == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/':
+
+            ds = xr.load_dataset(param, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
+            ds = ds.metpy.parse_cf()
+
+        else:
+        
+            ds = xr.load_dataset(param, engine='cfgrib')
+            ds = ds.metpy.parse_cf()
         
     return ds
 
