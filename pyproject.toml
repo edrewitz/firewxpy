@@ -28,7 +28,7 @@ dependencies = [
 	"netcdf4>=1.7.1",
 	"numpy>=1.24",
 	"pandas>=2",
-	"siphon>=0.9",
+	"siphon>=0.10.0",
  	"xarray==2024.02.0",
  	"pysolar>=0.11",
   	"pygrib>=2.1.4",
