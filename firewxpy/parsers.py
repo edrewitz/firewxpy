@@ -1601,25 +1601,46 @@ class checks:
             
 
         if count == 0:
-            if discard == False:
-                vals_00 = ds[parameter][0, :, :]
-                vals_01 = ds[parameter][1, :, :]
-                vals_02 = ds[parameter][2, :, :]
-                vals_03 = ds[parameter][3, :, :]
-                vals_04 = ds[parameter][4, :, :]
-                vals_05 = ds[parameter][5, :, :]
-                if file_count >= 7:
-                    vals_06 = ds[parameter][6, :, :]
-
-            if discard == True:
-                vals_00 = ds[parameter][1, :, :]
-                vals_01 = ds[parameter][2, :, :]
-                vals_02 = ds[parameter][3, :, :]
-                vals_03 = ds[parameter][4, :, :]
-                vals_04 = ds[parameter][5, :, :]
-                vals_05 = ds[parameter][6, :, :]
-                if file_count >= 7:
-                    vals_06 = ds[parameter][7, :, :]
+            try:
+                if discard == False:
+                    vals_00 = ds[parameter][0, :, :]
+                    vals_01 = ds[parameter][1, :, :]
+                    vals_02 = ds[parameter][2, :, :]
+                    vals_03 = ds[parameter][3, :, :]
+                    vals_04 = ds[parameter][4, :, :]
+                    vals_05 = ds[parameter][5, :, :]
+                    if file_count >= 7:
+                        vals_06 = ds[parameter][6, :, :]
+    
+                if discard == True:
+                    vals_00 = ds[parameter][1, :, :]
+                    vals_01 = ds[parameter][2, :, :]
+                    vals_02 = ds[parameter][3, :, :]
+                    vals_03 = ds[parameter][4, :, :]
+                    vals_04 = ds[parameter][5, :, :]
+                    vals_05 = ds[parameter][6, :, :]
+                    if file_count >= 7:
+                        vals_06 = ds[parameter][7, :, :]
+            except Exception as e:
+                if discard == False:
+                    vals_00 = ds[parameter][0, :]
+                    vals_01 = ds[parameter][1, :]
+                    vals_02 = ds[parameter][2, :]
+                    vals_03 = ds[parameter][3, :]
+                    vals_04 = ds[parameter][4, :]
+                    vals_05 = ds[parameter][5, :]
+                    if file_count >= 7:
+                        vals_06 = ds[parameter][6, :]
+    
+                if discard == True:
+                    vals_00 = ds[parameter][1, :]
+                    vals_01 = ds[parameter][2, :]
+                    vals_02 = ds[parameter][3, :]
+                    vals_03 = ds[parameter][4, :]
+                    vals_04 = ds[parameter][5, :]
+                    vals_05 = ds[parameter][6, :]
+                    if file_count >= 7:
+                        vals_06 = ds[parameter][7, :]                
 
 
             vals.append(vals_00)
