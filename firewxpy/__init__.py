@@ -18,7 +18,6 @@ from firewxpy.NWS_Alaska import hot_dry_and_windy as hot_dry_and_windy_alaska
 
 from firewxpy.NWS_Hawaii import temperature as nws_temperature_forecast_hawaii
 from firewxpy.NWS_Hawaii import relative_humidity as nws_relative_humidity_forecast_hawaii
-from firewxpy.NWS_Hawaii import dry_and_windy as nws_dry_and_windy_forecast_hawaii
 
 from firewxpy.observations import graphical_daily_summary
 
