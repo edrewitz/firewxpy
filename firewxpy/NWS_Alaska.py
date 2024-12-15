@@ -76,31 +76,35 @@ class relative_humidity:
     
         Required Arguments: None
 
-        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+        Optional Arguments: 1) poor_overnight_recovery_rh_threshold (Integer) -  Default = 50%. The relative humidity threshold for 
+                               a poor overnight relative humidity recovery. This is the upper bound of values shaded. 
+                               (i.e. a value of 50 means all values less than 50% get shaded).
+        
+                            2) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
                                The default setting is None. If set to None, the user must select a state or gacc_region. 
                                This setting should be changed from None to an integer or float value if the user wishes to
                                have a custom area selected. Negative values denote the western hemisphere and positive 
                                values denote the eastern hemisphere. 
 
-                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                            3) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
                                The default setting is None. If set to None, the user must select a state or gacc_region. 
                                This setting should be changed from None to an integer or float value if the user wishes to
                                have a custom area selected. Negative values denote the western hemisphere and positive 
                                values denote the eastern hemisphere. 
 
-                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                            4) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
                                The default setting is None. If set to None, the user must select a state or gacc_region. 
                                This setting should be changed from None to an integer or float value if the user wishes to
                                have a custom area selected. Positive values denote the northern hemisphere and negative 
                                values denote the southern hemisphere. 
 
-                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                            5) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
                                The default setting is None. If set to None, the user must select a state or gacc_region. 
                                This setting should be changed from None to an integer or float value if the user wishes to
                                have a custom area selected. Positive values denote the northern hemisphere and negative 
                                values denote the southern hemisphere.
 
-                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                            6) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
                                The default setting is None since preset values are called from the settings module 
                                for each state and/or gacc_region. This parameter is to be changed if the user selects
                                a custom area with custom latitude and longitude coordinates. 
@@ -296,32 +300,16 @@ class relative_humidity:
                                 the default value is selected, the decimation is scaled automatically, however if the user wishes 
                                 to change the spacing of the sample points, then the user must edit this value. 
 
-                            48) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
-                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
-                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
-                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
-                                changed to None. 
+                            48) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
+                                    
 
-                            49) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
-                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
-                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+                            49) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                                Here is a list of acceptable gacc_region abbreviations:
-
-                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
-                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
-                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
-                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
-                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
-                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
-                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
-                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
-                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
-                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
-
-                            50) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
-
-                            51) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+                            50) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
