@@ -4424,7 +4424,6 @@ def previous_day_weather_summary_and_all_data(station_id):
     df['wind_gust'] = calc.unit_conversion.knots_to_mph(df['wind_gust'])
     
     df = df.sort_values(['air_temperature'], ascending=False)
-    print(df)
     maximum_temperature = df['air_temperature'].iloc[0]
     maximum_temperature_time = df['date_time'].iloc[0]
     maximum_temperature_time_utc = maximum_temperature_time.replace(tzinfo=to_zone)
