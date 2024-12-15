@@ -1945,6 +1945,442 @@ class file_functions:
 
         return path, GIF_path
 
+    def check_file_paths_hawaii(state, island, plot_type, reference_system):
+    
+        state = state
+        island = island
+        plot_type = plot_type
+        reference_system = reference_system
+        state = state.upper()
+        if island != None:
+            island = island.upper()
+    
+        if os.path.exists(f"Weather Data"):
+            print("Already Satisfied: Weather Data folder exists.")
+        else:
+            print("Setting up the Weather Data folder and the rest of the file structure...")
+            os.mkdir("Weather Data")
+    
+        if plot_type == 'RTMA RH' or plot_type =='24HR RTMA RH COMPARISON' or plot_type == 'RTMA TEMPERATURE' or plot_type == '24HR RTMA TEMPERATURE COMPARISON' or plot_type == '24HR RTMA TOTAL CLOUD COVER COMPARISON' or plot_type == 'RTMA TOTAL CLOUD COVER' or plot_type == '24HR RTMA DEW POINT COMPARISON' or plot_type == 'RTMA DEW POINT' or plot_type == 'RTMA WIND SPEED' or plot_type == '24HR RTMA WIND SPEED COMPARISON' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND BARBS' or plot_type == '24HR RTMA WIND SPEED & DIRECTION COMPARISON WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND VECTORS' or plot_type == 'RTMA WIND SPEED & DIRECTION WIND BARBS' or plot_type == 'RTMA HOT DRY & WINDY AREAS SAMPLE POINTS' or plot_type == 'RTMA HOT DRY & WINDY AREAS WIND BARBS' or plot_type == 'RTMA HOT DRY & WINDY AREAS WIND VECTORS' or plot_type == 'RTMA HOT DRY & GUSTY AREAS' or plot_type == 'RTMA RH & METAR' or plot_type == 'RTMA LOW RH & METAR' or plot_type == 'RTMA FROST FREEZE' or plot_type == 'RTMA EXTREME HEAT' or plot_type == 'RTMA TEMPERATURE ADVECTION' or plot_type == 'RTMA RH ADVECTION' or plot_type == 'RTMA DEW POINT ADVECTION' or plot_type == 'RTMA WIND GUST & OBS' or plot_type == 'RTMA WIND SPEED & OBS' or plot_type == 'RTMA LOW AND HIGH RH':
+    
+            if island == None:
+    
+                full_path = 'f:Weather Data/RTMA/'+plot_type+'/'+state+'/'+reference_system+'/STATE'
+                ref_path = 'f:Weather Data/RTMA/'+plot_type+'/'+state+'/'+reference_system
+                state_path = 'f:Weather Data/RTMA/'+plot_type+'/'+state
+                type_path = 'f:Weather Data/RTMA/'+plot_type
+    
+                if os.path.exists(f"Weather Data/RTMA"):
+                    print("Already Satisfied: RTMA Directory exists.")
+    
+                    if os.path.exists(f"Weather Data/RTMA/{plot_type}"):
+                        print('Already Satisfied: '+type_path+ ' exists.')
+                        
+                        if os.path.exists(f"Weather Data/RTMA/{plot_type}/{state}"):
+                            print('Already Satisfied: '+state_path+' exists.')
+    
+                            if os.path.exists(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}"):
+                                print('Already Satisfied: '+ref_path+' exists')
+
+                                if os.path.exists(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/STATE"):
+                                    print('Already Satisfied: '+full_path+' exists')
+
+                                else:
+                                    print(full_path+' not found. Automatically building new branch to directory...')
+                                    os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/STATE")
+                                    print("Successfully built new branch to directory!")  
+    
+                            else:
+                                print(ref_path+' not found. Automatically building new branch to directory...')
+                                os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}")
+                                os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/STATE")
+                                print("Successfully built new branch to directory!")                                
+    
+                        else:
+                            print(state_path+' not found. Automatically building new branch to directory...')
+                            os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}")
+                            os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}")
+                            os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/STATE")
+                            print("Successfully built new branch to directory!")
+                            
+                    else:
+                        print(type_path+' not found. Automatically building new branch to directory...')
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}")
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}")
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}")
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/STATE")
+                        print("Successfully built new branch to directory!")
+                        
+                else:
+                    print("RTMA Directory does not exist.\nAutomatically building RTMA directory...")
+                    
+                    # Building directory for images
+                    os.mkdir(f"Weather Data/RTMA")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/STATE")
+    
+                    print("Successfully built new directory!") 
+    
+                path = f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/STATE"
+                GIF_path = None
+    
+            if island != None:
+    
+                full_path = 'f:Weather Data/RTMA/'+plot_type+'/'+state+'/'+reference_system+'/'+island
+                ref_path = 'f:Weather Data/RTMA/'+plot_type+'/'+state+'/'+reference_system
+                state_path = 'f:Weather Data/RTMA/'+plot_type+'/'+state
+                type_path = 'f:Weather Data/RTMA/'+plot_type
+    
+                if os.path.exists(f"Weather Data/RTMA"):
+                    print("Already Satisfied: RTMA Directory exists.")
+    
+                    if os.path.exists(f"Weather Data/RTMA/{plot_type}"):
+                        print('Already Satisfied: '+type_path+ ' exists.')
+                        
+                        if os.path.exists(f"Weather Data/RTMA/{plot_type}/{state}"):
+                            print('Already Satisfied: '+state_path+' exists.')
+    
+                            if os.path.exists(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}"):
+                                print('Already Satisfied: '+ref_path+' exists')
+    
+                                if os.path.exists(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/{island}"):
+                                    print('Already Satisfied: '+full_path+' exists')
+    
+                                else:
+                                    print(full_path+' not found. Automatically building new branch to directory...')
+                                    os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/{island}")                                    
+                            else:
+                                print(ref_path+' not found. Automatically building new branch to directory...')
+                                os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}")
+                                os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/{island}") 
+                                print("Successfully built new branch to directory!")                                
+    
+                        else:
+                            print(state_path+' not found. Automatically building new branch to directory...')
+                            os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}")
+                            os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}")
+                            os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/{island}") 
+                            print("Successfully built new branch to directory!")
+                            
+                    else:
+                        print(type_path+' not found. Automatically building new branch to directory...')
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}")
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}")
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}")
+                        os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/{island}") 
+                        print("Successfully built new branch to directory!")
+                        
+                else:
+                    print("RTMA Directory does not exist.\nAutomatically building RTMA directory...")
+                    
+                    # Building directory for images
+                    os.mkdir(f"Weather Data/RTMA")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}")
+                    os.mkdir(f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/{island}") 
+                    print("Successfully built new directory!") 
+    
+                path = f"Weather Data/RTMA/{plot_type}/{state}/{reference_system}/{island}"
+                GIF_path = None
+    
+    
+        if plot_type == 'NWS Low Minimum RH' or plot_type == 'NWS Poor Overnight Recovery' or plot_type == 'NWS Excellent Overnight Recovery' or plot_type == 'NWS Maximum RH' or plot_type == 'NWS Maximum RH Trend' or plot_type == 'NWS Minimum RH' or plot_type == 'NWS Minimum RH Trend' or plot_type == 'NWS Extreme Heat' or plot_type == 'NWS Max T Trend' or plot_type == 'NWS Warm Min T' or plot_type == 'NWS Frost Freeze' or plot_type == 'NWS Max T' or plot_type == 'NWS Min T' or plot_type == 'NWS Min T Trend':
+
+            if island != None:
+
+                full_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system+'/'+island
+                ref_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system
+                state_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state
+                type_path = 'f:Weather Data/NWS Forecasts/'+plot_type
+
+                full_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state+'/'+reference_system+'/'+island
+                ref_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state+'/'+reference_system
+                state_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state
+                type_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type
+
+
+                ##########################
+                # STILL IMAGES DIRECTORY #
+                ##########################
+
+
+                if os.path.exists(f"Weather Data/NWS Forecasts"):
+                    print("Already Satisfied: NWS Forecasts Directory exists.")
+
+                    if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}"):
+                        print('Already Satisfied: '+type_path+ ' exists.')
+                        
+                        if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{state}"):
+                            print('Already Satisfied: '+state_path+' exists.')
+
+                            if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}"):
+                                print('Already Satisfied: '+full_path+' exists')
+
+                                if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}"):
+                                    print('Already Satisfied: '+full_path+' exists')
+
+                                else:
+                                    print(full_path+' not found. Automatically building new branch to directory...')
+                                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}")
+                                    print("Successfully built new branch to directory!")    
+
+                            else:
+                                print(ref_path+' not found. Automatically building new branch to directory...')
+                                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}")
+                                print("Successfully built new branch to directory!")                                
+
+                        else:
+                            print(state_path+' not found. Automatically building new branch to directory...')
+                            os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}")
+                            print("Successfully built new branch to directory!")
+                            
+                    else:
+                        print(type_path+' not found. Automatically building new branch to directory...')
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}")
+                        print("Successfully built new branch to directory!")
+                        
+                else:
+                    print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
+                    
+                    # Building directory for still images
+                    os.mkdir(f"Weather Data/NWS Forecasts")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}")
+
+                    print("Successfully built new directory!")
+
+                ########################
+                # GIF IMAGES DIRECTORY #
+                ########################
+                    
+                if os.path.exists(f"Weather Data/NWS Forecasts"):
+                    print("Already Satisfied: NWS Forecasts Directory exists.")
+
+                    if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/"):
+                        print('Already Satisfied: NWS Forecasts GIFs Directory exists.')
+
+                        if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}"):
+                            print('Already Satisfied: '+type_path_gif+ ' exists.')
+
+                            if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}"):
+                                print('Already Satisfied: '+state_path_gif+ ' exists.')
+
+                                if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}"):
+                                    print('Already Satisfied: '+ref_path_gif+ ' exists.')
+                                    
+                                    if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}"):
+                                        print('Already Satisfied: '+full_path_gif+ ' exists.')
+
+                                    else:
+                                        print(f"{full_path_gif} not found. Building new branch to directory.")
+                                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}")
+                                        print("Successfully built new branch to directory!")                                           
+
+                                else:
+                                    print(f"{ref_path_gif} not found. Building new branch to directory.")
+                                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}")
+                                    print("Successfully built new branch to directory!")   
+
+                            else:
+                                print(state_path_gif+' not found. Building branch to directory.')
+                                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}")
+                                print("Successfully built new branch to directory!")                                
+
+                        else:
+                            print(type_path_gif+' not found. Building branch to directory.')
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}")
+                            print("Successfully built new branch to directory!")
+                            
+
+                    else:
+                        print('NWS Forecasts GIFs Directory not found. Building directory...')
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}")
+                            
+                        
+                else:
+                    print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
+                    
+                    # Building directory for still images
+                    os.mkdir(f"Weather Data/NWS Forecasts")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}")
+
+                    print("Successfully built new directory!")
+
+                path = f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}"
+                GIF_path = f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}"                    
+            if island == None:
+
+                island = 'STATE'
+            
+                ##########################
+                # STILL IMAGES DIRECTORY #
+                ##########################
+
+                full_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system+'/'+island
+                ref_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state+'/'+reference_system
+                state_path = 'f:Weather Data/NWS Forecasts/'+plot_type+'/'+state
+                type_path = 'f:Weather Data/NWS Forecasts/'+plot_type
+
+                full_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state+'/'+reference_system+'/'+island
+                ref_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state+'/'+reference_system
+                state_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type+'/'+state
+                type_path_gif = 'f:Weather Data/NWS Forecasts/GIFs/'+plot_type
+
+
+                if os.path.exists(f"Weather Data/NWS Forecasts"):
+                    print("Already Satisfied: NWS Forecasts Directory exists.")
+
+                    if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}"):
+                        print('Already Satisfied: '+type_path+ ' exists.')
+                        
+                        if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{state}"):
+                            print('Already Satisfied: '+state_path+' exists.')
+
+                            if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}"):
+                                print('Already Satisfied: '+full_path+' exists')
+
+                                if os.path.exists(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}"):
+                                    print('Already Satisfied: '+full_path+' exists')
+
+                                else:
+                                    print(full_path+' not found. Automatically building new branch to directory...')
+                                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}")
+                                    print("Successfully built new branch to directory!")    
+
+                            else:
+                                print(ref_path+' not found. Automatically building new branch to directory...')
+                                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                                os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}")
+                                print("Successfully built new branch to directory!")                                
+
+                        else:
+                            print(state_path+' not found. Automatically building new branch to directory...')
+                            os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}")
+                            print("Successfully built new branch to directory!")
+                            
+                    else:
+                        print(type_path+' not found. Automatically building new branch to directory...')
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}")
+                        print("Successfully built new branch to directory!")
+                        
+                else:
+                    print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
+                    
+                    # Building directory for still images
+                    os.mkdir(f"Weather Data/NWS Forecasts")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}")
+
+                    print("Successfully built new directory!")
+
+                ########################
+                # GIF IMAGES DIRECTORY #
+                ########################
+                    
+                if os.path.exists(f"Weather Data/NWS Forecasts"):
+                    print("Already Satisfied: NWS Forecasts Directory exists.")
+
+                    if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/"):
+                        print('Already Satisfied: NWS Forecasts GIFs Directory exists.')
+
+                        if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}"):
+                            print('Already Satisfied: '+type_path_gif+ ' exists.')
+
+                            if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}"):
+                                print('Already Satisfied: '+state_path_gif+ ' exists.')
+
+                                if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}"):
+                                    print('Already Satisfied: '+ref_path_gif+ ' exists.')
+                                    
+                                    if os.path.exists(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}"):
+                                        print('Already Satisfied: '+full_path_gif+ ' exists.')
+
+                                    else:
+                                        print(f"{full_path_gif} not found. Building new branch to directory.")
+                                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}")
+                                        print("Successfully built new branch to directory!")                                           
+
+                                else:
+                                    print(f"{ref_path_gif} not found. Building new branch to directory.")
+                                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}")
+                                    print("Successfully built new branch to directory!")   
+
+                            else:
+                                print(state_path_gif+' not found. Building branch to directory.')
+                                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                                os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}")
+                                print("Successfully built new branch to directory!")                                
+
+                        else:
+                            print(type_path_gif+' not found. Building branch to directory.')
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                            os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}")
+                            print("Successfully built new branch to directory!")
+                            
+
+                    else:
+                        print('NWS Forecasts GIFs Directory not found. Building directory...')
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                        os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}")                            
+                        
+                else:
+                    print("NWS Forecasts Directory does not exist.\nAutomatically building NWS Forecasts directory...")
+                    
+                    # Building directory for still images
+                    os.mkdir(f"Weather Data/NWS Forecasts")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}")
+                    os.mkdir(f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}")
+
+                    print("Successfully built new directory!")
+
+                path = f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/{island}"
+                GIF_path = f"Weather Data/NWS Forecasts/GIFs/{plot_type}/{state}/{reference_system}/{island}" 
+
+        return path, GIF_path
+
+
 class save:
 
     r'''
