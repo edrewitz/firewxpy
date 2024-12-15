@@ -154,10 +154,10 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
                 subplot_title_fontsize = 6                 
 
     if state == 'HI' or state == 'hi':
-        western_bound = -160.36
-        eastern_bound = -154.57
-        southern_bound = 18.81
-        northern_bound = 22.46
+        western_bound = -160.3
+        eastern_bound = -154.73
+        southern_bound = 18.76
+        northern_bound = 22.28
         fig_x_length = 12
         fig_y_length = 12
         signature_x_position = 0.255
@@ -174,15 +174,15 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
         if gridspec == True:
             fig_x_length = 10
             fig_y_length = 7
-            color_table_shrink = 0.65
+            color_table_shrink = 0.9
             colorbar_fontsize = 8
             sample_point_fontsize=12
         if plot_category == 'nws':
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/'
             signature_x_position = 0.13
             signature_y_position = 0.25
             if plot_type == 'Dry and Windy Forecast' or plot_type == 'Dry and Gusty Forecast':
-                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/'
                 signature_x_position = 0.01
                 signature_y_position = 0.12                
         if plot_category == 'rtma':
