@@ -549,7 +549,7 @@ class scaling:
         if state == 'AK' or state == 'ak':
             decimate = 4025           
         if state == 'HI' or state == 'hi':
-            decimate = 4025           
+            decimate = 90         
         if state == 'ME' or state == 'me':
             decimate = 100
         if state == 'NH' or state == 'nh':
