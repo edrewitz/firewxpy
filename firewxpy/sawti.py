@@ -246,7 +246,10 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
                 urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone4-SantaBarbara/seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv')
                 print('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv has been downloaded')
                 print("\n")
-                today = False
+                if local_time.day == utc_time.day:
+                    today = False
+                else:
+                    today = True
             except Exception as e:
                 pass
     
@@ -846,4 +849,4 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
         os.mkdir(f"Weather Data/SAWTI")
         print("Successfully built directory and current branch.")
         plt.savefig(f"Weather Data/SAWTI/{fname}", bbox_inches='tight')
-        print(f"Image Saved to f:Weather Data/SAWTI/{fname}")                 
+        print(f"Image Saved to f:Weather Data/SAWTI/{fname}")           
