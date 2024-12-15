@@ -14,7 +14,7 @@ from firewxpy.NWS_CONUS import dry_and_windy as nws_dry_and_windy_forecast_conus
 
 from firewxpy.NWS_Alaska import temperature as nws_temperature_forecast_conus_alaska
 from firewxpy.NWS_Alaska import relative_humidity as nws_relative_humidity_forecast_alaska
-from firewxpy.NWS_Alaska import hot_dry_and_windy as hot_dry_and_windy_alaska
+from firewxpy.NWS_Alaska import hot_dry_and_windy as nws_hot_dry_and_windy_alaska
 
 from firewxpy.NWS_Hawaii import temperature as nws_temperature_forecast_hawaii
 from firewxpy.NWS_Hawaii import relative_humidity as nws_relative_humidity_forecast_hawaii
