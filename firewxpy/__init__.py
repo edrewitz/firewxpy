@@ -8,9 +8,9 @@ import firewxpy.standard as standard
 
 from firewxpy.data_access import RTMA_CONUS, NDFD_CONUS, NDFD_Alaska, RTMA_Alaska, RTMA_Hawaii
 
-from firewxpy.NWS_Forecast_Graphics import temperature as nws_temperature_forecast_conus
-from firewxpy.NWS_Forecast_Graphics import relative_humidity as nws_relative_humidity_forecast_conus
-from firewxpy.NWS_Forecast_Graphics import dry_and_windy as nws_dry_and_windy_forecast_conus
+from firewxpy.NWS_CONUS import temperature as nws_temperature_forecast_conus
+from firewxpy.NWS_CONUS import relative_humidity as nws_relative_humidity_forecast_conus
+from firewxpy.NWS_CONUS import dry_and_windy as nws_dry_and_windy_forecast_conus
 
 from firewxpy.NWS_Alaska import temperature as nws_temperature_forecast_conus_alaska
 from firewxpy.NWS_Alaska import relative_humidity as nws_relative_humidity_forecast_alaska
