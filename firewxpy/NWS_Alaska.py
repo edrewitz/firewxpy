@@ -26,13 +26,13 @@ import metpy.plots as mpplots
 import metpy.calc as mpcalc
 import numpy as np
 import pandas as pd
-import firewxpy.parsers
-import firewxpy.geometry
-import firewxpy.colormaps
-import firewxpy.settings
-import firewxpy.standard
+import firewxpy.parsers as parsers
+import firewxpy.geometry as geometry
+import firewxpy.colormaps as colormaps
+import firewxpy.settings as settings
+import firewxpy.standard as standard
 import os
-import firewxpy.dims
+import firewxpy.dims as dims
 import imageio
 import warnings
 warnings.filterwarnings('ignore')
