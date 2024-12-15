@@ -25,14 +25,14 @@ import metpy.plots as mpplots
 import metpy.calc as mpcalc
 import numpy as np
 import pandas as pd
-import parsers as parsers
-import geometry as geometry
-import colormaps as colormaps
-import settings as settings
-import standard as standard
+import firewxpy.parsers as parsers
+import firewxpy.geometry as geometry
+import firewxpy.colormaps as colormaps
+import firewxpy.settings as settings
+import firewxpy.standard as standard
 import os
 import imageio
-import dims as dims
+import firewxpy.dims as dims
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -40,9 +40,9 @@ from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
 from dateutil import tz
 from matplotlib.patheffects import withStroke
-from calc import scaling, unit_conversion, contouring
-from utilities import file_functions
-from data_access import NDFD_CONUS
+from firewxpy.calc import scaling, unit_conversion, contouring
+from firewxpy.utilities import file_functions
+from firewxpy.data_access import NDFD_CONUS
 from metpy.units import units
 
 mpl.rcParams['font.weight'] = 'bold'
