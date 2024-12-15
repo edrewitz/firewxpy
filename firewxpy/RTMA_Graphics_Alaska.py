@@ -16,7 +16,6 @@ import firewxpy.dims as dims
 import warnings
 warnings.filterwarnings('ignore')
 
-
 from matplotlib.patheffects import withStroke
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
@@ -29,8 +28,6 @@ from firewxpy.data_access import RTMA_Alaska
 mpl.rcParams['font.weight'] = 'bold'
 
 mpl.rcParams['font.weight'] = 'bold'
-
-warnings.filterwarnings('ignore')
 
 def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
