@@ -1,4 +1,4 @@
-# **National Weather Service Forecast Graphics**
+# **National Weather Service Forecast Graphics CONUS**
 
 ### **Classes**
 1) [Relative Humidity](#relative-humidity-class) (`nws_relative_humidity_forecast`)
