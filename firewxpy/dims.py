@@ -1,5 +1,36 @@
 import warnings
+from firewxpy.calc import scaling
 warnings.filterwarnings('ignore')
+
+def hawaiian_islands_coords(island):
+
+    if island == None:
+        western_bound, eastern_bound, southern_bound, northern_bound = -160.3, -154.73, 18.76, 22.28
+        decimate = scaling.get_NDFD_decimation_by_state('hi')
+    if island == 'Oahu' or island == 'oahu':
+        western_bound, eastern_bound, southern_bound, northern_bound = -158.31, -157.62, 21.22, 21.75
+        decimate = 75
+    if island == 'Hawaii' or island == 'hawaii':
+        western_bound, eastern_bound, southern_bound, northern_bound = -156.21, -154.70, 18.83, 20.35
+        decimate = 50
+    if island == 'Maui' or island == 'maui':
+        western_bound, eastern_bound, southern_bound, northern_bound = -156.76, -155.90, 20.37, 21.08
+        decimate = 5
+    if island == 'Kauai' or island == 'kauai':
+        western_bound, eastern_bound, southern_bound, northern_bound = -159.84, -159.25, 21.84, 22.25
+        decimate = 5
+    if island == 'Molokai' or island == 'molokai':
+        western_bound, eastern_bound, southern_bound, northern_bound = -157.5, -156.6, 21.02, 21.24
+        decimate = 67
+    if island == 'Lanai' or island == 'lanai':
+        western_bound, eastern_bound, southern_bound, northern_bound = -157.07, -156.79, 20.71, 20.95
+        decimate = 35
+    if island == 'Niihau' or island == 'niihau':
+        western_bound, eastern_bound, southern_bound, northern_bound = -160.5, -159.75, 21.7, 22.05
+        decimate = 5
+    
+
+    return western_bound, eastern_bound, southern_bound, northern_bound, decimate
 
 def get_metar_mask(state, gacc_region, rtma_ws=False):
 
@@ -2395,7 +2426,11 @@ def get_colorbar_coords(state, gacc_region):
 
         if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
 
-            x1, x2, y, x_size, fontsize = 0.18, 0.55, 0.25, 0.3, 12
+            x1, x2, y, x_size, fontsize = 0.18, 0.55, 0.25, 0.45, 12
+
+        if state == 'AK' or state == 'ak':
+
+            x1, x2, y, x_size, fontsize = 0.18, 0.55, 0.28, 0.45, 12
 
         if state == 'CA' or state == 'ca':
 
