@@ -2074,7 +2074,7 @@ Return: Saves individual images to a folder and creates a GIF from those images.
 
   #### Temperature Class
 
-The `nws_temperature_forecast` class hosts 7 functions that plot the NWS Relative Humidity Forecasts:
+The `nws_temperature_forecast_conus` class hosts 7 functions that plot the NWS Temperature Forecasts for CONUS:
 
 1) [Extreme Heat Forecast](#extreme-heat-forecast)
 
@@ -4210,7 +4210,7 @@ Return: Saves individual images to a folder and creates a GIF from those images.
 
 #### Dry And Windy Class
 
-The `nws_dry_and_windy_forecast` class hosts 2 functions that plot the NWS Forecasts for Dry and Windy as well as Dry and Gusty conditons. 
+The `nws_dry_and_windy_forecast_conus` class hosts 2 functions that plot the NWS Forecasts for Dry and Windy as well as Dry and Gusty conditons for CONUS. 
 
 1) [Dry And Windy Forecast](#dry-and-windy-forecast)
 
