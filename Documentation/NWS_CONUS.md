@@ -1,13 +1,13 @@
 # **National Weather Service Forecast Graphics CONUS**
 
 ### **Classes**
-1) [Relative Humidity](#relative-humidity-class) (`nws_relative_humidity_forecast`)
-2) [Temperature](#temperature-class) (`nws_temperature_forecast`)
-3) [Dry and Windy](#dry-and-windy-class) (`nws_dry_and_windy_forecast`)
+1) [Relative Humidity](#relative-humidity-class) (`nws_relative_humidity_forecast_conus`)
+2) [Temperature](#temperature-class) (`nws_temperature_forecast_conus`)
+3) [Dry and Windy](#dry-and-windy-class) (`nws_dry_and_windy_forecast_conus`)
 
 #### Relative Humidity Class
 
-The `nws_relative_humidity_forecast` class hosts 7 functions that plot the NWS Relative Humidity Forecasts:
+The `nws_relative_humidity_forecast_conus` class hosts 7 functions that plot the NWS Relative Humidity Forecasts for CONUS (aka "The Lower-48"):
 
 1) [Poor Overnight Recovery Forecast](#poor-overnight-recovery-forecast) 
 
