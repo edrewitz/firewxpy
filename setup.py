@@ -1,8 +1,8 @@
 import sys
 from setuptools import setup, find_packages
 
-if sys.version_info[0] < 3:
-  print("ERROR: User is running Python 2.7.\nTo use FireWxPy, the user must be using Python 3.")
+if sys.version_info[0] < 3.10:
+  print("ERROR: User is running a version of Python older than Python 3.10\nTo use FireWxPy, the user must be using Python 3.10 or newer.")
 
 setup(
     name = "firewxpy",
