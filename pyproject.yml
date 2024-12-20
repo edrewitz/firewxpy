@@ -15,7 +15,7 @@ project:
     - data-analysis
     - weather
     - forecasting
-  requires-python: '>=3.8'
+  requires-python: '>=3.9'
   classifiers:
     - 'Programming Language :: Python'
     - 'Programming Language :: Python :: 3.10'
@@ -30,8 +30,8 @@ project:
     - protobuf>=3.20.3
     - netcdf4>=1.7.1
     - numpy>=1.24
-    - pandas>=1.5
-    - siphon>=0.9
+    - pandas>=2.2
+    - siphon>=0.10.0
     - xarray>=2023.1.0
     - pysolar>=0.11
     - pygrib>=2.1.4
