@@ -13248,9 +13248,9 @@ class hot_dry_and_windy:
                             2) post_greenup_temperature_threshold (Integer) - Default = 75F. Threshold for "hot" temperature based on the NWS Alaska Region RFW
                                criteria for post-greenup. Any values greater than or equal to this threshold are considered "hot".         
         
-                            3) low_rh_threshold (Integer) - Default = 15%. Threshold for low relative humidity. Any values less or equal to this threshold are considered "dry."
+                            3) low_minimum_rh_threshold (Integer) - Default = 15%. Threshold for low relative humidity. Any values less or equal to this threshold are considered "dry."
 
-                            4) high_wind_threshold (Integer) - Default = 25 MPH. Threshold for high winds (sustained winds). Any values greater than or equal to this threshold are considered "windy."  
+                            4) wind_speed_threshold (Integer) - Default = 25 MPH. Threshold for high winds (sustained winds). Any values greater than or equal to this threshold are considered "windy."  
                             
                             5) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
@@ -14147,9 +14147,9 @@ class hot_dry_and_windy:
                             2) post_greenup_temperature_threshold (Integer) - Default = 75F. Threshold for "hot" temperature based on the NWS Alaska Region RFW
                                criteria for post-greenup. Any values greater than or equal to this threshold are considered "hot".         
         
-                            3) low_rh_threshold (Integer) - Default = 15%. Threshold for low relative humidity. Any values less or equal to this threshold are considered "dry."
+                            3) low_minimum_rh_threshold (Integer) - Default = 15%. Threshold for low relative humidity. Any values less or equal to this threshold are considered "dry."
 
-                            4) high_wind_threshold (Integer) - Default = 25 MPH. Threshold for high winds (wind gust). Any values greater than or equal to this threshold are considered "gusty."  
+                            4) wind_speed_threshold (Integer) - Default = 25 MPH. Threshold for high winds (wind gust). Any values greater than or equal to this threshold are considered "gusty."  
                             
                             5) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
