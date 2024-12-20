@@ -1,9 +1,9 @@
 # **National Weather Service Forecast Graphics Alaska**
 
 ### **Classes**
-1) [Relative Humidity](#relative-humidity-class) (`nws_relative_humidity_forecast`)
-2) [Temperature](#temperature-class) (`nws_temperature_forecast`)
-3) [Hot Dry and Windy]() ()
+1) [Relative Humidity](#relative-humidity-class) (`nws_relative_humidity_forecast_alaska`)
+2) [Temperature](#temperature-class) (`nws_temperature_forecast_alaska`)
+3) [Hot Dry and Windy]() (nws_hot_dry_and_windy_alaska)
 
 #### Relative Humidity Class
 
