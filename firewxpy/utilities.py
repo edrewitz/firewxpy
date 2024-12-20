@@ -2414,127 +2414,106 @@ class save:
             fig1 = figure_list[0]
             fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
             plt.close(fig1)
-            print("First Frame Saved.")
             fig2 = figure_list[1]
             fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
             plt.close(fig2)
-            print("Second Frame Saved.")
             fig3 = figure_list[2]
             fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
             plt.close(fig3)
-            print("Third Frame Saved.")
             fig4 = figure_list[3]
             fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
             plt.close(fig4) 
-            print("Fourth Frame Saved.")
             fig5 = figure_list[4]
             fig5 = fig5.savefig(file_path_5, bbox_inches='tight')
             plt.close(fig5) 
-            print("Fifth Frame Saved.")
             fig6 = figure_list[5]
             fig6 = fig6.savefig(file_path_6, bbox_inches='tight')
             plt.close(fig6) 
-            print("Sixth Frame Saved.")
             fig7 = figure_list[6]
             fig7 = fig7.savefig(file_path_7, bbox_inches='tight')
             plt.close(fig7)
-            print("Seventh Frame Saved.")
+            print("All frames saved.")
         except Exception as ee:
             try:
                 fig1 = figure_list[0]
                 fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                 plt.close(fig1)
-                print("First Frame Saved.")
                 fig2 = figure_list[1]
                 fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                 plt.close(fig2)
-                print("Second Frame Saved.")
                 fig3 = figure_list[2]
                 fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
                 plt.close(fig3)
-                print("Third Frame Saved.")
                 fig4 = figure_list[3]
                 fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
                 plt.close(fig4) 
-                print("Fourth Frame Saved.")
                 fig5 = figure_list[4]
                 fig5 = fig5.savefig(file_path_5, bbox_inches='tight')
                 plt.close(fig5) 
-                print("Fifth Frame Saved.")
                 fig6 = figure_list[5]
                 fig6 = fig6.savefig(file_path_6, bbox_inches='tight')
                 plt.close(fig6) 
-                print("Sixth Frame Saved.")
+                print("All frames saved.")
             except Exception as a:
                 try:
                     fig1 = figure_list[0]
                     fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                     plt.close(fig1)
-                    print("First Frame Saved.")
                     fig2 = figure_list[1]
                     fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                     plt.close(fig2)
-                    print("Second Frame Saved.")
                     fig3 = figure_list[2]
                     fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
                     plt.close(fig3)
-                    print("Third Frame Saved.")
                     fig4 = figure_list[3]
                     fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
                     plt.close(fig4) 
-                    print("Fourth Frame Saved.")
                     fig5 = figure_list[4]
                     fig5 = fig5.savefig(file_path_5, bbox_inches='tight')
                     plt.close(fig5)
-                    print("Fifth Frame Saved.")
+                    print("All frames saved.")
                 except Exception as b:    
                     try:
                         fig1 = figure_list[0]
                         fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                         plt.close(fig1)
-                        print("First Frame Saved.")
                         fig2 = figure_list[1]
                         fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                         plt.close(fig2)
-                        print("Second Frame Saved.")
                         fig3 = figure_list[2]
                         fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
                         plt.close(fig3)
-                        print("Third Frame Saved.")
                         fig4 = figure_list[3]
                         fig4 = fig4.savefig(file_path_4, bbox_inches='tight')
                         plt.close(fig4)
-                        print("Fourth Frame Saved.")
+                        print("All frames saved.")
                     except Exception as c:
                         try:     
                             fig1 = figure_list[0]
                             fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                             plt.close(fig1)
-                            print("First Frame Saved.")
                             fig2 = figure_list[1]
                             fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                             plt.close(fig2)
-                            print("Second Frame Saved.")
                             fig3 = figure_list[2]
                             fig3 = fig3.savefig(file_path_3, bbox_inches='tight')
                             plt.close(fig3)
-                            print("Third Frame Saved.")
+                            print("All frames saved.")
                         except Exception as b:
                             try:
                                 fig1 = figure_list[0]
                                 fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                                 plt.close(fig1)
-                                print("First Frame Saved.")
                                 fig2 = figure_list[1]
                                 fig2 = fig2.savefig(file_path_2, bbox_inches='tight')
                                 plt.close(fig2)
-                                print("Second Frame Saved.")
+                                print("All frames saved.")
                             except Exception as c:
                                 try:
                                     fig1 = figure_list[0]
                                     fig1 = fig1.savefig(file_path_1, bbox_inches='tight')
                                     plt.close(fig1)
-                                    print("First Frame Saved.")
+                                    print("All frames saved.")
                                 except Exception as d:
                                     pass    
 
