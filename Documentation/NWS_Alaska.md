@@ -3,7 +3,7 @@
 ### **Classes**
 1) [Relative Humidity](#relative-humidity-class) (`nws_relative_humidity_forecast_alaska`)
 2) [Temperature](#temperature-class) (`nws_temperature_forecast_alaska`)
-3) [Hot Dry and Windy](hot-dry-and-windy-class) (`nws_hot_dry_and_windy_alaska`)
+3) [Hot Dry and Windy](#hot-dry-and-windy-class) (`nws_hot_dry_and_windy_alaska`)
 
 #### Relative Humidity Class
 
