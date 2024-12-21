@@ -29,7 +29,7 @@ mpl.rcParams['font.weight'] = 'bold'
 
 mpl.rcParams['font.weight'] = 'bold'
 
-def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_relative_humidity(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Relative Humidity. 
@@ -338,40 +338,22 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
-            
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
+        
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
-
-
-
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None and cwa == None:
-
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
     
     local_time, utc_time = standard.plot_creation_time()
@@ -560,7 +542,7 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
     file_functions.update_images(fig, path, gif_path, 'RTMA RH')
 
 
-def plot_low_and_high_relative_humidity(low_rh_threshold=25, high_rh_threshold=80, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9, x1=None, x2=None, y=None, x_size=None, colorbar_fontsize=None, labels_low_increment=None, labels_high_increment=None):
+def plot_low_and_high_relative_humidity(low_rh_threshold=25, high_rh_threshold=80, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9, x1=None, x2=None, y=None, x_size=None, colorbar_fontsize=None, labels_low_increment=None, labels_high_increment=None):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Relative Humidity filtered for areas of low RH and high RH. 
@@ -909,49 +891,28 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=25, high_rh_threshold=8
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, 'Low and High RH')
 
-        mpl.rcParams['xtick.labelsize'] = 7
-        mpl.rcParams['ytick.labelsize'] = 7
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, 'Low and High RH')
 
-        if cwa == None:
-            x1, x2, y, x_size, colorbar_fontsize = 0.13, 0.52, 0.28, 0.36, 12
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            x1, x2, y, x_size, colorbar_fontsize = 0.13, 0.52, 0.22, 0.36, 12
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            x1, x2, y, x_size, colorbar_fontsize = 0.13, 0.52, 0.25, 0.36, 12
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            x1, x2, y, x_size, colorbar_fontsize = 0.13, 0.52, 0.29, 0.36, 12
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            x1, x2, y, x_size, colorbar_fontsize = 0.13, 0.52, 0.29, 0.36, 12
-            title_fontsize, subplot_title_fontsize = 9, 8
+    mpl.rcParams['xtick.labelsize'] = 7
+    mpl.rcParams['ytick.labelsize'] = 7
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
+    if cwa == None:
+        x1, x2, y, x_size, colorbar_fontsize = 0.13, 0.52, 0.28, 0.36, 12
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        x1, x2, y, x_size, colorbar_fontsize = 0.13, 0.52, 0.22, 0.36, 12
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        x1, x2, y, x_size, colorbar_fontsize = 0.13, 0.52, 0.25, 0.36, 12
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        x1, x2, y, x_size, colorbar_fontsize = 0.13, 0.52, 0.29, 0.36, 12
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        x1, x2, y, x_size, colorbar_fontsize = 0.13, 0.52, 0.29, 0.36, 12
+        title_fontsize, subplot_title_fontsize = 9, 8
 
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
-        x1 = x1 
-        x2 = x2
-        y = y
-        x_size = x_size
-        colorbar_fontsize = colorbar_fontsize
-        labels_low = contourf_low[::labels_low_increment]
-        labels_high = contourf_high[::labels_high_increment]
     
     local_time, utc_time = standard.plot_creation_time()
 
@@ -1160,7 +1121,7 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=25, high_rh_threshold=8
     path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'RTMA LOW AND HIGH RH', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA LOW AND HIGH RH')
 
-def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, data_24=None, time=None, time_24=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_24_hour_relative_humidity_comparison(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, data_24=None, time=None, time_24=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) 24-Hour Comparison for Relative Humidity. 
@@ -1483,37 +1444,21 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour RH Comparison')
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour RH Comparison')
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
-
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
-
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
     
     local_time, utc_time = standard.plot_creation_time()
@@ -1737,7 +1682,7 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
     file_functions.update_images(fig, path, gif_path, '24HR RTMA RH COMPARISON')
 
 
-def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_temperature(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Temperature. 
@@ -2057,38 +2002,24 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
+
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
-
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
     
@@ -2261,7 +2192,7 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
     file_functions.update_images(fig, path, gif_path, 'RTMA TEMPERATURE')
 
 
-def plot_temperature_advection(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_temperature_advection(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Temperature Advection. 
@@ -2576,38 +2507,23 @@ def plot_temperature_advection(western_bound=None, eastern_bound=None, southern_
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
-
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
     
@@ -2791,7 +2707,7 @@ def plot_temperature_advection(western_bound=None, eastern_bound=None, southern_
     file_functions.update_images(fig, path, gif_path, 'RTMA TEMPERATURE ADVECTION')
 
 
-def plot_dew_point_advection(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_dew_point_advection(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Dew Point Advection. 
@@ -3106,38 +3022,23 @@ def plot_dew_point_advection(western_bound=None, eastern_bound=None, southern_bo
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
-
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
     
@@ -3319,7 +3220,7 @@ def plot_dew_point_advection(western_bound=None, eastern_bound=None, southern_bo
     file_functions.update_images(fig, path, gif_path, 'RTMA DEW POINT ADVECTION')
 
 
-def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_relative_humidity_advection(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Relative Humidity Advection. 
@@ -3634,38 +3535,22 @@ def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, sou
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
-
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
     
@@ -3855,7 +3740,7 @@ def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, sou
     path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'RTMA RH ADVECTION', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA RH ADVECTION')
 
-def plot_frost_freeze(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_frost_freeze(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Frost/Freeze Areas (RTMA Temperature <= 32F). 
@@ -4170,38 +4055,21 @@ def plot_frost_freeze(western_bound=None, eastern_bound=None, southern_bound=Non
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
-
-
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
-
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
     
@@ -4372,7 +4240,7 @@ def plot_frost_freeze(western_bound=None, eastern_bound=None, southern_bound=Non
     path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'RTMA FROST FREEZE', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA FROST FREEZE')
 
-def plot_extreme_heat(temperature_threshold=70, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_extreme_heat(temperature_threshold=70, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Extreme Heat. 
@@ -4690,37 +4558,22 @@ def plot_extreme_heat(temperature_threshold=70, western_bound=None, eastern_boun
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
-    
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
     
@@ -4891,7 +4744,7 @@ def plot_extreme_heat(temperature_threshold=70, western_bound=None, eastern_boun
     path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'RTMA EXTREME HEAT', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA EXTREME HEAT')
 
-def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, data_24=None, time=None, time_24=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_24_hour_temperature_comparison(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, data_24=None, time=None, time_24=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) 24-Hour Comparison for Temperature. 
@@ -5214,39 +5067,22 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Temperature Comparison')
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Temperature Comparison')
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
-
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
-
-    
     local_time, utc_time = standard.plot_creation_time()
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
@@ -5446,7 +5282,7 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
     path, gif_path = file_functions.check_file_paths_alaska(state, cwa, '24HR RTMA TEMPERATURE COMPARISON', reference_system)
     file_functions.update_images(fig, path, gif_path, '24HR RTMA TEMPERATURE COMPARISON')
 
-def plot_dew_point(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_dew_point(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Dew Point. 
@@ -5766,38 +5602,23 @@ def plot_dew_point(western_bound=None, eastern_bound=None, southern_bound=None, 
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
-    
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
     
@@ -5968,7 +5789,7 @@ def plot_dew_point(western_bound=None, eastern_bound=None, southern_bound=None, 
     path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'RTMA DEW POINT', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA DEW POINT')
 
-def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, data_24=None, time=None, time_24=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_24_hour_dew_point_comparison(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, data_24=None, time=None, time_24=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) 24-Hour Comparison for Dew Point. 
@@ -6291,40 +6112,23 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Dewpoint Comparison')
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Dewpoint Comparison')
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
-
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
-
-    
     local_time, utc_time = standard.plot_creation_time()
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
@@ -6524,7 +6328,7 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
     path, gif_path = file_functions.check_file_paths_alaska(state, cwa, '24HR RTMA DEW POINT COMPARISON', reference_system)
     file_functions.update_images(fig, path, gif_path, '24HR RTMA DEW POINT COMPARISON')
 
-def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_total_cloud_cover(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Total Cloud Cover. 
@@ -6839,37 +6643,22 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
-
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
     
@@ -7037,7 +6826,7 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
     path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'RTMA TOTAL CLOUD COVER', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA TOTAL CLOUD COVER')
 
-def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, data_24=None, time=None, time_24=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_24_hour_total_cloud_cover_comparison(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, data_24=None, time=None, time_24=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) 24-Hour Comparison for Total Cloud Cover. 
@@ -7360,39 +7149,24 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Total Cloud Cover Comparison')
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Total Cloud Cover Comparison')
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
 
-    
     local_time, utc_time = standard.plot_creation_time()
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
@@ -7587,7 +7361,7 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
     file_functions.update_images(fig, path, gif_path, '24HR RTMA TOTAL CLOUD COVER COMPARISON')
 
 
-def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_wind_speed(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Wind Speed. 
@@ -7902,37 +7676,23 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
     
@@ -8103,7 +7863,7 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
     path, gif_path = file_functions.check_file_paths_alaska(state, cwa, 'RTMA WIND SPEED', reference_system)
     file_functions.update_images(fig, path, gif_path, 'RTMA WIND SPEED')
 
-def plot_24_hour_wind_speed_comparison(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, data_24=None, time=None, time_24=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
+def plot_24_hour_wind_speed_comparison(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, data_24=None, time=None, time_24=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) 24-Hour Comparison for Wind Speed. 
@@ -8426,37 +8186,22 @@ def plot_24_hour_wind_speed_comparison(western_bound=None, eastern_bound=None, s
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Wind Speed Comparison')
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Wind Speed Comparison')
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
-
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
     
     local_time, utc_time = standard.plot_creation_time()
@@ -8657,7 +8402,7 @@ def plot_24_hour_wind_speed_comparison(western_bound=None, eastern_bound=None, s
     file_functions.update_images(fig, path, gif_path, '24HR RTMA WIND SPEED COMPARISON')
 
 
-def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, barbs_or_quivers='barbs', barb_quiver_alpha=1, barb_quiver_fontsize=7, barb_linewidth=1, quiver_linewidth=0.5, aspect=30, tick=9):
+def plot_wind_speed_and_direction(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, barbs_or_quivers='barbs', barb_quiver_alpha=1, barb_quiver_fontsize=7, barb_linewidth=1, quiver_linewidth=0.5, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) for Wind Speed & Direction. 
@@ -8985,37 +8730,23 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False)
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
 
     PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
     
@@ -9207,7 +8938,7 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
     path, gif_path = file_functions.check_file_paths_alaska(state, cwa, fname, reference_system)
     file_functions.update_images(fig, path, gif_path, fname)
 
-def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', alpha=0.5, data=None, data_24=None, time=None, time_24=None, cwa=None, colorbar_pad=0.02, barbs_or_quivers='barbs', barb_quiver_alpha=1, barb_quiver_fontsize=6, barb_linewidth=0.5, quiver_linewidth=0.5, aspect=30, tick=9):
+def plot_24_hour_wind_speed_and_direction_comparison(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', alpha=0.5, data=None, data_24=None, time=None, time_24=None, cwa=None, colorbar_pad=0.02, barbs_or_quivers='barbs', barb_quiver_alpha=1, barb_quiver_fontsize=6, barb_linewidth=0.5, quiver_linewidth=0.5, aspect=30, tick=9):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) 24-Hour Comparison for Wind Speed & Direction. 
@@ -9545,38 +9276,23 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25
     
-    if state != None:
-        directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Wind Speed & Direction Comparison')
+
+    directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'rtma', False, '24 Hour Wind Speed & Direction Comparison')
 
 
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
+    mpl.rcParams['xtick.labelsize'] = tick
+    mpl.rcParams['ytick.labelsize'] = tick
 
-        if cwa == None:
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AER' or cwa == 'aer':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AJK' or cwa == 'ajk':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'AFG' or cwa == 'afg':
-            title_fontsize, subplot_title_fontsize = 9, 8
-        if cwa == 'ALU' or cwa == 'alu':
-            title_fontsize, subplot_title_fontsize = 9, 8
-
-    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None and fig_x_length != None and fig_y_length != None and signature_x_position != None and signature_y_position != None and state == None:
-
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position
-        western_bound = western_bound
-        eastern_bound = eastern_bound
-        southern_bound = southern_bound
-        northern_bound = northern_bound
-        state = 'Custom'
-        mpl.rcParams['xtick.labelsize'] = tick
-        mpl.rcParams['ytick.labelsize'] = tick
-        aspect=aspect
+    if cwa == None:
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AER' or cwa == 'aer':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AJK' or cwa == 'ajk':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'AFG' or cwa == 'afg':
+        title_fontsize, subplot_title_fontsize = 9, 8
+    if cwa == 'ALU' or cwa == 'alu':
+        title_fontsize, subplot_title_fontsize = 9, 8
 
     
     local_time, utc_time = standard.plot_creation_time()
@@ -9829,7 +9545,7 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
     file_functions.update_images(fig, path, gif_path, fname)
 
 
-def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=65, post_greenup_temperature_threshold=75, low_rh_threshold=25, high_wind_threshold=15, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, sample_point_type='barbs', barb_quiver_linewidth=1, barb_fontsize=10, row1=None, row2=None, row3=None, row4=None, row5=None, row6=None, col1=None, col2=None, col3=None, col4=None, col5=None, col6=None, tick=9, aspect=30):
+def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=65, post_greenup_temperature_threshold=75, low_rh_threshold=25, high_wind_threshold=15, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, sample_point_type='barbs', barb_quiver_linewidth=1, barb_fontsize=10, row1=None, row2=None, row3=None, row4=None, row5=None, row6=None, col1=None, col2=None, col3=None, col4=None, col5=None, col6=None, tick=9, aspect=30):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Dry and Windy Areas along with the components. 
@@ -10083,8 +9799,6 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=65, post_gree
     
         Return: Saves individual images to the RTMA subfolder.
     '''
-    mapcrs = ccrs.PlateCarree()
-    datacrs = ccrs.PlateCarree()
     data = data
     time = time
     state = 'ak'
@@ -10841,7 +10555,7 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=65, post_gree
     file_functions.update_images(fig, path, gif_path, fname)
 
 
-def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_greenup_temperature_threshold=75, low_rh_threshold=25, high_wind_threshold=15, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, row1=None, row2=None, row3=None, row4=None, row5=None, row6=None, col1=None, col2=None, col3=None, col4=None, col5=None, col6=None, tick=9, aspect=30):
+def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_greenup_temperature_threshold=75, low_rh_threshold=25, high_wind_threshold=15, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, row1=None, row2=None, row3=None, row4=None, row5=None, row6=None, col1=None, col2=None, col3=None, col4=None, col5=None, col6=None, tick=9, aspect=30):
 
     r'''
         This function plots the latest available Real Time Mesoscale Analysis (RTMA) Dry and Windy Areas along with the components. 
