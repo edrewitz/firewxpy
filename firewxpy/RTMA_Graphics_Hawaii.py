@@ -6926,9 +6926,20 @@ def plot_wind_speed_and_direction(color_table_shrink=1, title_fontsize=12, subpl
                             36) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            37) barbs_or_quivers (String) - Default = 'barbs'. Sets the plot to either be wind barbs or vectors. Proper syntax for wind barbs: 'barbs', 'b', 'Barbs',
+                                'BARBS', 'B'. Proper syntax for quivers (vectors): 'quivers', 'q', 'Quivers', 'QUIVERS', 'Q'
 
-                            38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+                            38) barb_quiver_alpha (Float) - Default = 1. Number between 0 and 1 for the transparency of the barb or quiver. 0 is completely transparent while 1 is completely opaque. 
+
+                            39) barb_quiver_fontsize (Integer) - Default = 6. Fontsize of the barb or quiver. 
+
+                            40) barb_linewidth (Float) - Default = 0.5. The width or thickness of the wind barb. 
+
+                            41) quiver_linewidth (Float) - Default = 0.5. The width or thickness of the quiver. 
+
+                            42) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+
+                            43) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -7362,9 +7373,20 @@ def plot_24_hour_wind_speed_and_direction_comparison(color_table_shrink=1, title
                             38) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            39) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            39) barbs_or_quivers (String) - Default = 'barbs'. Sets the plot to either be wind barbs or vectors. Proper syntax for wind barbs: 'barbs', 'b', 'Barbs',
+                                'BARBS', 'B'. Proper syntax for quivers (vectors): 'quivers', 'q', 'Quivers', 'QUIVERS', 'Q'
 
-                            40) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+                            40) barb_quiver_alpha (Float) - Default = 1. Number between 0 and 1 for the transparency of the barb or quiver. 0 is completely transparent while 1 is completely opaque. 
+
+                            41) barb_quiver_fontsize (Integer) - Default = 6. Fontsize of the barb or quiver. 
+
+                            42) barb_linewidth (Float) - Default = 0.5. The width or thickness of the wind barb. 
+
+                            43) quiver_linewidth (Float) - Default = 0.5. The width or thickness of the quiver. 
+
+                            44) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+
+                            45) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -7842,9 +7864,16 @@ def plot_dry_and_windy_areas(low_rh_threshold=45, high_wind_threshold=20, color_
                             38) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            39) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            39) sample_point_type (String) - Default='barbs'. The type of sample point. The options are either wind barbs or the raw numbers for the wind speeds. Wind barbs
+                                are the default since barbs incorporates wind direction.
 
-                            40) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+                            40) barb_quiver_linewidth (Float) - Default = 0.5. The width or thickness of the wind barb or quiver. 
+
+                            41) barb_fontsize (Integer) - Default = 6. Fontsize of the barb. 
+
+                            42) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+
+                            43) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     '''
@@ -8449,9 +8478,16 @@ def plot_dry_and_gusty_areas(low_rh_threshold=45, high_wind_threshold=20, color_
                             38) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            39) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            39) sample_point_type (String) - Default='barbs'. The type of sample point. The options are either wind barbs or the raw numbers for the wind speeds. Wind barbs
+                                are the default since barbs incorporates wind direction.
 
-                            40) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+                            40) barb_quiver_linewidth (Float) - Default = 0.5. The width or thickness of the wind barb or quiver. 
+
+                            41) barb_fontsize (Integer) - Default = 6. Fontsize of the barb. 
+
+                            42) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+
+                            43) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
