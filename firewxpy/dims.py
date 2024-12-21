@@ -34,6 +34,40 @@ def hawaiian_islands_coords(island):
 
 def get_metar_mask(state, gacc_region, rtma_ws=False):
 
+    r'''
+    This function returns the value for the METAR mask for a given state and/or gacc region. 
+
+    Required Arguments: 1) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                            If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                            or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                            acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                            changed to None. 
+
+                        2) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                            If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                            None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                            Here is a list of acceptable gacc_region abbreviations:
+
+                            South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                            North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                            Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                            Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                            Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                            Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                            Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                            Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                            Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                            Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+    Optional Arguments: rtma_ws (Boolean) - Default = False. For full METAR plots, set this to False to allow for more spacing between observation
+                        sites to allow for the size of the full station plot. For plots where the user only plots the wind barbs of the observed winds,
+                        this value is to be set to True to allow for more data points since the wind barbs do not need as much spacing as a full METAR station plot.
+
+    Returns: The value for the mask of the METAR locations. 
+
+    '''
+
     if rtma_ws == False:
         if state != None and gacc_region == None:
             
