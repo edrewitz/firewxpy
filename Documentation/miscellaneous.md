@@ -10,6 +10,9 @@
  **Classes**
 1) [RTMA_CONUS](#rtma_conus-class)
 2) [NDFD_CONUS](#ndfd_conus-class)
+3) RTMA_Alaska
+4) NDFD_Alaska
+5) RTMA_Hawaii
 
 ### RTMA_CONUS Class
 
