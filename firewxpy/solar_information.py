@@ -34,7 +34,7 @@ def plot_daily_solar_information(latitude, longitude):
     This function plots a daily solar graph and gives other types of solar information. 
 
     Required Arguments: 1) latitude (Float) - The latitude coordinate in decimal degrees format. 
-                     2) longitude (Float) - The longitude coordinate in decimal degrees format. 
+                        2) longitude (Float) - The longitude coordinate in decimal degrees format. 
 
     Optional Arguments: None
 
