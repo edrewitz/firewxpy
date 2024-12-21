@@ -4,7 +4,7 @@ import firewxpy.RTMA_Graphics_Hawaii as rtma_hawaii
 
 import firewxpy.SPC_Outlook_Graphics as spc
 
-import firewxpy.standard as standard
+from firewxpy.standard import plot_creation_time
 
 from firewxpy.data_access import RTMA_CONUS, NDFD_CONUS, NDFD_Alaska, RTMA_Alaska, RTMA_Hawaii
 
