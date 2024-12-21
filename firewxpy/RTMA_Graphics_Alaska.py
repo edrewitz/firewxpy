@@ -164,6 +164,12 @@ def plot_relative_humidity(color_table_shrink=1, title_fontsize=12, subplot_titl
                             37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -612,6 +618,12 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=25, high_rh_threshold=8
                             39) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             40) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            41) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -1113,6 +1125,12 @@ def plot_24_hour_relative_humidity_comparison(color_table_shrink=1, title_fontsi
                             39) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             40) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            41) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -1597,6 +1615,12 @@ def plot_temperature(color_table_shrink=1, title_fontsize=12, subplot_title_font
                             37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            40) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -2038,6 +2062,12 @@ def plot_temperature_advection(color_table_shrink=1, title_fontsize=12, subplot_
                             37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -2484,6 +2514,12 @@ def plot_dew_point_advection(color_table_shrink=1, title_fontsize=12, subplot_ti
                             37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -2928,6 +2964,12 @@ def plot_relative_humidity_advection(color_table_shrink=1, title_fontsize=12, su
                             37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -3379,6 +3421,12 @@ def plot_frost_freeze(color_table_shrink=1, title_fontsize=12, subplot_title_fon
                             37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -3813,6 +3861,12 @@ def plot_extreme_heat(temperature_threshold=70, color_table_shrink=1, title_font
                             38) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             39) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            40) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -4252,6 +4306,12 @@ def plot_24_hour_temperature_comparison(color_table_shrink=1, title_fontsize=12,
                             39) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             40) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            41) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -4713,6 +4773,12 @@ def plot_dew_point(color_table_shrink=1, title_fontsize=12, subplot_title_fontsi
                             37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -5158,6 +5224,12 @@ def plot_24_hour_dew_point_comparison(color_table_shrink=1, title_fontsize=12, s
                             39) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             40) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            41) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -5620,6 +5692,12 @@ def plot_total_cloud_cover(color_table_shrink=1, title_fontsize=12, subplot_titl
                             37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -6056,6 +6134,12 @@ def plot_24_hour_total_cloud_cover_comparison(color_table_shrink=1, title_fontsi
                             39) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             40) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            41) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -6514,6 +6598,12 @@ def plot_wind_speed(color_table_shrink=1, title_fontsize=12, subplot_title_fonts
                             37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -6995,35 +7085,18 @@ def plot_24_hour_wind_speed_comparison(color_table_shrink=1, title_fontsize=12, 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            46) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
-                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
-                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
-                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
-                                changed to None. 
-
-                            47) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
-                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
-                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
-
-                                Here is a list of acceptable gacc_region abbreviations:
-
-                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
-                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
-                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
-                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
-                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
-                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
-                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
-                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
-                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
-                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
-
-                            48) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            46) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            49) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            47) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            50) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+                            48) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            49) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -7497,6 +7570,12 @@ def plot_wind_speed_and_direction(color_table_shrink=1, title_fontsize=12, subpl
                             42) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             43) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            44) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -7971,6 +8050,12 @@ def plot_24_hour_wind_speed_and_direction_comparison(color_table_shrink=1, title
                             44) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             45) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            46) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -8509,6 +8594,12 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=65, post_gree
                             44) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             45) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            46) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     '''
@@ -9422,6 +9513,12 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
                             44) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
                             45) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+
+                            46) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
+                                               AER or aer: WFO Anchorage Eastern Domain
+                                               ALU or alu: WFO Anchorage Western Domain
+                                               AJK or ajk: WFO Juneau
+                                               AFG or afg: WFO Fairbanks
     
         Return: Saves individual images to the RTMA subfolder.
     '''
