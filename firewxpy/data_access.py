@@ -430,7 +430,7 @@ class RTMA_Hawaii:
 
     r'''
     
-    This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for CONUS. 
+    This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for Hawaii. 
 
     This class hosts the functions the users will import and call if the users wish to download the data outside of the 
     plotting function and pass the data into the plotting function.
