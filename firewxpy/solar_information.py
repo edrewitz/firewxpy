@@ -187,7 +187,7 @@ def plot_daily_solar_information(latitude, longitude):
     ax1.text(0.3, 0.01, "Maximum Elevation: "+sym1+""+ str(round(max_elevation, 1)) + " [\N{DEGREE SIGN} From Horizon] @ "+solar_noon.strftime('%H:%M Local')+"\n\nMinimum Elevation: "+sym2+""+ str(round(min_elevation, 1)) + " [\N{DEGREE SIGN} From Horizon] @ "+solar_midnight.strftime('%H:%M Local')+"\n\nMaximum Elevation Difference:\nSummer Solstice: "+str(round(diff_ele_ss,1))+" [\N{DEGREE SIGN}] | Max Elevation: "+sym1+""+str(round(max_elevation_summer,1))+" [\N{DEGREE SIGN} From Horizon]\nEquinox: "+sym+""+str(round(diff_ele_e,1))+" [\N{DEGREE SIGN}] | Max Elevation: "+sym3+""+str(round(max_elevation_equinox,1))+" [\N{DEGREE SIGN} From Horizon]\nWinter Solstice: "+str(round(diff_ele_ws,1))+" [\N{DEGREE SIGN}] | Max Elevation: "+sym4+""+str(round(max_elevation_winter,1))+" [\N{DEGREE SIGN} From Horizon]\n\nTotal Daily Solar Radiation: " + str(round(sum_rad, 1)) + " (W/m^2)", fontsize=10, fontweight='bold', color='white', transform=ax1.transAxes, bbox=props_table)
 
 
-    fig.text(0.08, 0.04, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nImage Created: " + local.strftime('%m/%d/%Y %H:%M Local') + " (" + utc.strftime('%H:%M UTC') + ")", fontsize=10, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)    
+    fig.text(0.08, 0.04, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nImage Created: " + local.strftime('%m/%d/%Y %H:%M Local') + " (" + utc.strftime('%H:%M UTC') + ")", fontsize=10, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)    
     
     if latitude >= 0:
         lat_char = 'N'
