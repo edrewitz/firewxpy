@@ -33,7 +33,7 @@ from metpy.plots import USCOUNTIES
 from metpy.plots import colortables
 from dateutil import tz
 from firewxpy.utilities import file_functions
-from firewxpy.data_access import NDFD_CONUS
+from firewxpy.data_access import NDFD_CONUS_Hawaii
 
 mpl.rcParams['font.weight'] = 'bold'
 
@@ -380,7 +380,7 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
 
     if file_path == None:
 
-        grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.critfireo.bin')
+        grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.critfireo.bin')
 
         grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.critfireo.bin', 24, False, count_short, count_extended, directory_name)
 
@@ -1096,7 +1096,7 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
 
     if file_path == None:
 
-        grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.dryfireo.bin')
+        grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.dryfireo.bin')
 
         grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.dryfireo.bin', 24, False, count_short, count_extended, directory_name)
 
