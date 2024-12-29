@@ -9,7 +9,7 @@
 
  **Classes**
 1) [RTMA_CONUS](#rtma_conus-class)
-2) [NDFD_CONUS](#ndfd_conus-class)
+2) [NDFD_CONUS_Hawaii](#ndfd_conus_hawaii-class)
 3) RTMA_Alaska
 4) NDFD_Alaska
 5) RTMA_Hawaii
@@ -138,9 +138,9 @@ Returns:
 1) If there are zero errors, the latest dataset and the time of the dataset for the requested parameter will be returned. 
 2) If there is an error, an error message is returned. 
 
-### NDFD_CONUS Class
+### NDFD_CONUS_Hawaii Class
 
-This class hosts the active function that downloads the NOAA/NWS/NDFD Gridded Data. 
+This class hosts the active function that downloads the NOAA/NWS/NDFD Gridded Data for CONUS and Hawaii. 
 
 This class hosts the function the users will import and call if the users wish to download the data outside of the 
 plotting function and pass the data into the plotting function.
@@ -307,6 +307,105 @@ This function may also return an error message for either:
 
 1) A bad file path (invalid directory_name)
 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
+
+### RTMA_Alaska Class
+
+This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for Alaska. 
+
+This class hosts the functions the users will import and call if the users wish to download the data outside of the 
+plotting function and pass the data into the plotting function.
+
+This is the recommended method for users who wish to create a large amount of graphics at one time to limit the number of server requests. 
+
+#### get_RTMA_dataset(current_time)
+
+This function retrieves the latest RTMA Dataset for the user. 
+
+Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
+
+Required Argument: 1) Current Time in UTC
+
+Returns: 
+
+1) The latest 2.5km x 2.5km RTMA Dataset
+
+2) The time corresponding to the dataset
+
+#### get_RTMA_24_hour_comparison_datasets(current_time)
+
+This function retrieves the latest RTMA Dataset and the RTMA Dataset for 24-Hours prior to the current dataset for the user for Alaska. 
+
+Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
+
+Required Argument: 1) Current Time in UTC
+
+Returns: 
+
+1) The latest 2.5km x 2.5km RTMA Dataset
+
+2) 1) The 2.5km x 2.5km RTMA Dataset from 24-Hours prior to the current dataset
+
+3) The time corresponding to the dataset
+
+4) The time corresponding to the dataset from 24-Hours prior to the current dataset
+
+### NDFD_Alaska Class
+
+#### get_short_and_extended_grids(parameter)
+
+This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
+This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
+
+Inputs:
+
+1) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
+                        Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
+                        https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
+
+Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
+     This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
+
+
+### RTMA_Hawaii Class
+
+This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for Hawaii. 
+
+This class hosts the functions the users will import and call if the users wish to download the data outside of the 
+plotting function and pass the data into the plotting function.
+
+This is the recommended method for users who wish to create a large amount of graphics at one time to limit the number of server requests. 
+
+#### get_RTMA_dataset(current_time)
+
+This function retrieves the latest RTMA Dataset for the user. 
+
+Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
+
+Required Argument: 1) Current Time in UTC
+
+Returns: 
+
+1) The latest 2.5km x 2.5km RTMA Dataset
+
+2) The time corresponding to the dataset
+
+#### get_RTMA_24_hour_comparison_datasets(current_time)
+
+This function retrieves the latest RTMA Dataset and the RTMA Dataset for 24-Hours prior to the current dataset for the user. 
+
+Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
+
+Required Argument: 1) Current Time in UTC
+
+Returns: 
+
+1) The latest 2.5km x 2.5km RTMA Dataset
+
+2) 1) The 2.5km x 2.5km RTMA Dataset from 24-Hours prior to the current dataset
+
+3) The time corresponding to the dataset
+
+4) The time corresponding to the dataset from 24-Hours prior to the current dataset 
 
 
 ## ***Standard Module***
