@@ -14,7 +14,7 @@ This is the landing page for all of the firewxpy documentation. The links below 
 10) [nws_temperature_forecast_hawaii](https://github.com/edrewitz/firewxpy/blob/main/Documentation/NWS_Hawaii.md#temperature-class)
 11) [nws_relative_humidity_forecast_hawaii](https://github.com/edrewitz/firewxpy/blob/main/Documentation/NWS_Hawaii.md#relative-humidity-class)
 12) [spc](https://github.com/edrewitz/firewxpy/blob/main/Documentation/SPC_Outlook_Graphics.md)
-13) [graphical_daily_summary]()
+13) [graphical_daily_summary](https://github.com/edrewitz/firewxpy/blob/main/Documentation/observations.md#graphical_daily_summarystation_id)
 14) [plot_observed_sounding]()
 15) [plot_observed_sounding_custom_date_time]()
 16) [plot_daily_solar_information]()
