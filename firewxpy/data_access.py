@@ -39,7 +39,7 @@ from io import StringIO
 from metpy.io import parse_metar_file
 from metpy.units import units, pandas_dataframe_to_unit_arrays
 from dateutil import tz
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 
 class info:
 
@@ -4693,9 +4693,9 @@ def latest_metar_time(current_time):
     minute = runtime.minute
     # Times for METAR reports
     if runtime.minute <30:
-        metar_time = datetime.utcnow() 
+        metar_time = datetime.now(UTC) 
     if runtime.minute >=30:
-        metar_time = datetime.utcnow() - timedelta(minutes=minute)
+        metar_time = datetime.now(UTC) - timedelta(minutes=minute)
 
     return metar_time
 
