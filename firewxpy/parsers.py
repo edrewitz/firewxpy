@@ -20,7 +20,11 @@ import os
 import warnings
 warnings.filterwarnings('ignore')
 
-from datetime import datetime, timedelta
+try:
+    from datetime import datetime, timedelta, UTC
+except Exception as e:
+    from datetime import datetime, timedelta
+    
 from metpy.units import units
 
 
@@ -344,7 +348,11 @@ class NDFD:
         count_extended = count_extended
         directory_name = directory_name
 
-        utc = datetime.utcnow()
+        try:
+            utc = datetime.now(UTC)
+        except Exception as e:
+            utc = datetime.utcnow()
+            
         local = datetime.now()
 
         utc_hour = utc.hour
