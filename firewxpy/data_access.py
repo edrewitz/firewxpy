@@ -1183,7 +1183,7 @@ class RTMA_CONUS:
             print("Unable to connect to either the main or backup servers. Aborting!")
 
 
-class NDFD_CONUS:
+class NDFD_CONUS_Hawaii:
 
     r'''
 
@@ -6702,5 +6702,3 @@ def get_rtma_data_past_6hrs():
             wind_gust_to_plot = wind_gust_mph[0, :, :]
                 
             return lon_vals, lat_vals, time, relative_humidity_to_plot * 100, wind_gust_to_plot
-
-
