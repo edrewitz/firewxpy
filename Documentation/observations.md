@@ -1,5 +1,5 @@
 **Functions**
-1) [graphical_daily_summary(station_id)](https://github.com/edrewitz/firewxpy/new/main/Documentation#graphical_daily_summarystation_id)
+1) [graphical_daily_summary(station_id)](#graphical_daily_summarystation_id)
 
 ### graphical_daily_summary(station_id)
 
