@@ -1,3 +1,4 @@
+
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import cartopy.crs as ccrs
@@ -437,7 +438,7 @@ def plot_relative_humidity(color_table_shrink=1, title_fontsize=12, subplot_titl
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, rtma_data[0, :, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, zorder=2)
@@ -921,7 +922,7 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=25, high_rh_threshold=8
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     if x_size <= 0.25:
         labels_low = contourf_low[::5]
@@ -1438,7 +1439,7 @@ def plot_24_hour_relative_humidity_comparison(color_table_shrink=1, title_fontsi
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, diff[:, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, extend='both', zorder=2)
@@ -1885,7 +1886,7 @@ def plot_temperature(color_table_shrink=1, title_fontsize=12, subplot_title_font
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, temp[0, :, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, extend='both', zorder=2)
@@ -2332,7 +2333,7 @@ def plot_temperature_advection(color_table_shrink=1, title_fontsize=12, subplot_
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     dx = units('meters') * 2500
     dy = units('meters') * 2500
@@ -2783,7 +2784,7 @@ def plot_dew_point_advection(color_table_shrink=1, title_fontsize=12, subplot_ti
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     dx = units('meters') * 2500
     dy = units('meters') * 2500
@@ -3242,7 +3243,7 @@ def plot_relative_humidity_advection(color_table_shrink=1, title_fontsize=12, su
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     dx = units('meters') * 2500
     dy = units('meters') * 2500
@@ -3682,7 +3683,7 @@ def plot_frost_freeze(color_table_shrink=1, title_fontsize=12, subplot_title_fon
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, temp[0, :, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, extend='min', zorder=2)
@@ -4123,7 +4124,7 @@ def plot_extreme_heat(temperature_threshold=70, color_table_shrink=1, title_font
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, temp[0, :, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap='hot', alpha=alpha, extend='max', zorder=2)
@@ -4597,7 +4598,7 @@ def plot_24_hour_temperature_comparison(color_table_shrink=1, title_fontsize=12,
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, diff[:, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, extend='both', zorder=2)
@@ -5041,7 +5042,7 @@ def plot_dew_point(color_table_shrink=1, title_fontsize=12, subplot_title_fontsi
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, temp[0, :, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, extend='both', zorder=2)
@@ -5516,7 +5517,7 @@ def plot_24_hour_dew_point_comparison(color_table_shrink=1, title_fontsize=12, s
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, diff[:, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, extend='both', zorder=2)
@@ -5951,7 +5952,7 @@ def plot_total_cloud_cover(color_table_shrink=1, title_fontsize=12, subplot_titl
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, tcdcclm[0, :, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, zorder=2)
@@ -6421,7 +6422,7 @@ def plot_24_hour_total_cloud_cover_comparison(color_table_shrink=1, title_fontsi
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, diff[:, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, extend='both', zorder=2)
@@ -6861,7 +6862,7 @@ def plot_wind_speed(color_table_shrink=1, title_fontsize=12, subplot_title_fonts
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, ws[0, :, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, extend='max', zorder=2)
@@ -7382,7 +7383,7 @@ def plot_24_hour_wind_speed_comparison(color_table_shrink=1, title_fontsize=12, 
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, diff[:, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, extend='both', zorder=2)
@@ -7856,7 +7857,7 @@ def plot_wind_speed_and_direction(color_table_shrink=1, title_fontsize=12, subpl
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, ws[0, :, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, extend='max', zorder=2)
@@ -8377,7 +8378,7 @@ def plot_24_hour_wind_speed_and_direction_comparison(color_table_shrink=1, title
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    ax.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     cs = ax.contourf(lon, lat, diff[:, :], 
                      transform=ccrs.PlateCarree(), levels=contourf, cmap=cmap, alpha=alpha, extend='both', zorder=2)
@@ -9023,7 +9024,7 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=65, post_gree
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    fig.text(0.125, 0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    fig.text(0.125, 0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     try:
         ax1.pcolormesh(lon_pre,lat_pre,mask_pre, transform=ccrs.PlateCarree(), cmap=cmap_pre, zorder=2, alpha=0.3)
@@ -9944,7 +9945,7 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
 
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-    fig.text(0.125, 0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+    fig.text(0.125, 0.1, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nReference System: "+reference_system+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
     try:
         ax1.pcolormesh(lon_pre,lat_pre,mask_pre, transform=ccrs.PlateCarree(), cmap=cmap_pre, zorder=2, alpha=0.3)
@@ -10252,4 +10253,3 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
 
     path, gif_path = file_functions.check_file_paths_alaska(state, cwa, fname, reference_system)
     file_functions.update_images(fig, path, gif_path, fname)
-
