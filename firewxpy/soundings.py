@@ -743,7 +743,7 @@ def plot_observed_sounding(station_id):
 
         ax4.legend(loc=(0.2, 1.01), prop={'size': 7})
         
-        fig.text(0.16, 0.05, "Plot Created With FireWxPy(C) Eric J. Drewitz 2024\nData Source: weather.uwyo.edu\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
+        fig.text(0.16, 0.05, "Plot Created With FireWxPy(C) Eric J. Drewitz 2025\nData Source: weather.uwyo.edu\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
 
     if sounding == False:
         fig = standard.no_sounding_graphic(date)
@@ -1149,7 +1149,7 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
 
         ax4.legend(loc=(0.2, 1.01), prop={'size': 7})
         
-        fig.text(0.16, 0.05, "Plot Created With FireWxPy(C) Eric J. Drewitz 2024\nData Source: weather.uwyo.edu\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
+        fig.text(0.16, 0.05, "Plot Created With FireWxPy(C) Eric J. Drewitz 2025\nData Source: weather.uwyo.edu\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
 
     if sounding == False:
         fig = standard.no_sounding_graphic(date)
