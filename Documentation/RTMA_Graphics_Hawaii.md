@@ -1,4 +1,4 @@
-# **Real Time Mesoscale Analysis Graphics CONUS**
+# **Real Time Mesoscale Analysis Graphics Hawaii**
 
 ### **Functions**
 
