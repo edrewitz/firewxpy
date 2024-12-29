@@ -42,7 +42,7 @@ from dateutil import tz
 from matplotlib.patheffects import withStroke
 from firewxpy.calc import scaling, unit_conversion, contouring
 from firewxpy.utilities import file_functions
-from firewxpy.data_access import NDFD_CONUS
+from firewxpy.data_access import NDFD_CONUS_Hawaii
 from metpy.units import units
 
 mpl.rcParams['font.weight'] = 'bold'
@@ -385,7 +385,7 @@ class relative_humidity:
     
         if file_path == None:
     
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.maxrh.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.maxrh.bin')
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)
 
@@ -1243,7 +1243,7 @@ class relative_humidity:
     
         if file_path == None:
     
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.maxrh.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.maxrh.bin')
     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -2068,7 +2068,7 @@ class relative_humidity:
     
         if file_path == None:
     
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.maxrh.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.maxrh.bin')
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)
             
@@ -2896,7 +2896,7 @@ class relative_humidity:
     
         if file_path == None:
     
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.maxrh.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.maxrh.bin')
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxrh.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -3688,7 +3688,7 @@ class relative_humidity:
         
         if file_path == None:
     
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.minrh.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.minrh.bin')
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -4959,7 +4959,7 @@ class relative_humidity:
             
         if file_path == None:
 
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.minrh.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.minrh.bin')
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -6242,7 +6242,7 @@ class relative_humidity:
             
         if file_path == None:
 
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.minrh.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.minrh.bin')
 
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.minrh.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -7109,7 +7109,7 @@ class temperature:
     
         if file_path == None:
 
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.maxt.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.maxt.bin')
 
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxt.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -8053,7 +8053,7 @@ class temperature:
     
         if file_path == None:
 
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.mint.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.mint.bin')
 
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -8971,7 +8971,7 @@ class temperature:
     
         if file_path == None:
 
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.mint.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.mint.bin')
 
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -9856,7 +9856,7 @@ class temperature:
     
         if file_path == None:
 
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.maxt.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.maxt.bin')
 
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxt.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -10717,7 +10717,7 @@ class temperature:
     
         if file_path == None:
 
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.mint.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.mint.bin')
 
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -11538,7 +11538,7 @@ class temperature:
     
         if file_path == None:
 
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.mint.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.mint.bin')
                     
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.mint.bin', 12, False, count_short, count_extended, directory_name)
     
@@ -12256,7 +12256,7 @@ class temperature:
     
         if file_path == None:
 
-            grbs, ds, count_short, count_extended = NDFD_CONUS.download_NDFD_grids(directory_name, 'ds.maxt.bin')
+            grbs, ds, count_short, count_extended = NDFD_CONUS_Hawaii.download_NDFD_grids(directory_name, 'ds.maxt.bin')
 
             grb_1_vals, grb_1_start, grb_1_end, grb_2_vals, grb_2_start, grb_2_end, grb_3_vals, grb_3_start, grb_3_end, grb_4_vals, grb_4_start, grb_4_end, grb_5_vals, grb_5_start, grb_5_end, grb_6_vals, grb_6_start, grb_6_end, grb_7_vals, grb_7_start, grb_7_end, lats_1, lons_1, lats_2, lons_2, lats_3, lons_3, lats_4, lons_4, lats_5, lons_5, lats_6, lons_6, lats_7, lons_7, count, count_short, count_extended, discard = parsers.NDFD.parse_GRIB_files_full_forecast_period('ds.maxt.bin', 12, False, count_short, count_extended, directory_name)
     
