@@ -1,4 +1,4 @@
-**Functions**
+# **Observations**
 1) [graphical_daily_summary(station_id)](#graphical_daily_summarystation_id)
 
 ### graphical_daily_summary(station_id)
