@@ -20,8 +20,8 @@
 16) [plot_24_hour_wind_speed_comparison()](#plot_24_hour_wind_speed_comparison)
 17) [plot_wind_speed_and_direction()](#plot_wind_speed_and_direction)
 18) [plot_24_hour_wind_speed_and_direction_comparison()](#plot_24_hour_wind_speed_and_direction_comparison)
-19) [plot_hot_dry_and_windy_areas()](#plot_dry_and_windy_areas)
-20) [plot_hot_dry_and_gusty_areas()](#plot_dry_and_gusty_areas)
+19) [plot_hot_dry_and_windy_areas()](#plot_hot_dry_and_windy_areas)
+20) [plot_hot_dry_and_gusty_areas()](#plot_hot_dry_and_gusty_areas)
 
 ### plot_relative_humidity()
 
