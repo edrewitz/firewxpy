@@ -42,7 +42,7 @@ from dateutil import tz
 from matplotlib.patheffects import withStroke
 from firewxpy.calc import scaling, unit_conversion, contouring
 from firewxpy.utilities import file_functions
-from firewxpy.data_access import NDFD_CONUS, NDFD_Alaska
+from firewxpy.data_access import NDFD_CONUS_Hawaii, NDFD_Alaska
 from metpy.units import units
 
 mpl.rcParams['font.weight'] = 'bold'
