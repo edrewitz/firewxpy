@@ -2,6 +2,8 @@
 
 This is the landing page for all of the firewxpy documentation. The links below will direct you to the documentation for each firewxpy module. 
 
+To visit the firewxpy tutorials page where you can see examples in jupyter lab - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/Examples_Guide.md)
+
 1) [rtma_conus](https://github.com/edrewitz/firewxpy/blob/main/Documentation/RTMA_Graphics_CONUS.md)
 2) [rtma_alaska](https://github.com/edrewitz/firewxpy/blob/main/Documentation/RTMA_Graphics_Alaska.md)
 3) [rtma_hawaii](https://github.com/edrewitz/firewxpy/blob/main/Documentation/RTMA_Graphics_Hawaii.md)
