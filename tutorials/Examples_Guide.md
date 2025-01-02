@@ -20,4 +20,12 @@ Here are links to jupyter lab tutorials for all the aforementioned scenarios:
 6) User creates a daily weather summary graphic for the previous day for Ontario International Airport ASOS (KONT) - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/KONT_Daily_Weather_Summary_Example.ipynb)
 7) User creates an upper air profile for a custom date/time. In this example we will look at the onset of Santa Ana Winds in San Diego, CA on October 30th, 2023 00z. - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/Santa_Ana_Wind_Sounding.ipynb)
 8) User creates an RTMA Temperature plot for a custom area with a custom reference system. - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/Custom_Plot.ipynb)
+9) User creates an RTMA Temperature plot and an 24 Hour RTMA Temperature Comparison graphic for Alaska. - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/Alaska_RTMA_Temperature_Example.ipynb)
+10) User creates an RTMA Temperature plot and an 24 Hour RTMA Temperature Comparison graphic for NWS Anchorage East Domain. - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/AER_RTMA_Temperature_Example.ipynb)
+11) User creates a lot of RTMA plots for the NWS Anchorage East Domain in one script. - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/RTMA_AER_Example.ipynb)
+12) User creates an RTMA Temperature plot and an 24 Hour RTMA Temperature Comparison graphic for Hawaii. - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/Hawaii_RTMA_Temperature_Example.ipynb)
+13) User creates graphics for the NWS Maximum Temperature and NWS Minimum Relative Humidity Forecast for Alaska. -[click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/NWS_AK_example.ipynb)
+14) User creates a few graphics for the NWS Forecast for the NWS Juneau Domain. - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/NWS_AJK_example.ipynb)
+15) User creates a couple of NWS Forecast graphics for Hawaii. [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/NWS_HI_example.ipynb)
+16) User creates a few graphics of the NWS Forecast for Oahu. [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/NWS_Oahu_example.ipynb)
 
