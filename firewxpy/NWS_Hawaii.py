@@ -6968,8 +6968,6 @@ class temperature:
         title_fontsize = title_fontsize
         subplot_title_fontsize = subplot_title_fontsize 
         colorbar_fontsize = colorbar_fontsize
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position 
         signature_fontsize = signature_fontsize
         temp_scale_warm_start = temp_scale_warm_start
         temp_scale_warm_stop = temp_scale_warm_stop
@@ -7905,8 +7903,6 @@ class temperature:
         title_fontsize = title_fontsize
         subplot_title_fontsize = subplot_title_fontsize 
         colorbar_fontsize = colorbar_fontsize
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position 
         signature_fontsize = signature_fontsize
         temp_scale_warm_start = temp_scale_warm_start
         temp_scale_warm_stop = temp_scale_warm_stop
@@ -8827,8 +8823,6 @@ class temperature:
         title_fontsize = title_fontsize
         subplot_title_fontsize = subplot_title_fontsize 
         colorbar_fontsize = colorbar_fontsize
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position 
         signature_fontsize = signature_fontsize
         temperature_bottom_bound = temperature_bottom_bound
         
@@ -9704,8 +9698,6 @@ class temperature:
         title_fontsize = title_fontsize
         subplot_title_fontsize = subplot_title_fontsize 
         colorbar_fontsize = colorbar_fontsize
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position 
         signature_fontsize = signature_fontsize
         temp_scale_warm_start = temp_scale_warm_start
         temp_scale_warm_stop = temp_scale_warm_stop
@@ -10562,8 +10554,6 @@ class temperature:
         title_fontsize = title_fontsize
         subplot_title_fontsize = subplot_title_fontsize 
         colorbar_fontsize = colorbar_fontsize
-        signature_x_position = signature_x_position
-        signature_y_position = signature_y_position 
         signature_fontsize = signature_fontsize
         temp_scale_warm_start = temp_scale_warm_start
         temp_scale_warm_stop = temp_scale_warm_stop
