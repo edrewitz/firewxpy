@@ -6964,8 +6964,6 @@ class temperature:
         end_of_warm_season_month = end_of_warm_season_month
         start_of_cool_season_month = start_of_cool_season_month
         end_of_cool_season_month = end_of_cool_season_month
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
         color_table_shrink = color_table_shrink
         title_fontsize = title_fontsize
         subplot_title_fontsize = subplot_title_fontsize 
@@ -7903,8 +7901,6 @@ class temperature:
         end_of_warm_season_month = end_of_warm_season_month
         start_of_cool_season_month = start_of_cool_season_month
         end_of_cool_season_month = end_of_cool_season_month
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
         color_table_shrink = color_table_shrink
         title_fontsize = title_fontsize
         subplot_title_fontsize = subplot_title_fontsize 
@@ -8827,8 +8823,6 @@ class temperature:
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
         
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
         color_table_shrink = color_table_shrink
         title_fontsize = title_fontsize
         subplot_title_fontsize = subplot_title_fontsize 
@@ -9706,8 +9700,6 @@ class temperature:
         end_of_warm_season_month = end_of_warm_season_month
         start_of_cool_season_month = start_of_cool_season_month
         end_of_cool_season_month = end_of_cool_season_month
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
         color_table_shrink = color_table_shrink
         title_fontsize = title_fontsize
         subplot_title_fontsize = subplot_title_fontsize 
@@ -10566,8 +10558,6 @@ class temperature:
         end_of_warm_season_month = end_of_warm_season_month
         start_of_cool_season_month = start_of_cool_season_month
         end_of_cool_season_month = end_of_cool_season_month
-        fig_x_length = fig_x_length
-        fig_y_length = fig_y_length
         color_table_shrink = color_table_shrink
         title_fontsize = title_fontsize
         subplot_title_fontsize = subplot_title_fontsize 
