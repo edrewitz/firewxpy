@@ -1391,6 +1391,7 @@ class NDFD_Alaska:
                 with open(parameter, 'wb') as myfile, open(short_term_fname, 'rb') as file1, open(extended_fname, 'rb') as file2:
                     myfile.write(file1.read())
                     myfile.write(file2.read())
+                    myfile.close()
             except Exception as e:
                 print("Unable to connect to server. Please try again later.")
 
