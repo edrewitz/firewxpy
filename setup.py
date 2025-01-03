@@ -5,7 +5,6 @@ if sys.version_info[0] < 3:
   print("ERROR: User is running a version of Python older than Python 3\nTo use FireWxPy, the user must be using Python 3 or newer.")
 
 setup(
-    use_scm_version=True,
     name = "firewxpy",
     version = "1.2.111",
     packages = find_packages(),
