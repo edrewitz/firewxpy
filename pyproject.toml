@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "firewxpy"
-version = "1.2.1"
+version = "1.2.111"
 authors = [
   { name="Eric J Drewitz, USDA/USFS"},
 ]
