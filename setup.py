@@ -7,7 +7,7 @@ if sys.version_info[0] < 3.10:
 setup(
     use_scm_version=True,
     name = "firewxpy",
-    version = "1.2.1",
+    version = "1.2.111",
     packages = find_packages(),
     install_requires=[
         "matplotlib>=3.7",
