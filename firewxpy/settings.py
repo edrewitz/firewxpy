@@ -11,6 +11,387 @@ This file hosts all the functions that return the settings for each plot for eac
 
 import cartopy.crs as ccrs
 
+def coords_for_forecast_model_data(region, western_bound, eastern_bound, southern_bound, northern_bound):
+
+    if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None:
+
+        if region == 'Custom' or region == 'custom':
+            western_bound = western_bound
+            eastern_bound = eastern_bound
+            southern_bound = southern_bound
+            northern_bound = northern_bound        
+
+    else:
+
+        if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
+
+            western_bound = 180
+            eastern_bound = 45
+            southern_bound = 12
+            northern_bound = 85            
+
+        if region == 'US' or region == 'us' or region == 'USA' or region == 'usa':
+            western_bound = 127
+            eastern_bound = 65
+            southern_bound = 24
+            northern_bound = 50  
+    
+        if region == 'CA' or region == 'ca':
+            western_bound = 125
+            eastern_bound = 113
+            southern_bound = 30
+            northern_bound = 43
+    
+        if region == 'AK' or region == 'ak':
+            western_bound = 170
+            eastern_bound = 129
+            southern_bound = 50
+            northern_bound = 72
+    
+        if region == 'HI' or region == 'hi':
+            western_bound = 161
+            eastern_bound = 154
+            southern_bound = 18
+            northern_bound = 23
+    
+        if region == 'ME' or region == 'me':       
+            western_bound = 72
+            eastern_bound = 66
+            southern_bound = 41
+            northern_bound = 48
+    
+        if region == 'NH' or region == 'nh':
+            western_bound = 73
+            eastern_bound = 70
+            southern_bound = 42
+            northern_bound = 46
+    
+        if region == 'VT' or region == 'vt':
+            western_bound = 74
+            eastern_bound = 71
+            southern_bound = 42
+            northern_bound = 46
+    
+        if region == 'MA' or region == 'ma':
+            western_bound = 74
+            eastern_bound = 69
+            southern_bound = 41
+            northern_bound = 43
+    
+        if region == 'RI' or region == 'ri':
+            western_bound = 72
+            eastern_bound = 70
+            southern_bound = 41
+            northern_bound = 43
+    
+        if region == 'CT' or region == 'ct':
+            western_bound = 74
+            eastern_bound = 71
+            southern_bound = 40
+            northern_bound = 43       
+    
+        if region == 'NJ' or region == 'nj':
+            western_bound = 76
+            eastern_bound = 73
+            southern_bound = 38
+            northern_bound = 42
+    
+        if region == 'DE' or region == 'de':
+            western_bound = 76
+            eastern_bound = 75
+            southern_bound = 38
+            northern_bound = 40
+    
+        if region == 'NY' or region == 'ny':
+            western_bound = 80
+            eastern_bound = 71
+            southern_bound = 40
+            northern_bound = 46
+    
+        if region == 'PA' or region == 'pa':
+            western_bound = 81
+            eastern_bound = 74
+            southern_bound = 39
+            northern_bound = 43
+    
+        if region == 'OH' or region == 'oh':
+            western_bound = 85
+            eastern_bound = 80
+            southern_bound = 37
+            northern_bound = 42
+    
+        if region == 'MI' or region == 'mi':
+            western_bound = 91
+            eastern_bound = 82
+            southern_bound = 40
+            northern_bound = 49
+    
+        if region == 'MN' or region == 'mn':
+            western_bound = 98
+            eastern_bound = 89
+            southern_bound = 42
+            northern_bound = 50
+    
+        if region == 'WI' or region == 'wi':
+            western_bound = 94
+            eastern_bound = 86
+            southern_bound = 41
+            northern_bound = 48
+            
+        if region == 'IA' or region == 'ia':
+            western_bound = 97
+            eastern_bound = 89
+            southern_bound = 39
+            northern_bound = 44
+    
+        if region == 'IN' or region == 'in':
+            western_bound = 89
+            eastern_bound = 84
+            southern_bound = 37
+            northern_bound = 42
+    
+        if region == 'MO' or region == 'mo':
+            western_bound = 96
+            eastern_bound = 88
+            southern_bound = 35
+            northern_bound = 41
+    
+        if region == 'IL' or region == 'il':
+            western_bound = 92
+            eastern_bound = 87
+            southern_bound = 36
+            northern_bound = 43
+    
+        if region == 'ND' or region == 'nd':
+            western_bound = 105
+            eastern_bound = 96
+            southern_bound = 45
+            northern_bound = 50
+    
+        if region == 'SD' or region == 'sd':
+            western_bound = 105
+            eastern_bound = 96
+            southern_bound = 42
+            northern_bound = 47
+    
+        if region == 'NE' or region == 'ne':
+            western_bound = 105
+            eastern_bound = 95
+            southern_bound = 39
+            northern_bound = 44
+    
+        if region == 'MD' or region == 'md':
+            western_bound = 80
+            eastern_bound = 74
+            southern_bound = 37
+            northern_bound = 40
+    
+        if region == 'VA' or region == 'va':
+            western_bound = 84
+            eastern_bound = 75
+            southern_bound = 35
+            northern_bound = 40
+    
+        if region == 'SC' or region == 'sc':
+            western_bound = 84
+            eastern_bound = 78
+            southern_bound = 31
+            northern_bound = 36
+    
+        if region == 'KY' or region == 'ky':
+            western_bound = 90
+            eastern_bound = 81
+            southern_bound = 35
+            northern_bound = 40
+    
+        if region == 'WV' or region == 'wv':
+            western_bound = 83
+            eastern_bound = 77
+            southern_bound = 36
+            northern_bound = 41
+    
+        if region == 'NC' or region == 'nc':
+            western_bound = 85
+            eastern_bound = 75
+            southern_bound = 33
+            northern_bound = 37
+    
+        if region == 'NV' or region == 'nv':
+            western_bound = 121
+            eastern_bound = 113
+            southern_bound = 34
+            northern_bound = 43
+    
+        if region == 'FL' or region == 'fl':
+            western_bound = 88
+            eastern_bound = 79
+            southern_bound = 24
+            northern_bound = 32     
+    
+        if region == 'OR' or region == 'or':
+            western_bound = 125
+            eastern_bound = 116
+            southern_bound = 41
+            northern_bound = 47
+    
+        if region == 'WA' or region == 'wa':
+            western_bound = 125
+            eastern_bound = 116
+            southern_bound = 44
+            northern_bound = 50
+    
+        if region == 'ID' or region == 'id':
+            western_bound = 118
+            eastern_bound = 110
+            southern_bound = 41
+            northern_bound = 50
+    
+        if region == 'GA' or region == 'ga':
+            western_bound = 86
+            eastern_bound = 80
+            southern_bound = 29
+            northern_bound = 36
+    
+        if region == 'AL' or region == 'al':
+            western_bound = 89
+            eastern_bound = 84
+            southern_bound = 29
+            northern_bound = 36
+    
+        if region == 'MS' or region == 'ms':
+            western_bound = 92
+            eastern_bound = 87
+            southern_bound = 29
+            northern_bound = 36
+    
+        if region == 'LA' or region == 'la':
+            western_bound = 95
+            eastern_bound = 88
+            southern_bound = 28
+            northern_bound = 34
+    
+        if region == 'AR' or region == 'ar':
+            western_bound = 95
+            eastern_bound = 89
+            southern_bound = 32
+            northern_bound = 37
+    
+        if region == 'TX' or region == 'tx':
+            western_bound = 107
+            eastern_bound = 93
+            southern_bound = 24
+            northern_bound = 37
+    
+        if region == 'OK' or region == 'ok':
+            western_bound = 104
+            eastern_bound = 94
+            southern_bound = 33
+            northern_bound = 38
+    
+        if region == 'NM' or region == 'nm':
+            western_bound = 110
+            eastern_bound = 102
+            southern_bound = 30
+            northern_bound = 38
+    
+        if region == 'AZ' or region == 'az':
+            western_bound = 116
+            eastern_bound = 108
+            southern_bound = 30
+            northern_bound = 38
+    
+        if region == 'UT' or region == 'ut':
+            western_bound = 115
+            eastern_bound = 108
+            southern_bound = 36
+            northern_bound = 43
+    
+        if region == 'CO' or region == 'co':
+            western_bound = 110
+            eastern_bound = 101
+            southern_bound = 36
+            northern_bound = 42
+    
+        if region == 'WY' or region == 'wy':
+            western_bound = 112
+            eastern_bound = 102
+            southern_bound = 40
+            northern_bound = 45
+    
+        if region == 'MT' or region == 'mt':
+            western_bound = 117
+            eastern_bound = 102
+            southern_bound = 43
+            northern_bound = 50
+    
+        if region == 'KS' or region == 'ks':
+            western_bound = 103
+            eastern_bound = 94
+            southern_bound = 36
+            northern_bound = 41
+    
+        if region == 'TN' or region == 'tn':
+            western_bound = 91
+            eastern_bound = 79
+            southern_bound = 34
+            northern_bound = 37
+    
+        if region == 'OSCC' or region == 'oscc':
+            western_bound = 123
+            eastern_bound = 113
+            southern_bound = 32
+            northern_bound = 40
+    
+        if region == 'ONCC' or region == 'oncc':
+            western_bound = 125
+            eastern_bound = 119
+            southern_bound = 35
+            northern_bound = 43        
+    
+        if region == 'GBCC' or region == 'gbcc':
+            western_bound = 121
+            eastern_bound = 107
+            southern_bound = 33
+            northern_bound = 47
+    
+        if region == 'NRCC' or region == 'nrcc':
+            western_bound = 118
+            eastern_bound = 96
+            southern_bound = 41
+            northern_bound = 50
+    
+        if region == 'RMCC' or region == 'rmcc':
+            western_bound = 112
+            eastern_bound = 94
+            southern_bound = 35
+            northern_bound = 47
+    
+        if region == 'SWCC' or region == 'swcc':
+            western_bound = 115
+            eastern_bound = 101
+            southern_bound = 30
+            northern_bound = 38
+    
+        if region == 'SACC' or region == 'sacc':
+            western_bound = 107
+            eastern_bound = 74
+            southern_bound = 23
+            northern_bound = 40
+    
+        if region == 'EACC' or region == 'eacc':
+            western_bound = 98
+            eastern_bound = 66
+            southern_bound = 33
+            northern_bound = 50
+    
+        if region == 'NWCC' or region == 'nwcc':
+            western_bound = 125
+            eastern_bound = 116
+            southern_bound = 41
+            northern_bound = 50
+
+    return western_bound, eastern_bound, southern_bound, northern_bound
+
 def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
 
     state = state
