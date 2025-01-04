@@ -320,6 +320,14 @@ class model_data:
             yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+yesterday.strftime('%Y%m%d')+'/gefs_pgrb2ap5_all_12z'
             yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+yesterday.strftime('%Y%m%d')+'/gefs_pgrb2ap5_all_18z'
 
+        if model == 'CMCENS':
+
+            url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+utc_time.strftime('%Y%m%d')+'/cmcensavg_00z'
+            url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+utc_time.strftime('%Y%m%d')+'/cmcensavg_12z'
+            
+            yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+yesterday.strftime('%Y%m%d')+'/cmcensavg_00z'
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+yesterday.strftime('%Y%m%d')+'/cmcensavg_12z'      
+            
         if model == 'NAM':
         
             url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam1hr_00z'
@@ -331,10 +339,6 @@ class model_data:
             yday_06z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam1hr_06z'
             yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam1hr_12z'
             yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam1hr_18z' 
-
-
-
-            
 
         western_bound, eastern_bound, southern_bound, northern_bound = coords_for_forecast_model_data(region, western_bound, eastern_bound, southern_bound, northern_bound)
 
