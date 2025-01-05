@@ -54,12 +54,16 @@ class dynamics:
 
         if region == 'CONUS & South Canada & North Mexico':
             wb, eb, sb, nb = -130, -60, 20, 60
+            shrink=0.55
         if region == 'CONUS' or region =='conus':
             wb, eb, sb, nb = -125, -65, 23, 50
+            shrink = 0.45
         if region == 'AK' or region == 'ak':
             wb, eb, sb, nb = -125, -65, 23, 50
+            shrink = 0.7
         if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
             wb, eb, sb, nb = -180, -45, 20, 85
+            shrink=0.7
         
         if ds == None:
             ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound, dynamic=True)
@@ -99,7 +103,7 @@ class dynamics:
                 ax.add_feature(USCOUNTIES, linewidth=0.25, zorder=1)
             ax.add_feature(provinces, linewidth=0.5, zorder=1)
             
-            plt.title("GFS [0.25°x0.25°] 500 MB GPH [Dm]/ABS VORT [1/s]/WIND [kts]", fontsize=9, fontweight='bold', loc='left')
+            plt.title(f"{model} 500 MB GPH [Dm]/ABS VORT [1/s]/WIND [kts]", fontsize=9, fontweight='bold', loc='left')
             plt.title("Forecast Valid: " +times[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
             ax.text(0.01, -0.03, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=6, fontweight='bold', bbox=props)
             ax.text(0.68, -0.025, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=5, fontweight='bold', bbox=props)
@@ -119,7 +123,7 @@ class dynamics:
             ax.clabel(c_pos, levels=np.arange(544, 624, 4), inline=True, fontsize=8, rightside_up=True)
             
             cs = ax.contourf(ds['lon'], ds['lat'], ds['absvprs'][t, idx, :, :], cmap=cmap, transform=datacrs, levels=np.arange(0, 55e-5, 50e-6), alpha=0.35, extend='max')
-            cbar = fig.colorbar(cs, shrink=0.55, pad=0.02, location='right', format="{x:.0e}")
+            cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', format="{x:.0e}")
         
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
         
