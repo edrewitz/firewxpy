@@ -11,7 +11,7 @@ This file hosts all the functions that return the settings for each plot for eac
 
 import cartopy.crs as ccrs
 
-def coords_for_forecast_model_data(region, western_bound, eastern_bound, southern_bound, northern_bound):
+def coords_for_forecast_model_data(region, western_bound, eastern_bound, southern_bound, northern_bound, dynamic):
 
     if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None:
 
@@ -23,18 +23,31 @@ def coords_for_forecast_model_data(region, western_bound, eastern_bound, souther
 
     else:
 
+        if region == 'CONUS & South Canada & North Mexico':
+            
+            western_bound = 140
+            eastern_bound = 40
+            southern_bound = 13
+            northern_bound = 65 
+
         if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
 
             western_bound = 180
-            eastern_bound = 45
+            eastern_bound = 40
             southern_bound = 12
             northern_bound = 85            
 
-        if region == 'US' or region == 'us' or region == 'USA' or region == 'usa':
-            western_bound = 127
-            eastern_bound = 65
-            southern_bound = 24
-            northern_bound = 50  
+        if region == 'CONUS' or region == 'conus':
+            if dynamic == False:
+                western_bound = 127
+                eastern_bound = 65
+                southern_bound = 24
+                northern_bound = 50  
+            if dynamic == True:
+                western_bound = 140
+                eastern_bound = 50
+                southern_bound = 20
+                northern_bound = 60                 
     
         if region == 'CA' or region == 'ca':
             western_bound = 125
@@ -43,10 +56,16 @@ def coords_for_forecast_model_data(region, western_bound, eastern_bound, souther
             northern_bound = 43
     
         if region == 'AK' or region == 'ak':
-            western_bound = 170
-            eastern_bound = 129
-            southern_bound = 50
-            northern_bound = 72
+            if dynamic == False:
+                western_bound = 170
+                eastern_bound = 129
+                southern_bound = 50
+                northern_bound = 72
+            if dynamic == True:
+                western_bound = 200
+                eastern_bound = 125
+                southern_bound = 50
+                northern_bound = 80
     
         if region == 'HI' or region == 'hi':
             western_bound = 161
@@ -391,6 +410,7 @@ def coords_for_forecast_model_data(region, western_bound, eastern_bound, souther
             northern_bound = 50
 
     return western_bound, eastern_bound, southern_bound, northern_bound
+
 
 def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
 
