@@ -242,10 +242,17 @@ class info:
 
 class model_data:
 
-    def get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound):
+    def get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound, dynamic=False):
 
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
+        dynamic = dynamic
+
+        if western_bound == None and eastern_bound == None and southern_bound == None and northern_bound == None:
+            western_bound, eastern_bound, southern_bound, northern_bound = coords_for_forecast_model_data(region, western_bound, eastern_bound, southern_bound, northern_bound, dynamic)
+
+        else:
+            western_bound, eastern_bound, southern_bound, northern_bound = western_bound, eastern_bound, southern_bound, northern_bound
 
         if model == 'GFS0p25':
         
@@ -328,6 +335,7 @@ class model_data:
             yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+yesterday.strftime('%Y%m%d')+'/cmcensavg_00z'
             yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+yesterday.strftime('%Y%m%d')+'/cmcensavg_12z'      
             
+
         if model == 'NAM':
         
             url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam1hr_00z'
@@ -339,8 +347,6 @@ class model_data:
             yday_06z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam1hr_06z'
             yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam1hr_12z'
             yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam1hr_18z' 
-
-        western_bound, eastern_bound, southern_bound, northern_bound = coords_for_forecast_model_data(region, western_bound, eastern_bound, southern_bound, northern_bound)
 
         if model == 'NAM':
             
@@ -583,9 +589,235 @@ class model_data:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
                                     sys.exit()
 
-
+        ds = ds.metpy.parse_cf()
+        
         return ds
 
+
+    def msc_datamart_datasets(product, directory_path):
+
+        local_time, utc_time = standard.plot_creation_time()
+        yesterday = utc_time - timedelta(hours=24)
+
+        directory_path = directory_path        
+        
+
+        if product == 'RDPA 6hr':
+
+            today_00z_run = 'https://dd.weather.gc.ca/'+utc_time.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/00/'+utc_time.strftime('%Y%m%d')+'T00Z_MSC_RDPA_APCP-Accum6h_Sfc_RLatLon0.09_PT0H.grib2 '
+            today_06z_run = 'https://dd.weather.gc.ca/'+utc_time.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/06/'+utc_time.strftime('%Y%m%d')+'T06Z_MSC_RDPA_APCP-Accum6h_Sfc_RLatLon0.09_PT0H.grib2 '
+            today_12z_run = 'https://dd.weather.gc.ca/'+utc_time.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/12/'+utc_time.strftime('%Y%m%d')+'T12Z_MSC_RDPA_APCP-Accum6h_Sfc_RLatLon0.09_PT0H.grib2 '
+            today_18z_run = 'https://dd.weather.gc.ca/'+utc_time.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/18/'+utc_time.strftime('%Y%m%d')+'T18Z_MSC_RDPA_APCP-Accum6h_Sfc_RLatLon0.09_PT0H.grib2 '
+            
+            yday_00z_run = 'https://dd.weather.gc.ca/'+yesterday.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/00/'+yesterday.strftime('%Y%m%d')+'T00Z_MSC_RDPA_APCP-Accum6h_Sfc_RLatLon0.09_PT0H.grib2 '
+            yday_06z_run = 'https://dd.weather.gc.ca/'+yesterday.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/06/'+yesterday.strftime('%Y%m%d')+'T06Z_MSC_RDPA_APCP-Accum6h_Sfc_RLatLon0.09_PT0H.grib2 '
+            yday_12z_run = 'https://dd.weather.gc.ca/'+yesterday.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/12/'+yesterday.strftime('%Y%m%d')+'T12Z_MSC_RDPA_APCP-Accum6h_Sfc_RLatLon0.09_PT0H.grib2 '
+            yday_18z_run = 'https://dd.weather.gc.ca/'+yesterday.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/18/'+yesterday.strftime('%Y%m%d')+'T18Z_MSC_RDPA_APCP-Accum6h_Sfc_RLatLon0.09_PT0H.grib2 '
+
+        if product == 'RDPA 24hr':
+
+            today_00z_run = 'https://dd.weather.gc.ca/'+utc_time.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/00/'+utc_time.strftime('%Y%m%d')+'T00Z_MSC_RDPA_APCP-Accum24h_Sfc_RLatLon0.09_PT0H.grib2 '
+            today_06z_run = 'https://dd.weather.gc.ca/'+utc_time.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/06/'+utc_time.strftime('%Y%m%d')+'T06Z_MSC_RDPA_APCP-Accum24h_Sfc_RLatLon0.09_PT0H.grib2 '
+            today_12z_run = 'https://dd.weather.gc.ca/'+utc_time.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/12/'+utc_time.strftime('%Y%m%d')+'T12Z_MSC_RDPA_APCP-Accum24h_Sfc_RLatLon0.09_PT0H.grib2 '
+            today_18z_run = 'https://dd.weather.gc.ca/'+utc_time.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/18/'+utc_time.strftime('%Y%m%d')+'T18Z_MSC_RDPA_APCP-Accum24h_Sfc_RLatLon0.09_PT0H.grib2 '
+            
+            yday_00z_run = 'https://dd.weather.gc.ca/'+yesterday.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/00/'+yesterday.strftime('%Y%m%d')+'T00Z_MSC_RDPA_APCP-Accum24h_Sfc_RLatLon0.09_PT0H.grib2 '
+            yday_06z_run = 'https://dd.weather.gc.ca/'+yesterday.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/06/'+yesterday.strftime('%Y%m%d')+'T06Z_MSC_RDPA_APCP-Accum24h_Sfc_RLatLon0.09_PT0H.grib2 '
+            yday_12z_run = 'https://dd.weather.gc.ca/'+yesterday.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/12/'+yesterday.strftime('%Y%m%d')+'T12Z_MSC_RDPA_APCP-Accum24h_Sfc_RLatLon0.09_PT0H.grib2 '
+            yday_18z_run = 'https://dd.weather.gc.ca/'+yesterday.strftime('%Y%m%d')+'/WXO-DD/model_rdpa/10km/18/'+yesterday.strftime('%Y%m%d')+'T18Z_MSC_RDPA_APCP-Accum24h_Sfc_RLatLon0.09_PT0H.grib2 '            
+            
+        file_today_00z = os.path.basename(today_00z_run)
+        file_today_06z = os.path.basename(today_06z_run)
+        file_today_12z = os.path.basename(today_12z_run)
+        file_today_18z = os.path.basename(today_18z_run)
+        
+        file_yday_00z = os.path.basename(yday_00z_run)
+        file_yday_06z = os.path.basename(yday_06z_run)
+        file_yday_12z = os.path.basename(yday_12z_run)
+        file_yday_18z = os.path.basename(yday_18z_run)        
+
+        try:
+            os.remove(f"{directory_path}/{file_today_00z}")
+            print(f"{file_today_00z} removed.")
+        except Exception as e:
+            pass
+        
+        try:
+            os.remove(f"{directory_path}/{file_today_06z}")
+            print(f"{file_today_06z} removed.")
+        except Exception as e:
+            pass
+        
+        try:
+            os.remove(f"{directory_path}/{file_today_12z}")
+            print(f"{file_today_12z} removed.")
+        except Exception as e:
+            pass
+        
+        try:
+            os.remove(f"{directory_path}/{file_today_18z}")
+            print(f"{file_today_18z} removed.")
+        except Exception as e:
+            pass
+        
+        try:
+            os.remove(f"{directory_path}/{file_yday_00z}")
+            print(f"{file_yday_00z} removed.")
+        except Exception as e:
+            pass
+        
+        try:
+            os.remove(f"{directory_path}/{file_yday_06z}")
+            print(f"{file_yday_06z} removed.")
+        except Exception as e:
+            pass
+        
+        try:
+            os.remove(f"{directory_path}/{file_yday_12z}")
+            print(f"{file_yday_12z} removed.")
+        except Exception as e:
+            pass
+        
+        try:
+            os.remove(f"{directory_path}/{file_yday_18z}")
+            print(f"{file_yday_18z} removed.")
+        except Exception as e:
+            pass
+
+
+        if utc_time.hour >= 0 and utc_time.hour < 6:
+            try:
+                urllib.request.urlretrieve(f"{today_00z_run}", f"{file_today_00z}")
+                ds = xr.open_dataset(file_today_00z, engine='cfgrib')
+                print("Today's 00z run retrieved successfully.")
+            except Exception as e:
+                print("Today's 00z run is unavailable. Now trying to download yesterday's 18z run.")
+                try:
+                    urllib.request.urlretrieve(f"{yday_18z_run}", f"{file_yday_18z}")
+                    ds = xr.open_dataset(file_yday_18z, engine='cfgrib')
+                    print("Yesterday's 18z run retrieved successfully.")
+                except Exception as e:
+                    print("Yesterday's 18z run is unavailable. Now trying to download yesterday's 12z run.")
+                    try:
+                        urllib.request.urlretrieve(f"{yday_12z_run}", f"{file_yday_12z}")
+                        ds = xr.open_dataset(file_yday_12z, engine='cfgrib')
+                        print("Yesterday's 12z run retrieved successfully.")
+                    except Exception as e:
+                        print("Yesterday's 12z run is unavailable. Now trying to download yesterday's 06z run.")
+                        try:
+                            urllib.request.urlretrieve(f"{yday_06z_run}", f"{file_yday_06z}")
+                            ds = xr.open_dataset(file_yday_06z, engine='cfgrib')
+                            print("Yesterday's 06z run retrieved successfully.")
+                        except Exception as e:
+                            print("Yesterday's 06z run is unavailable. Now trying to download yesterday's 00z run.")
+                            try:
+                                urllib.request.urlretrieve(f"{yday_00z_run}", f"{file_yday_00z}")
+                                ds = xr.open_dataset(file_yday_00z, engine='cfgrib')
+                                print("Yesterday's 00z run retrieved successfully.") 
+                            except Exception as e:
+                                print("The latest available dataset is over a day old. Not even worth it at this point!")
+                                sys.exit()
+                            
+        if utc_time.hour >= 6 and utc_time.hour < 12:
+            try:
+                urllib.request.urlretrieve(f"{today_06z_run}", f"{file_today_06z}")
+                ds = xr.open_dataset(file_today_06z, engine='cfgrib')
+                print("Today's 06z run retrieved successfully.")
+            except Exception as e:
+                print("Today's 06z run is unavailable. Now trying to download today's 00z run.")
+                try:
+                    urllib.request.urlretrieve(f"{today_00z_run}", f"{file_today_00z}")
+                    ds = xr.open_dataset(file_today_00z, engine='cfgrib')
+                except Exception as e:
+                    print("Today's 00z run is unavailable. Now trying to download yesterday's 18z run.")
+                    try:
+                        urllib.request.urlretrieve(f"{yday_18z_run}", f"{file_yday_18z}")
+                        ds = xr.open_dataset(file_yday_18z, engine='cfgrib')
+                        print("Yesterday's 18z run retrieved successfully.")
+                    except Exception as e:
+                        print("Yesterday's 18z run is unavailable. Now trying to download yesterday's 12z run.")
+                        try:
+                            urllib.request.urlretrieve(f"{yday_12z_run}", f"{file_yday_12z}")
+                            ds = xr.open_dataset(file_yday_12z, engine='cfgrib')
+                            print("Yesterday's 12z run retrieved successfully.")
+                        except Exception as e:
+                            print("Yesterday's 12z run is unavailable. Now trying to download yesterday's 06z run.")
+                            try:
+                                urllib.request.urlretrieve(f"{yday_06z_run}", f"{file_yday_06z}")
+                                ds = xr.open_dataset(file_yday_06z, engine='cfgrib')
+                                print("Yesterday's 06z run retrieved successfully.")
+                            except Exception as e:
+                                print("The latest available dataset is over a day old. Not even worth it at this point!")
+                                sys.exit()                
+        
+        if utc_time.hour >= 12 and utc_time.hour < 18:
+            try:
+                urllib.request.urlretrieve(f"{today_12z_run}", f"{file_today_12z}")
+                ds = xr.open_dataset(file_today_12z, engine='cfgrib')
+                print("Today's 12z run retrieved successfully.")
+            except Exception as e:
+                print("Today's 12z run is unavailable. Now trying to download today's 06z run.")
+                try:
+                    urllib.request.urlretrieve(f"{today_06z_run}", f"{file_today_06z}")
+                    ds = xr.open_dataset(file_today_06z, engine='cfgrib')
+                    print("Today's 06z run retrieved successfully.")
+                except Exception as e:
+                    print("Today's 06z run is unavailable. Now trying to download today's 00z run.")
+                    try:
+                        urllib.request.urlretrieve(f"{today_00z_run}", f"{file_today_00z}")
+                        ds = xr.open_dataset(file_today_00z, engine='cfgrib')
+                        print("Today's 00z run retrieved successfully.")
+                    except Exception as e:
+                        print("Today's 00z run is unavailable. Now trying to download yesterday's 18z run.")
+                        try:
+                            urllib.request.urlretrieve(f"{yday_18z_run}", f"{file_yday_18z}")
+                            ds = xr.open_dataset(file_yday_18z, engine='cfgrib')
+                            print("Yesterday's 18z run retrieved successfully.")
+                        except Exception as e:
+                            print("Yesterday's 18z run is unavailable. Now trying to download yesterday's 12z run.")
+                            try:
+                                urllib.request.urlretrieve(f"{yday_12z_run}", f"{file_yday_12z}")
+                                ds = xr.open_dataset(file_yday_12z, engine='cfgrib')
+                                print("Yesterday's 12z run retrieved successfully.")
+                            except Exception as e:
+                                print("The latest available dataset is over a day old. Not even worth it at this point!")
+                                sys.exit()   
+        
+        if utc_time.hour >= 18 and utc_time.hour < 24:
+            try:
+                urllib.request.urlretrieve(f"{today_18z_run}", f"{file_today_18z}")
+                ds = xr.open_dataset(file_today_18z, engine='cfgrib')
+                print("Today's 18z run retrieved successfully.")
+            except Exception as e:
+                print("Today's 18z run is unavailable. Now trying to download today's 12z run.")
+                try:
+                    urllib.request.urlretrieve(f"{today_12z_run}", f"{file_today_12z}")
+                    ds = xr.open_dataset(file_today_12z, engine='cfgrib')
+                    print("Today's 12z run retrieved successfully.")
+                except Exception as e:
+                    print("Today's 12z run is unavailable. Now trying to download today's 06z run.")
+                    try:
+                        urllib.request.urlretrieve(f"{today_06z_run}", f"{file_today_06z}")
+                        ds = xr.open_dataset(file_today_06z, engine='cfgrib')
+                        print("Today's 06z run retrieved successfully.")
+                    except Exception as e:
+                        print("Today's 06z run is unavailable. Now trying to download today's 00z run.")
+                        try:
+                            urllib.request.urlretrieve(f"{today_00z_run}", f"{file_today_00z}")
+                            ds = xr.open_dataset(file_today_00z, engine='cfgrib')
+                            print("Today's 00z run retrieved successfully.")
+                        except Exception as e:
+                            print("Today's 00z run is unavailable. Now trying to download yesterday's 18z run.")
+                            try:
+                                urllib.request.urlretrieve(f"{yday_18z_run}", f"{file_yday_18z}")
+                                ds = xr.open_dataset(file_yday_18z, engine='cfgrib')
+                                print("Yesterday's 18z run retrieved successfully.")
+                            except Exception as e:
+                                print("The latest available dataset is over a day old. Not even worth it at this point!")
+                                sys.exit() 
+
+
+        return ds
 
 class RTMA_Alaska:
 
