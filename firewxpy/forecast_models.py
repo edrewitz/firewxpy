@@ -55,9 +55,13 @@ class dynamics:
         if region == 'CONUS & South Canada & North Mexico':
             wb, eb, sb, nb = -130, -60, 20, 60
             shrink=0.55
+            x1, y1 = 0.01, -0.03
+            x2, y2 = 0.68, -0.025
         if region == 'CONUS' or region =='conus':
             wb, eb, sb, nb = -125, -65, 23, 50
             shrink = 0.45
+            x1, y1 = 0.01, -0.03
+            x2, y2 = 0.725, -0.025
         if region == 'AK' or region == 'ak':
             wb, eb, sb, nb = -125, -65, 23, 50
             shrink = 0.7
@@ -81,9 +85,10 @@ class dynamics:
         for file in os.listdir(f"{path}"):
             try:
                 os.remove(f"{path}/{file}")
-                print(f"Old Image Removed.")
             except Exception as e:
                 pass
+                
+        print(f"Any old images (if any) in {path_print} have been deleted.")
         
         for t in range(0, end, 2):
         
@@ -102,11 +107,12 @@ class dynamics:
             if show_counties == True:
                 ax.add_feature(USCOUNTIES, linewidth=0.25, zorder=1)
             ax.add_feature(provinces, linewidth=0.5, zorder=1)
-            
+
+            model = model.upper()
             plt.title(f"{model} 500 MB GPH [Dm]/ABS VORT [1/s]/WIND [kts]", fontsize=9, fontweight='bold', loc='left')
             plt.title("Forecast Valid: " +times[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
-            ax.text(0.01, -0.03, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=6, fontweight='bold', bbox=props)
-            ax.text(0.68, -0.025, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=5, fontweight='bold', bbox=props)
+            ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=6, fontweight='bold', bbox=props)
+            ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=5, fontweight='bold', bbox=props)
             
             lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
             
