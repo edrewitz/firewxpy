@@ -336,7 +336,7 @@ class model_data:
             yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+yesterday.strftime('%Y%m%d')+'/cmcensavg_12z'      
             
 
-        if model == 'NAM':
+        if model == 'NAM 1hr':
         
             url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam1hr_00z'
             url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam1hr_06z'
@@ -348,7 +348,7 @@ class model_data:
             yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam1hr_12z'
             yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam1hr_18z' 
 
-        if model == 'NAM':
+        if model == 'NAM 1hr':
             
             western_bound = western_bound * -1
             eastern_bound = eastern_bound * -1
@@ -501,6 +501,7 @@ class model_data:
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
                                     sys.exit()
+                    
             
             if utc_time.hour >= 6 and utc_time.hour < 12:
                 
@@ -588,6 +589,7 @@ class model_data:
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
                                     sys.exit()
+                    
 
         ds = ds.metpy.parse_cf()
         
