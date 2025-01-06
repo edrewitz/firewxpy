@@ -14,6 +14,7 @@ import firewxpy.settings as settings
 import firewxpy.standard as standard
 import firewxpy.dims as dims
 import os
+import time as tim
 
 from matplotlib.patheffects import withStroke
 from metpy.plots import USCOUNTIES
@@ -310,6 +311,7 @@ class dynamics:
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
         
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                tim.sleep(10)
 
 
             else:
@@ -329,6 +331,7 @@ class dynamics:
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                tim.sleep(10)
 
 
 
