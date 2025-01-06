@@ -37,7 +37,31 @@ props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 class dynamics:
 
 
-    def plot_500mb_vorticity_height_wind(model, region, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=True, reference_system='States Only', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
+    def plot_500mb_vorticity_height_wind(model, region, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=True, reference_system='States Only', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
+
+
+        data=data
+        ds=ds
+        western_bound=western_bound
+        eastern_bound=eastern_bound 
+        southern_bound=southern_bound
+        northern_bound=northern_bound
+        show_rivers=show_rivers
+        reference_system=reference_system
+        state_border_linewidth=state_border_linewidth
+        county_border_linewidth=county_border_linewidth
+        gacc_border_linewidth=gacc_border_linewidth
+        psa_border_linewidth=psa_border_linewidth 
+        cwa_border_linewidth=cwa_border_linewidth
+        nws_firewx_zones_linewidth=nws_firewx_zones_linewidth 
+        nws_public_zones_linewidth=nws_public_zones_linewidth 
+        state_border_linestyle=state_border_linestyle
+        county_border_linestyle=county_border_linestyle
+        gacc_border_linestyle=gacc_border_linestyle
+        psa_border_linestyle=psa_border_linestyle 
+        cwa_border_linestyle=cwa_border_linestyle
+        nws_firewx_zones_linestyle=nws_firewx_zones_linestyle 
+        nws_public_zones_linestyle=nws_public_zones_linestyle
 
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -158,13 +182,13 @@ class dynamics:
 
         if region == 'CONUS & South Canada & North Mexico':
             wb, eb, sb, nb = -140, -45, 20, 65
-            shrink = 0.45
+            shrink = 0.4
             x1, y1 = 0.01, -0.03
             x2, y2 = 0.725, -0.025
             x3, y3 = 0.01, 0.01
         if region == 'CONUS' or region =='conus':
             wb, eb, sb, nb = -125, -65, 23, 50
-            shrink = 0.45
+            shrink = 0.4
             x1, y1 = 0.01, -0.03
             x2, y2 = 0.725, -0.025
             x3, y3 = 0.01, 0.01
@@ -176,14 +200,15 @@ class dynamics:
             x3, y3 = 0.01, 0.01
         if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
             wb, eb, sb, nb = -180, -45, 20, 85
-            shrink=0.7
+            shrink=0.4
             x1, y1 = 0.01, -0.03
             x2, y2 = 0.68, -0.025
             x3, y3 = 0.01, 0.01
         
-        if ds == None:
+        if data == False:
             ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound, dynamic=True)
-        if ds != None:
+            
+        if data == True:
             ds = ds
 
 
@@ -220,6 +245,7 @@ class dynamics:
             ax.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
             ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+            ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
             if show_rivers == True:
                 ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
             else:
@@ -303,7 +329,6 @@ class dynamics:
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-
 
 
 
