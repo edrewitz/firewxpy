@@ -159,10 +159,10 @@ class dynamics:
                 county_border_linewidth=0.25 
         
 
-        if model == 'NAM':
+        if model == 'NAM 1hr':
             level_idx = 20
             decimate = 20
-            step = 2
+            step = 1
         if model == 'CMCENS' or model == 'GEFS0p50':
             level_idx = 4
             decimate = 10
@@ -329,7 +329,6 @@ class dynamics:
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-
 
 
 
