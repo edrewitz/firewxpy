@@ -394,6 +394,7 @@ def plot_vorticity_height_wind(model, region, level=500, data=False, ds=None, we
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
     
             print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+            tim.sleep(10)
 
 
         else:
