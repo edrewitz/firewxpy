@@ -2,6 +2,11 @@ import matplotlib.colors
 import warnings
 warnings.filterwarnings('ignore')
 
+def vorticity_colormap():
+    vorticity_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("vorticity", ["cyan", "lime", "gold", "orangered", "darkred", "blueviolet", "dimgrey"])
+
+    return vorticity_colormap
+
 def temperature_colormap():
     temperature_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("temperature", ["darkviolet", "blue", "deepskyblue", "white", "orangered", "red", "darkred"])
 
