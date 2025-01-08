@@ -8,12 +8,13 @@ from datetime import datetime
 
 class file_functions:
 
-    def forecast_model_graphics_paths(model, region, reference_system, parameter):
+    def forecast_model_graphics_paths(model, region, reference_system, parameter, str_level):
 
         model = model.upper()
         region = region.upper()
         parameter = parameter.upper()
         reference_system = reference_system.upper()
+        str_level = str_level.upper()
 
         if os.path.exists(f"Weather Data"):
             print(f"Already Satisfied: f:Weather Data Parent Directory exists.")
@@ -37,10 +38,21 @@ class file_functions:
                         if os.path.exists(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}"):
                             print(f"Already Satisfied: f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter} Directory exists.")  
 
+                            if os.path.exists(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}"):
+                                print(f"Already Satisfied: f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level} Directory exists.") 
+
+                            else:
+                                print(f"f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level} Directory does not exists.\nBuilding new branch automatically...") 
+                                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}")
+                                print(f"Successfully built f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level} Directory.")
+
                         else:
                             print(f"f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter} Directory does not exists.\nBuilding new branch automatically...") 
                             os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}")
                             print(f"Successfully built f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter} Directory.")
+                            print(f"f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level} Directory does not exists.\nBuilding new branch automatically...") 
+                            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}")
+                            print(f"Successfully built f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level} Directory.")
 
                     else:
                         print(f"f:Forecast Model Data/{model}/{region}/{reference_system} Directory does not exists.\nBuilding new branch automatically...") 
@@ -49,6 +61,10 @@ class file_functions:
                         print(f"f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter} Directory does not exists.\nBuilding new branch automatically...") 
                         os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}")
                         print(f"Successfully built f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter} Directory.")
+
+                        print(f"f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level} Directory does not exists.\nBuilding new branch automatically...") 
+                        os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}")
+                        print(f"Successfully built f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level} Directory.")
 
                 else:
                     print(f"f:Forecast Model Data/{model}/{region} Directory does not exists.\nBuilding new branches automatically...") 
@@ -59,6 +75,10 @@ class file_functions:
                     print(f"f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter} Directory does not exists.\nBuilding new branch automatically...") 
                     os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}")
                     print(f"Successfully built f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter} Directory.")
+
+                    print(f"f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level} Directory does not exists.\nBuilding new branch automatically...") 
+                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}")
+                    print(f"Successfully built f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level} Directory.")
 
             else:
                 print(f"f:Forecast Model Data/{model} Directory does not exists.\nBuilding new branches automatically...") 
@@ -71,6 +91,10 @@ class file_functions:
                 print(f"f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter} Directory does not exists.\nBuilding new branch automatically...") 
                 os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}")
                 print(f"Successfully built f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter} Directory.")
+
+                print(f"f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level} Directory does not exists.\nBuilding new branch automatically...") 
+                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}")
+                print(f"Successfully built f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level} Directory.")
 
         else:
             print(f"f:Forecast Model Data Directory does not exists.\nBuilding new branches automatically...")
@@ -86,8 +110,12 @@ class file_functions:
             os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}")
             print(f"Successfully built f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter} Directory.")
 
-        path = f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}"
-        path_print = f"f:Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}"
+            print(f"f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level} Directory does not exists.\nBuilding new branch automatically...") 
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}")
+            print(f"Successfully built f:Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level} Directory.")
+
+        path = f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}"
+        path_print = f"f:Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}"
     
         return path, path_print
         
