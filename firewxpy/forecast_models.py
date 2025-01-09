@@ -914,26 +914,8 @@ class dynamics:
         positive = np.arange(5, 35, 5)
         
         
-    
-        if model == 'NAM 1hr':
-            decimate = 20
-            step = 1
-            
-            if level == 850:
-                level_idx = 6
-            if level == 700:
-                level_idx = 12
-            if level == 500:
-                level_idx = 20
-            if level == 300:
-                level_idx = 28
-            if level == 250:
-                level_idx = 30
-            if level == 200:
-                level_idx = 32
-        
         if model == 'CMCENS' or model == 'GEFS0p50':
-            decimate = 10
+            increment = 4
             step = 1
     
             if level == 850:
@@ -950,8 +932,8 @@ class dynamics:
                 level_idx = 8
             
         if model == 'GFS0p25' or model == 'GFS0p25_1h':
-            decimate = 10
             step = 2
+            increment = 8
             
             if level == 850:
                 level_idx = 5
@@ -967,8 +949,8 @@ class dynamics:
                 level_idx = 18
             
         if model == 'GFS0p50':
-            decimate = 10
             step = 2
+            increment = 8
             
             if level == 850:
                 level_idx = 6
@@ -984,9 +966,9 @@ class dynamics:
                 level_idx = 32
         
         if model == 'GFS1p00':
-            decimate = 10
             step = 2
-    
+            increment = 8
+            
             if level == 850:
                 level_idx = 5
             if level == 700:
@@ -1050,10 +1032,7 @@ class dynamics:
         
         for t in range(0, end, step):
     
-            if model == 'CMCENS' or model == 'GEFS0p50':
-                t1 = t + 4
-            else:
-                t1 = t + 8
+            t1 = t + increment
         
             fname = f"Image_{t}.png"
         
@@ -1103,7 +1082,10 @@ class dynamics:
     
             model = model.upper()
             plt.title(f"{model} {str_level} 24-HR GEOPOTENTIAL HEIGHT CHANGE [ΔDm]", fontsize=9, fontweight='bold', loc='left')
-            plt.title("Forecast Valid: " +times.iloc[t1].strftime('%a %d/%H UTC')+" - "+times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+            try:
+                plt.title("Forecast Valid: " +times.iloc[t1].strftime('%a %d/%H UTC')+" - "+times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+            except Exception as e:
+                pass
             ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=6, fontweight='bold', bbox=props)
             ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=5, fontweight='bold', bbox=props)
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=5, fontweight='bold', bbox=props, zorder=11)
@@ -1111,42 +1093,50 @@ class dynamics:
     
             if model == 'CMCENS' or model == 'GEFS0P50':
     
-                c_low = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), levels=negative, colors='blue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                ax.clabel(c_low, levels=negative, inline=True, fontsize=8, rightside_up=True)
+                try:
     
-                c = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), levels=[0], colors='black', zorder=2, transform=datacrs, linewidths=1, linestyles='-')
-                ax.clabel(c, levels=[0], inline=True, fontsize=8, rightside_up=True)
-    
-                c_high = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), levels=positive, colors='red', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                ax.clabel(c_high, levels=positive, inline=True, fontsize=8, rightside_up=True)
-                    
-                cs = ax.contourf(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), cmap=cmap, transform=datacrs, levels=levels, alpha=0.35, extend='both')
-                cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
-    
-                fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                    c_low = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), levels=negative, colors='blue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    ax.clabel(c_low, levels=negative, inline=True, fontsize=8, rightside_up=True)
         
-                print(f"Saved image for forecast {times.iloc[t1].strftime('%a %d/%H UTC')} to {path_print}.")
-                tim.sleep(10)
+                    c = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), levels=[0], colors='black', zorder=2, transform=datacrs, linewidths=1, linestyles='-')
+                    ax.clabel(c, levels=[0], inline=True, fontsize=8, rightside_up=True)
+        
+                    c_high = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), levels=positive, colors='red', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    ax.clabel(c_high, levels=positive, inline=True, fontsize=8, rightside_up=True)
+                        
+                    cs = ax.contourf(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), cmap=cmap, transform=datacrs, levels=levels, alpha=0.35, extend='both')
+                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
+        
+                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            
+                    print(f"Saved image for forecast {times.iloc[t1].strftime('%a %d/%H UTC')} to {path_print}.")
+                    tim.sleep(10)
+    
+                except Exception as e:
+                    pass
     
     
             else:
-                
-                c_low = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), levels=negative, colors='blue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                ax.clabel(c_low, levels=negative, inline=True, fontsize=8, rightside_up=True)
     
-                c_high = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), levels=positive, colors='red', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                ax.clabel(c_high, levels=positive, inline=True, fontsize=8, rightside_up=True)
-    
-                c = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), levels=[0], colors='black', zorder=2, transform=datacrs, linewidths=1, linestyles='-')
-                ax.clabel(c, levels=[0], inline=True, fontsize=8, rightside_up=True)
-                
-                cs = ax.contourf(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), cmap=cmap, transform=datacrs, levels=levels, alpha=0.35, extend='both')
-                cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
+                try:
+                    c_low = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), levels=negative, colors='blue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    ax.clabel(c_low, levels=negative, inline=True, fontsize=8, rightside_up=True)
         
-                fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                    c_high = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), levels=positive, colors='red', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    ax.clabel(c_high, levels=positive, inline=True, fontsize=8, rightside_up=True)
+        
+                    c = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), levels=[0], colors='black', zorder=2, transform=datacrs, linewidths=1, linestyles='-')
+                    ax.clabel(c, levels=[0], inline=True, fontsize=8, rightside_up=True)
+                    
+                    cs = ax.contourf(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), cmap=cmap, transform=datacrs, levels=levels, alpha=0.35, extend='both')
+                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
             
-                print(f"Saved image for forecast {times.iloc[t1].strftime('%a %d/%H UTC')} to {path_print}.")
-                tim.sleep(10)
+                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                
+                    print(f"Saved image for forecast {times.iloc[t1].strftime('%a %d/%H UTC')} to {path_print}.")
+                    tim.sleep(10)
+                except Exception as e:
+                    pass
 
 
 
