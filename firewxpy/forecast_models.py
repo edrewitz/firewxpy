@@ -27,7 +27,7 @@ from firewxpy.data_access import model_data
 
 mpl.rcParams['font.weight'] = 'bold'
 local_time, utc_time = standard.plot_creation_time()
-mapcrs = ccrs.LambertConformal()
+mapcrs = ccrs.PlateCarree()
 datacrs = ccrs.PlateCarree()
 
 provinces = cfeature.NaturalEarthFeature(category='cultural', 
