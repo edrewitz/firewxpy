@@ -2,8 +2,13 @@ import matplotlib.colors
 import warnings
 warnings.filterwarnings('ignore')
 
+def gph_colormap():
+    gph_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("gph", [ "indigo", "purple", "darkblue", "blue", "dodgerblue", "cyan", "orange", "darkorange", "orangered", "red", "darkred", "maroon"])
+
+    return gph_colormap
+
 def vorticity_colormap():
-    vorticity_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("vorticity", ["cyan", "lime", "gold", "orangered", "darkred", "blueviolet", "dimgrey"])
+    vorticity_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("vorticity", [ "white", "white", "cyan", "lime", "gold", "orangered", "darkred", "blueviolet", "dimgrey"])
 
     return vorticity_colormap
 
@@ -11,6 +16,11 @@ def temperature_colormap():
     temperature_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("temperature", ["darkviolet", "blue", "deepskyblue", "white", "orangered", "red", "darkred"])
 
     return temperature_colormap
+
+def gph_change_colormap():
+    gph_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("gph change", ["darkblue", "blue", "deepskyblue", "white", "orangered", "red", "darkred"])
+
+    return gph_change_colormap
 
 def temperature_change_colormap():
     temperature_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("temperature change", ["darkblue", "blue", "deepskyblue", "white", "white", "orangered", "red", "darkred"])
@@ -131,6 +141,3 @@ def colorblind_mode_divergent_colormap():
     colorblind_mode_divergent_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("colorblind mode divergent", ["indigo", "darkviolet", "white", "white", "orange", "darkorange"])
     
     return colorblind_mode_divergent_colormap
-
-
-
