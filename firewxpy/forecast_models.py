@@ -907,11 +907,11 @@ class dynamics:
     
         str_level = f"{level} MB"
     
-        levels = np.arange(-20, 21, 1)
+        levels = np.arange(-30, 31, 1)
         ticks = levels[::5]
     
-        negative = np.arange(-20, 5, 5)
-        positive = np.arange(0, 25, 5)
+        negative = np.arange(-30, 5, 5)
+        positive = np.arange(5, 35, 5)
         
         
     
@@ -1114,6 +1114,9 @@ class dynamics:
                 c_low = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), levels=negative, colors='blue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
                 ax.clabel(c_low, levels=negative, inline=True, fontsize=8, rightside_up=True)
     
+                c = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), levels=[0], colors='black', zorder=2, transform=datacrs, linewidths=1, linestyles='-')
+                ax.clabel(c, levels=[0], inline=True, fontsize=8, rightside_up=True)
+    
                 c_high = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), levels=positive, colors='red', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
                 ax.clabel(c_high, levels=positive, inline=True, fontsize=8, rightside_up=True)
                     
@@ -1133,6 +1136,9 @@ class dynamics:
     
                 c_high = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), levels=positive, colors='red', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
                 ax.clabel(c_high, levels=positive, inline=True, fontsize=8, rightside_up=True)
+    
+                c = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), levels=[0], colors='black', zorder=2, transform=datacrs, linewidths=1, linestyles='-')
+                ax.clabel(c, levels=[0], inline=True, fontsize=8, rightside_up=True)
                 
                 cs = ax.contourf(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), cmap=cmap, transform=datacrs, levels=levels, alpha=0.35, extend='both')
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
