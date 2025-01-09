@@ -907,11 +907,11 @@ class dynamics:
     
         str_level = f"{level} MB"
     
-        levels = np.arange(-40, 41, 1)
+        levels = np.arange(-20, 21, 1)
         ticks = levels[::5]
     
-        negative = np.arange(-40, 5, 5)
-        positive = np.arange(0, 45, 5)
+        negative = np.arange(-20, 5, 5)
+        positive = np.arange(0, 25, 5)
         
         
     
@@ -1050,7 +1050,10 @@ class dynamics:
         
         for t in range(0, end, step):
     
-            t1 = t + 8
+            if model == 'CMCENS' or model == 'GEFS0p50':
+                t1 = t + 4
+            else:
+                t1 = t + 8
         
             fname = f"Image_{t}.png"
         
@@ -1138,8 +1141,6 @@ class dynamics:
             
                 print(f"Saved image for forecast {times.iloc[t1].strftime('%a %d/%H UTC')} to {path_print}.")
                 tim.sleep(10)
-
-
 
 
 
