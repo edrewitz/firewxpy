@@ -783,7 +783,361 @@ class dynamics:
                 tim.sleep(10)
 
 
-
+    def plot_24hr_geopotential_height_change(model, region, level=500, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States Only', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
+    
+    
+        data=data
+        level=level
+        ds=ds
+        western_bound=western_bound
+        eastern_bound=eastern_bound 
+        southern_bound=southern_bound
+        northern_bound=northern_bound
+        show_rivers=show_rivers
+        reference_system=reference_system
+        state_border_linewidth=state_border_linewidth
+        county_border_linewidth=county_border_linewidth
+        gacc_border_linewidth=gacc_border_linewidth
+        psa_border_linewidth=psa_border_linewidth 
+        cwa_border_linewidth=cwa_border_linewidth
+        nws_firewx_zones_linewidth=nws_firewx_zones_linewidth 
+        nws_public_zones_linewidth=nws_public_zones_linewidth 
+        state_border_linestyle=state_border_linestyle
+        county_border_linestyle=county_border_linestyle
+        gacc_border_linestyle=gacc_border_linestyle
+        psa_border_linestyle=psa_border_linestyle 
+        cwa_border_linestyle=cwa_border_linestyle
+        nws_firewx_zones_linestyle=nws_firewx_zones_linestyle 
+        nws_public_zones_linestyle=nws_public_zones_linestyle
+    
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+    
+            state_border_linewidth = state_border_linewidth
+            county_border_linewidth = county_border_linewidth
+            gacc_border_linewidth = gacc_border_linewidth
+            cwa_border_linewidth = cwa_border_linewidth
+            nws_firewx_zones_linewidth = nws_firewx_zones_linewidth
+            nws_public_zones_linewidth = nws_public_zones_linewidth
+            psa_border_linewidth = psa_border_linewidth
+    
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
+    
+            if reference_system == 'States Only':
+                show_state_borders = True
+                state_border_linewidth=1 
+            if reference_system == 'States & Counties':
+                show_state_borders = True
+                show_county_borders = True
+                state_border_linewidth=1 
+                county_border_linewidth=0.25
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+                gacc_border_linewidth=1
+            if reference_system == 'GACC & PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                gacc_border_linewidth=1
+                psa_border_linewidth=0.25
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+                cwa_border_linewidth=1
+            if reference_system == 'NWS CWAs & NWS Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+                cwa_border_linewidth=1
+                nws_public_zones_linewidth=0.25
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+                cwa_border_linewidth=1
+                nws_firewx_zones_linewidth=0.25
+            if reference_system == 'NWS CWAs & Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+                cwa_border_linewidth=1
+                county_border_linewidth=0.25
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+                gacc_border_linewidth=1
+                psa_border_linewidth=0.5
+                nws_firewx_zones_linewidth=0.25
+            if reference_system == 'GACC & PSA & NWS Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+                gacc_border_linewidth=1
+                psa_border_linewidth=0.5
+                nws_public_zones_linewidth=0.25
+            if reference_system == 'GACC & PSA & NWS CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+                gacc_border_linewidth=1
+                psa_border_linewidth=0.5
+                cwa_border_linewidth=0.25
+            if reference_system == 'GACC & PSA & Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+                gacc_border_linewidth=1
+                psa_border_linewidth=0.5
+                county_border_linewidth=0.25 
+            if reference_system == 'GACC & Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+                gacc_border_linewidth=1
+                county_border_linewidth=0.25 
+    
+        str_level = f"{level} MB"
+    
+        levels = np.arange(-40, 41, 1)
+        ticks = levels[::5]
+    
+        negative = np.arange(-40, 5, 5)
+        positive = np.arange(0, 45, 5)
+        
+        
+    
+        if model == 'NAM 1hr':
+            decimate = 20
+            step = 1
+            
+            if level == 850:
+                level_idx = 6
+            if level == 700:
+                level_idx = 12
+            if level == 500:
+                level_idx = 20
+            if level == 300:
+                level_idx = 28
+            if level == 250:
+                level_idx = 30
+            if level == 200:
+                level_idx = 32
+        
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 10
+            step = 1
+    
+            if level == 850:
+                level_idx = 2
+            if level == 700:
+                level_idx = 3
+            if level == 500:
+                level_idx = 4
+            if level == 300:
+                level_idx = 6
+            if level == 250:
+                level_idx = 7
+            if level == 200:
+                level_idx = 8
+            
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 10
+            step = 2
+            
+            if level == 850:
+                level_idx = 5
+            if level == 700:
+                level_idx = 8
+            if level == 500:
+                level_idx = 12
+            if level == 300:
+                level_idx = 16
+            if level == 250:
+                level_idx = 17
+            if level == 200:
+                level_idx = 18
+            
+        if model == 'GFS0p50':
+            decimate = 10
+            step = 2
+            
+            if level == 850:
+                level_idx = 6
+            if level == 700:
+                level_idx = 12
+            if level == 500:
+                level_idx = 20
+            if level == 300:
+                level_idx = 28
+            if level == 250:
+                level_idx = 30
+            if level == 200:
+                level_idx = 32
+        
+        if model == 'GFS1p00':
+            decimate = 10
+            step = 2
+    
+            if level == 850:
+                level_idx = 5
+            if level == 700:
+                level_idx = 8
+            if level == 500:
+                level_idx = 12
+            if level == 300:
+                level_idx = 16
+            if level == 250:
+                level_idx = 17
+            if level == 200:
+                level_idx = 18
+    
+        if region == 'CONUS & South Canada & North Mexico':
+            wb, eb, sb, nb = -140, -45, 20, 65
+            shrink = 0.4
+            x1, y1 = 0.01, -0.03
+            x2, y2 = 0.725, -0.025
+            x3, y3 = 0.01, 0.01
+        if region == 'CONUS' or region =='conus':
+            wb, eb, sb, nb = -125, -65, 23, 50
+            shrink = 0.4
+            x1, y1 = 0.01, -0.03
+            x2, y2 = 0.725, -0.025
+            x3, y3 = 0.01, 0.01
+        if region == 'AK' or region == 'ak':
+            wb, eb, sb, nb = -180, -115, 45, 85
+            shrink = 0.5
+            x1, y1 = 0.01, -0.03
+            x2, y2 = 0.725, -0.025
+            x3, y3 = 0.01, 0.01
+        if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
+            wb, eb, sb, nb = -180, -45, 20, 85
+            shrink=0.4
+            x1, y1 = 0.01, -0.03
+            x2, y2 = 0.68, -0.025
+            x3, y3 = 0.01, 0.01
+        
+        if data == False:
+            ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound, dynamic=True)
+            
+        if data == True:
+            ds = ds
+    
+        cmap = colormaps.gph_change_colormap()
+    
+        end = len(ds['time']) - 1
+        time = ds['time']
+        times = time.to_pandas()
+    
+    
+        path, path_print = file_functions.forecast_model_graphics_paths(model, region, reference_system, '24-Hour Geopotential Height Change', str_level)
+    
+        for file in os.listdir(f"{path}"):
+            try:
+                os.remove(f"{path}/{file}")
+            except Exception as e:
+                pass
+                
+        print(f"Any old images (if any) in {path_print} have been deleted.")
+        
+        for t in range(0, end, step):
+    
+            t1 = t + 8
+        
+            fname = f"Image_{t}.png"
+        
+            fig = plt.figure(figsize=(12, 12))
+            fig.set_facecolor('aliceblue')
+            
+            ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
+            ax.set_extent([wb, eb, sb, nb], datacrs)
+            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+            ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+            if show_rivers == True:
+                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+        
+            if show_gacc_borders == True:
+                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+            if show_cwa_borders == True:
+                ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass
+    
+            model = model.upper()
+            plt.title(f"{model} {str_level} 24-HR GEOPOTENTIAL HEIGHT CHANGE [ΔDm]", fontsize=9, fontweight='bold', loc='left')
+            plt.title("Forecast Valid: " +times.iloc[t1].strftime('%a %d/%H UTC')+" - "+times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+            ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=6, fontweight='bold', bbox=props)
+            ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=5, fontweight='bold', bbox=props)
+            ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=5, fontweight='bold', bbox=props, zorder=11)
+    
+    
+            if model == 'CMCENS' or model == 'GEFS0P50':
+    
+                c_low = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), levels=negative, colors='blue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                ax.clabel(c_low, levels=negative, inline=True, fontsize=8, rightside_up=True)
+    
+                c_high = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), levels=positive, colors='red', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                ax.clabel(c_high, levels=positive, inline=True, fontsize=8, rightside_up=True)
+                    
+                cs = ax.contourf(ds['lon'], ds['lat'], ((ds['hgtprs'][0, t1, level_idx, :, :] - ds['hgtprs'][0, t, level_idx, :, :])/10), cmap=cmap, transform=datacrs, levels=levels, alpha=0.35, extend='both')
+                cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
+    
+                fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        
+                print(f"Saved image for forecast {times.iloc[t1].strftime('%a %d/%H UTC')} to {path_print}.")
+                tim.sleep(10)
+    
+    
+            else:
+                
+                c_low = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), levels=negative, colors='blue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                ax.clabel(c_low, levels=negative, inline=True, fontsize=8, rightside_up=True)
+    
+                c_high = ax.contour(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), levels=positive, colors='red', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                ax.clabel(c_high, levels=positive, inline=True, fontsize=8, rightside_up=True)
+                
+                cs = ax.contourf(ds['lon'], ds['lat'], ((ds['hgtprs'][t1, level_idx, :, :] - ds['hgtprs'][t, level_idx, :, :])/10), cmap=cmap, transform=datacrs, levels=levels, alpha=0.35, extend='both')
+                cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
+        
+                fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            
+                print(f"Saved image for forecast {times.iloc[t1].strftime('%a %d/%H UTC')} to {path_print}.")
+                tim.sleep(10)
 
 
 
