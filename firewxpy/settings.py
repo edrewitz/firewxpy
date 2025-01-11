@@ -657,7 +657,7 @@ def get_region_info(model, region):
         eastern_bound = -74.97
         southern_bound = 37.9
         northern_bound = 39.79
-        shrink = 0.45
+        shrink = 0.365
         x1, y1 = 0.01, -0.03
         x2, y2 = 0.725, -0.025
         x3, y3 = 0.01, 0.01
@@ -679,7 +679,7 @@ def get_region_info(model, region):
         eastern_bound = -75.15
         southern_bound = 35.7
         northern_bound = 39.53
-        shrink = 0.45
+        shrink = 0.375
         x1, y1 = 0.01, -0.03
         x2, y2 = 0.725, -0.025
         x3, y3 = 0.01, 0.01
