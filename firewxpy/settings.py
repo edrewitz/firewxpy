@@ -11,171 +11,690 @@ This file hosts all the functions that return the settings for each plot for eac
 
 import cartopy.crs as ccrs
 
-def get_region_boundary_limits(region):
+def get_region_info(model, region):
 
+    model = model
     region = region
 
     if region == 'CONUS' or region == 'conus':
         western_bound = -126
         eastern_bound = -66
         southern_bound = 24
-        northern_bound = 50.5   
+        northern_bound = 50.5  
+        shrink = 0.4
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
 
     if region == 'CA' or region == 'ca':
         western_bound = -124.61
         eastern_bound = -113.93
-        southern_bound = 30
+        southern_bound = 32.4
         northern_bound = 42.5
+        shrink = 0.8
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 10
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 2 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'AK' or region == 'ak':
         western_bound = -170
         eastern_bound = -130
         southern_bound = 50
-        northern_bound = 71             
+        northern_bound = 75      
+        shrink = 0.55
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
+
+    if region == 'AER' or region == 'aer':
+        western_bound = -155
+        eastern_bound = -140.75
+        southern_bound = 55.5
+        northern_bound = 64     
+        shrink = 0.5
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 2
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 2 
+        if model == 'GFS0p50':
+            decimate = 2
+        if model == 'GFS1p00':
+            decimate = 2
+
+    if region == 'ALU' or region == 'alu':
+        western_bound = -170
+        eastern_bound = -151
+        southern_bound = 52
+        northern_bound = 63      
+        shrink = 0.5
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 2
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 2 
+        if model == 'GFS0p50':
+            decimate = 2
+        if model == 'GFS1p00':
+            decimate = 2
+
+    if region == 'AJK' or region == 'ajk':
+        western_bound = -145
+        eastern_bound = -129.5
+        southern_bound = 54
+        northern_bound = 60.75      
+        shrink = 0.375
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 2
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 2 
+        if model == 'GFS0p50':
+            decimate = 2
+        if model == 'GFS1p00':
+            decimate = 2
+
+    if region == 'AFG' or region == 'afg':
+        western_bound = -170
+        eastern_bound = -140.75
+        southern_bound = 60
+        northern_bound = 75      
+        shrink = 0.425
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        if model == 'NAM 1hr':
+            decimate = 8
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 3
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 3 
+        if model == 'GFS0p50':
+            decimate = 3
+        if model == 'GFS1p00':
+            decimate = 3
 
     if region == 'HI' or region == 'hi':
         western_bound = -160.3
         eastern_bound = -154.73
         southern_bound = 18.76
         northern_bound = 22.28
+        shrink = 0.55
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'ME' or region == 'me':       
         western_bound = -71.2
         eastern_bound = -66.75
         southern_bound = 42.2
-        northern_bound = 47.6           
+        northern_bound = 47.6  
+        shrink = 1
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 7
+        stamp_fontsize = 6
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'NH' or region == 'nh':
         western_bound = -72.65
         eastern_bound = -70.60
         southern_bound = 42.35
         northern_bound = 45.36
+        shrink = 1
+        x1, y1 = 0.01, -0.01
+        x2, y2 = 0.725, -0.01
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'VT' or region == 'vt':
         western_bound = -73.50
         eastern_bound = -71.44
         southern_bound = 42.5
         northern_bound = 45.10
+        shrink = 1
+        x1, y1 = 0.01, -0.01
+        x2, y2 = 0.725, -0.01
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'MA' or region == 'ma':
         western_bound = -73.55
         eastern_bound = -69.88
         southern_bound = 41.3
         northern_bound = 42.92
+        shrink = 0.375
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'RI' or region == 'ri':
         western_bound = -71.86
         eastern_bound = -71.11
         southern_bound = 41.2
         northern_bound = 42.03
+        shrink = 0.925
+        x1, y1 = 0.01, -0.01
+        x2, y2 = 0.725, -0.01
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'CT' or region == 'ct':
         western_bound = -73.74
         eastern_bound = -71.77
         southern_bound = 40.8
         northern_bound = 42.06
+        shrink = 0.55
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'NJ' or region == 'nj':
         western_bound = -75.60
-        eastern_bound = -73.88
+        eastern_bound = -73.5
         southern_bound = 38.45
         northern_bound = 41.37
+        shrink = 1
+        x1, y1 = 0.01, -0.01
+        x2, y2 = 0.725, -0.01
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'DE' or region == 'de':
         western_bound = -76
-        eastern_bound = -75.0
+        eastern_bound = -74.5
         southern_bound = 38.2
         northern_bound = 39.9
+        shrink = 0.925
+        x1, y1 = 0.01, -0.01
+        x2, y2 = 0.725, -0.01
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'NY' or region == 'ny':
         western_bound = -79.85
         eastern_bound = -71.85
         southern_bound = 40.3
         northern_bound = 45.08
+        shrink = 0.5
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'PA' or region == 'pa':
         western_bound = -80.6
         eastern_bound = -74.6
         southern_bound = 39.25
         northern_bound = 42.32
+        shrink = 0.45
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'OH' or region == 'oh':
         western_bound = -84.9
         eastern_bound = -80.4
         southern_bound = 37.75
         northern_bound = 42.0
+        shrink = 0.8
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'MI' or region == 'mi':
         western_bound = -90.5
         eastern_bound = -82.31
         southern_bound = 40.6
         northern_bound = 48.26
+        shrink = 0.8
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'MN' or region == 'mn':
         western_bound = -97.45
         eastern_bound = -89.28
         southern_bound = 42.85
         northern_bound = 49.45
+        shrink = 0.7
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'WI' or region == 'wi':
         western_bound = -93.1
         eastern_bound = -86.68
         southern_bound = 41.8
         northern_bound = 47.11
+        shrink = 0.7
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'IA' or region == 'ia':
         western_bound = -96.77
         eastern_bound = -90
         southern_bound = 39.9
         northern_bound = 43.7
+        shrink = 0.475
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'IN' or region == 'in':
         western_bound = -88.19
         eastern_bound = -84.69
         southern_bound = 37.1
         northern_bound = 41.79
+        shrink = 1
+        x1, y1 = 0.01, -0.01
+        x2, y2 = 0.715, -0.01
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'MO' or region == 'mo':
         western_bound = -95.9
         eastern_bound = -88.92
         southern_bound = 35.8
         northern_bound = 40.66
+        shrink = 0.6
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'IL' or region == 'il':
         western_bound = -91.67
         eastern_bound = -87.44
         southern_bound = 36.3
         northern_bound = 42.55
+        shrink = 1
+        x1, y1 = 0.01, -0.01
+        x2, y2 = 0.725, -0.01
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'ND' or region == 'nd':
         western_bound = -104.2
         eastern_bound = -96.47
         southern_bound = 45.3
         northern_bound = 49.1
+        shrink = 0.425
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'SD' or region == 'sd':
         western_bound = -104.14
         eastern_bound = -96.3
         southern_bound = 42.12
         northern_bound = 46.15
+        shrink = 0.45
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'NE' or region == 'ne':
         western_bound = -104.14
         eastern_bound = -95.25
         southern_bound = 39.3
         northern_bound = 43.1
+        shrink = 0.375
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'MD' or region == 'md':
         western_bound = -79.52
         eastern_bound = -74.97
         southern_bound = 37.9
         northern_bound = 39.79
+        shrink = 0.45
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'VA' or region == 'va':
         western_bound = -83.77
         eastern_bound = -75.15
         southern_bound = 35.7
         northern_bound = 39.53
+        shrink = 0.45
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr':
+            decimate = 5
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 1 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
 
     if region == 'SC' or region == 'sc':
         western_bound = -83.46
@@ -330,6 +849,16 @@ def get_region_boundary_limits(region):
         x1, y1 = 0.01, -0.03
         x2, y2 = 0.725, -0.025
         x3, y3 = 0.01, 0.01
+        if model == 'NAM 1hr':
+            decimate = 10
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 2 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
         
     if region == 'ONCC' or region == 'oncc' or region == 'NOPS' or region == 'nops':
         western_bound = -124.8
@@ -393,10 +922,11 @@ def get_region_boundary_limits(region):
         x2, y2 = 0.68, -0.025
         x3, y3 = 0.01, 0.01
         
-    return western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink
+    return western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, decimate, signature_fontsize, stamp_fontsize
 
 
-def coords_for_forecast_model_data(region, western_bound, eastern_bound, southern_bound, northern_bound, dynamic):
+
+def coords_for_forecast_model_data(region, western_bound, eastern_bound, southern_bound, northern_bound):
 
     if western_bound != None and eastern_bound != None and southern_bound != None and northern_bound != None:
 
@@ -423,16 +953,10 @@ def coords_for_forecast_model_data(region, western_bound, eastern_bound, souther
             northern_bound = 85            
 
         if region == 'CONUS' or region == 'conus':
-            if dynamic == False:
-                western_bound = 127
-                eastern_bound = 65
-                southern_bound = 24
-                northern_bound = 50  
-            if dynamic == True:
-                western_bound = 140
-                eastern_bound = 50
-                southern_bound = 20
-                northern_bound = 60                 
+            western_bound = 140
+            eastern_bound = 50
+            southern_bound = 20
+            northern_bound = 60                 
     
         if region == 'CA' or region == 'ca':
             western_bound = 125
@@ -441,16 +965,34 @@ def coords_for_forecast_model_data(region, western_bound, eastern_bound, souther
             northern_bound = 43
     
         if region == 'AK' or region == 'ak':
-            if dynamic == False:
-                western_bound = 170
-                eastern_bound = 129
-                southern_bound = 50
-                northern_bound = 72
-            if dynamic == True:
-                western_bound = 200
-                eastern_bound = 125
-                southern_bound = 50
-                northern_bound = 80
+            western_bound = 200
+            eastern_bound = 125
+            southern_bound = 50
+            northern_bound = 80
+
+        if region == 'AER' or region == 'aer':
+            western_bound = 160
+            eastern_bound = 140
+            southern_bound = 50
+            northern_bound = 64
+
+        if region == 'ALU' or region == 'alu':
+            western_bound = 170
+            eastern_bound = 150
+            southern_bound = 50
+            northern_bound = 64
+
+        if region == 'AJK' or region == 'ajk':
+            western_bound = 147
+            eastern_bound = 128
+            southern_bound = 50
+            northern_bound = 62
+
+        if region == 'AFG' or region == 'afg':
+            western_bound = 170
+            eastern_bound = 140
+            southern_bound = 60
+            northern_bound = 80
     
         if region == 'HI' or region == 'hi':
             western_bound = 161
@@ -502,7 +1044,7 @@ def coords_for_forecast_model_data(region, western_bound, eastern_bound, souther
     
         if region == 'DE' or region == 'de':
             western_bound = 76
-            eastern_bound = 75
+            eastern_bound = 74.5
             southern_bound = 38
             northern_bound = 40
     
