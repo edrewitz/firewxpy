@@ -242,14 +242,13 @@ class info:
 
 class model_data:
 
-    def get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound, dynamic=False):
+    def get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound):
 
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
-        dynamic = dynamic
 
         if western_bound == None and eastern_bound == None and southern_bound == None and northern_bound == None:
-            western_bound, eastern_bound, southern_bound, northern_bound = coords_for_forecast_model_data(region, western_bound, eastern_bound, southern_bound, northern_bound, dynamic)
+            western_bound, eastern_bound, southern_bound, northern_bound = coords_for_forecast_model_data(region, western_bound, eastern_bound, southern_bound, northern_bound)
 
         else:
             western_bound, eastern_bound, southern_bound, northern_bound = western_bound, eastern_bound, southern_bound, northern_bound
