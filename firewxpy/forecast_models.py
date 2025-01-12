@@ -27,7 +27,6 @@ from firewxpy.data_access import model_data
 
 mpl.rcParams['font.weight'] = 'bold'
 local_time, utc_time = standard.plot_creation_time()
-mapcrs = ccrs.PlateCarree()
 datacrs = ccrs.PlateCarree()
 
 provinces = cfeature.NaturalEarthFeature(category='cultural', 
@@ -64,6 +63,11 @@ class dynamics:
         cwa_border_linestyle=cwa_border_linestyle
         nws_firewx_zones_linestyle=nws_firewx_zones_linestyle 
         nws_public_zones_linestyle=nws_public_zones_linestyle
+
+        if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
+            mapcrs = ccrs.LambertConformal()
+        else:
+            mapcrs = ccrs.PlateCarree()
     
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -375,7 +379,8 @@ class dynamics:
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
         
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                tim.sleep(10)
+                if mapcrs == datacrs:
+                    tim.sleep(10)
     
     
             else:
@@ -400,7 +405,8 @@ class dynamics:
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                tim.sleep(10)
+                if mapcrs == datacrs:
+                    tim.sleep(10)
     
     
     def plot_geopotential_height(model, region, level=500, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States Only', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=None, y1=None, x2=None, y2=None, x3=None, y3=None, shrink=1, decimate=None, signature_fontsize=6, stamp_fontsize=5):
@@ -429,6 +435,11 @@ class dynamics:
         cwa_border_linestyle=cwa_border_linestyle
         nws_firewx_zones_linestyle=nws_firewx_zones_linestyle 
         nws_public_zones_linestyle=nws_public_zones_linestyle
+
+        if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
+            mapcrs = ccrs.LambertConformal()
+        else:
+            mapcrs = ccrs.PlateCarree()
     
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -728,7 +739,8 @@ class dynamics:
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
         
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                tim.sleep(10)
+                if mapcrs == datacrs:
+                    tim.sleep(10)
     
     
             else:
@@ -742,7 +754,8 @@ class dynamics:
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                tim.sleep(10)
+                if mapcrs == datacrs:
+                    tim.sleep(10)
 
 
     def plot_24hr_geopotential_height_change(model, region, level=500, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States Only', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=None, y1=None, x2=None, y2=None, x3=None, y3=None, shrink=1, decimate=None, signature_fontsize=6, stamp_fontsize=5):
@@ -771,6 +784,11 @@ class dynamics:
         cwa_border_linestyle=cwa_border_linestyle
         nws_firewx_zones_linestyle=nws_firewx_zones_linestyle 
         nws_public_zones_linestyle=nws_public_zones_linestyle
+
+        if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
+            mapcrs = ccrs.LambertConformal()
+        else:
+            mapcrs = ccrs.PlateCarree()
     
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -1053,7 +1071,8 @@ class dynamics:
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
                     print(f"Saved image for forecast {times.iloc[t1].strftime('%a %d/%H UTC')} to {path_print}.")
-                    tim.sleep(10)
+                    if mapcrs == datacrs:
+                        tim.sleep(10)
     
                 except Exception as e:
                     pass
@@ -1077,7 +1096,8 @@ class dynamics:
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                 
                     print(f"Saved image for forecast {times.iloc[t1].strftime('%a %d/%H UTC')} to {path_print}.")
-                    tim.sleep(10)
+                    if mapcrs == datacrs:
+                        tim.sleep(10)
                 except Exception as e:
                     pass
 
@@ -1114,6 +1134,11 @@ class dynamics:
         x3=x3
         y3=y3 
         shrink=shrink
+
+        if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
+            mapcrs = ccrs.LambertConformal()
+        else:
+            mapcrs = ccrs.PlateCarree()
     
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -1435,7 +1460,8 @@ class dynamics:
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
         
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                tim.sleep(10)
+                if mapcrs == datacrs:
+                    tim.sleep(10)
     
     
             else:
@@ -1460,9 +1486,8 @@ class dynamics:
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                tim.sleep(10)
-
-
+                if mapcrs == datacrs:
+                    tim.sleep(10)
 
 
 
