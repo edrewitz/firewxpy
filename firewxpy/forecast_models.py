@@ -1660,7 +1660,7 @@ class dynamics:
             wb=western_bound, eb=eastern_bound, sb=southern_bound, nb=northern_bound
             x1, y1, x2, y2, x3, y3, shrink, decimate, signature_fontsize, stamp_fontsize = x1, y1, x2, y2, x3, y3, shrink, decimate, signature_fontsize, stamp_fontsize
         else:
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, decimate, signature_fontsize, stamp_fontsize = get_region_info(model, region)
+            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, decimate, signature_fontsize, stamp_fontsize = settings.get_region_info(model, region)
         
         if data == False:
             ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
