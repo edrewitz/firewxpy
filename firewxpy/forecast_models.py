@@ -27,10 +27,21 @@ from firewxpy.data_access import model_data
 
 mpl.rcParams['font.weight'] = 'bold'
 local_time, utc_time = standard.plot_creation_time()
+
 datacrs = ccrs.PlateCarree()
 
 provinces = cfeature.NaturalEarthFeature(category='cultural', 
     name='admin_1_states_provinces_lines', scale='50m', facecolor='none', edgecolor='k')
+
+PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
+
+GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
+
+CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
+
+FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
+
+PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
 
 props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
