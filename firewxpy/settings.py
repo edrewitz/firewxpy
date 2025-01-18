@@ -11,6 +11,67 @@ This file hosts all the functions that return the settings for each plot for eac
 
 import cartopy.crs as ccrs
 
+def get_sp_dims_and_textbox_coords(region):
+
+    region = region
+
+    if region == 'CONUS & South Canada & North Mexico':
+        fontsize = 5
+        x = 0.01
+        y = 0.97
+
+    elif region == 'CONUS' or region == 'conus':
+        fontsize = 5
+        x = 0.01
+        y = 0.95
+
+    elif region == 'Canada' or region == 'canada':
+        fontsize = 5
+        x = 0.01
+        y = 0.95
+
+    elif region == 'NA' or region == 'na':
+        fontsize = 5
+        x = 0.01
+        y = 0.95
+
+    elif region == 'NY' or region == 'ny':
+        fontsize = 6
+        x = 0.01
+        y = 0.97  
+
+    elif region == 'TN' or region == 'tn' or region == 'VA' or region == 'va' or region == 'NC' or region == 'nc' or region == 'OK' or region == 'ok' or region == 'KS' or region == 'ks' or region == 'NE' or region == 'ne' or region == 'SD' or region == 'sd' or region == 'ND' or region == 'nd' or region == 'MT' or region == 'mt':
+        fontsize = 6
+        x = 0.01
+        y = 0.95   
+
+    elif region == 'KY' or region == 'ky' or region == 'MI' or region == 'mi':
+        fontsize = 6
+        x = 0.01
+        y = 0.97  
+
+    elif region == 'ONCC' or region == 'oncc' or region == 'VT' or region == 'vt' or region == 'RI' or region == 'ri' or region == 'MS' or region == 'ms' or region == 'IN' or region == 'in' or region == 'IL' or region == 'il' or region == 'NM' or region == 'nm' or region == 'NV' or region == 'nv' or region == 'UT' or region == 'ut' or region == 'ID' or region == 'id':
+        fontsize = 9
+        x = 0.01
+        y = 0.97      
+
+    elif region == 'NJ' or region == 'nj' or region == 'DE' or region == 'de':
+        fontsize = 10
+        x = 0.01
+        y = 0.97   
+
+    elif region == 'GA' or region == 'ga' or region == 'FL' or region == 'fl' or region == 'MO' or region == 'mo':
+        fontsize = 8
+        x = 0.85
+        y = 0.97   
+
+    else:
+        fontsize = 8
+        x = 0.01
+        y = 0.97     
+
+    return fontsize, x, y
+
 def get_region_info(model, region):
 
     model = model
