@@ -40,12 +40,12 @@ def get_sp_dims_and_textbox_coords(region):
         x = 0.01
         y = 0.97  
 
-    elif region == 'TN' or region == 'tn' or region == 'VA' or region == 'va' or region == 'NC' or region == 'nc' or region == 'OK' or region == 'ok' or region == 'KS' or region == 'ks' or region == 'NE' or region == 'ne' or region == 'SD' or region == 'sd' or region == 'ND' or region == 'nd' or region == 'MT' or region == 'mt':
+    elif region == 'TN' or region == 'tn' or region == 'VA' or region == 'va' or region == 'NC' or region == 'nc' or region == 'OK' or region == 'ok' or region == 'KS' or region == 'ks' or region == 'NE' or region == 'ne' or region == 'SD' or region == 'sd' or region == 'ND' or region == 'nd' or region == 'MT' or region == 'mt' or region == 'NRCC' or region == 'nrcc' or region == 'SACC' or region == 'sacc' or region == 'EACC' or region == 'eacc':
         fontsize = 6
         x = 0.01
         y = 0.95   
 
-    elif region == 'KY' or region == 'ky' or region == 'MI' or region == 'mi':
+    elif region == 'KY' or region == 'ky' or region == 'MI' or region == 'mi' or region == 'ALU' or region == 'alu' or region == 'AFG' or region == 'afg' or region == 'AJK' or region == 'ajk' or region == 'RMCC' or region == 'rmcc':
         fontsize = 6
         x = 0.01
         y = 0.97  
@@ -72,6 +72,7 @@ def get_sp_dims_and_textbox_coords(region):
 
     return fontsize, x, y
 
+
 def get_region_info(model, region):
 
     model = model
@@ -82,13 +83,13 @@ def get_region_info(model, region):
         eastern_bound = -66
         southern_bound = 24
         northern_bound = 50.5  
-        shrink = 0.4
+        shrink = 0.375
         x1, y1 = 0.01, -0.03
         x2, y2 = 0.725, -0.025
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 15
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 7
@@ -110,7 +111,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 3
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -132,7 +133,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 15
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 7
@@ -154,7 +155,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 5
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 2
@@ -176,7 +177,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 5
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 2
@@ -198,7 +199,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 5
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 2
@@ -218,7 +219,9 @@ def get_region_info(model, region):
         x1, y1 = 0.01, -0.03
         x2, y2 = 0.725, -0.025
         x3, y3 = 0.01, 0.01
-        if model == 'NAM 1hr':
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 8
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 3
@@ -240,7 +243,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -262,7 +265,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 7
         stamp_fontsize = 6
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -284,7 +287,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -306,7 +309,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -328,7 +331,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -350,7 +353,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -372,7 +375,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -394,7 +397,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -416,7 +419,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -438,7 +441,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -460,7 +463,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -482,7 +485,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -504,7 +507,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -526,7 +529,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -548,7 +551,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -570,7 +573,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -592,7 +595,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -614,7 +617,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -636,7 +639,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -658,7 +661,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -680,7 +683,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -702,7 +705,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -724,7 +727,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -746,7 +749,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -768,7 +771,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -790,7 +793,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -812,7 +815,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -834,7 +837,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -856,7 +859,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -878,7 +881,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -900,7 +903,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -922,7 +925,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -944,7 +947,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -966,7 +969,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -988,7 +991,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1010,7 +1013,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1032,7 +1035,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1054,7 +1057,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1076,7 +1079,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 3
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1098,7 +1101,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1120,7 +1123,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 3
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1142,7 +1145,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 3
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1164,7 +1167,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 3
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1186,7 +1189,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1208,7 +1211,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1230,7 +1233,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 3
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1252,7 +1255,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1274,7 +1277,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1296,7 +1299,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1318,7 +1321,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1340,7 +1343,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 3
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1362,7 +1365,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 3
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1384,7 +1387,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 3
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1406,7 +1409,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 3
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1428,7 +1431,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 6
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1450,7 +1453,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 6
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1472,7 +1475,7 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 2
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 1
@@ -1491,7 +1494,26 @@ def get_region_info(model, region):
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
+            decimate = 20
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 10
+        if model == 'GFS0p25' or model == 'GFS0p25_1h':
+            decimate = 10 
+        if model == 'GFS0p50':
+            decimate = 10
+        if model == 'GFS1p00':
+            decimate = 10
+
+    if region == 'Canada' or region == 'canada':
+        western_bound, eastern_bound, southern_bound, northern_bound = -141.5, -51, 41, 85
+        shrink = 0.4
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 20
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 10
@@ -1503,14 +1525,14 @@ def get_region_info(model, region):
             decimate = 10
         
     if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
-        western_bound, eastern_bound, southern_bound, northern_bound = -180, -45, 20, 85
+        western_bound, eastern_bound, southern_bound, northern_bound = -180, -51, 20, 85
         shrink = 0.4
         x1, y1 = 0.01, -0.03
         x2, y2 = 0.68, -0.025
         x3, y3 = 0.01, 0.01
         signature_fontsize = 6
         stamp_fontsize = 5
-        if model == 'NAM 1hr':
+        if model == 'NAM 1hr' or model == 'NAM':
             decimate = 20
         if model == 'CMCENS' or model == 'GEFS0p50':
             decimate = 12
@@ -1538,17 +1560,21 @@ def coords_for_forecast_model_data(region, western_bound, eastern_bound, souther
     else:
 
         if region == 'CONUS & South Canada & North Mexico':
-            
             western_bound = 140
             eastern_bound = 40
             southern_bound = 13
             northern_bound = 65 
 
-        if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
+        if region == 'Canada' or region == 'canada':
+            western_bound = 142
+            eastern_bound = 51
+            southern_bound = 41
+            northern_bound = 85                
 
+        if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
             western_bound = 180
             eastern_bound = 40
-            southern_bound = 12
+            southern_bound = 20
             northern_bound = 85            
 
         if region == 'CONUS' or region == 'conus':
