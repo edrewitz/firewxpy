@@ -632,20 +632,21 @@ class model_data:
         print(f"Any old files (if any) in 'f:{model} Data' have been deleted.")
     
         forecast_hours = []
-        for i in range(0, 12, 3):
-            hour = f"00{i}"
-            forecast_hours.append(hour)
-        for i in range(12, 75, 3):
-            hour = f"0{i}"
-            forecast_hours.append(hour)
-        for i in range(78, 102, 6):
-            hour = f"0{i}"
-            forecast_hours.append(hour)
-        for i in range(102, 243, 6):
-            hour = f"{i}"
-            forecast_hours.append(hour)
         
         if model == 'GEFS0p25 ENS MEAN':
+
+            for i in range(0, 12, 3):
+                hour = f"00{i}"
+                forecast_hours.append(hour)
+            for i in range(12, 75, 3):
+                hour = f"0{i}"
+                forecast_hours.append(hour)
+            for i in range(78, 102, 6):
+                hour = f"0{i}"
+                forecast_hours.append(hour)
+            for i in range(102, 243, 6):
+                hour = f"{i}"
+                forecast_hours.append(hour)
             
             url_00z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/00/atmos/pgrb2sp25/"
             url_06z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/06/atmos/pgrb2sp25/"
@@ -823,6 +824,7 @@ class model_data:
 
                 print(f"Ignore the error message regarding u and v winds.")
                 return datasets, u, v
+
 
     def msc_datamart_datasets(product, directory_path):
 
