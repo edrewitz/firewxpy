@@ -803,7 +803,7 @@ class model_data:
             if get_u_and_v_wind_components == False:
                 datasets = []
                 for file in fpaths:
-                    ds = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': typeOfLevel}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(southern_bound, northern_bound, 1))
+                    ds = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': typeOfLevel}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
                     datasets.append(ds)
                     print(f"Extrated dataset from {file}")
                     
