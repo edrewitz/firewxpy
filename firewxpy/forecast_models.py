@@ -2592,7 +2592,7 @@ class relative_humidity:
 
 class critical_firewx_conditions:
 
-    def plot_favorable_firewx_conditions(model, region, low_rh_threshold=15, high_wind_threshold=25, use_wind_gust=False, temperature_threshold=None, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=None, y1=None, x2=None, y2=None, x3=None, y3=None, shrink=1, decimate=None, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
+    def plot_favorable_firewx_conditions(model, region, low_rh_threshold=15, high_wind_threshold=25, use_wind_gust=False, temperature_threshold=None, data=False, ds=None, ds_list=None, u=None, v=None, gusts=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=None, y1=None, x2=None, y2=None, x3=None, y3=None, shrink=1, decimate=None, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
     
     
         data=data
@@ -2756,24 +2756,36 @@ class critical_firewx_conditions:
             wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, decimate, signature_fontsize, stamp_fontsize = settings.get_region_info(model, region)
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
     
-            if model == 'GFS0p25' or model == 'GFS0p25_1h':
-                decimate = decimate + 1
+            if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+                
+                if region == 'conus' or region == 'North America' or region == 'north america' or region == 'NA' or region == 'na':
+                    decimate = decimate * 2
+                else:
+                    decimate = decimate + 1
+                    
             elif model == 'NAM 1hr' or model == 'NAM':
-                decimate = decimate + 2
+                if region == 'conus' or region == 'North America' or region == 'north america' or region == 'NA' or region == 'na':
+                    decimate = decimate * 2
+                else:
+                    decimate = decimate + 2
             else:
                 decimate = decimate
         
-        if data == False:
+        if data == False and model != 'GEFS0p25 ENS MEAN':
             ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
+    
+        if data == False and model == 'GEFS0p25 ENS MEAN':
+            ds_list, u, v, gusts = model_data.get_model_data_via_https(model, region, 'heightAboveGround', western_bound, eastern_bound, southern_bound, northern_bound, get_u_and_v_wind_components=True, add_wind_gusts=True)
             
-        if data == True:
+        if data == True and model != 'GEFS0p25 ENS MEAN':
             ds = ds
     
+        if data == True and model == 'GEFS0p25 ENS MEAN':
+            ds_list = ds_list 
+            u = u
+            v = v
+            gusts = gusts
     
-        end1 = (int(round((len(ds['time']) - 1)/6, 0)) - 1)
-        end2 = len(ds['time']) - 1
-        time = ds['time']
-        times = time.to_pandas()
     
         cmap = colormaps.red_flag_warning_criteria_colormap()
     
@@ -2797,268 +2809,6 @@ class critical_firewx_conditions:
                     except Exception as e:
                         pass
     
-            print(f"Any old images (if any) in {path_print} have been deleted.")
-    
-            if use_wind_gust == False:
-                ds['wind_speed'] = np.hypot(ds['ugrd10m'], ds['vgrd10m']) * 2.23694
-            if use_wind_gust == True:
-                ds['wind_speed'] = ds['gustsfc'] * 2.23694
-    
-            ds['u'] = ds['ugrd10m'] * 2.23694
-            ds['v'] = ds['vgrd10m'] * 2.23694
-            
-            mask = (ds['rh2m'] <= low_rh_threshold) & (ds['wind_speed'] >= high_wind_threshold)
-        
-            for t in range(0, end1, 1):
-            
-                fname = f"Image_{t}.png"
-            
-                fig = plt.figure(figsize=(12, 12))
-                fig.set_facecolor('aliceblue')
-                
-                ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-                ax.set_extent([wb, eb, sb, nb], datacrs)
-                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-                ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-                ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-                ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-                ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
-                if show_rivers == True:
-                    ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-                else:
-                    pass
-            
-                if show_gacc_borders == True:
-                    ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-                else:
-                    pass
-                if show_psa_borders == True:
-                    ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-                else:
-                    pass
-                if show_county_borders == True:
-                    ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-                else:
-                    pass
-                if show_state_borders == True:
-                    ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-                else:
-                    pass
-                if show_cwa_borders == True:
-                    ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-                else:
-                    pass
-                if show_nws_firewx_zones == True:
-                    ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-                else:
-                    pass
-                if show_nws_public_zones == True:
-                    ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-                else:
-                    pass
-        
-                model = model.upper()
-                
-                if use_wind_gust == False:
-                    plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[RH <= {low_rh_threshold} [%] & SUSTAINED WIND SPEED >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
-                    ax.text(x, y, f"KEY: RH = GREEN | SUSTAINED WIND = BARBS & CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-                if use_wind_gust == True:
-                    plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[RH <= {low_rh_threshold} [%] & WIND GUST >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
-                    ax.text(x, y, f"KEY: RH = GREEN | SUSTAINED WIND = BARBS | WIND GUSTS = CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-                    
-                plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
-                ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-                ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-                ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
-                
-                lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
-    
-                numbers = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
-                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
-        
-                barbs = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate],
-                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=8, clip_on=True)
-        
-                if model == 'CMCENS' or model == 'GEFS0P50':
-        
-                    rh = ds['rh2m'][0, t, :, :]
-    
-                    wind = ds['wind_speed'][0, t, :, :]
-        
-                    rh = rh[::decimate, ::decimate].to_numpy().flatten()
-    
-                    wind = wind[::decimate, ::decimate].to_numpy().flatten()
-    
-                    barbs.plot_barb(ds['u'][0, t, ::decimate, ::decimate], ds['v'][0, t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
-            
-                    numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                    numbers.plot_parameter('NW', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                    try:
-                        ax.pcolormesh(mask['lon'], mask['lat'], mask[0, t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
-                    except Exception as e:
-                        pass
-        
-                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                    if mapcrs == datacrs:
-                        tim.sleep(10)
-        
-        
-                else:
-                    
-                    rh = ds['rh2m'][t, :, :]
-    
-                    wind = ds['wind_speed'][t, :, :]
-        
-                    rh = rh[::decimate, ::decimate].to_numpy().flatten()
-    
-                    wind = wind[::decimate, ::decimate].to_numpy().flatten()
-    
-                    barbs.plot_barb(ds['u'][t, ::decimate, ::decimate], ds['v'][t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
-            
-                    numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                    numbers.plot_parameter('NW', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-        
-                    try:
-                        ax.pcolormesh(mask['lon'], mask['lat'], mask[t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
-                    except Exception as e:
-                        pass
-            
-                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                    if mapcrs == datacrs:
-                        tim.sleep(10)
-        
-            for t in range(end1, end2, step):
-            
-                fname = f"Image_{t}.png"
-            
-                fig = plt.figure(figsize=(12, 12))
-                fig.set_facecolor('aliceblue')
-                
-                ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-                ax.set_extent([wb, eb, sb, nb], datacrs)
-                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-                ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-                ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-                ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-                ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
-                if show_rivers == True:
-                    ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-                else:
-                    pass
-            
-                if show_gacc_borders == True:
-                    ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-                else:
-                    pass
-                if show_psa_borders == True:
-                    ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-                else:
-                    pass
-                if show_county_borders == True:
-                    ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-                else:
-                    pass
-                if show_state_borders == True:
-                    ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-                else:
-                    pass
-                if show_cwa_borders == True:
-                    ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-                else:
-                    pass
-                if show_nws_firewx_zones == True:
-                    ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-                else:
-                    pass
-                if show_nws_public_zones == True:
-                    ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-                else:
-                    pass
-        
-                model = model.upper()
-                
-                if use_wind_gust == False:
-                    plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[RH <= {low_rh_threshold} [%] & SUSTAINED WIND SPEED >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
-                    ax.text(x, y, f"KEY: RH = GREEN | SUSTAINED WIND = BARBS & CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-                if use_wind_gust == True:
-                    plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[RH <= {low_rh_threshold} [%] & WIND GUST >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
-                    ax.text(x, y, f"KEY: RH = GREEN | SUSTAINED WIND = BARBS | WIND GUSTS = CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11) 
-                    
-                plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
-                ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-                ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-                ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
-                
-                lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
-        
-                numbers = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
-                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
-        
-                barbs = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate],
-                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=8, clip_on=True)
-        
-                if model == 'CMCENS' or model == 'GEFS0P50':
-        
-                    rh = ds['rh2m'][0, t, :, :]
-    
-                    wind = ds['wind_speed'][0, t, :, :]
-        
-                    rh = rh[::decimate, ::decimate].to_numpy().flatten()
-    
-                    wind = wind[::decimate, ::decimate].to_numpy().flatten()
-    
-                    barbs.plot_barb(ds['u'][0, t, ::decimate, ::decimate], ds['v'][0, t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
-            
-                    numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                    numbers.plot_parameter('NW', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-        
-                    try:
-                        ax.pcolormesh(mask['lon'], mask['lat'], mask[0, t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
-                    except Exception as e:
-                        pass
-        
-                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                    if mapcrs == datacrs:
-                        tim.sleep(10)
-        
-        
-                else:
-                    
-                    rh = ds['rh2m'][t, :, :]
-    
-                    wind = ds['wind_speed'][t, :, :]
-        
-                    rh = rh[::decimate, ::decimate].to_numpy().flatten()
-    
-                    wind = wind[::decimate, ::decimate].to_numpy().flatten()
-    
-                    barbs.plot_barb(ds['u'][t, ::decimate, ::decimate], ds['v'][t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
-            
-                    numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                    numbers.plot_parameter('NW', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-        
-                    try:
-                        ax.pcolormesh(mask['lon'], mask['lat'], mask[t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
-                    except Exception as e:
-                        pass
-            
-                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                    if mapcrs == datacrs:
-                        tim.sleep(10)
-    
         if temperature_threshold != None:
     
             if use_wind_gust == False:
@@ -3079,292 +2829,801 @@ class critical_firewx_conditions:
                     except Exception as e:
                         pass
     
-            print(f"Any old images (if any) in {path_print} have been deleted.")
+        print(f"Any old images (if any) in {path_print} have been deleted.")
     
-            if use_wind_gust == False:
-                ds['wind_speed'] = np.hypot(ds['ugrd10m'], ds['vgrd10m']) * 2.23694
-            if use_wind_gust == True:
-                ds['wind_speed'] = ds['gustsfc'] * 2.23694
+        if model != 'GEFS0p25 ENS MEAN':
     
-            ds['u'] = ds['ugrd10m'] * 2.23694
-            ds['v'] = ds['vgrd10m'] * 2.23694
+            end1 = (int(round((len(ds['time']) - 1)/6, 0)) - 1)
+            end2 = len(ds['time']) - 1
+            time = ds['time']
+            times = time.to_pandas()
     
-            ds['temperature'] = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'])
-            
-            mask = (ds['rh2m'] <= low_rh_threshold) & (ds['wind_speed'] >= high_wind_threshold) & (ds['temperature'] >= temperature_threshold)
-        
-            for t in range(0, end1, 1):
-            
-                fname = f"Image_{t}.png"
-            
-                fig = plt.figure(figsize=(12, 12))
-                fig.set_facecolor('aliceblue')
-                
-                ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-                ax.set_extent([wb, eb, sb, nb], datacrs)
-                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-                ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-                ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-                ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-                ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
-                if show_rivers == True:
-                    ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-                else:
-                    pass
-            
-                if show_gacc_borders == True:
-                    ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-                else:
-                    pass
-                if show_psa_borders == True:
-                    ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-                else:
-                    pass
-                if show_county_borders == True:
-                    ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-                else:
-                    pass
-                if show_state_borders == True:
-                    ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-                else:
-                    pass
-                if show_cwa_borders == True:
-                    ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-                else:
-                    pass
-                if show_nws_firewx_zones == True:
-                    ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-                else:
-                    pass
-                if show_nws_public_zones == True:
-                    ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-                else:
-                    pass
-        
-                model = model.upper()
-                
+            if temperature_threshold == None:
+    
                 if use_wind_gust == False:
-                    plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & SUSTAINED WIND SPEED >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
-                    ax.text(x, y, f"KEY: T = ORANGE | RH = GREEN | SUSTAINED WIND = BARBS & CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-    
+                    ds['wind_speed'] = np.hypot(ds['ugrd10m'], ds['vgrd10m']) * 2.23694
                 if use_wind_gust == True:
-                    plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & WIND GUST >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
-                    ax.text(x, y, f"KEY: T = ORANGE | RH = GREEN | SUSTAINED WIND = BARBS | WIND GUSTS = CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-    
-                plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
-                ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-                ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-                ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                    ds['wind_speed'] = ds['gustsfc'] * 2.23694
+        
+                ds['u'] = ds['ugrd10m'] * 2.23694
+                ds['v'] = ds['vgrd10m'] * 2.23694
                 
-                lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
-    
-                numbers = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
-                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
-        
-                barbs = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate],
-                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=8, clip_on=True)
-        
-                if model == 'CMCENS' or model == 'GEFS0P50':
-        
-                    rh = ds['rh2m'][0, t, :, :]
-    
-                    wind = ds['wind_speed'][0, t, :, :]
-    
-                    temp = ds['temperature'][0, t, :, :]
-        
-                    rh = rh[::decimate, ::decimate].to_numpy().flatten()
-    
-                    wind = wind[::decimate, ::decimate].to_numpy().flatten()
-    
-                    temp = temp[::decimate, ::decimate].to_numpy().flatten()
-    
-                    barbs.plot_barb(ds['u'][0, t, ::decimate, ::decimate], ds['v'][0, t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
+                mask = (ds['rh2m'] <= low_rh_threshold) & (ds['wind_speed'] >= high_wind_threshold)
             
-                    numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                    numbers.plot_parameter('NW', temp, color='darkorange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                    numbers.plot_parameter('SE', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                    try:
-                        ax.pcolormesh(mask['lon'], mask['lat'], mask[0, t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
-                    except Exception as e:
-                        pass
-        
-                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                    if mapcrs == datacrs:
-                        tim.sleep(10)
-        
-        
-                else:
+                for t in range(0, end1, 1):
+                
+                    fname = f"Image_{t}.png"
+                
+                    fig = plt.figure(figsize=(12, 12))
+                    fig.set_facecolor('aliceblue')
                     
-                    rh = ds['rh2m'][t, :, :]
-    
-                    wind = ds['wind_speed'][t, :, :]
-    
-                    temp = ds['temperature'][t, :, :]
-        
-                    rh = rh[::decimate, ::decimate].to_numpy().flatten()
-    
-                    wind = wind[::decimate, ::decimate].to_numpy().flatten()
-    
-                    temp = temp[::decimate, ::decimate].to_numpy().flatten()
-    
-                    barbs.plot_barb(ds['u'][t, ::decimate, ::decimate], ds['v'][t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
-            
-                    numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                    numbers.plot_parameter('NW', temp, color='darkorange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                    numbers.plot_parameter('SE', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-        
-                    try:
-                        ax.pcolormesh(mask['lon'], mask['lat'], mask[t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
-                    except Exception as e:
+                    ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
+                    ax.set_extent([wb, eb, sb, nb], datacrs)
+                    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                    ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                    ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                    ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                    ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                    if show_rivers == True:
+                        ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                    else:
+                        pass
+                
+                    if show_gacc_borders == True:
+                        ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                    else:
+                        pass
+                    if show_psa_borders == True:
+                        ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_county_borders == True:
+                        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_state_borders == True:
+                        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                    else:
+                        pass
+                    if show_cwa_borders == True:
+                        ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_nws_firewx_zones == True:
+                        ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_nws_public_zones == True:
+                        ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                    else:
                         pass
             
-                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                    if mapcrs == datacrs:
-                        tim.sleep(10)
+                    model = model.upper()
+                    
+                    if use_wind_gust == False:
+                        plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[RH <= {low_rh_threshold} [%] & SUSTAINED WIND SPEED >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
+                        ax.text(x, y, f"KEY: RH = GREEN | SUSTAINED WIND = BARBS & CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+                    if use_wind_gust == True:
+                        plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[RH <= {low_rh_threshold} [%] & WIND GUST >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
+                        ax.text(x, y, f"KEY: RH = GREEN | SUSTAINED WIND = BARBS | WIND GUSTS = CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+                        
+                    plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+                    ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
+                    ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
+                    ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                    
+                    lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
         
-            for t in range(end1, end2, step):
+                    numbers = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
+                                     transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
             
-                fname = f"Image_{t}.png"
+                    barbs = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate],
+                                     transform=ccrs.PlateCarree(), zorder=3, fontsize=8, clip_on=True)
             
-                fig = plt.figure(figsize=(12, 12))
-                fig.set_facecolor('aliceblue')
-                
-                ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-                ax.set_extent([wb, eb, sb, nb], datacrs)
-                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-                ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-                ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-                ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-                ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
-                if show_rivers == True:
-                    ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-                else:
-                    pass
+                    if model == 'CMCENS' or model == 'GEFS0P50':
             
-                if show_gacc_borders == True:
-                    ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-                else:
-                    pass
-                if show_psa_borders == True:
-                    ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-                else:
-                    pass
-                if show_county_borders == True:
-                    ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-                else:
-                    pass
-                if show_state_borders == True:
-                    ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-                else:
-                    pass
-                if show_cwa_borders == True:
-                    ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-                else:
-                    pass
-                if show_nws_firewx_zones == True:
-                    ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-                else:
-                    pass
-                if show_nws_public_zones == True:
-                    ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-                else:
-                    pass
+                        rh = ds['rh2m'][0, t, :, :]
         
-                model = model.upper()
+                        wind = ds['wind_speed'][0, t, :, :]
+            
+                        rh = rh[::decimate, ::decimate].to_numpy().flatten()
+        
+                        wind = wind[::decimate, ::decimate].to_numpy().flatten()
+        
+                        barbs.plot_barb(ds['u'][0, t, ::decimate, ::decimate], ds['v'][0, t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
                 
+                        numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        numbers.plot_parameter('NW', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        try:
+                            ax.pcolormesh(mask['lon'], mask['lat'], mask[0, t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
+                        except Exception as e:
+                            pass
+            
+                        fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                
+                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                        if mapcrs == datacrs:
+                            tim.sleep(10)
+            
+            
+                    else:
+                        
+                        rh = ds['rh2m'][t, :, :]
+        
+                        wind = ds['wind_speed'][t, :, :]
+            
+                        rh = rh[::decimate, ::decimate].to_numpy().flatten()
+        
+                        wind = wind[::decimate, ::decimate].to_numpy().flatten()
+        
+                        barbs.plot_barb(ds['u'][t, ::decimate, ::decimate], ds['v'][t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
+                
+                        numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        numbers.plot_parameter('NW', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            
+                        try:
+                            ax.pcolormesh(mask['lon'], mask['lat'], mask[t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
+                        except Exception as e:
+                            pass
+                
+                        fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                    
+                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                        if mapcrs == datacrs:
+                            tim.sleep(10)
+            
+                for t in range(end1, end2, step):
+                
+                    fname = f"Image_{t}.png"
+                
+                    fig = plt.figure(figsize=(12, 12))
+                    fig.set_facecolor('aliceblue')
+                    
+                    ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
+                    ax.set_extent([wb, eb, sb, nb], datacrs)
+                    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                    ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                    ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                    ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                    ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                    if show_rivers == True:
+                        ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                    else:
+                        pass
+                
+                    if show_gacc_borders == True:
+                        ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                    else:
+                        pass
+                    if show_psa_borders == True:
+                        ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_county_borders == True:
+                        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_state_borders == True:
+                        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                    else:
+                        pass
+                    if show_cwa_borders == True:
+                        ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_nws_firewx_zones == True:
+                        ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_nws_public_zones == True:
+                        ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                    else:
+                        pass
+            
+                    model = model.upper()
+                    
+                    if use_wind_gust == False:
+                        plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[RH <= {low_rh_threshold} [%] & SUSTAINED WIND SPEED >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
+                        ax.text(x, y, f"KEY: RH = GREEN | SUSTAINED WIND = BARBS & CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+                    if use_wind_gust == True:
+                        plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[RH <= {low_rh_threshold} [%] & WIND GUST >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
+                        ax.text(x, y, f"KEY: RH = GREEN | SUSTAINED WIND = BARBS | WIND GUSTS = CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11) 
+                        
+                    plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+                    ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
+                    ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
+                    ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                    
+                    lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
+            
+                    numbers = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
+                                     transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
+            
+                    barbs = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate],
+                                     transform=ccrs.PlateCarree(), zorder=3, fontsize=8, clip_on=True)
+            
+                    if model == 'CMCENS' or model == 'GEFS0P50':
+            
+                        rh = ds['rh2m'][0, t, :, :]
+        
+                        wind = ds['wind_speed'][0, t, :, :]
+            
+                        rh = rh[::decimate, ::decimate].to_numpy().flatten()
+        
+                        wind = wind[::decimate, ::decimate].to_numpy().flatten()
+        
+                        barbs.plot_barb(ds['u'][0, t, ::decimate, ::decimate], ds['v'][0, t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
+                
+                        numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        numbers.plot_parameter('NW', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            
+                        try:
+                            ax.pcolormesh(mask['lon'], mask['lat'], mask[0, t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
+                        except Exception as e:
+                            pass
+            
+                        fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                
+                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                        if mapcrs == datacrs:
+                            tim.sleep(10)
+            
+            
+                    else:
+                        
+                        rh = ds['rh2m'][t, :, :]
+        
+                        wind = ds['wind_speed'][t, :, :]
+            
+                        rh = rh[::decimate, ::decimate].to_numpy().flatten()
+        
+                        wind = wind[::decimate, ::decimate].to_numpy().flatten()
+        
+                        barbs.plot_barb(ds['u'][t, ::decimate, ::decimate], ds['v'][t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
+                
+                        numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        numbers.plot_parameter('NW', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            
+                        try:
+                            ax.pcolormesh(mask['lon'], mask['lat'], mask[t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
+                        except Exception as e:
+                            pass
+                
+                        fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                    
+                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                        if mapcrs == datacrs:
+                            tim.sleep(10)
+    
+            if temperature_threshold != None:
+        
                 if use_wind_gust == False:
-                    plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & SUSTAINED WIND SPEED >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
-                    ax.text(x, y, f"KEY: T = ORANGE | RH = GREEN | SUSTAINED WIND = BARBS & CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-    
+                    ds['wind_speed'] = np.hypot(ds['ugrd10m'], ds['vgrd10m']) * 2.23694
                 if use_wind_gust == True:
-                    plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & WIND GUST >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
-                    ax.text(x, y, f"KEY: T = ORANGE | RH = GREEN | SUSTAINED WIND = BARBS | WIND GUSTS = CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-                    
-                plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
-                ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-                ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-                ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                    ds['wind_speed'] = ds['gustsfc'] * 2.23694
+        
+                ds['u'] = ds['ugrd10m'] * 2.23694
+                ds['v'] = ds['vgrd10m'] * 2.23694
+        
+                ds['temperature'] = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'])
                 
-                lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
+                mask = (ds['rh2m'] <= low_rh_threshold) & (ds['wind_speed'] >= high_wind_threshold) & (ds['temperature'] >= temperature_threshold)
+            
+                for t in range(0, end1, 1):
+                
+                    fname = f"Image_{t}.png"
+                
+                    fig = plt.figure(figsize=(12, 12))
+                    fig.set_facecolor('aliceblue')
+                    
+                    ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
+                    ax.set_extent([wb, eb, sb, nb], datacrs)
+                    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                    ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                    ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                    ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                    ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                    if show_rivers == True:
+                        ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                    else:
+                        pass
+                
+                    if show_gacc_borders == True:
+                        ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                    else:
+                        pass
+                    if show_psa_borders == True:
+                        ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_county_borders == True:
+                        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_state_borders == True:
+                        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                    else:
+                        pass
+                    if show_cwa_borders == True:
+                        ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_nws_firewx_zones == True:
+                        ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_nws_public_zones == True:
+                        ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                    else:
+                        pass
+            
+                    model = model.upper()
+                    
+                    if use_wind_gust == False:
+                        plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & SUSTAINED WIND SPEED >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
+                        ax.text(x, y, f"KEY: T = ORANGE | RH = GREEN | SUSTAINED WIND = BARBS & CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
         
-                numbers = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
-                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
+                    if use_wind_gust == True:
+                        plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & WIND GUST >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
+                        ax.text(x, y, f"KEY: T = ORANGE | RH = GREEN | SUSTAINED WIND = BARBS | WIND GUSTS = CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
         
-                barbs = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate],
-                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=8, clip_on=True)
+                    plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+                    ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
+                    ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
+                    ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                    
+                    lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
         
-                if model == 'CMCENS' or model == 'GEFS0P50':
+                    numbers = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
+                                     transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
+            
+                    barbs = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate],
+                                     transform=ccrs.PlateCarree(), zorder=3, fontsize=8, clip_on=True)
+            
+                    if model == 'CMCENS' or model == 'GEFS0P50':
+            
+                        rh = ds['rh2m'][0, t, :, :]
         
-                    rh = ds['rh2m'][0, t, :, :]
+                        wind = ds['wind_speed'][0, t, :, :]
+        
+                        temp = ds['temperature'][0, t, :, :]
+            
+                        rh = rh[::decimate, ::decimate].to_numpy().flatten()
+        
+                        wind = wind[::decimate, ::decimate].to_numpy().flatten()
+        
+                        temp = temp[::decimate, ::decimate].to_numpy().flatten()
+        
+                        barbs.plot_barb(ds['u'][0, t, ::decimate, ::decimate], ds['v'][0, t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
+                
+                        numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        numbers.plot_parameter('NW', temp, color='darkorange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        numbers.plot_parameter('SE', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        try:
+                            ax.pcolormesh(mask['lon'], mask['lat'], mask[0, t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
+                        except Exception as e:
+                            pass
+            
+                        fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                
+                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                        if mapcrs == datacrs:
+                            tim.sleep(10)
+            
+            
+                    else:
+                        
+                        rh = ds['rh2m'][t, :, :]
+        
+                        wind = ds['wind_speed'][t, :, :]
+        
+                        temp = ds['temperature'][t, :, :]
+            
+                        rh = rh[::decimate, ::decimate].to_numpy().flatten()
+        
+                        wind = wind[::decimate, ::decimate].to_numpy().flatten()
+        
+                        temp = temp[::decimate, ::decimate].to_numpy().flatten()
+        
+                        barbs.plot_barb(ds['u'][t, ::decimate, ::decimate], ds['v'][t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
+                
+                        numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        numbers.plot_parameter('NW', temp, color='darkorange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        numbers.plot_parameter('SE', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            
+                        try:
+                            ax.pcolormesh(mask['lon'], mask['lat'], mask[t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
+                        except Exception as e:
+                            pass
+                
+                        fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                    
+                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                        if mapcrs == datacrs:
+                            tim.sleep(10)
+            
+                for t in range(end1, end2, step):
+                
+                    fname = f"Image_{t}.png"
+                
+                    fig = plt.figure(figsize=(12, 12))
+                    fig.set_facecolor('aliceblue')
+                    
+                    ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
+                    ax.set_extent([wb, eb, sb, nb], datacrs)
+                    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                    ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                    ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                    ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                    ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                    if show_rivers == True:
+                        ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                    else:
+                        pass
+                
+                    if show_gacc_borders == True:
+                        ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                    else:
+                        pass
+                    if show_psa_borders == True:
+                        ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_county_borders == True:
+                        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_state_borders == True:
+                        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                    else:
+                        pass
+                    if show_cwa_borders == True:
+                        ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_nws_firewx_zones == True:
+                        ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_nws_public_zones == True:
+                        ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                    else:
+                        pass
+            
+                    model = model.upper()
+                    
+                    if use_wind_gust == False:
+                        plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & SUSTAINED WIND SPEED >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
+                        ax.text(x, y, f"KEY: T = ORANGE | RH = GREEN | SUSTAINED WIND = BARBS & CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+        
+                    if use_wind_gust == True:
+                        plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & WIND GUST >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
+                        ax.text(x, y, f"KEY: T = ORANGE | RH = GREEN | SUSTAINED WIND = BARBS | WIND GUSTS = CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+                        
+                    plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+                    ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
+                    ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
+                    ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                    
+                    lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
+            
+                    numbers = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
+                                     transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
+            
+                    barbs = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate],
+                                     transform=ccrs.PlateCarree(), zorder=3, fontsize=8, clip_on=True)
+            
+                    if model == 'CMCENS' or model == 'GEFS0P50':
+            
+                        rh = ds['rh2m'][0, t, :, :]
+        
+                        wind = ds['wind_speed'][0, t, :, :]
+        
+                        temp = ds['temperature'][0, t, :, :]
+            
+                        rh = rh[::decimate, ::decimate].to_numpy().flatten()
+        
+                        wind = wind[::decimate, ::decimate].to_numpy().flatten()
+        
+                        temp = temp[::decimate, ::decimate].to_numpy().flatten()
+        
+                        barbs.plot_barb(ds['u'][0, t, ::decimate, ::decimate], ds['v'][0, t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
+                
+                        numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        numbers.plot_parameter('NW', temp, color='darkorange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        numbers.plot_parameter('SE', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            
+                        try:
+                            ax.pcolormesh(mask['lon'], mask['lat'], mask[0, t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
+                        except Exception as e:
+                            pass
+            
+                        fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                
+                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                        if mapcrs == datacrs:
+                            tim.sleep(10)
+            
+            
+                    else:
+                        
+                        rh = ds['rh2m'][t, :, :]
+        
+                        wind = ds['wind_speed'][t, :, :]
+        
+                        temp = ds['temperature'][t, :, :]
+            
+                        rh = rh[::decimate, ::decimate].to_numpy().flatten()
+        
+                        wind = wind[::decimate, ::decimate].to_numpy().flatten()
+        
+                        temp = temp[::decimate, ::decimate].to_numpy().flatten()
+        
+                        barbs.plot_barb(ds['u'][t, ::decimate, ::decimate], ds['v'][t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
+                
+                        numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        numbers.plot_parameter('NW', temp, color='darkorange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                        numbers.plot_parameter('SE', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            
+                        try:
+                            ax.pcolormesh(mask['lon'], mask['lat'], mask[t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
+                        except Exception as e:
+                            pass
+                
+                        fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                    
+                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                        if mapcrs == datacrs:
+                            tim.sleep(10)
     
-                    wind = ds['wind_speed'][0, t, :, :]
+        if model == 'GEFS0p25 ENS MEAN':
     
-                    temp = ds['temperature'][0, t, :, :]
+            if temperature_threshold == None:
+    
+                for i in range(0, (len(ds_list) - 1)):
+                
+                    if use_wind_gust == False:
+                        wind_speed = np.hypot(u[i]['u10'], v[i]['v10']) * 2.23694
+                    if use_wind_gust == True:
+                        wind_speed = gusts[i] * 2.23694
+    
+                    time = ds_list[i]['valid_time']
+                    init = ds_list[0]['time']
+                    times = time.to_pandas()
+                    times = pd.to_datetime(times)
+                    inits = init.to_pandas()
+                    inits = pd.to_datetime(inits)
+        
+                    u_wind = u[i]['u10'] * 2.23694
+                    v_wind = v[i]['v10'] * 2.23694
+                    rh = ds_list[i]['r2']
+                
+                    mask = (rh <= low_rh_threshold) & (wind_speed >= high_wind_threshold)
+    
+                    fname = f"Image_{i}.png"
+                
+                    fig = plt.figure(figsize=(12, 12))
+                    fig.set_facecolor('aliceblue')
+                    
+                    ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
+                    ax.set_extent([wb, eb, sb, nb], datacrs)
+                    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                    ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                    ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                    ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                    ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                    if show_rivers == True:
+                        ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                    else:
+                        pass
+                
+                    if show_gacc_borders == True:
+                        ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                    else:
+                        pass
+                    if show_psa_borders == True:
+                        ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_county_borders == True:
+                        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_state_borders == True:
+                        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                    else:
+                        pass
+                    if show_cwa_borders == True:
+                        ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_nws_firewx_zones == True:
+                        ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_nws_public_zones == True:
+                        ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                    else:
+                        pass
+            
+                    model = model.upper()
+                    
+                    if use_wind_gust == False:
+                        plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[RH <= {low_rh_threshold} [%] & SUSTAINED WIND SPEED >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
+                        ax.text(x, y, f"KEY: RH = GREEN | SUSTAINED WIND = BARBS & CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+                    if use_wind_gust == True:
+                        plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[RH <= {low_rh_threshold} [%] & WIND GUST >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
+                        ax.text(x, y, f"KEY: RH = GREEN | SUSTAINED WIND = BARBS | WIND GUSTS = CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+                        
+                    plt.title("Forecast Valid: " +times.strftime('%a %d/%H UTC')+"\nInitialization: "+inits.strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+                    ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
+                    ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
+                    ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                    
+                    lon_2d, lat_2d = np.meshgrid(ds_list[i]['longitude'], ds_list[i]['latitude'])
+        
+                    numbers = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
+                                     transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
+            
+                    barbs = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate],
+                                     transform=ccrs.PlateCarree(), zorder=3, fontsize=8, clip_on=True)
+    
+                        
         
                     rh = rh[::decimate, ::decimate].to_numpy().flatten()
     
-                    wind = wind[::decimate, ::decimate].to_numpy().flatten()
+                    wind_speed = wind_speed[::decimate, ::decimate].to_numpy().flatten()
     
+                    barbs.plot_barb(u_wind[::decimate, ::decimate], v_wind[::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
+            
+                    numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+    
+                    numbers.plot_parameter('SE', wind_speed, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+        
+                    try:
+                        ax.pcolormesh(mask['longitude'], mask['latitude'], mask[:, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
+                    except Exception as e:
+                        pass
+            
+                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                
+                    print(f"Saved image for forecast {times.strftime('%a %d/%H UTC')} to {path_print}.")
+                    if mapcrs == datacrs:
+                        tim.sleep(10)
+    
+            if temperature_threshold != None:
+    
+                for i in range(0, (len(ds_list) - 1)):
+                
+                    if use_wind_gust == False:
+                        wind_speed = np.hypot(u[i]['u10'], v[i]['v10']) * 2.23694
+                    if use_wind_gust == True:
+                        wind_speed = gusts[i] * 2.23694
+    
+                    time = ds_list[i]['time']
+                    init = ds_list[0]['time']
+                    times = time.to_pandas()
+                    times = pd.to_datetime(times)
+                    inits = init.to_pandas()
+                    inits = pd.to_datetime(inits)
+    
+                    tempK = ds_list[i]['t2m']
+                    temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(tempK)
+        
+                    u_wind = u[i]['u10'] * 2.23694
+                    v_wind = v[i]['v10'] * 2.23694
+                    rh = ds_list[i]['r2']
+                
+                    mask = (rh <= low_rh_threshold) & (wind_speed >= high_wind_threshold) & (temp >= temperature_threshold)
+    
+                    fname = f"Image_{i}.png"
+                
+                    fig = plt.figure(figsize=(12, 12))
+                    fig.set_facecolor('aliceblue')
+                    
+                    ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
+                    ax.set_extent([wb, eb, sb, nb], datacrs)
+                    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                    ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                    ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                    ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                    ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                    if show_rivers == True:
+                        ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                    else:
+                        pass
+                
+                    if show_gacc_borders == True:
+                        ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                    else:
+                        pass
+                    if show_psa_borders == True:
+                        ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_county_borders == True:
+                        ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_state_borders == True:
+                        ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                    else:
+                        pass
+                    if show_cwa_borders == True:
+                        ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_nws_firewx_zones == True:
+                        ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                    else:
+                        pass
+                    if show_nws_public_zones == True:
+                        ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                    else:
+                        pass
+            
+                    model = model.upper()
+                    
+                    if use_wind_gust == False:
+                        plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & SUSTAINED WIND SPEED >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
+                        ax.text(x, y, f"KEY: T = ORANGE | RH = GREEN | SUSTAINED WIND = BARBS & CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+        
+                    if use_wind_gust == True:
+                        plt.title(f"{model} FAVORABLE FIREWX CONDITIONS (SHADED RED)\n[T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & WIND GUST >= {high_wind_threshold} [MPH]]", fontsize=9, fontweight='bold', loc='left')
+                        ax.text(x, y, f"KEY: T = ORANGE | RH = GREEN | SUSTAINED WIND = BARBS | WIND GUSTS = CYAN", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+                        
+                    plt.title("Forecast Valid: " +times.strftime('%a %d/%H UTC')+"\nInitialization: "+inits.strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+                    ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
+                    ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
+                    ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                    
+                    lon_2d, lat_2d = np.meshgrid(ds_list[i]['longitude'], ds_list[i]['latitude'])
+        
+                    numbers = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
+                                     transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
+            
+                    barbs = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate], lat_2d[::decimate, ::decimate],
+                                     transform=ccrs.PlateCarree(), zorder=3, fontsize=8, clip_on=True)
+    
+                        
+        
+                    rh = rh[::decimate, ::decimate].to_numpy().flatten()
+                    
                     temp = temp[::decimate, ::decimate].to_numpy().flatten()
     
-                    barbs.plot_barb(ds['u'][0, t, ::decimate, ::decimate], ds['v'][0, t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
+                    wind_speed = wind_speed[::decimate, ::decimate].to_numpy().flatten()
+    
+                    barbs.plot_barb(u_wind[::decimate, ::decimate], v_wind[::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
             
                     numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
     
                     numbers.plot_parameter('NW', temp, color='darkorange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
     
-                    numbers.plot_parameter('SE', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                    numbers.plot_parameter('SE', wind_speed, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
         
                     try:
-                        ax.pcolormesh(mask['lon'], mask['lat'], mask[0, t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
-                    except Exception as e:
-                        pass
-        
-                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                    if mapcrs == datacrs:
-                        tim.sleep(10)
-        
-        
-                else:
-                    
-                    rh = ds['rh2m'][t, :, :]
-    
-                    wind = ds['wind_speed'][t, :, :]
-    
-                    temp = ds['temperature'][t, :, :]
-        
-                    rh = rh[::decimate, ::decimate].to_numpy().flatten()
-    
-                    wind = wind[::decimate, ::decimate].to_numpy().flatten()
-    
-                    temp = temp[::decimate, ::decimate].to_numpy().flatten()
-    
-                    barbs.plot_barb(ds['u'][t, ::decimate, ::decimate], ds['v'][t, ::decimate, ::decimate], color='black', alpha=1, zorder=3, linewidth=0.5)
-            
-                    numbers.plot_parameter('SW', rh, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                    numbers.plot_parameter('NW', temp, color='darkorange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                    numbers.plot_parameter('SE', wind, color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-        
-                    try:
-                        ax.pcolormesh(mask['lon'], mask['lat'], mask[t, :, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
+                        ax.pcolormesh(mask['longitude'], mask['latitude'], mask[:, :], transform=datacrs, cmap=cmap, zorder=1, alpha=0.5)
                     except Exception as e:
                         pass
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                 
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                    print(f"Saved image for forecast {times.strftime('%a %d/%H UTC')} to {path_print}.")
                     if mapcrs == datacrs:
                         tim.sleep(10)
+
+
