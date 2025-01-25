@@ -28,3 +28,8 @@ To visit the firewxpy tutorials page where you can see examples in jupyter lab -
 22) [RTMA_Hawaii](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#rtma_hawaii-class)
 23) [plot_creation_time](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#plot_creation_time)
 24) [get_metar_mask](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#get_metar_maskstate-gacc_region-rtma_wsfalse)
+25) [model_data](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#model_data-class)
+26) [model_dynamics]()
+27) [model_temperature]()
+28) [model_relative_humidity]()
+29) [model_critical_firewx_conditions]()
