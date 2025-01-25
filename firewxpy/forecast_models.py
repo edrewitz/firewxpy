@@ -285,7 +285,7 @@ class dynamics:
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
+            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
         if data == True:
             ds = ds
@@ -669,7 +669,7 @@ class dynamics:
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
+            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
         if data == True:
             ds = ds
@@ -992,7 +992,7 @@ class dynamics:
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
+            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
         if data == True:
             ds = ds
@@ -1382,7 +1382,7 @@ class dynamics:
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
+            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
         if data == True:
             ds = ds
@@ -1683,7 +1683,7 @@ class dynamics:
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
+            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
         if data == True:
             ds = ds
@@ -1984,10 +1984,10 @@ class temperature:
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
         if data == False and model != 'GEFS0p25 ENS MEAN':
-            ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
+            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
 
         if data == False and model == 'GEFS0p25 ENS MEAN':
-            ds_list = model_data.get_nomads_model_data_via_https(model, region, 'heightAboveGround', western_bound, eastern_bound, southern_bound, northern_bound, get_u_and_v_wind_components=False, add_wind_gusts=False)
+            ds_list = model_data.get_nomads_model_data_via_https(model, region, 'heightAboveGround', wb, eb, sb, nb, get_u_and_v_wind_components=False, add_wind_gusts=False)
             
         if data == True and model != 'GEFS0p25 ENS MEAN':
             ds = ds
@@ -2506,10 +2506,10 @@ class relative_humidity:
         print(f"Any old images (if any) in {path_print} have been deleted.")
         
         if data == False and model != 'GEFS0p25 ENS MEAN':
-            ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
+            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
 
         if data == False and model == 'GEFS0p25 ENS MEAN':
-            ds_list = model_data.get_nomads_model_data_via_https(model, region, 'heightAboveGround', western_bound, eastern_bound, southern_bound, northern_bound, get_u_and_v_wind_components=False, add_wind_gusts=False)
+            ds_list = model_data.get_nomads_model_data_via_https(model, region, 'heightAboveGround', wb, eb, sb, nb, get_u_and_v_wind_components=False, add_wind_gusts=False)
             
         if data == True and model != 'GEFS0p25 ENS MEAN':
             ds = ds
