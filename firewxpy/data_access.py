@@ -243,7 +243,55 @@ class info:
 
 class model_data:
 
+    r'''
+    This class hosts the functions that return forecast model data from various different sources. 
+    
+    '''
+
     def get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound):
+
+        r'''
+        This function grabs the latest model data from the NOAA/NCEP/NOMADS OpenDAP Server and returns it to the user. 
+
+        Required Arguments: 1) model (String) - This is the model the user must select. 
+                               
+                               Here are the choices: 
+                               1) GFS0p25 - GFS 0.25x0.25 degree
+                               2) GFS0p25_1h - GFS 0.25x0.25 degree with 1 hour intervals
+                               3) GFS0p50 - GFS 0.5x0.5 degree
+                               4) GFS1p00 - GFS 1.0x1.0 degree
+                               5) GEFS0p50_all - All ensemble members of the GEFS 0.5x0.5 degree
+                               6) CMCENS - Canadian Ensemble
+                               7) NAM - North American Model
+                               8) NAM 1hr - North American Model with 1 hour intervals 
+
+                            2) region (String) - This is the region the user wishes to look at. There are a lot of preset regions. 
+                                                 To look at any state use the 2-letter abbreviation for the state in either all capitals
+                                                 or all lowercase. For CONUS, use CONUS in all caps or lower case. For a broad view of the
+                                                 CONUS, Southern Canada and Northern Mexico use: 'CONUS & South Canada & North Mexico'. For 
+                                                 North America use either: NA, na, North America or north america. If the user wishes to use custom
+                                                 boundaries, then enter 'Custom' or 'custom'. For Geographic Area Coordination Centers you can use 
+                                                 the 4-letter abbreviation in all caps or lower case so for example you would use either 'OSCC' or 
+                                                 'oscc' for South Ops. 
+
+                            3) western_bound (Integer) - The western boundary of the plot. This is only required when the user wishes to make a plot with
+                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
+
+
+                            4) eastern_bound (Integer) - The eastern boundary of the plot. This is only required when the user wishes to make a plot with
+                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
+
+
+                            5) southern_bound (Integer) - The southern boundary of the plot. This is only required when the user wishes to make a plot with
+                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
+                                                         
+
+                            6) northern_bound (Integer) - The northern boundary of the plot. This is only required when the user wishes to make a plot with
+                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
+
+        Returns: A netCDF4 dataset of the model the user wishes set to the area the user defines. 
+                             
+        '''
 
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
@@ -603,6 +651,74 @@ class model_data:
 
 
     def get_nomads_model_data_via_https(model, region, typeOfLevel, western_bound, eastern_bound, southern_bound, northern_bound, get_u_and_v_wind_components=False, add_wind_gusts=True):
+
+        r'''
+        This function grabs the latest model data from the NOAA/NCEP/NOMADS HTTPS Server and returns it to the user. 
+
+        Required Arguments: 1) model (String) - This is the model the user must select. 
+                               
+                               Here are the choices: 
+                               1) GEFS0p25 ENS MEAN - GEFS 0.25x0.25 degree ensemble mean
+                               2) GEFS0p25 CHEM - GEFS 0.25x0.25 coarse and fine particulates
+                               3) GEFS0p50 CHEM - GEFS 0.5x0.5 coarse and fine particulates
+                               4) UKMET - UKMET model
+
+                            2) region (String) - This is the region the user wishes to look at. There are a lot of preset regions. 
+                                                 To look at any state use the 2-letter abbreviation for the state in either all capitals
+                                                 or all lowercase. For CONUS, use CONUS in all caps or lower case. For a broad view of the
+                                                 CONUS, Southern Canada and Northern Mexico use: 'CONUS & South Canada & North Mexico'. For 
+                                                 North America use either: NA, na, North America or north america. If the user wishes to use custom
+                                                 boundaries, then enter 'Custom' or 'custom'. For Geographic Area Coordination Centers you can use 
+                                                 the 4-letter abbreviation in all caps or lower case so for example you would use either 'OSCC' or 
+                                                 'oscc' for South Ops. 
+
+                            3) typeOfLevel (String) - This determines which parameters are available for the GEFS 0.25x0.25 Ensemble Mean. The choices are as
+                                                      follows: 
+
+                                                      1) surface
+                                                      2) meanSea
+                                                      3) depthBelowLandLayer
+                                                      4) heightAboveGround
+                                                      5) atmosphereSingleLayer
+                                                      6) cloudCeiling
+                                                      7) heightAboveGroundLayer
+                                                      8) pressureFromGroundLayer
+                            
+                                                      For both the UKMET and GEFS CHEM you can enter a value of None here. 
+
+                            4) western_bound (Integer) - The western boundary of the plot. This is only required when the user wishes to make a plot with
+                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
+
+
+                            5) eastern_bound (Integer) - The eastern boundary of the plot. This is only required when the user wishes to make a plot with
+                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
+
+
+                            6) southern_bound (Integer) - The southern boundary of the plot. This is only required when the user wishes to make a plot with
+                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
+                                                         
+
+                            7) northern_bound (Integer) - The northern boundary of the plot. This is only required when the user wishes to make a plot with
+                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region.
+
+        Optional Arguments: 1) get_u_and_v_wind_components (Boolean) - Default = False. When having the typeOfLevel set to 'heightAboveGround' there is an issue
+                                                                       with retrieving the u and v wind components. You will see an error message. Fortunately, 
+                                                                       in FireWxPy we fix that for you so you can disregard the errors. When setting this value to True
+                                                                       you will also return lists of the u and v datasets. 
+
+                            2) add_wind_gusts (Boolean) - Default = True. When having get_u_and_v_wind_components=True, you can opt to add an additional list to be 
+                                                          returned which will have the wind gust dataset. 
+
+        Returns: Depending on the values you enter above determines how many lists of datasets are returned. 
+                 If the user does not use 'GEFS0p25 ENS MEAN' for the model of choice, a single list of the datasets are returned. 
+                 If the user uses 'GEFS0p25 ENS MEAN' and does not have typeOfLevel set to 'heightAboveGround', a single list of the datasets are returned. 
+                 If the user uses 'GEFS0p25 ENS MEAN' and does have typeOfLevel set to 'heightAboveGround' while get_u_and_v_wind_components=False, a single list of the datasets are returned. 
+                 If the user uses 'GEFS0p25 ENS MEAN' and does have typeOfLevel set to 'heightAboveGround' while get_u_and_v_wind_components=True and get_u_and_v_wind_components=False,
+                 a list of the 'heightAboveGround' datasets, u-wind datasets and v-wind datasets will be returned. 
+                 If the user uses 'GEFS0p25 ENS MEAN' and does have typeOfLevel set to 'heightAboveGround' while get_u_and_v_wind_components=True and get_u_and_v_wind_components=True,
+                 a list of the 'heightAboveGround' datasets, u-wind datasets, v-wind datasets and gust datasets will be returned.
+                             
+        '''     
     
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
