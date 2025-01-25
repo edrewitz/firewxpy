@@ -19,6 +19,11 @@ from firewxpy.NWS_Alaska import hot_dry_and_windy as nws_hot_dry_and_windy_alask
 from firewxpy.NWS_Hawaii import temperature as nws_temperature_forecast_hawaii
 from firewxpy.NWS_Hawaii import relative_humidity as nws_relative_humidity_forecast_hawaii
 
+from firewxpy.forecast_models import dynamics as model_dynamics
+from firewxpy.forecast_models import temperature as model_temperature
+from firewxpy.forecast_models import relative_humidity as model_relative_humidity
+from firewxpy.forecast_models import critical_firewx_conditions as model_critical_firewx_conditions
+
 from firewxpy.observations import graphical_daily_summary
 
 from firewxpy.soundings import plot_observed_sounding, plot_observed_sounding_custom_date_time
