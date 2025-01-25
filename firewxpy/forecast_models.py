@@ -1782,7 +1782,7 @@ class dynamics:
 
 class temperature:
 
-    def plot_2m_temperatures(model, region, start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=10, temp_scale_warm_stop=110, temp_scale_cool_start=-20, temp_scale_cool_stop=80, temp_scale_step=1, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=None, y1=None, x2=None, y2=None, x3=None, y3=None, shrink=1, decimate=None, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
+    def plot_2m_temperatures(model, region, start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=10, temp_scale_warm_stop=110, temp_scale_cool_start=-20, temp_scale_cool_stop=80, temp_scale_step=1, temperature_contour_value=32, data=False, ds=None, ds_list=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=None, y1=None, x2=None, y2=None, x3=None, y3=None, shrink=1, decimate=None, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
     
     
         data=data
@@ -1924,8 +1924,18 @@ class temperature:
                 show_county_borders = True
                 gacc_border_linewidth=1
                 county_border_linewidth=0.25 
-    
+
         str_level = f"SURFACE"
+
+        path, path_print = file_functions.forecast_model_graphics_paths(model, region, reference_system, '2-Meter Temperature', str_level)
+    
+        for file in os.listdir(f"{path}"):
+            try:
+                os.remove(f"{path}/{file}")
+            except Exception as e:
+                pass
+                
+        print(f"Any old images (if any) in {path_print} have been deleted.")
     
         if model == 'NAM 1hr' or model == 'NAM':
             step = 1
@@ -1950,255 +1960,352 @@ class temperature:
             wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, decimate, signature_fontsize, stamp_fontsize = settings.get_region_info(model, region)
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
-        if data == False:
+        if data == False and model != 'GEFS0p25 ENS MEAN':
             ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
+
+        if data == False and model == 'GEFS0p25 ENS MEAN':
+            ds_list = model_data.get_nomads_model_data_via_https(model, region, 'heightAboveGround', western_bound, eastern_bound, southern_bound, northern_bound, get_u_and_v_wind_components=False, add_wind_gusts=False)
             
-        if data == True:
+        if data == True and model != 'GEFS0p25 ENS MEAN':
             ds = ds
+
+        if data == True and model == 'GEFS0p25 ENS MEAN':
+            ds_list = ds_list
     
         cmap = colormaps.temperature_colormap()
+
+        if model != 'GEFS0p25 ENS MEAN':
     
-        end1 = (int(round((len(ds['time']) - 1)/6, 0)) - 1)
-        end2 = len(ds['time']) - 1
-        time = ds['time']
-        times = time.to_pandas()
-    
-    
-        path, path_print = file_functions.forecast_model_graphics_paths(model, region, reference_system, '2-Meter Temperature', str_level)
-    
-        for file in os.listdir(f"{path}"):
-            try:
-                os.remove(f"{path}/{file}")
-            except Exception as e:
-                pass
+            end1 = (int(round((len(ds['time']) - 1)/6, 0)) - 1)
+            end2 = len(ds['time']) - 1
+            time = ds['time']
+            times = time.to_pandas()
+            
+            for t in range(0, end1, 1):
+            
+                fname = f"Image_{t}.png"
+            
+                fig = plt.figure(figsize=(12, 12))
+                fig.set_facecolor('aliceblue')
                 
-        print(f"Any old images (if any) in {path_print} have been deleted.")
-        
-        for t in range(0, end1, 1):
-        
-            fname = f"Image_{t}.png"
-        
-            fig = plt.figure(figsize=(12, 12))
-            fig.set_facecolor('aliceblue')
+                ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
+                ax.set_extent([wb, eb, sb, nb], datacrs)
+                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                if show_rivers == True:
+                    ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                else:
+                    pass
             
-            ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-            ax.set_extent([wb, eb, sb, nb], datacrs)
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-            ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
-            if show_rivers == True:
-                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-            else:
-                pass
+                if show_gacc_borders == True:
+                    ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                else:
+                    pass
+                if show_psa_borders == True:
+                    ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_county_borders == True:
+                    ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_state_borders == True:
+                    ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                else:
+                    pass
+                if show_cwa_borders == True:
+                    ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_firewx_zones == True:
+                    ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_public_zones == True:
+                    ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                else:
+                    pass
         
-            if show_gacc_borders == True:
-                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-            else:
-                pass
-            if show_psa_borders == True:
-                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_county_borders == True:
-                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_state_borders == True:
-                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-            else:
-                pass
-            if show_cwa_borders == True:
-                ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_firewx_zones == True:
-                ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_public_zones == True:
-                ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-            else:
-                pass
-    
-            model = model.upper()
-            plt.title(f"{model} 2-METER TEMPERATURE [°F]", fontsize=9, fontweight='bold', loc='left')
-            plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
-            ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-            ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-            ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
-            
-            lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
-    
-            stn = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
-                             transform=ccrs.PlateCarree(), zorder=3, fontsize=5, clip_on=True)
-    
-            if model == 'CMCENS' or model == 'GEFS0P50':
-    
-                temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :])
-    
-                temp = temp[::decimate, ::decimate].to_numpy().flatten()
-        
-                stn.plot_parameter('C', temp, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-                   
-                c = ax.contour(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), levels=[32], colors='black', zorder=2, transform=datacrs, linewidths=1)
-                ax.clabel(c, levels=[32], inline=True, fontsize=8, rightside_up=True)
-    
-                if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                    cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_warm, alpha=0.35, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_warm)
-    
-                if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-                    cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_cool, alpha=0.35, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
-    
-                fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-        
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                if mapcrs == datacrs:
-                    tim.sleep(10)
-    
-    
-            else:
+                model = model.upper()
+                plt.title(f"{model} 2-METER TEMPERATURE [°F]", fontsize=9, fontweight='bold', loc='left')
+                plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+                ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
+                ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
+                ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                ax.text(x, y, f"Contour Line: T = {temperature_contour_value}[°F]", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
                 
-                temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :])
-    
-                temp = temp[::decimate, ::decimate].to_numpy().flatten()
+                lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
         
-                stn.plot_parameter('C', temp, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-                   
-                c = ax.contour(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), levels=[32], colors='black', zorder=2, transform=datacrs, linewidths=1)
-                ax.clabel(c, levels=[32], inline=True, fontsize=8, rightside_up=True)
-    
-                if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                    cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_warm, alpha=0.35, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_warm)
-    
-                if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-                    cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_cool, alpha=0.35, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
+                stn = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
+                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=5, clip_on=True)
         
-                fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                if model == 'CMCENS' or model == 'GEFS0P50':
+        
+                    temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :])
+        
+                    temp = temp[::decimate, ::decimate].to_numpy().flatten()
             
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                if mapcrs == datacrs:
-                    tim.sleep(10)
-    
-        for t in range(end1, end2, step):
+                    stn.plot_parameter('C', temp, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                       
+                    c = ax.contour(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), levels=[temperature_contour_value], colors='black', zorder=2, transform=datacrs, linewidths=1)
+                    ax.clabel(c, levels=[temperature_contour_value], inline=True, fontsize=8, rightside_up=True)
         
-            fname = f"Image_{t}.png"
+                    if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+                        cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_warm, alpha=0.35, extend='both')
+                        cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_warm)
         
-            fig = plt.figure(figsize=(12, 12))
-            fig.set_facecolor('aliceblue')
+                    if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+                        cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_cool, alpha=0.35, extend='both')
+                        cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
+        
+                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
-            ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-            ax.set_extent([wb, eb, sb, nb], datacrs)
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-            ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
-            if show_rivers == True:
-                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-            else:
-                pass
+                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                    if mapcrs == datacrs:
+                        tim.sleep(10)
         
-            if show_gacc_borders == True:
-                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-            else:
-                pass
-            if show_psa_borders == True:
-                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_county_borders == True:
-                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_state_borders == True:
-                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-            else:
-                pass
-            if show_cwa_borders == True:
-                ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_firewx_zones == True:
-                ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_public_zones == True:
-                ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-            else:
-                pass
-    
-            model = model.upper()
-            plt.title(f"{model} 2-METER TEMPERATURE [°F]", fontsize=9, fontweight='bold', loc='left')
-            plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
-            ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-            ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-            ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+        
+                else:
+                    
+                    temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :])
+        
+                    temp = temp[::decimate, ::decimate].to_numpy().flatten()
             
-            lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
-    
-            stn = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
-                             transform=ccrs.PlateCarree(), zorder=3, fontsize=5, clip_on=True)
-    
-            if model == 'CMCENS' or model == 'GEFS0P50':
-    
-                temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :])
-    
-                temp = temp[::decimate, ::decimate].to_numpy().flatten()
+                    stn.plot_parameter('C', temp, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                       
+                    c = ax.contour(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), levels=[temperature_contour_value], colors='black', zorder=2, transform=datacrs, linewidths=1)
+                    ax.clabel(c, levels=[temperature_contour_value], inline=True, fontsize=8, rightside_up=True)
         
-                stn.plot_parameter('C', temp, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-                   
-                c = ax.contour(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), levels=[32], colors='purple', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                ax.clabel(c, levels=[32], inline=True, fontsize=8, rightside_up=True)
-    
-                if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                    cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_warm, alpha=0.35, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_warm)
-    
-                if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-                    cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_cool, alpha=0.35, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
-    
-                fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                    if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+                        cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_warm, alpha=0.35, extend='both')
+                        cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_warm)
         
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                if mapcrs == datacrs:
-                    tim.sleep(10)
-    
-    
-            else:
+                    if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+                        cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_cool, alpha=0.35, extend='both')
+                        cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
+            
+                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                 
-                temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :])
+                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                    if mapcrs == datacrs:
+                        tim.sleep(10)
+        
+            for t in range(end1, end2, step):
+            
+                fname = f"Image_{t}.png"
+            
+                fig = plt.figure(figsize=(12, 12))
+                fig.set_facecolor('aliceblue')
+                
+                ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
+                ax.set_extent([wb, eb, sb, nb], datacrs)
+                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                if show_rivers == True:
+                    ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                else:
+                    pass
+            
+                if show_gacc_borders == True:
+                    ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                else:
+                    pass
+                if show_psa_borders == True:
+                    ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_county_borders == True:
+                    ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_state_borders == True:
+                    ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                else:
+                    pass
+                if show_cwa_borders == True:
+                    ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_firewx_zones == True:
+                    ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_public_zones == True:
+                    ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                else:
+                    pass
+        
+                model = model.upper()
+                plt.title(f"{model} 2-METER TEMPERATURE [°F]", fontsize=9, fontweight='bold', loc='left')
+                plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+                ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
+                ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
+                ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                ax.text(x, y, f"Contour Line: T = {temperature_contour_value}[°F]", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+                
+                lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
+        
+                stn = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
+                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=5, clip_on=True)
+        
+                if model == 'CMCENS' or model == 'GEFS0P50':
+        
+                    temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :])
+        
+                    temp = temp[::decimate, ::decimate].to_numpy().flatten()
+            
+                    stn.plot_parameter('C', temp, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                       
+                    c = ax.contour(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), levels=[temperature_contour_value], colors='purple', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    ax.clabel(c, levels=[temperature_contour_value], inline=True, fontsize=8, rightside_up=True)
+        
+                    if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+                        cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_warm, alpha=0.35, extend='both')
+                        cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_warm)
+        
+                    if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+                        cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_cool, alpha=0.35, extend='both')
+                        cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
+        
+                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            
+                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                    if mapcrs == datacrs:
+                        tim.sleep(10)
+        
+        
+                else:
+                    
+                    temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :])
+        
+                    temp = temp[::decimate, ::decimate].to_numpy().flatten()
+            
+                    stn.plot_parameter('C', temp, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                       
+                    c = ax.contour(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), levels=[temperature_contour_value], colors='purple', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    ax.clabel(c, levels=[temperature_contour_value], inline=True, fontsize=8, rightside_up=True)
+        
+                    if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
+                        cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_warm, alpha=0.35, extend='both')
+                        cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_warm)
+        
+                    if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
+                        cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_cool, alpha=0.35, extend='both')
+                        cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
+            
+                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                
+                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                    if mapcrs == datacrs:
+                        tim.sleep(10)
+
+        if model == 'GEFS0p25 ENS MEAN':
+    
+            for i in range(0, (len(ds_list) - 1)):
+
+                time = ds_list[i]['valid_time']
+                init = ds_list[0]['time']
+                times = time.to_pandas()
+                times = pd.to_datetime(times)
+                inits = init.to_pandas()
+                inits = pd.to_datetime(inits)
+                
+                tempK = ds_list[i]['t2m']
+                temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(tempK)
+                c_temp = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(tempK)
+
+                fname = f"Image_{i}.png"
+            
+                fig = plt.figure(figsize=(12, 12))
+                fig.set_facecolor('aliceblue')
+                
+                ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
+                ax.set_extent([wb, eb, sb, nb], datacrs)
+                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                if show_rivers == True:
+                    ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                else:
+                    pass
+            
+                if show_gacc_borders == True:
+                    ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                else:
+                    pass
+                if show_psa_borders == True:
+                    ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_county_borders == True:
+                    ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_state_borders == True:
+                    ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                else:
+                    pass
+                if show_cwa_borders == True:
+                    ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_firewx_zones == True:
+                    ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_public_zones == True:
+                    ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                else:
+                    pass
+        
+                model = model.upper()
+                
+                plt.title(f"{model} 2-METER TEMPERATURE [°F]", fontsize=9, fontweight='bold', loc='left')
+                plt.title("Forecast Valid: " +times.strftime('%a %d/%H UTC')+"\nInitialization: "+inits.strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+                ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
+                ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
+                ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                ax.text(x, y, f"Contour Line: T = {temperature_contour_value}[°F]", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+            
+                lon_2d, lat_2d = np.meshgrid(ds_list[i]['longitude'], ds_list[i]['latitude'])
+    
+                numbers = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
+                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
+                
     
                 temp = temp[::decimate, ::decimate].to_numpy().flatten()
         
-                stn.plot_parameter('C', temp, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-                   
-                c = ax.contour(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), levels=[32], colors='purple', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                ax.clabel(c, levels=[32], inline=True, fontsize=8, rightside_up=True)
+                numbers.plot_parameter('C', temp, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+
+                c = ax.contour(ds_list[i]['longitude'], ds_list[i]['latitude'], c_temp[: , :], levels=[temperature_contour_value], colors='purple', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                ax.clabel(c, levels=[temperature_contour_value], inline=True, fontsize=8, rightside_up=True)
+
     
                 if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
-                    cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_warm, alpha=0.35, extend='both')
+                    cs = ax.contourf(ds_list[i]['longitude'], ds_list[i]['latitude'], c_temp[: , :], cmap=cmap, transform=datacrs, levels=temp_scale_warm, alpha=0.35, extend='both')
                     cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_warm)
     
                 if utc_time.month >= start_of_cool_season_month or utc_time.month <= end_of_cool_season_month:
-                    cs = ax.contourf(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), cmap=cmap, transform=datacrs, levels=temp_scale_cool, alpha=0.35, extend='both')
+                    cs = ax.contourf(ds_list[i]['longitude'], ds_list[i]['latitude'], c_temp[: , :], cmap=cmap, transform=datacrs, levels=temp_scale_cool, alpha=0.35, extend='both')
                     cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                print(f"Saved image for forecast {times.strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
 
 class relative_humidity:
 
-    def plot_2m_relative_humidity(model, region, low_rh_threshold=15, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=None, y1=None, x2=None, y2=None, x3=None, y3=None, shrink=1, decimate=None, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
+    def plot_2m_relative_humidity(model, region, low_rh_threshold=15, data=False, ds=None, ds_list=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=None, y1=None, x2=None, y2=None, x3=None, y3=None, shrink=1, decimate=None, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
     
     
         data=data
@@ -2361,21 +2468,7 @@ class relative_humidity:
         else:
             wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, decimate, signature_fontsize, stamp_fontsize = settings.get_region_info(model, region)
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
-        
-        if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
-            
-        if data == True:
-            ds = ds
-    
-        cmap = colormaps.relative_humidity_colormap()
-    
-        end1 = (int(round((len(ds['time']) - 1)/6, 0)) - 1)
-        end2 = len(ds['time']) - 1
-        time = ds['time']
-        times = time.to_pandas()
-    
-    
+
         path, path_print = file_functions.forecast_model_graphics_paths(model, region, reference_system, '2-Meter Relative Humidity', str_level)
     
         for file in os.listdir(f"{path}"):
@@ -2386,209 +2479,323 @@ class relative_humidity:
                 
         print(f"Any old images (if any) in {path_print} have been deleted.")
         
-        for t in range(0, end1, 1):
-        
-            fname = f"Image_{t}.png"
-        
-            fig = plt.figure(figsize=(12, 12))
-            fig.set_facecolor('aliceblue')
+        if data == False and model != 'GEFS0p25 ENS MEAN':
+            ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
+
+        if data == False and model == 'GEFS0p25 ENS MEAN':
+            ds_list = model_data.get_nomads_model_data_via_https(model, region, 'heightAboveGround', western_bound, eastern_bound, southern_bound, northern_bound, get_u_and_v_wind_components=False, add_wind_gusts=False)
             
-            ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-            ax.set_extent([wb, eb, sb, nb], datacrs)
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-            ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
-            if show_rivers == True:
-                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-            else:
-                pass
-        
-            if show_gacc_borders == True:
-                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-            else:
-                pass
-            if show_psa_borders == True:
-                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_county_borders == True:
-                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_state_borders == True:
-                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-            else:
-                pass
-            if show_cwa_borders == True:
-                ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_firewx_zones == True:
-                ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_public_zones == True:
-                ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-            else:
-                pass
+        if data == True and model != 'GEFS0p25 ENS MEAN':
+            ds = ds
+
+        if data == True and model == 'GEFS0p25 ENS MEAN':
+            ds_list = ds_list
     
-            model = model.upper()
-            plt.title(f"{model} 2-METER RELATIVE HUMIDITY [%]", fontsize=9, fontweight='bold', loc='left')
-            plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
-            ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-            ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-            ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
-            ax.text(x, y, f"Contour Line: RH = {low_rh_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+        cmap = colormaps.relative_humidity_colormap()
+
+        if model != 'GEFS0p25 ENS MEAN':
+    
+            end1 = (int(round((len(ds['time']) - 1)/6, 0)) - 1)
+            end2 = len(ds['time']) - 1
+            time = ds['time']
+            times = time.to_pandas()
             
-            lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
-    
-            stn = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
-                             transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
-    
-            if model == 'CMCENS' or model == 'GEFS0P50':
-    
-                rh = ds['rh2m'][0, t, :, :]
-    
-                rh = rh[::decimate, ::decimate].to_numpy().flatten()
-        
-                stn.plot_parameter('C', rh, color='pink', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-                   
-                c = ax.contour(ds['lon'], ds['lat'], ds['rh2m'][0, t, :, :], levels=[low_rh_threshold], colors='brown', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                ax.clabel(c, levels=[low_rh_threshold], inline=True, fontsize=8, rightside_up=True)
-    
-                cs = ax.contourf(ds['lon'], ds['lat'], ds['rh2m'][0, t, :, :], cmap=cmap, transform=datacrs, levels=levels, alpha=0.35)
-                cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
-    
-                fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-        
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                if mapcrs == datacrs:
-                    tim.sleep(10)
-    
-    
-            else:
+            for t in range(0, end1, 1):
+            
+                fname = f"Image_{t}.png"
+            
+                fig = plt.figure(figsize=(12, 12))
+                fig.set_facecolor('aliceblue')
                 
-                rh = ds['rh2m'][t, :, :]
-    
-                rh = rh[::decimate, ::decimate].to_numpy().flatten()
-        
-                stn.plot_parameter('C', rh, color='pink', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-                   
-                c = ax.contour(ds['lon'], ds['lat'], ds['rh2m'][t, :, :], levels=[low_rh_threshold], colors='brown', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                ax.clabel(c, levels=[low_rh_threshold], inline=True, fontsize=8, rightside_up=True)
-    
-                cs = ax.contourf(ds['lon'], ds['lat'], ds['rh2m'][t, :, :], cmap=cmap, transform=datacrs, levels=levels, alpha=0.35)
-                cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
-        
-                fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
+                ax.set_extent([wb, eb, sb, nb], datacrs)
+                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                if show_rivers == True:
+                    ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                else:
+                    pass
             
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                if mapcrs == datacrs:
-                    tim.sleep(10)
-    
-        for t in range(end1, end2, step):
+                if show_gacc_borders == True:
+                    ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                else:
+                    pass
+                if show_psa_borders == True:
+                    ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_county_borders == True:
+                    ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_state_borders == True:
+                    ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                else:
+                    pass
+                if show_cwa_borders == True:
+                    ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_firewx_zones == True:
+                    ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_public_zones == True:
+                    ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                else:
+                    pass
         
-            fname = f"Image_{t}.png"
-        
-            fig = plt.figure(figsize=(12, 12))
-            fig.set_facecolor('aliceblue')
-            
-            ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-            ax.set_extent([wb, eb, sb, nb], datacrs)
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-            ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
-            if show_rivers == True:
-                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-            else:
-                pass
-        
-            if show_gacc_borders == True:
-                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-            else:
-                pass
-            if show_psa_borders == True:
-                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_county_borders == True:
-                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_state_borders == True:
-                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-            else:
-                pass
-            if show_cwa_borders == True:
-                ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_firewx_zones == True:
-                ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_public_zones == True:
-                ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-            else:
-                pass
-    
-            model = model.upper()
-            plt.title(f"{model} 2-METER RELATIVE HUMIDITY [%]", fontsize=9, fontweight='bold', loc='left')
-            plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
-            ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-            ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-            ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
-            ax.text(x, y, f"Contour Line: RH = {low_rh_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-            
-            lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
-    
-            stn = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
-                             transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
-    
-            if model == 'CMCENS' or model == 'GEFS0P50':
-    
-                rh = ds['rh2m'][0, t, :, :]
-    
-                rh = rh[::decimate, ::decimate].to_numpy().flatten()
-        
-                stn.plot_parameter('C', rh, color='pink', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-                   
-                c = ax.contour(ds['lon'], ds['lat'], ds['rh2m'][0, t, :, :], levels=[low_rh_threshold], colors='brown', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                ax.clabel(c, levels=[low_rh_threshold], inline=True, fontsize=8, rightside_up=True)
-    
-                cs = ax.contourf(ds['lon'], ds['lat'], ds['rh2m'][0, t, :, :], cmap=cmap, transform=datacrs, levels=levels, alpha=0.35)
-                cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
-    
-                fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-        
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
-                if mapcrs == datacrs:
-                    tim.sleep(10)
-    
-    
-            else:
+                model = model.upper()
+                plt.title(f"{model} 2-METER RELATIVE HUMIDITY [%]", fontsize=9, fontweight='bold', loc='left')
+                plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+                ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
+                ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
+                ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                ax.text(x, y, f"Contour Line: RH = {low_rh_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
                 
-                rh = ds['rh2m'][t, :, :]
+                lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
+        
+                stn = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
+                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
+        
+                if model == 'CMCENS' or model == 'GEFS0P50':
+        
+                    rh = ds['rh2m'][0, t, :, :]
+        
+                    rh = rh[::decimate, ::decimate].to_numpy().flatten()
+            
+                    stn.plot_parameter('C', rh, color='pink', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                       
+                    c = ax.contour(ds['lon'], ds['lat'], ds['rh2m'][0, t, :, :], levels=[low_rh_threshold], colors='brown', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    ax.clabel(c, levels=[low_rh_threshold], inline=True, fontsize=8, rightside_up=True)
+        
+                    cs = ax.contourf(ds['lon'], ds['lat'], ds['rh2m'][0, t, :, :], cmap=cmap, transform=datacrs, levels=levels, alpha=0.35)
+                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
+        
+                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            
+                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                    if mapcrs == datacrs:
+                        tim.sleep(10)
+        
+        
+                else:
+                    
+                    rh = ds['rh2m'][t, :, :]
+        
+                    rh = rh[::decimate, ::decimate].to_numpy().flatten()
+            
+                    stn.plot_parameter('C', rh, color='pink', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                       
+                    c = ax.contour(ds['lon'], ds['lat'], ds['rh2m'][t, :, :], levels=[low_rh_threshold], colors='brown', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    ax.clabel(c, levels=[low_rh_threshold], inline=True, fontsize=8, rightside_up=True)
+        
+                    cs = ax.contourf(ds['lon'], ds['lat'], ds['rh2m'][t, :, :], cmap=cmap, transform=datacrs, levels=levels, alpha=0.35)
+                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
+            
+                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                
+                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                    if mapcrs == datacrs:
+                        tim.sleep(10)
+        
+            for t in range(end1, end2, step):
+            
+                fname = f"Image_{t}.png"
+            
+                fig = plt.figure(figsize=(12, 12))
+                fig.set_facecolor('aliceblue')
+                
+                ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
+                ax.set_extent([wb, eb, sb, nb], datacrs)
+                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                if show_rivers == True:
+                    ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                else:
+                    pass
+            
+                if show_gacc_borders == True:
+                    ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                else:
+                    pass
+                if show_psa_borders == True:
+                    ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_county_borders == True:
+                    ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_state_borders == True:
+                    ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                else:
+                    pass
+                if show_cwa_borders == True:
+                    ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_firewx_zones == True:
+                    ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_public_zones == True:
+                    ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                else:
+                    pass
+        
+                model = model.upper()
+                plt.title(f"{model} 2-METER RELATIVE HUMIDITY [%]", fontsize=9, fontweight='bold', loc='left')
+                plt.title("Forecast Valid: " +times.iloc[t].strftime('%a %d/%H UTC')+"\nInitialization: "+times.iloc[0].strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+                ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
+                ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
+                ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                ax.text(x, y, f"Contour Line: RH = {low_rh_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+                
+                lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
+        
+                stn = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
+                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
+        
+                if model == 'CMCENS' or model == 'GEFS0P50':
+        
+                    rh = ds['rh2m'][0, t, :, :]
+        
+                    rh = rh[::decimate, ::decimate].to_numpy().flatten()
+            
+                    stn.plot_parameter('C', rh, color='pink', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                       
+                    c = ax.contour(ds['lon'], ds['lat'], ds['rh2m'][0, t, :, :], levels=[low_rh_threshold], colors='brown', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    ax.clabel(c, levels=[low_rh_threshold], inline=True, fontsize=8, rightside_up=True)
+        
+                    cs = ax.contourf(ds['lon'], ds['lat'], ds['rh2m'][0, t, :, :], cmap=cmap, transform=datacrs, levels=levels, alpha=0.35)
+                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
+        
+                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            
+                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                    if mapcrs == datacrs:
+                        tim.sleep(10)
+        
+        
+                else:
+                    
+                    rh = ds['rh2m'][t, :, :]
+        
+                    rh = rh[::decimate, ::decimate].to_numpy().flatten()
+            
+                    stn.plot_parameter('C', rh, color='pink', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+                       
+                    c = ax.contour(ds['lon'], ds['lat'], ds['rh2m'][t, :, :], levels=[low_rh_threshold], colors='brown', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    ax.clabel(c, levels=[low_rh_threshold], inline=True, fontsize=8, rightside_up=True)
+        
+                    cs = ax.contourf(ds['lon'], ds['lat'], ds['rh2m'][t, :, :], cmap=cmap, transform=datacrs, levels=levels, alpha=0.35)
+                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
+            
+                    fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                
+                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                    if mapcrs == datacrs:
+                        tim.sleep(10)
+
+        if model == 'GEFS0p25 ENS MEAN':
+    
+            for i in range(0, (len(ds_list) - 1)):
+
+                time = ds_list[i]['valid_time']
+                init = ds_list[0]['time']
+                times = time.to_pandas()
+                times = pd.to_datetime(times)
+                inits = init.to_pandas()
+                inits = pd.to_datetime(inits)
+                
+                rh = ds_list[i]['r2']
+
+                fname = f"Image_{i}.png"
+            
+                fig = plt.figure(figsize=(12, 12))
+                fig.set_facecolor('aliceblue')
+                
+                ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
+                ax.set_extent([wb, eb, sb, nb], datacrs)
+                ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                if show_rivers == True:
+                    ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                else:
+                    pass
+            
+                if show_gacc_borders == True:
+                    ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                else:
+                    pass
+                if show_psa_borders == True:
+                    ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_county_borders == True:
+                    ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_state_borders == True:
+                    ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                else:
+                    pass
+                if show_cwa_borders == True:
+                    ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_firewx_zones == True:
+                    ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_public_zones == True:
+                    ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                else:
+                    pass
+        
+                model = model.upper()
+                
+                plt.title(f"{model} 2-METER RELATIVE HUMIDITY [%]", fontsize=9, fontweight='bold', loc='left')
+                plt.title("Forecast Valid: " +times.strftime('%a %d/%H UTC')+"\nInitialization: "+inits.strftime('%a %d/%H UTC'), fontsize=7, fontweight='bold', loc='right')
+                ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
+                ax.text(x2, y2, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
+                ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)
+                ax.text(x, y, f"Contour Line: RH = {low_rh_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+             
+                lon_2d, lat_2d = np.meshgrid(ds_list[i]['longitude'], ds_list[i]['latitude'])
+    
+                numbers = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
+                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
+                
     
                 rh = rh[::decimate, ::decimate].to_numpy().flatten()
         
-                stn.plot_parameter('C', rh, color='pink', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-                   
-                c = ax.contour(ds['lon'], ds['lat'], ds['rh2m'][t, :, :], levels=[low_rh_threshold], colors='brown', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                ax.clabel(c, levels=[low_rh_threshold], inline=True, fontsize=8, rightside_up=True)
+                numbers.plot_parameter('C', rh, color='pink', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+
     
-                cs = ax.contourf(ds['lon'], ds['lat'], ds['rh2m'][t, :, :], cmap=cmap, transform=datacrs, levels=levels, alpha=0.35)
+                cs = ax.contourf(ds_list[i]['longitude'], ds_list[i]['latitude'], ds_list[i]['r2'][:, :], cmap=cmap, transform=datacrs, levels=levels, alpha=0.35)
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
+
+                c = ax.contour(ds_list[i]['longitude'], ds_list[i]['latitude'], ds_list[i]['r2'][:, :], levels=[low_rh_threshold], colors='brown', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                ax.clabel(c, levels=[low_rh_threshold], inline=True, fontsize=8, rightside_up=True)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+                print(f"Saved image for forecast {times.strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
+
+            
 
 class critical_firewx_conditions:
 
@@ -2775,7 +2982,7 @@ class critical_firewx_conditions:
             ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
     
         if data == False and model == 'GEFS0p25 ENS MEAN':
-            ds_list, u, v, gusts = model_data.get_model_data_via_https(model, region, 'heightAboveGround', western_bound, eastern_bound, southern_bound, northern_bound, get_u_and_v_wind_components=True, add_wind_gusts=True)
+            ds_list, u, v, gusts = model_data.get_nomads_model_data_via_https(model, region, 'heightAboveGround', western_bound, eastern_bound, southern_bound, northern_bound, get_u_and_v_wind_components=True, add_wind_gusts=True)
             
         if data == True and model != 'GEFS0p25 ENS MEAN':
             ds = ds
