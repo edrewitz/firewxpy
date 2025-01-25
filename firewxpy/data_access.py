@@ -240,6 +240,7 @@ class info:
         """
         print(error_msg)
 
+
 class model_data:
 
     def get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound):
@@ -332,8 +333,7 @@ class model_data:
             url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+utc_time.strftime('%Y%m%d')+'/cmcensavg_12z'
             
             yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+yesterday.strftime('%Y%m%d')+'/cmcensavg_00z'
-            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+yesterday.strftime('%Y%m%d')+'/cmcensavg_12z'   
-         
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+yesterday.strftime('%Y%m%d')+'/cmcensavg_12z'      
         if model == 'NAM':
         
             url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_00z'
@@ -481,7 +481,7 @@ class model_data:
         else:
 
             western_bound = western_bound
-            eastern_bound = eastern_bound          
+            eastern_bound = eastern_bound
         
             if utc_time.hour >= 0 and utc_time.hour < 6:
                 
@@ -605,7 +605,8 @@ class model_data:
         
         return ds
 
-    def get_model_data_via_https(model, region, typeOfLevel, western_bound, eastern_bound, southern_bound, northern_bound, get_u_and_v_wind_components=False, add_wind_gusts=True):
+
+    def get_nomads_model_data_via_https(model, region, typeOfLevel, western_bound, eastern_bound, southern_bound, northern_bound, get_u_and_v_wind_components=False, add_wind_gusts=True):
     
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
@@ -632,125 +633,111 @@ class model_data:
         print(f"Any old files (if any) in 'f:{model} Data' have been deleted.")
     
         forecast_hours = []
+
+        if model == 'UKMET':
+
+            if model == 'UKMET':
+
+                url_today = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/ukmet/prod/ukmet.{utc_time.strftime('%Y%m%d')}/"
+                url_yday = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/ukmet/prod/ukmet.{yesterday.strftime('%Y%m%d')}/"
+    
+                fname_00z = f"nrukmet.t00z.ukm25.grib2"
+                fname_12z = f"nrukmet.t12z.ukm25.grib2"
+
+            if utc_time.hour >= 12 and utc_time.hour < 24:
+                try:
+                    urllib.request.urlretrieve(f"{url_today}/{fname_12z}", f"{fname_12z}")
+                    os.replace(f"{fname_12z}", f"{model} Data/{fname_12z}")
+                    print(f"Downloaded {fname_12z} to f:{model} Data/{fname_12z}") 
+                except Exception as e:
+                    print(f"12z {model} is not available. Trying to download 00z {model} run.")
+                    try:
+                        urllib.request.urlretrieve(f"{url_today}/{fname_00z}", f"{fname_00z}")
+                        os.replace(f"{fname_00z}", f"{model} Data/{fname_00z}")
+                        print(f"Downloaded {fname_00z} to f:{model} Data/{fname_00z}")
+                    except Exception as e:
+                        print(f"00z {model} is not available. Trying to download yesterday's 12z {model} run.")
+                        try:
+                            urllib.request.urlretrieve(f"{url_yday}/{fname_12z}", f"{fname_12z}")
+                            os.replace(f"{fname_12z}", f"{model} Data/{fname_12z}")
+                            print(f"Downloaded {fname_12z} to f:{model} Data/{fname_12z}") 
+                        except Exception as e:
+                            print(f"Newest data is more than 24 hours old. Aborting...")
+
+            if utc_time.hour >= 0 and utc_time.hour < 12:
+                try:
+                    urllib.request.urlretrieve(f"{url_today}/{fname_00z}", f"{fname_00z}")
+                    os.replace(f"{fname_00z}", f"{model} Data/{fname_00z}")
+                    print(f"Downloaded {fname_00z} to f:{model} Data/{fname_00z}") 
+                except Exception as e:
+                    print(f"00z {model} is not available. Trying to download yesterday's 12z {model} run.")
+                    try:
+                        urllib.request.urlretrieve(f"{url_yday}/{fname_12z}", f"{fname_12z}")
+                        os.replace(f"{fname_12z}", f"{model} Data/{fname_12z}")
+                        print(f"Downloaded {fname_12z} to f:{model} Data/{fname_12z}")
+                    except Exception as e:
+                        print(f"12z {model} is not available. Trying to download yesterday's 00z {model} run.")
+                        try:
+                            urllib.request.urlretrieve(f"{url_yday}/{fname_00z}", f"{fname_00z}")
+                            os.replace(f"{fname_00z}", f"{model} Data/{fname_00z}")
+                            print(f"Downloaded {fname_00z} to f:{model} Data/{fname_00z}") 
+                        except Exception as e:
+                            print(f"Newest data is more than 24 hours old. Aborting...")
+
+            for item in os.listdir(f"{model} Data"):
+                if item.endswith(".idx"):
+                    os.remove(f"{model} Data/{item}")
+
+            try:
+                ds = xr.open_dataset(f"{model} Data/{fname_12z}", engine='cfgrib').sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
+            except Exception as e:
+                ds = xr.open_dataset(f"{model} Data/{fname_00z}", engine='cfgrib').sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
+
+            return ds
+                            
         
-        if model == 'GEFS0p25 ENS MEAN':
+        if model == 'GEFS0p25 ENS MEAN' or model == 'GEFS0p25 CHEM' or model == 'GEFS0p50 CHEM':
 
-            for i in range(0, 12, 3):
-                hour = f"00{i}"
-                forecast_hours.append(hour)
-            for i in range(12, 75, 3):
-                hour = f"0{i}"
-                forecast_hours.append(hour)
-            for i in range(78, 102, 6):
-                hour = f"0{i}"
-                forecast_hours.append(hour)
-            for i in range(102, 243, 6):
-                hour = f"{i}"
-                forecast_hours.append(hour)
+            if model == 'GEFS0p25 CHEM' or model == 'GEFS0p50 CHEM':
+                
+                for i in range(0, 12, 3):
+                    hour = f"00{i}"
+                    forecast_hours.append(hour)
+                for i in range(12, 102, 3):
+                    hour = f"0{i}"
+                    forecast_hours.append(hour)
+                for i in range(102, 123, 3):
+                    hour = f"{i}"
+                    forecast_hours.append(hour)
+
+                if model == 'GEFS0p25 CHEM':
+                
+                    url_00z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/00/chem/pgrb2ap25/"
+                    url_06z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/06/chem/pgrb2ap25/"
+                    url_12z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/12/chem/pgrb2ap25/"
+                    url_18z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/18/chem/pgrb2ap25/"
             
-            url_00z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/00/atmos/pgrb2sp25/"
-            url_06z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/06/atmos/pgrb2sp25/"
-            url_12z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/12/atmos/pgrb2sp25/"
-            url_18z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/18/atmos/pgrb2sp25/"
-    
-            yday_00z = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{yesterday.strftime('%Y%m%d')}/00/atmos/pgrb2sp25/"
-            yday_06z = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{yesterday.strftime('%Y%m%d')}/06/atmos/pgrb2sp25/"
-            yday_12z = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{yesterday.strftime('%Y%m%d')}/12/atmos/pgrb2sp25/"
-            yday_18z = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{yesterday.strftime('%Y%m%d')}/18/atmos/pgrb2sp25/"
+                    yday_00z = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{yesterday.strftime('%Y%m%d')}/00/chem/pgrb2ap25/"
+                    yday_06z = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{yesterday.strftime('%Y%m%d')}/06/chem/pgrb2ap25/"
+                    yday_12z = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{yesterday.strftime('%Y%m%d')}/12/chem/pgrb2ap25/"
+                    yday_18z = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{yesterday.strftime('%Y%m%d')}/18/chem/pgrb2ap25/"
+        
+                    fnames_00z = []
+                    fnames_06z = []
+                    fnames_12z = []
+                    fnames_18z = []
+                    for hour in forecast_hours:
+                        fname_00z = f"gefs.chem.t00z.a2d_0p25.f{hour}.grib2"
+                        fnames_00z.append(fname_00z)
+                        fname_06z = f"gefs.chem.t06z.a2d_0p25.f{hour}.grib2"
+                        fnames_06z.append(fname_06z)
+                        fname_12z = f"gefs.chem.t12z.a2d_0p25.f{hour}.grib2"
+                        fnames_12z.append(fname_12z)
+                        fname_18z = f"gefs.chem.t18z.a2d_0p25.f{hour}.grib2"
+                        fnames_18z.append(fname_18z)
 
-            fnames_00z = []
-            fnames_06z = []
-            fnames_12z = []
-            fnames_18z = []
-            for hour in forecast_hours:
-                fname_00z = f"geavg.t00z.pgrb2s.0p25.f{hour}"
-                fnames_00z.append(fname_00z)
-                fname_06z = f"geavg.t06z.pgrb2s.0p25.f{hour}"
-                fnames_06z.append(fname_06z)
-                fname_12z = f"geavg.t12z.pgrb2s.0p25.f{hour}"
-                fnames_12z.append(fname_12z)
-                fname_18z = f"geavg.t18z.pgrb2s.0p25.f{hour}"
-                fnames_18z.append(fname_18z)                    
-    
-        if utc_time.hour >= 0 and utc_time.hour < 6:
-            try:
-                for fname in fnames_00z:
-                    urllib.request.urlretrieve(f"{url_00z_run}/{fname}", f"{fname}")
-                    os.replace(f"{fname}", f"{model} Data/{fname}")
-                    print(f"Downloaded {fname} to f:{model} Data/geavg.t00z.pgrb2s.0p25.f{hour}") 
-            except Exception as e:
-                try:
-                    for fname in fnames_18z:
-                        urllib.request.urlretrieve(f"{yday_18z}/{fname}", f"{fname}")
-                        os.replace(f"{fname}", f"{model} Data/{fname}")
-                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
-                except Exception as e:
-                    try:
-                        for fname in fnames_12z:
-                            urllib.request.urlretrieve(f"{yday_12z}/{fname}", f"{fname}")
-                            os.replace(f"{fname}", f"{model} Data/{fname}")
-                            print(f"Downloaded {fname} to f:{model} Data/geavg.t12z.pgrb2s.0p25.f{hour}") 
-                    except Exception as e:
-                        try:
-                            for fname in fnames_06z:
-                                urllib.request.urlretrieve(f"{yday_06z}/{fname}", f"{fname}")
-                                os.replace(f"{fname}", f"{model} Data/{fname}")
-                                print(f"Downloaded {fname} to f:{model} Data/geavg.t06z.pgrb2s.0p25.f{hour}") 
-                        except Exception as e:
-                            try:
-                                for fname in fnames_00z:
-                                    urllib.request.urlretrieve(f"{yday_00z}/{fname}", f"geavg.t00z.pgrb2s.0p25.f{hour}")
-                                    os.replace(f"{fname}", f"{model} Data/{fname}")
-                                    print(f"Downloaded {fname} to f:{model} Data/geavg.t00z.pgrb2s.0p25.f{hour}") 
-                            except Exception as e:
-                                print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 00z - Not even worth downloading at this point!")
 
-        if utc_time.hour >= 6 and utc_time.hour < 12:
-            try:
-                for fname in fnames_06z:
-                    urllib.request.urlretrieve(f"{url_06z_run}/{fname}", f"{fname}")
-                    os.replace(f"{fname}", f"{model} Data/{fname}")
-                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
-            except Exception as e:
-                try:
-                    for fname in fnames_00z:
-                        urllib.request.urlretrieve(f"{url_00z_run}/{fname}", f"{fname}")
-                        os.replace(f"{fname}", f"{model} Data/{fname}")
-                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
-                except Exception as e:
-                    try:
-                        for fname in fnames_18z:
-                            urllib.request.urlretrieve(f"{yday_18z}/{fname}", f"{fname}")
-                            os.replace(f"{fname}", f"{model} Data/{fname}")
-                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
-                    except Exception as e:
-                        try:
-                            for fname in fnames_12z:
-                                urllib.request.urlretrieve(f"{yday_12z}/{fname}", f"{fname}")
-                                os.replace(f"{fname}", f"{model} Data/{fname}")
-                                print(f"Downloaded {fname} to f:{model} Data/{fname}") 
-                        except Exception as e:
-                            try:
-                                for fname in fnames_06z:
-                                    urllib.request.urlretrieve(f"{yday_06z}/{fname}", f"{fname}")
-                                    os.replace(f"{fname}", f"{model} Data/{fname}")
-                                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
-                            except Exception as e:
-                                print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 06z - Not even worth downloading at this point!")
-
-        if utc_time.hour >= 12 and utc_time.hour < 18:
-            try:
-                for fname in fnames_12z:
-                    urllib.request.urlretrieve(f"{url_12z_run}/{fname}", f"{fname}")
-                    os.replace(f"{fname}", f"{model} Data/{fname}")
-                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
-            except Exception as e:
-                try:
-                    for fname in fnames_06z:
-                        urllib.request.urlretrieve(f"{url_06z_run}/{fname}", f"{fname}")
-                        os.replace(f"{fname}", f"{model} Data/{fname}")
-                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
-                except Exception as e:
+                if utc_time.hour >= 0 and utc_time.hour < 6:
                     try:
                         for fname in fnames_00z:
                             urllib.request.urlretrieve(f"{url_00z_run}/{fname}", f"{fname}")
@@ -765,25 +752,25 @@ class model_data:
                         except Exception as e:
                             try:
                                 for fname in fnames_12z:
-                                    urllib.request.urlretrieve(f"{yday_12z}/{fname}", f"geavg.t12z.pgrb2s.0p25.f{hour}")
+                                    urllib.request.urlretrieve(f"{yday_12z}/{fname}", f"{fname}")
                                     os.replace(f"{fname}", f"{model} Data/{fname}")
-                                    print(f"Downloaded {fname} to f:{model} Data/{fname}")  
+                                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                             except Exception as e:
-                                print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 12z - Not even worth downloading at this point!")
-
-        if utc_time.hour >= 18 and utc_time.hour < 24:
-            try:
-                for fname in fnames_18z:
-                    urllib.request.urlretrieve(f"{url_18z_run}/{fname}", f"{fname}")
-                    os.replace(f"{fname}", f"{model} Data/{fname}")
-                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
-            except Exception as e:
-                try:
-                    for fname in fnames_12z:
-                        urllib.request.urlretrieve(f"{url_12z_run}/{fname}", f"{fname}")
-                        os.replace(f"{fname}", f"{model} Data/{fname}")
-                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
-                except Exception as e:
+                                try:
+                                    for fname in fnames_06z:
+                                        urllib.request.urlretrieve(f"{yday_06z}/{fname}", f"{fname}")
+                                        os.replace(f"{fname}", f"{model} Data/{fname}")
+                                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                except Exception as e:
+                                    try:
+                                        for fname in fnames_00z:
+                                            urllib.request.urlretrieve(f"{yday_00z}/{fname}", f"geavg.t00z.pgrb2s.0p25.f{hour}")
+                                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                    except Exception as e:
+                                        print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 00z - Not even worth downloading at this point!")
+        
+                if utc_time.hour >= 6 and utc_time.hour < 12:
                     try:
                         for fname in fnames_06z:
                             urllib.request.urlretrieve(f"{url_06z_run}/{fname}", f"{fname}")
@@ -802,62 +789,331 @@ class model_data:
                                     os.replace(f"{fname}", f"{model} Data/{fname}")
                                     print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                             except Exception as e:
-                                print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 18z - Not even worth downloading at this point!")
-
-        for item in os.listdir(f"{model} Data"):
-            if item.endswith(".idx"):
-                os.remove(f"{model} Data/{item}")
+                                try:
+                                    for fname in fnames_12z:
+                                        urllib.request.urlretrieve(f"{yday_12z}/{fname}", f"{fname}")
+                                        os.replace(f"{fname}", f"{model} Data/{fname}")
+                                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                except Exception as e:
+                                    try:
+                                        for fname in fnames_06z:
+                                            urllib.request.urlretrieve(f"{yday_06z}/{fname}", f"{fname}")
+                                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                    except Exception as e:
+                                        print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 06z - Not even worth downloading at this point!")
         
-        fpaths = []
-        for file in os.listdir(f"{model} Data"):
-            fname = os.path.basename(file)
-            fpath = f"{model} Data/{fname}"
-            fpaths.append(fpath)
-
-        if get_u_and_v_wind_components == False:
-            datasets = []
-            for file in fpaths:
-                ds = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': typeOfLevel}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
-                datasets.append(ds)
-                print(f"Extrated dataset from {file}")
+                if utc_time.hour >= 12 and utc_time.hour < 18:
+                    try:
+                        for fname in fnames_12z:
+                            urllib.request.urlretrieve(f"{url_12z_run}/{fname}", f"{fname}")
+                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                    except Exception as e:
+                        try:
+                            for fname in fnames_06z:
+                                urllib.request.urlretrieve(f"{url_06z_run}/{fname}", f"{fname}")
+                                os.replace(f"{fname}", f"{model} Data/{fname}")
+                                print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                        except Exception as e:
+                            try:
+                                for fname in fnames_00z:
+                                    urllib.request.urlretrieve(f"{url_00z_run}/{fname}", f"{fname}")
+                                    os.replace(f"{fname}", f"{model} Data/{fname}")
+                                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                            except Exception as e:
+                                try:
+                                    for fname in fnames_18z:
+                                        urllib.request.urlretrieve(f"{yday_18z}/{fname}", f"{fname}")
+                                        os.replace(f"{fname}", f"{model} Data/{fname}")
+                                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                except Exception as e:
+                                    try:
+                                        for fname in fnames_12z:
+                                            urllib.request.urlretrieve(f"{yday_12z}/{fname}", f"geavg.t12z.pgrb2s.0p25.f{hour}")
+                                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                                            print(f"Downloaded {fname} to f:{model} Data/{fname}")  
+                                    except Exception as e:
+                                        print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 12z - Not even worth downloading at this point!")
+        
+                if utc_time.hour >= 18 and utc_time.hour < 24:
+                    try:
+                        for fname in fnames_18z:
+                            urllib.request.urlretrieve(f"{url_18z_run}/{fname}", f"{fname}")
+                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                    except Exception as e:
+                        try:
+                            for fname in fnames_12z:
+                                urllib.request.urlretrieve(f"{url_12z_run}/{fname}", f"{fname}")
+                                os.replace(f"{fname}", f"{model} Data/{fname}")
+                                print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                        except Exception as e:
+                            try:
+                                for fname in fnames_06z:
+                                    urllib.request.urlretrieve(f"{url_06z_run}/{fname}", f"{fname}")
+                                    os.replace(f"{fname}", f"{model} Data/{fname}")
+                                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                            except Exception as e:
+                                try:
+                                    for fname in fnames_00z:
+                                        urllib.request.urlretrieve(f"{url_00z_run}/{fname}", f"{fname}")
+                                        os.replace(f"{fname}", f"{model} Data/{fname}")
+                                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                except Exception as e:
+                                    try:
+                                        for fname in fnames_18z:
+                                            urllib.request.urlretrieve(f"{yday_18z}/{fname}", f"{fname}")
+                                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                    except Exception as e:
+                                        print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 18z - Not even worth downloading at this point!")
+        
+                for item in os.listdir(f"{model} Data"):
+                    if item.endswith(".idx"):
+                        os.remove(f"{model} Data/{item}")
                 
-            return datasets
+                fpaths = []
+                for file in os.listdir(f"{model} Data"):
+                    fname = os.path.basename(file)
+                    fpath = f"{model} Data/{fname}"
+                    fpaths.append(fpath)
 
-        if get_u_and_v_wind_components == True:
-            datasets = []
-            u = []
-            v = []
-
-            if add_wind_gusts == False:
+                datasets = []
                 for file in fpaths:
-                    ds = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': typeOfLevel}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
-                    u_wind = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': 'heightAboveGround', 'shortName': '10u'}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
-                    v_wind = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': 'heightAboveGround', 'shortName': '10v'}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
+                    ds = xr.open_dataset(file, engine='cfgrib').sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
                     datasets.append(ds)
-                    u.append(u_wind)
-                    v.append(v_wind)
-                    print(f"Extrated datasets from {file}")
+                    print(f"Extrated dataset from {file}")
+                    
+                return datasets
 
-                    print(f"Ignore the error message regarding u and v winds.")
-                return datasets, u, v
+            if model == 'GEFS0p25 ENS MEAN':
 
-            if add_wind_gusts == True:
+                for i in range(0, 12, 3):
+                    hour = f"00{i}"
+                    forecast_hours.append(hour)
+                for i in range(12, 75, 3):
+                    hour = f"0{i}"
+                    forecast_hours.append(hour)
+                for i in range(78, 102, 6):
+                    hour = f"0{i}"
+                    forecast_hours.append(hour)
+                for i in range(102, 243, 6):
+                    hour = f"{i}"
+                    forecast_hours.append(hour)
 
-                gusts = []
-                for file in fpaths:
-                    ds = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': typeOfLevel}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
-                    u_wind = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': 'heightAboveGround', 'shortName': '10u'}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
-                    v_wind = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': 'heightAboveGround', 'shortName': '10v'}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
-                    data = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': 'surface'}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
-                    gust = data['gust']
-                    gusts.append(gust)
-                    datasets.append(ds)
-                    u.append(u_wind)
-                    v.append(v_wind)
-                    print(f"Extrated datasets from {file}")
-
-                    print(f"Ignore the error message regarding u and v winds.")
-                return datasets, u, v, gusts
+                if model == 'GEFS0p25 ENS MEAN':
+                
+                    url_00z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/00/atmos/pgrb2sp25/"
+                    url_06z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/06/atmos/pgrb2sp25/"
+                    url_12z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/12/atmos/pgrb2sp25/"
+                    url_18z_run = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{utc_time.strftime('%Y%m%d')}/18/atmos/pgrb2sp25/"
+            
+                    yday_00z = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{yesterday.strftime('%Y%m%d')}/00/atmos/pgrb2sp25/"
+                    yday_06z = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{yesterday.strftime('%Y%m%d')}/06/atmos/pgrb2sp25/"
+                    yday_12z = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{yesterday.strftime('%Y%m%d')}/12/atmos/pgrb2sp25/"
+                    yday_18z = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/gefs.{yesterday.strftime('%Y%m%d')}/18/atmos/pgrb2sp25/"
+        
+                    fnames_00z = []
+                    fnames_06z = []
+                    fnames_12z = []
+                    fnames_18z = []
+                    for hour in forecast_hours:
+                        fname_00z = f"geavg.t00z.pgrb2s.0p25.f{hour}"
+                        fnames_00z.append(fname_00z)
+                        fname_06z = f"geavg.t06z.pgrb2s.0p25.f{hour}"
+                        fnames_06z.append(fname_06z)
+                        fname_12z = f"geavg.t12z.pgrb2s.0p25.f{hour}"
+                        fnames_12z.append(fname_12z)
+                        fname_18z = f"geavg.t18z.pgrb2s.0p25.f{hour}"
+                        fnames_18z.append(fname_18z)                    
+    
+                if utc_time.hour >= 0 and utc_time.hour < 6:
+                    try:
+                        for fname in fnames_00z:
+                            urllib.request.urlretrieve(f"{url_00z_run}/{fname}", f"{fname}")
+                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                    except Exception as e:
+                        try:
+                            for fname in fnames_18z:
+                                urllib.request.urlretrieve(f"{yday_18z}/{fname}", f"{fname}")
+                                os.replace(f"{fname}", f"{model} Data/{fname}")
+                                print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                        except Exception as e:
+                            try:
+                                for fname in fnames_12z:
+                                    urllib.request.urlretrieve(f"{yday_12z}/{fname}", f"{fname}")
+                                    os.replace(f"{fname}", f"{model} Data/{fname}")
+                                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                            except Exception as e:
+                                try:
+                                    for fname in fnames_06z:
+                                        urllib.request.urlretrieve(f"{yday_06z}/{fname}", f"{fname}")
+                                        os.replace(f"{fname}", f"{model} Data/{fname}")
+                                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                except Exception as e:
+                                    try:
+                                        for fname in fnames_00z:
+                                            urllib.request.urlretrieve(f"{yday_00z}/{fname}", f"geavg.t00z.pgrb2s.0p25.f{hour}")
+                                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                    except Exception as e:
+                                        print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 00z - Not even worth downloading at this point!")
+        
+                if utc_time.hour >= 6 and utc_time.hour < 12:
+                    try:
+                        for fname in fnames_06z:
+                            urllib.request.urlretrieve(f"{url_06z_run}/{fname}", f"{fname}")
+                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                    except Exception as e:
+                        try:
+                            for fname in fnames_00z:
+                                urllib.request.urlretrieve(f"{url_00z_run}/{fname}", f"{fname}")
+                                os.replace(f"{fname}", f"{model} Data/{fname}")
+                                print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                        except Exception as e:
+                            try:
+                                for fname in fnames_18z:
+                                    urllib.request.urlretrieve(f"{yday_18z}/{fname}", f"{fname}")
+                                    os.replace(f"{fname}", f"{model} Data/{fname}")
+                                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                            except Exception as e:
+                                try:
+                                    for fname in fnames_12z:
+                                        urllib.request.urlretrieve(f"{yday_12z}/{fname}", f"{fname}")
+                                        os.replace(f"{fname}", f"{model} Data/{fname}")
+                                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                except Exception as e:
+                                    try:
+                                        for fname in fnames_06z:
+                                            urllib.request.urlretrieve(f"{yday_06z}/{fname}", f"{fname}")
+                                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                    except Exception as e:
+                                        print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 06z - Not even worth downloading at this point!")
+        
+                if utc_time.hour >= 12 and utc_time.hour < 18:
+                    try:
+                        for fname in fnames_12z:
+                            urllib.request.urlretrieve(f"{url_12z_run}/{fname}", f"{fname}")
+                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                    except Exception as e:
+                        try:
+                            for fname in fnames_06z:
+                                urllib.request.urlretrieve(f"{url_06z_run}/{fname}", f"{fname}")
+                                os.replace(f"{fname}", f"{model} Data/{fname}")
+                                print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                        except Exception as e:
+                            try:
+                                for fname in fnames_00z:
+                                    urllib.request.urlretrieve(f"{url_00z_run}/{fname}", f"{fname}")
+                                    os.replace(f"{fname}", f"{model} Data/{fname}")
+                                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                            except Exception as e:
+                                try:
+                                    for fname in fnames_18z:
+                                        urllib.request.urlretrieve(f"{yday_18z}/{fname}", f"{fname}")
+                                        os.replace(f"{fname}", f"{model} Data/{fname}")
+                                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                except Exception as e:
+                                    try:
+                                        for fname in fnames_12z:
+                                            urllib.request.urlretrieve(f"{yday_12z}/{fname}", f"geavg.t12z.pgrb2s.0p25.f{hour}")
+                                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                                            print(f"Downloaded {fname} to f:{model} Data/{fname}")  
+                                    except Exception as e:
+                                        print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 12z - Not even worth downloading at this point!")
+        
+                if utc_time.hour >= 18 and utc_time.hour < 24:
+                    try:
+                        for fname in fnames_18z:
+                            urllib.request.urlretrieve(f"{url_18z_run}/{fname}", f"{fname}")
+                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                    except Exception as e:
+                        try:
+                            for fname in fnames_12z:
+                                urllib.request.urlretrieve(f"{url_12z_run}/{fname}", f"{fname}")
+                                os.replace(f"{fname}", f"{model} Data/{fname}")
+                                print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                        except Exception as e:
+                            try:
+                                for fname in fnames_06z:
+                                    urllib.request.urlretrieve(f"{url_06z_run}/{fname}", f"{fname}")
+                                    os.replace(f"{fname}", f"{model} Data/{fname}")
+                                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                            except Exception as e:
+                                try:
+                                    for fname in fnames_00z:
+                                        urllib.request.urlretrieve(f"{url_00z_run}/{fname}", f"{fname}")
+                                        os.replace(f"{fname}", f"{model} Data/{fname}")
+                                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                except Exception as e:
+                                    try:
+                                        for fname in fnames_18z:
+                                            urllib.request.urlretrieve(f"{yday_18z}/{fname}", f"{fname}")
+                                            os.replace(f"{fname}", f"{model} Data/{fname}")
+                                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
+                                    except Exception as e:
+                                        print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 18z - Not even worth downloading at this point!")
+        
+                for item in os.listdir(f"{model} Data"):
+                    if item.endswith(".idx"):
+                        os.remove(f"{model} Data/{item}")
+                
+                fpaths = []
+                for file in os.listdir(f"{model} Data"):
+                    fname = os.path.basename(file)
+                    fpath = f"{model} Data/{fname}"
+                    fpaths.append(fpath)
+        
+                if get_u_and_v_wind_components == False:
+                    datasets = []
+                    for file in fpaths:
+                        ds = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': typeOfLevel}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
+                        datasets.append(ds)
+                        print(f"Extrated dataset from {file}")
+                        
+                    return datasets
+        
+                if get_u_and_v_wind_components == True:
+                    datasets = []
+                    u = []
+                    v = []
+        
+                    if add_wind_gusts == False:
+                        for file in fpaths:
+                            ds = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': typeOfLevel}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
+                            u_wind = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': 'heightAboveGround', 'shortName': '10u'}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
+                            v_wind = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': 'heightAboveGround', 'shortName': '10v'}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
+                            datasets.append(ds)
+                            u.append(u_wind)
+                            v.append(v_wind)
+                            print(f"Extrated datasets from {file}")
+        
+                            print(f"Ignore the error message regarding u and v winds.")
+                        return datasets, u, v
+        
+                    if add_wind_gusts == True:
+        
+                        gusts = []
+                        for file in fpaths:
+                            ds = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': typeOfLevel}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
+                            u_wind = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': 'heightAboveGround', 'shortName': '10u'}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
+                            v_wind = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': 'heightAboveGround', 'shortName': '10v'}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
+                            data = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': 'surface'}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
+                            gust = data['gust']
+                            gusts.append(gust)
+                            datasets.append(ds)
+                            u.append(u_wind)
+                            v.append(v_wind)
+                            print(f"Extrated datasets from {file}")
+        
+                            print(f"Ignore the error message regarding u and v winds.")
+                        return datasets, u, v, gusts
 
 
     def msc_datamart_datasets(product, directory_path):
@@ -1085,6 +1341,8 @@ class model_data:
 
         return ds
 
+
+
 class RTMA_Alaska:
 
     r'''
@@ -1281,7 +1539,7 @@ class RTMA_Hawaii:
 
     r'''
     
-    This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for Hawaii. 
+    This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for CONUS. 
 
     This class hosts the functions the users will import and call if the users wish to download the data outside of the 
     plotting function and pass the data into the plotting function.
@@ -2034,7 +2292,7 @@ class RTMA_CONUS:
             print("Unable to connect to either the main or backup servers. Aborting!")
 
 
-class NDFD_CONUS_Hawaii:
+class NDFD_CONUS:
 
     r'''
 
@@ -2126,9 +2384,9 @@ class NDFD_CONUS_Hawaii:
         parameter = parameter
     
         try:
-
+    
             ds = get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
-                
+    
             print("Downloaded data successfully!")
         except Exception as a:
     
@@ -2238,7 +2496,6 @@ class NDFD_Alaska:
                 with open(parameter, 'wb') as myfile, open(short_term_fname, 'rb') as file1, open(extended_fname, 'rb') as file2:
                     myfile.write(file1.read())
                     myfile.write(file2.read())
-                    myfile.close()
             except Exception as e:
                 print("Unable to connect to server. Please try again later.")
 
@@ -2756,56 +3013,40 @@ def get_NWS_NDFD_short_term_grid_data(directory_name, parameter):
     ###################################################
 
     ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
+    ftp = FTP('tgftp.nws.noaa.gov')
+    ftp.login()
 
+    ### SEARCHES FOR THE CORRECT DIRECTORY ###
     try:
-        ftp = FTP('tgftp.nws.noaa.gov')
-        ftp.login()
-    
-        ### SEARCHES FOR THE CORRECT DIRECTORY ###
-    
         dirName = directory_name + 'VP.001-003/'
         param = parameter
         files = ftp.cwd(dirName)
-    
+
         ### SEARCHES FOR THE CORRECT PARAMETER ###
-        ################################
-        # DOWNLOADS THE NWS NDFD GRIDS #
-        ################################
-        
-        with open(param, 'wb') as fp:
-            ftp.retrbinary('RETR ' + param, fp.write)
+        try:
+            ################################
+            # DOWNLOADS THE NWS NDFD GRIDS #
+            ################################
             
-        ftp.close()
-
-        if directory_name == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/':
-
-            ds = xr.load_dataset(param, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
-            ds = ds.metpy.parse_cf()
-
-        else:
-        
+            with open(param, 'wb') as fp:
+                ftp.retrbinary('RETR ' + param, fp.write)
+                
+            ftp.close()
             ds = xr.load_dataset(param, engine='cfgrib')
             ds = ds.metpy.parse_cf()
+            return ds
 
+        ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
+
+        except Exception as a:
+            param_error = info.parameter_name_error()
+            return param_error
+
+    ### ERROR MESSAGE WHEN THERE IS AN INVALID DIRECTORY NAME ###
+        
     except Exception as e:
-
-        urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
-        
-        if directory_name == '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/':
-
-            ds = xr.load_dataset(param, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
-            ds = ds.metpy.parse_cf()
-
-        else:
-        
-            ds = xr.load_dataset(param, engine='cfgrib')
-            ds = ds.metpy.parse_cf()
-        
-    return ds
-
-    ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
-
-
+        dir_error = info.directory_name_error()
+        return dir_error
 
 def get_NWS_NDFD_extended_grid_data(directory_name, parameter):
     
@@ -5276,6 +5517,7 @@ def previous_day_weather_summary_and_all_data(station_id):
     df['wind_gust'] = calc.unit_conversion.knots_to_mph(df['wind_gust'])
     
     df = df.sort_values(['air_temperature'], ascending=False)
+    print(df)
     maximum_temperature = df['air_temperature'].iloc[0]
     maximum_temperature_time = df['date_time'].iloc[0]
     maximum_temperature_time_utc = maximum_temperature_time.replace(tzinfo=to_zone)
@@ -5545,15 +5787,9 @@ def latest_metar_time(current_time):
     minute = runtime.minute
     # Times for METAR reports
     if runtime.minute <30:
-        try:
-            metar_time = datetime.now(UTC) 
-        except Exception as e:
-            metar_time = datetime.utcnow() 
+        metar_time = datetime.utcnow() 
     if runtime.minute >=30:
-        try:
-            metar_time = datetime.now(UTC) - timedelta(minutes=minute)
-        except Exception as e:
-            metar_time = datetime.utcnow() - timedelta(minutes=minute)
+        metar_time = datetime.utcnow() - timedelta(minutes=minute)
 
     return metar_time
 
