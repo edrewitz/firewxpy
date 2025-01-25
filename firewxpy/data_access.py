@@ -2400,7 +2400,7 @@ class RTMA_CONUS:
             print("Unable to connect to either the main or backup servers. Aborting!")
 
 
-class NDFD_CONUS:
+class NDFD_CONUS_Hawaii:
 
     r'''
 
