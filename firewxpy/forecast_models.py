@@ -3106,7 +3106,7 @@ class temperature:
             
                     stn.plot_parameter('C', temp, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
                        
-                    c = ax.contour(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), levels=[temperature_contour_value], colors='black', zorder=2, transform=datacrs, linewidths=1)
+                    c = ax.contour(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][0, t, :, :]), levels=[temperature_contour_value], colors='purple', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
                     ax.clabel(c, levels=[temperature_contour_value], inline=True, fontsize=8, rightside_up=True)
         
                     if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
@@ -3132,7 +3132,7 @@ class temperature:
             
                     stn.plot_parameter('C', temp, color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
                        
-                    c = ax.contour(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), levels=[temperature_contour_value], colors='black', zorder=2, transform=datacrs, linewidths=1)
+                    c = ax.contour(ds['lon'], ds['lat'], unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds['tmp2m'][t, :, :]), levels=[temperature_contour_value], colors='purple', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
                     ax.clabel(c, levels=[temperature_contour_value], inline=True, fontsize=8, rightside_up=True)
         
                     if utc_time.month >= start_of_warm_season_month and utc_time.month <= end_of_warm_season_month:
