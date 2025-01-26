@@ -3015,6 +3015,21 @@ class temperature:
         else:
             wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, decimate, signature_fontsize, stamp_fontsize = settings.get_region_info(model, region)
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
+
+            if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+                
+                if region == 'conus' or region == 'North America' or region == 'north america' or region == 'NA' or region == 'na':
+                    decimate = decimate * 2
+                else:
+                    decimate = decimate + 1
+                    
+            elif model == 'NAM 1hr' or model == 'NAM':
+                if region == 'conus' or region == 'North America' or region == 'north america' or region == 'NA' or region == 'na':
+                    decimate = decimate * 2
+                else:
+                    decimate = decimate + 2
+            else:
+                decimate = decimate
         
         if data == False and model != 'GEFS0p25 ENS MEAN':
             ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
@@ -3096,7 +3111,7 @@ class temperature:
                 lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
         
                 stn = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
-                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=5, clip_on=True)
+                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
         
                 if model == 'CMCENS' or model == 'GEFS0P50':
         
@@ -3208,7 +3223,7 @@ class temperature:
                 lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
         
                 stn = mpplots.StationPlot(ax, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
-                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=5, clip_on=True)
+                                 transform=ccrs.PlateCarree(), zorder=3, fontsize=sample_point_fontsize, clip_on=True)
         
                 if model == 'CMCENS' or model == 'GEFS0P50':
         
@@ -3704,6 +3719,21 @@ class relative_humidity:
         else:
             wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, decimate, signature_fontsize, stamp_fontsize = settings.get_region_info(model, region)
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
+
+            if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+                
+                if region == 'conus' or region == 'North America' or region == 'north america' or region == 'NA' or region == 'na':
+                    decimate = decimate * 2
+                else:
+                    decimate = decimate + 1
+                    
+            elif model == 'NAM 1hr' or model == 'NAM':
+                if region == 'conus' or region == 'North America' or region == 'north america' or region == 'NA' or region == 'na':
+                    decimate = decimate * 2
+                else:
+                    decimate = decimate + 2
+            else:
+                decimate = decimate
 
         path, path_print = file_functions.forecast_model_graphics_paths(model, region, reference_system, '2-Meter Relative Humidity', str_level)
     
@@ -5272,5 +5302,6 @@ class critical_firewx_conditions:
                     print(f"Saved image for forecast {times.strftime('%a %d/%H UTC')} to {path_print}.")
                     if mapcrs == datacrs:
                         tim.sleep(10)
+
 
 
