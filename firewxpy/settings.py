@@ -70,6 +70,11 @@ def get_sp_dims_and_textbox_coords(region):
         x = 0.01
         y = 0.98 
 
+    elif region == 'OSCC' or region == 'oscc':
+        fontsize = 8
+        x = 0.01
+        y = 0.97   
+
     else:
         fontsize = 8
         x = 0.01
