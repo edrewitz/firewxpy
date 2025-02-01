@@ -2,6 +2,11 @@ import matplotlib.colors
 import warnings
 warnings.filterwarnings('ignore')
 
+def precipitation_colormap():
+    precipitation_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("precipitation", ["magenta", "blue", "cyan", "lime", "darkgreen", "gold", "orange", "red", "darkred", "maroon", "dimgrey"])
+
+    return precipitation_colormap
+
 def gph_colormap():
     gph_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("gph", [ "indigo", "purple", "darkblue", "blue", "dodgerblue", "cyan", "orange", "darkorange", "orangered", "red", "darkred", "maroon"])
 
