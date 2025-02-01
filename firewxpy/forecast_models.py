@@ -364,7 +364,7 @@ class dynamics:
             levels = np.arange(1000, 1280, 10)
         
     
-        if model == 'NAM 1hr' or model == 'NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
             decimate = 20
             step = 1
             
@@ -914,7 +914,7 @@ class dynamics:
             ticks = levels[::2]
         
     
-        if model == 'NAM 1hr' or model == 'NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
             decimate = 20
             step = 1
             
@@ -1958,7 +1958,7 @@ class dynamics:
                 ticks = speeds[::5]
             
         
-            if model == 'NAM 1hr' or model == 'NAM':
+            if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
                 decimate = 20
                 step = 1
                 
@@ -2492,7 +2492,7 @@ class dynamics:
         mslp_labels = mslp_levels
         speed_ticks = speeds[::5]
     
-        if model == 'NAM 1hr' or model == 'NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
             step = 1
         
         if model == 'CMCENS' or model == 'GEFS0p50':
@@ -2990,7 +2990,7 @@ class temperature:
                 
         print(f"Any old images (if any) in {path_print} have been deleted.")
     
-        if model == 'NAM 1hr' or model == 'NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
             step = 1
         
         if model == 'CMCENS' or model == 'GEFS0p50':
@@ -3023,7 +3023,7 @@ class temperature:
                 else:
                     decimate = decimate + 1
                     
-            elif model == 'NAM 1hr' or model == 'NAM':
+            elif model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
                 if region == 'conus' or region == 'North America' or region == 'north america' or region == 'NA' or region == 'na':
                     decimate = decimate * 2
                 else:
@@ -3691,7 +3691,7 @@ class temperature:
                 
         print(f"Any old images (if any) in {path_print} have been deleted.")
     
-        if model == 'NAM 1hr' or model == 'NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
             step = 1
         
         if model == 'GEFS0p50':
@@ -4246,7 +4246,7 @@ class relative_humidity:
     
         str_level = f"SURFACE"
     
-        if model == 'NAM 1hr' or model == 'NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
             step = 1
         
         if model == 'CMCENS' or model == 'GEFS0p50':
@@ -4279,7 +4279,7 @@ class relative_humidity:
                 else:
                     decimate = decimate + 1
                     
-            elif model == 'NAM 1hr' or model == 'NAM':
+            elif model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
                 if region == 'conus' or region == 'North America' or region == 'north america' or region == 'NA' or region == 'na':
                     decimate = decimate * 2
                 else:
@@ -4959,7 +4959,7 @@ class critical_firewx_conditions:
     
         str_level = f"SURFACE"
     
-        if model == 'NAM 1hr' or model == 'NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
             step = 1
         
         if model == 'CMCENS' or model == 'GEFS0p50':
@@ -4992,7 +4992,7 @@ class critical_firewx_conditions:
                 else:
                     decimate = decimate + 1
                     
-            elif model == 'NAM 1hr' or model == 'NAM':
+            elif model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
                 if region == 'conus' or region == 'North America' or region == 'north america' or region == 'NA' or region == 'na':
                     decimate = decimate * 2
                 else:
@@ -6173,7 +6173,7 @@ class precipitation:
     
         str_level = f"SURFACE"
     
-        if model == 'NAM 1hr' or model == 'NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM'::
             step = 1
         
         if model == 'CMCENS' or model == 'GEFS0p50':
@@ -6206,7 +6206,7 @@ class precipitation:
                 else:
                     decimate = decimate + 1
                     
-            elif model == 'NAM 1hr' or model == 'NAM':
+            elif model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
                 if region == 'conus' or region == 'North America' or region == 'north america' or region == 'NA' or region == 'na':
                     decimate = decimate * 2
                 else:
@@ -6428,6 +6428,5 @@ class precipitation:
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
-
 
 
