@@ -6173,7 +6173,7 @@ class precipitation:
     
         str_level = f"SURFACE"
     
-        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM'::
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
             step = 1
         
         if model == 'CMCENS' or model == 'GEFS0p50':
@@ -6428,5 +6428,4 @@ class precipitation:
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
-
 
