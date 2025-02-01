@@ -22,6 +22,11 @@ def temperature_colormap():
 
     return temperature_colormap
 
+def temperature_colormap_alt():
+    temperature_colormap_alt = matplotlib.colors.LinearSegmentedColormap.from_list("temperature alt", ["darkviolet", "blue", "deepskyblue", "lime", "gold", "orangered", "red", "darkred"])
+
+    return temperature_colormap_alt
+
 def gph_change_colormap():
     gph_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("gph change", ["darkblue", "blue", "deepskyblue", "white", "orangered", "red", "darkred"])
 
