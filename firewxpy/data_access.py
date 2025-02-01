@@ -250,49 +250,6 @@ class model_data:
 
     def get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound):
 
-        r'''
-        This function grabs the latest model data from the NOAA/NCEP/NOMADS OpenDAP Server and returns it to the user. 
-
-        Required Arguments: 1) model (String) - This is the model the user must select. 
-                               
-                               Here are the choices: 
-                               1) GFS0p25 - GFS 0.25x0.25 degree
-                               2) GFS0p25_1h - GFS 0.25x0.25 degree with 1 hour intervals
-                               3) GFS0p50 - GFS 0.5x0.5 degree
-                               4) GFS1p00 - GFS 1.0x1.0 degree
-                               5) GEFS0p50_all - All ensemble members of the GEFS 0.5x0.5 degree
-                               6) CMCENS - Canadian Ensemble
-                               7) NAM - North American Model
-                               8) NAM 1hr - North American Model with 1 hour intervals 
-
-                            2) region (String) - This is the region the user wishes to look at. There are a lot of preset regions. 
-                                                 To look at any state use the 2-letter abbreviation for the state in either all capitals
-                                                 or all lowercase. For CONUS, use CONUS in all caps or lower case. For a broad view of the
-                                                 CONUS, Southern Canada and Northern Mexico use: 'CONUS & South Canada & North Mexico'. For 
-                                                 North America use either: NA, na, North America or north america. If the user wishes to use custom
-                                                 boundaries, then enter 'Custom' or 'custom'. For Geographic Area Coordination Centers you can use 
-                                                 the 4-letter abbreviation in all caps or lower case so for example you would use either 'OSCC' or 
-                                                 'oscc' for South Ops. 
-
-                            3) western_bound (Integer) - The western boundary of the plot. This is only required when the user wishes to make a plot with
-                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
-
-
-                            4) eastern_bound (Integer) - The eastern boundary of the plot. This is only required when the user wishes to make a plot with
-                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
-
-
-                            5) southern_bound (Integer) - The southern boundary of the plot. This is only required when the user wishes to make a plot with
-                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
-                                                         
-
-                            6) northern_bound (Integer) - The northern boundary of the plot. This is only required when the user wishes to make a plot with
-                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
-
-        Returns: A netCDF4 dataset of the model the user wishes set to the area the user defines. 
-                             
-        '''
-
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
 
@@ -388,7 +345,19 @@ class model_data:
             yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_00z'
             yday_06z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_06z'
             yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_12z'
-            yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_18z'            
+            yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_18z' 
+
+        if model == 'NA NAM':
+        
+            url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_na_00z'
+            url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_na_06z'
+            url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_na_12z'
+            url_18z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_na_18z'
+            
+            yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_na_00z'
+            yday_06z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_na_06z'
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_na_12z'
+            yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_na_18z'   
 
         if model == 'NAM 1hr':
         
@@ -643,6 +612,8 @@ class model_data:
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
                                     sys.exit()
+
+
                     
 
         ds = ds.metpy.parse_cf()
