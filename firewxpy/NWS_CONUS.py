@@ -14864,17 +14864,22 @@ class dry_and_windy:
     
         if ds_ws_short == None and ds_rh_short == None:
 
-
-            ds_ws_short = NDFD_CONUS_Hawaii.download_short_term_NDFD_grids(directory_name, 'ds.wspd.bin')
             if os.path.exists('ds.wspd.bin'):
                 os.remove('ds.wspd.bin')
+                print(f"Removed old ds.wspd.bin file.")
             else:
                 pass
-            ds_rh_short = NDFD_CONUS_Hawaii.download_short_term_NDFD_grids(directory_name, 'ds.rhm.bin')
+
             if os.path.exists('ds.rhm.bin'):
                 os.remove('ds.rhm.bin')
+                print(f"Removed old ds.rhm.bin file.")
             else:
                 pass
+
+
+            ds_ws_short = NDFD_CONUS_Hawaii.download_short_term_NDFD_grids(directory_name, 'ds.wspd.bin')
+
+            ds_rh_short = NDFD_CONUS_Hawaii.download_short_term_NDFD_grids(directory_name, 'ds.rhm.bin')
 
     
         if ds_ws_short != None and ds_rh_short != None:
@@ -15713,17 +15718,22 @@ class dry_and_windy:
     
         if ds_ws_short == None and ds_rh_short == None:
 
-
-            ds_ws_short = NDFD_CONUS_Hawaii.download_short_term_NDFD_grids(directory_name, 'ds.wgust.bin')
             if os.path.exists('ds.wgust.bin'):
                 os.remove('ds.wgust.bin')
+                print(f"Removed old ds.wgust.bin file")
             else:
                 pass
-            ds_rh_short = NDFD_CONUS_Hawaii.download_short_term_NDFD_grids(directory_name, 'ds.rhm.bin')
+
             if os.path.exists('ds.rhm.bin'):
                 os.remove('ds.rhm.bin')
+                print(f"Removed old ds.rhm.bin file")
             else:
                 pass
+
+
+            ds_ws_short = NDFD_CONUS_Hawaii.download_short_term_NDFD_grids(directory_name, 'ds.wgust.bin')
+
+            ds_rh_short = NDFD_CONUS_Hawaii.download_short_term_NDFD_grids(directory_name, 'ds.rhm.bin')
 
     
         if ds_ws_short != None and ds_rh_short != None:
