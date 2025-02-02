@@ -23,6 +23,7 @@ from firewxpy.forecast_models import dynamics as model_dynamics
 from firewxpy.forecast_models import temperature as model_temperature
 from firewxpy.forecast_models import relative_humidity as model_relative_humidity
 from firewxpy.forecast_models import critical_firewx_conditions as model_critical_firewx_conditions
+from firewxpy.forecast_models import precipitation as model_precipitation
 
 from firewxpy.observations import graphical_daily_summary
 
