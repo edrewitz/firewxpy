@@ -620,6 +620,381 @@ class model_data:
         
         return ds
 
+    def get_nomads_opendap_data_point_forecast(model, longitude, latitude):
+
+        local_time, utc_time = standard.plot_creation_time()
+        yesterday = utc_time - timedelta(hours=24)
+
+        if longitude < 0:
+            longitude = longitude * -1
+        else:
+            longitude = longitude
+
+        latitude = latitude
+
+        if model == 'GFS0p25':
+        
+            url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p25_00z'
+            url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p25_06z'
+            url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p25_12z'
+            url_18z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p25_18z'
+            
+            yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_0p25_00z'
+            yday_06z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_0p25_06z'
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_0p25_12z'
+            yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_0p25_18z'
+
+        if model == 'GFS0p25_1h':
+
+            url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25_1hr/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p25_1hr_00z'
+            url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25_1hr/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p25_1hr_06z'
+            url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25_1hr/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p25_1hr_12z'
+            url_18z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25_1hr/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p25_1hr_18z'
+            
+            yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25_1hr/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_0p25_1hr_00z'
+            yday_06z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25_1hr/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_0p25_1hr_06z'
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25_1hr/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_0p25_1hr_12z'
+            yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25_1hr/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_0p25_1hr_18z'            
+        
+
+        if model == 'GFS0p50':
+
+            url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p50/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p50_00z'
+            url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p50/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p50_06z'
+            url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p50/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p50_12z'
+            url_18z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p50/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p50_18z'
+            
+            yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p50/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_0p50_00z'
+            yday_06z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p50/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_0p50_06z'
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p50/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_0p50_12z'
+            yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p50/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_0p50_18z' 
+
+        if model == 'GFS1p00':
+
+            url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_1p00/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_1p00_00z'
+            url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_1p00/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_1p00_06z'
+            url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_1p00/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_1p00_12z'
+            url_18z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_1p00/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_1p00_18z'
+            
+            yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_1p00/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_1p00_00z'
+            yday_06z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_1p00/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_1p00_06z'
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_1p00/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_1p00_12z'
+            yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_1p00/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_1p00_18z' 
+
+        if model == 'GEFS0p50':
+            
+            url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+utc_time.strftime('%Y%m%d')+'/gec00_00z_pgrb2a'
+            url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+utc_time.strftime('%Y%m%d')+'/gec00_06z_pgrb2a'
+            url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+utc_time.strftime('%Y%m%d')+'/gec00_12z_pgrb2a'
+            url_18z_run = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+utc_time.strftime('%Y%m%d')+'/gec00_18z_pgrb2a'
+            
+            yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+yesterday.strftime('%Y%m%d')+'/gec00_00z_pgrb2a'
+            yday_06z = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+yesterday.strftime('%Y%m%d')+'/gec00_06z_pgrb2a'
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+yesterday.strftime('%Y%m%d')+'/gec00_12z_pgrb2a'
+            yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+yesterday.strftime('%Y%m%d')+'/gec00_18z_pgrb2a'
+
+        if model == 'GEFS0p50_all':
+            
+            url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+utc_time.strftime('%Y%m%d')+'/gefs_pgrb2ap5_all_00z'
+            url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+utc_time.strftime('%Y%m%d')+'/gefs_pgrb2ap5_all_06z'
+            url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+utc_time.strftime('%Y%m%d')+'/gefs_pgrb2ap5_all_12z'
+            url_18z_run = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+utc_time.strftime('%Y%m%d')+'/gefs_pgrb2ap5_all_18z'
+            
+            yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+yesterday.strftime('%Y%m%d')+'/gefs_pgrb2ap5_all_00z'
+            yday_06z = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+yesterday.strftime('%Y%m%d')+'/gefs_pgrb2ap5_all_06z'
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+yesterday.strftime('%Y%m%d')+'/gefs_pgrb2ap5_all_12z'
+            yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+yesterday.strftime('%Y%m%d')+'/gefs_pgrb2ap5_all_18z'
+
+        if model == 'CMCENS':
+
+            url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+utc_time.strftime('%Y%m%d')+'/cmcensavg_00z'
+            url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+utc_time.strftime('%Y%m%d')+'/cmcensavg_12z'
+            
+            yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+yesterday.strftime('%Y%m%d')+'/cmcensavg_00z'
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+yesterday.strftime('%Y%m%d')+'/cmcensavg_12z'      
+        if model == 'NAM':
+        
+            url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_00z'
+            url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_06z'
+            url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_12z'
+            url_18z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_18z'
+            
+            yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_00z'
+            yday_06z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_06z'
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_12z'
+            yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_18z' 
+
+        if model == 'NA NAM':
+        
+            url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_na_00z'
+            url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_na_06z'
+            url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_na_12z'
+            url_18z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_na_18z'
+            
+            yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_na_00z'
+            yday_06z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_na_06z'
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_na_12z'
+            yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_na_18z'   
+
+        if model == 'NAM 1hr':
+        
+            url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam1hr_00z'
+            url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam1hr_06z'
+            url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam1hr_12z'
+            url_18z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam1hr_18z'
+            
+            yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam1hr_00z'
+            yday_06z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam1hr_06z'
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam1hr_12z'
+            yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam1hr_18z' 
+
+        if model == 'NAM 1hr' or model == 'NAM':
+            
+            longitude = longitude * -1
+            if utc_time.hour >= 0 and utc_time.hour < 6:
+                
+                try:
+                    ds = xr.open_dataset(url_00z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                    print("00z run downloaded successfully!")
+                except Exception as e:
+                    print("00z run not available yet. Now trying the 18z run from yesterday.")
+                    try:
+                        ds = xr.open_dataset(yday_18z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                        print("18z run downloaded successfully!")
+                    except Exception as e:
+                        print("18z run from yesterday is not available. Now trying the 12z run for yesterday.")
+                        try:
+                            ds = xr.open_dataset(yday_12z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                            print("12z run downloaded successfully!")
+                        except Exception as e:
+                            print("12z run from yesterday is not available. Now trying the 06z run from yesterday.")
+                            try:
+                                ds = xr.open_dataset(yday_06z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                print("06z run downloaded successfully!")    
+                            except Exception as e:
+                                print("06z run from yesterday is not available. Now trying the 00z run from yesterday.")
+                                try:
+                                    ds = xr.open_dataset(yday_00z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                    print("00z run downloaded successfully!")      
+                                except Exception as e:
+                                    print("Latest available dataset is over a day old. Not even worth the time at this point!")
+                                    sys.exit()
+                   
+            
+            if utc_time.hour >= 6 and utc_time.hour < 12:
+                
+                try:
+                    ds = xr.open_dataset(url_06z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                    print("06z run downloaded successfully!")
+                except Exception as e:
+                    print("06z run not available yet. Now trying the 00z run.")
+                    try:
+                        ds = xr.open_dataset(url_00z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                        print("00z run downloaded successfully!")
+                    except Exception as e:
+                        print("00z run from yesterday is not available. Now trying the 18z run for yesterday.")
+                        try:
+                            ds = xr.open_dataset(yday_18z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                            print("18z run downloaded successfully!")
+                        except Exception as e:
+                            print("18z run from yesterday is not available. Now trying the 12z run from yesterday.")
+                            try:
+                                ds = xr.open_dataset(yday_12z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                print("12z run downloaded successfully!")    
+                            except Exception as e:
+                                print("12z run from yesterday is not available. Now trying the 06z run from yesterday.")
+                                try:
+                                    ds = xr.open_dataset(yday_06z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                    print("06z run downloaded successfully!")      
+                                except Exception as e:
+                                    print("Latest available dataset is over a day old. Not even worth the time at this point!")
+                                    sys.exit()
+            
+            if utc_time.hour >= 12 and utc_time.hour < 18:
+                
+                try:
+                    ds = xr.open_dataset(url_12z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                    print("12z run downloaded successfully!")
+                except Exception as e:
+                    print("12z run not available yet. Now trying the 06z run.")
+                    try:
+                        ds = xr.open_dataset(url_06z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                        print("06z run downloaded successfully!")
+                    except Exception as e:
+                        print("06z run from yesterday is not available. Now trying the 00z run.")
+                        try:
+                            ds = xr.open_dataset(url_00z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                            print("00z run downloaded successfully!")
+                        except Exception as e:
+                            print("00z run is not available. Now trying the 18z run from yesterday.")
+                            try:
+                                ds = xr.open_dataset(yday_18z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                print("18z run downloaded successfully!")    
+                            except Exception as e:
+                                print("18z run from yesterday is not available. Now trying the 12z run from yesterday.")
+                                try:
+                                    ds = xr.open_dataset(yday_12z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                    print("12z run downloaded successfully!")      
+                                except Exception as e:
+                                    print("Latest available dataset is over a day old. Not even worth the time at this point!")
+                                    sys.exit()
+            
+            if utc_time.hour >= 18 and utc_time.hour < 24:
+                
+                try:
+                    ds = xr.open_dataset(url_18z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                    print("18z run downloaded successfully!")
+                except Exception as e:
+                    print("18z run not available yet. Now trying the 12z run.")
+                    try:
+                        ds = xr.open_dataset(url_12z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                        print("12z run downloaded successfully!")
+                    except Exception as e:
+                        print("12z run from yesterday is not available. Now trying the 06z run.")
+                        try:
+                            ds = xr.open_dataset(url_06z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                            print("06z run downloaded successfully!")
+                        except Exception as e:
+                            print("06z run is not available. Now trying the 00z run.")
+                            try:
+                                ds = xr.open_dataset(url_00z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                print("00z run downloaded successfully!")    
+                            except Exception as e:
+                                print("00z run is not available. Now trying the 18z run from yesterday.")
+                                try:
+                                    ds = xr.open_dataset(yday_18z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                    print("18z run downloaded successfully!")      
+                                except Exception as e:
+                                    print("Latest available dataset is over a day old. Not even worth the time at this point!")
+                                    sys.exit()
+            
+        else:
+
+            longitude = 360 - longitude
+        
+            if utc_time.hour >= 0 and utc_time.hour < 6:
+                
+                try:
+                    ds = xr.open_dataset(url_00z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                    print("00z run downloaded successfully!")
+                except Exception as e:
+                    print("00z run not available yet. Now trying the 18z run from yesterday.")
+                    try:
+                        ds = xr.open_dataset(yday_18z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                        print("18z run downloaded successfully!")
+                    except Exception as e:
+                        print("18z run from yesterday is not available. Now trying the 12z run for yesterday.")
+                        try:
+                            ds = xr.open_dataset(yday_12z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                            print("12z run downloaded successfully!")
+                        except Exception as e:
+                            print("12z run from yesterday is not available. Now trying the 06z run from yesterday.")
+                            try:
+                                ds = xr.open_dataset(yday_06z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                print("06z run downloaded successfully!")    
+                            except Exception as e:
+                                print("06z run from yesterday is not available. Now trying the 00z run from yesterday.")
+                                try:
+                                    ds = xr.open_dataset(yday_00z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                    print("00z run downloaded successfully!")      
+                                except Exception as e:
+                                    print("Latest available dataset is over a day old. Not even worth the time at this point!")
+                                    sys.exit()
+                    
+            
+            if utc_time.hour >= 6 and utc_time.hour < 12:
+                
+                try:
+                    ds = xr.open_dataset(url_06z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                    print("06z run downloaded successfully!")
+                except Exception as e:
+                    print("06z run not available yet. Now trying the 00z run.")
+                    try:
+                        ds = xr.open_dataset(url_00z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                        print("00z run downloaded successfully!")
+                    except Exception as e:
+                        print("00z run from yesterday is not available. Now trying the 18z run for yesterday.")
+                        try:
+                            ds = xr.open_dataset(yday_18z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                            print("18z run downloaded successfully!")
+                        except Exception as e:
+                            print("18z run from yesterday is not available. Now trying the 12z run from yesterday.")
+                            try:
+                                ds = xr.open_dataset(yday_12z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                print("12z run downloaded successfully!")    
+                            except Exception as e:
+                                print("12z run from yesterday is not available. Now trying the 06z run from yesterday.")
+                                try:
+                                    ds = xr.open_dataset(yday_06z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                    print("06z run downloaded successfully!")      
+                                except Exception as e:
+                                    print("Latest available dataset is over a day old. Not even worth the time at this point!")
+                                    sys.exit()
+            
+            if utc_time.hour >= 12 and utc_time.hour < 18:
+                
+                try:
+                    ds = xr.open_dataset(url_12z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                    print("12z run downloaded successfully!")
+                except Exception as e:
+                    print("12z run not available yet. Now trying the 06z run.")
+                    try:
+                        ds = xr.open_dataset(url_06z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                        print("06z run downloaded successfully!")
+                    except Exception as e:
+                        print("06z run from yesterday is not available. Now trying the 00z run.")
+                        try:
+                            ds = xr.open_dataset(url_00z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                            print("00z run downloaded successfully!")
+                        except Exception as e:
+                            print("00z run is not available. Now trying the 18z run from yesterday.")
+                            try:
+                                ds = xr.open_dataset(yday_18z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                print("18z run downloaded successfully!")    
+                            except Exception as e:
+                                print("18z run from yesterday is not available. Now trying the 12z run from yesterday.")
+                                try:
+                                    ds = xr.open_dataset(yday_12z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                    print("12z run downloaded successfully!")      
+                                except Exception as e:
+                                    print("Latest available dataset is over a day old. Not even worth the time at this point!")
+                                    sys.exit()
+            
+            if utc_time.hour >= 18 and utc_time.hour < 24:
+                
+                try:
+                    ds = xr.open_dataset(url_18z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                    print("18z run downloaded successfully!")
+                except Exception as e:
+                    print("18z run not available yet. Now trying the 12z run.")
+                    try:
+                        ds = xr.open_dataset(url_12z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                        print("12z run downloaded successfully!")
+                    except Exception as e:
+                        print("12z run from yesterday is not available. Now trying the 06z run.")
+                        try:
+                            ds = xr.open_dataset(url_06z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                            print("06z run downloaded successfully!")
+                        except Exception as e:
+                            print("06z run is not available. Now trying the 00z run.")
+                            try:
+                                ds = xr.open_dataset(url_00z_run, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                print("00z run downloaded successfully!")    
+                            except Exception as e:
+                                print("00z run is not available. Now trying the 18z run from yesterday.")
+                                try:
+                                    ds = xr.open_dataset(yday_18z, engine='netcdf4').sel(lon=longitude, lat=latitude, method='nearest')
+                                    print("18z run downloaded successfully!")      
+                                except Exception as e:
+                                    print("Latest available dataset is over a day old. Not even worth the time at this point!")
+                                    sys.exit()
+
+
+
+
+        ds = ds.metpy.parse_cf()
+        
+        return ds
 
     def get_nomads_model_data_via_https(model, region, typeOfLevel, western_bound, eastern_bound, southern_bound, northern_bound, get_u_and_v_wind_components=False, add_wind_gusts=True):
 
