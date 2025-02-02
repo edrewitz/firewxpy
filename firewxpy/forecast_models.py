@@ -4713,7 +4713,7 @@ class relative_humidity:
         x=x 
         y=y
     
-        levels = np.arange(0, 101, 1)
+        levels = np.arange(0, 102, 1)
         ticks = levels[::5]
     
         if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
