@@ -8,6 +8,62 @@ from datetime import datetime
 
 class file_functions:
 
+    def point_forecast_sounding_graphics_paths(model, latitude, longitude):
+
+        if latitude >= 0:
+            lat_symbol = 'N'
+        if latitude < 0:
+            latitude = latitude * -1
+            lat_symbol = 'S'
+        if longitude >= 0:
+            lon_symbol = 'E'
+        if longitude < 0:
+            longitude = longitude * -1
+            lon_symbol = 'W'
+
+        if os.path.exists(f"Weather Data"):
+            print(f"Already Satisfied: f:Weather Data Parent Directory exists.")
+        else:
+            print(f"Weather Data Directory does not exist. Building Directory...")
+            os.mkdir(f"Weather Data")
+            os.mkdir(f"Weather Data/{model}")
+            os.mkdir(f"Weather Data/{model}/{latitude}{lat_symbol}")
+            os.mkdir(f"Weather Data/{model}/{latitude}{lat_symbol}/{longitude}{lon_symbol}")
+            print(f"Successfully built f:Weather Data Directory.")
+
+        if os.path.exists(f"Weather Data/{model}:"):
+            print(f"Already Satisfied: f:Weather Data/{model} exists.")
+
+            if os.path.exists(f"Weather Data/{model}/{latitude}{lat_symbol}"):
+                print(f"Already Satisfied: f:Weather Data/{model}/{latitude}{lat_symbol} exists.")
+
+                if os.path.exists(f"Weather Data/{model}/{latitude}{lat_symbol}/{longitude}{lon_symbol}"):
+                    print(f"Already Satisfied: f:Weather Data/{model}/{latitude}{lat_symbol/{longitude}{lon_symbol} exists.")
+
+                else:
+                    print(f"f:Weather Data/{model}/{latitude}{lat_symbol/{longitude}{lon_symbol} not found.\nAutomatically building branch.")
+                    os.mkdir(f"Weather Data/{model}/{latitude}{lat_symbol}/{longitude}{lon_symbol}")
+                    print(f"Successfully built new branch to directory.")
+
+            else:
+                print(f"f:Weather Data/{model}/{latitude}{lat_symbol} not found.\nAutomatically building branch.")
+                os.mkdir(f"Weather Data/{model}/{latitude}{lat_symbol}")
+                os.mkdir(f"Weather Data/{model}/{latitude}{lat_symbol}/{longitude}{lon_symbol}")
+                print(f"Successfully built new branch to directory.")      
+
+
+        else:
+            print(f"f:Weather Data/{model} not found.\nAutomatically building branch.")
+            os.mkdir(f"Weather Data/{model}")
+            os.mkdir(f"Weather Data/{model}/{latitude}{lat_symbol}")
+            os.mkdir(f"Weather Data/{model}/{latitude}{lat_symbol}/{longitude}{lon_symbol}")
+            print(f"Successfully built new branch to directory.")  
+
+        path = f"Weather Data/{model}/{latitude}{lat_symbol}/{longitude}{lon_symbol}"
+        path_print = f"f:Weather Data/{model}/{latitude}{lat_symbol}/{longitude}{lon_symbol}"
+
+        return path, path_print
+
     def forecast_model_graphics_paths(model, region, reference_system, parameter, str_level):
 
         model = model.upper()
