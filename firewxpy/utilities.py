@@ -58,7 +58,7 @@ class file_functions:
         path = f"Weather Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}"
         path_print = f"f:Weather Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}"
 
-        return path, path_print
+        return path, path_print, lat_symbol, lon_symbol
         
     
 
