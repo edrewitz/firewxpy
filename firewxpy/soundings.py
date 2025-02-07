@@ -28,18 +28,11 @@ mpl.rcParams['ytick.labelsize'] = 7
 
 pd.options.mode.copy_on_write = True
 
+pd.options.mode.copy_on_write = True
+
+local_time, utc_time = standard.plot_creation_time()
+
 def clean_height_data(height_data):
-
-    r'''
-    This function cleans potentially bad height data. 
-
-    Required Arguments: height_data (Dataframe) - The height dataframe. 
-
-    Optional Arguments: None
-
-    Returns: A corrected height dataframe (if necessary). 
-
-    '''
 
     height_data = height_data
     
@@ -56,22 +49,95 @@ def clean_height_data(height_data):
     return height_data
 
 
+def plot_forecast_soundings(model, station_id, longitude=None, latitude=None):
+
+    
+    if model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap' or model == 'RAP 32' or model == 'rap 32':
+        ds = model_data.get_hourly_rap_data_point_forecast(model, station_id, longitude, latitude)
+
+    else:
+        ds = model_data.get_nomads_opendap_data_point_forecast(model, station_id, longitude, latitude)
+
+    if station_id == 'Custom' or station_id == 'custom':
+        longitude = longitude
+        latitude = latitude
+
+    else:
+        longitude = ds['tmpprs']['lon'].values
+        latitude = ds['tmpprs']['lat'].values
+
+    path, path_print, lat_symbol, lon_symbol = file_functions.point_forecast_sounding_graphics_paths(model, latitude, longitude)
+
+    for file in os.listdir(f"{path}"):
+        try:
+            os.remove(f"{path}/{file}")
+        except Exception as e:
+            pass
+
+    print(f"Any old images (if any) in {path_print} have been deleted.")
+
+    title_lon = str(round(float(longitude), 1))
+    title_lat = str(round(float(latitude), 1))
+
+    if model == 'NAM 1hr' or model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap' or model == 'RAP 32' or model == 'rap 32':
+        step = 1
+        stop = (len(ds['time']) - 1)
+
+    else:
+        step = 2
+        stop = (len(ds['time']) - 2)
+
+    time = ds['time']
+    times = time.to_pandas()
+
+    for i in range(0, stop, step):
+        
+        rh = ds['rhprs'][i,:]
+        rh.dropna(dim='lev')
+        temperature = ds['tmpprs'][i,:] - 273.15
+        temperature.dropna(dim='lev')
+        dwpt = mpcalc.dewpoint_from_relative_humidity(temperature * units('degC'), rh * units('percent'))
+        levels = temperature['lev'].to_numpy().flatten()
+        temperature = temperature.to_numpy().flatten()
+        wetbulb = mpcalc.wet_bulb_temperature(levels * units('hPa'), temperature * units('degC'), dwpt)
+
+        fig = plt.figure(figsize=(12, 10))
+        gs = gridspec.GridSpec(10, 13)
+        skew = SkewT(fig, rotation=45, subplot=gs[0:12, 0:13])
+        if station_id == 'Custom' or station_id == 'custom':
+            skew.ax.set_title(f"{model} Vertical Profiles\nLatitude: {title_lat}{lat_symbol} | Longitude: {title_lon}{lon_symbol}", fontsize=12, fontweight='bold', loc='left')
+    
+        else:
+            skew.ax.set_title(f"{model} Station: {station_id.upper()} Vertical Profiles\nLatitude: {title_lat}{lat_symbol} | Longitude: {title_lon}{lon_symbol}", fontsize=12, fontweight='bold', loc='left')
+    
+        
+        skew.ax.set_title("Valid: " + times.iloc[i].strftime('%m/%d/%Y %H:00 UTC'), fontsize=12, fontweight='bold', loc='right')
+        
+        
+        fig.patch.set_facecolor('aliceblue')
+        
+        
+        #skew.ax.set_ylim(1030, 100)
+        skew.plot_dry_adiabats(label='Dry Adiabats', alpha=0.5)
+        skew.plot_mixing_lines(label='Mixing Ratio Lines', alpha=0.5)
+        skew.plot_moist_adiabats(label='Moist Adiabats', alpha=0.5)
+        skew.ax.legend(loc=(0, 0), prop={'size': 10})
+        skew.ax.set_xlabel("Temperature [℃]", fontsize=12, fontweight='bold')
+        skew.ax.set_ylabel("Pressure [hPa]", fontsize=12, fontweight='bold')
+
+        skew.plot(levels, temperature, 'red', alpha=0.5, linewidth=2)
+        skew.plot(levels, dwpt, 'green', alpha=0.5, linewidth=2)
+        skew.plot(levels, wetbulb, 'cyan', alpha=0.5, linewidth=1)
+
+        
+
+        
+    
+
+
+
 def plot_observed_sounding(station_id):
 
-    r'''
-    This function downloads the latest avaliable sounding data from the University of Wyoming and plots the upper-air profiles. 
-
-    Required Arguments: 1) station_id (String) - The 3 or 4 letter station identifier for the upper-air site. 
-
-    Example: San Diego, CA will be entered as plot_observed_sounding('nkx')
-
-    Optional Arguments: None
-
-    Returns: Saves the upper-air profiles graphic to the Soundings folder. 
-
-    '''
-
-    local_time, utc_time = standard.plot_creation_time()
 
     station_id = station_id
     station_id = station_id.upper()
@@ -524,9 +590,6 @@ def plot_observed_sounding(station_id):
         barb_mask_24 = (pressure_24 >= 100 * units.hPa)
         pres_24 = pressure_24[barb_mask_24]
         idx_24 = mpcalc.resample_nn_1d(pres_24, interval_24)
-
-        print("Creating Image - Please Wait...")
-        
         fig = plt.figure(figsize=(12, 10))
         gs = gridspec.GridSpec(10, 13)
         skew = SkewT(fig, rotation=45, subplot=gs[0:12, 0:13])
@@ -743,7 +806,7 @@ def plot_observed_sounding(station_id):
 
         ax4.legend(loc=(0.2, 1.01), prop={'size': 7})
         
-        fig.text(0.16, 0.05, "Plot Created With FireWxPy(C) Eric J. Drewitz 2025\nData Source: weather.uwyo.edu\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
+        fig.text(0.16, 0.05, "Plot Created With FireWxPy(C) Eric J. Drewitz 2024\nData Source: weather.uwyo.edu\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
 
     if sounding == False:
         fig = standard.no_sounding_graphic(date)
@@ -754,24 +817,6 @@ def plot_observed_sounding(station_id):
 
 def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
 
-    r'''
-    This function downloads the latest avaliable sounding data from the University of Wyoming and plots the upper-air profiles. 
-
-    Required Arguments: 1) station_id (String) - The 3 or 4 letter station identifier for the upper-air site. 
-                           Example: San Diego, CA will be entered as plot_observed_sounding('nkx')
-
-                        2) year (Integer) - The four digit year (i.e. 2024)
-
-                        3) month (Integer) - The one or two digit month. 
-
-                        4) day (Integer) - The nth day of the month. 
-
-                        5) hour (Integer) - The hour of the sounding in UTC. 
-
-    Optional Arguments: None
-
-    Returns: Saves the upper-air profiles graphic to the Soundings folder. 
-    '''
     local_time, utc_time = standard.plot_creation_time()
 
     station_id = station_id
@@ -930,9 +975,6 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
         barb_mask_24 = (pressure_24 >= 100 * units.hPa)
         pres_24 = pressure_24[barb_mask_24]
         idx_24 = mpcalc.resample_nn_1d(pres_24, interval_24)
-
-        print("Creating Image - Please Wait...")
-        
         fig = plt.figure(figsize=(12, 10))
         gs = gridspec.GridSpec(10, 13)
         skew = SkewT(fig, rotation=45, subplot=gs[0:12, 0:13])
@@ -1149,7 +1191,7 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
 
         ax4.legend(loc=(0.2, 1.01), prop={'size': 7})
         
-        fig.text(0.16, 0.05, "Plot Created With FireWxPy(C) Eric J. Drewitz 2025\nData Source: weather.uwyo.edu\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
+        fig.text(0.16, 0.05, "Plot Created With FireWxPy(C) Eric J. Drewitz 2024\nData Source: weather.uwyo.edu\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
 
     if sounding == False:
         fig = standard.no_sounding_graphic(date)
