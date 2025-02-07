@@ -620,101 +620,89 @@ class model_data:
         
         return ds
 
-     def get_hourly_rap_data_point_forecast(model, longitude, latitude):
-
+    def get_hourly_rap_data_point_forecast(model, station_id, longitude, latitude):
+    
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
-
-        if longitude < 0:
-            longitude = longitude * -1
-        else:
+    
+        if station_id == 'Custom' or station_id == 'custom':
             longitude = longitude
-
-        latitude = latitude
-        longitude = 360 - longitude
-
+            latitude = latitude
+    
+        else:
+            longitude, latitude = station_coords(station_id)
+    
         hours = []
         for i in range(0, 5, 1):
             hour = utc_time.hour - i
             hours.append(hour)
-
-        if model == 'RAP' or model == 'rap':
-
-            url_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[0]}z"
-            url_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[1]}z"
-            url_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[2]}z"
-            url_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[3]}z"
-            url_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[4]}z"
-
-            url_5 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[0]}z"
-            url_6 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[1]}z"
-            url_7 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[2]}z"
-            url_8 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[3]}z"
-            url_9 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[4]}z"
-
-            y_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_19z"
-            y_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_20z"
-            y_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_21z"
-            y_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_22z"
-            y_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_23z"
-
-
-            if utc_time.hour >= 10 and hour < 24:
+    
+        if model == 'RAP' or model == 'rap' or model == 'RAP 32' or model == 'rap 32':
+    
+            if model == 'RAP' or model == 'rap':
+    
+                url_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap_{hours[0]}z"
+                url_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap_{hours[1]}z"
+                url_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap_{hours[2]}z"
+                url_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap_{hours[3]}z"
+                url_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap_{hours[4]}z"
+        
+                y_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap_19z"
+                y_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap_20z"
+                y_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap_21z"
+                y_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap_22z"
+                y_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap_23z"
+    
+            if model == 'RAP 32' or model == 'rap 32':
+    
+                if longitude < 0:
+                    longitude = longitude * -1
+                else:
+                    longitude = longitude
+                latitude = latitude
+                longitude = 360 - longitude
+    
+                url_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap32_{hours[0]}z"
+                url_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap32_{hours[1]}z"
+                url_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap32_{hours[2]}z"
+                url_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap32_{hours[3]}z"
+                url_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap32_{hours[4]}z"
+        
+                y_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap32_19z"
+                y_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap32_20z"
+                y_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap32_21z"
+                y_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap32_22z"
+                y_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap32_23z"
+    
+    
+            if utc_time.hour >= 4:
                 try:
                     print(f"Trying to retrieve the {hours[0]}z RAP.")
-                    ds = xr.open_dataset(url_5, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                    ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
                     print(f"Successfully retrieved the {hours[0]}z RAP.")
                 except Exception as e:
                     print(f"{hours[0]} RAP is unavailable. Trying to retrieve the {hours[1]} RAP.")
                     try:
-                        ds = xr.open_dataset(url_6, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                        ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
                         print(f"Successfully retrieved the {hours[1]}z RAP.")                    
                     except Exception as e:
                         print(f"{hours[1]} RAP is unavailable. Trying to retrieve the {hours[2]} RAP.")
                         try:
-                            ds = xr.open_dataset(url_7, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                            ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
                             print(f"Successfully retrieved the {hours[2]}z RAP.")   
                         except Exception as e:
                             print(f"{hours[2]} RAP is unavailable. Trying to retrieve the {hours[3]} RAP.")
                             try:
-                                ds = xr.open_dataset(url_8, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                ds = xr.open_dataset(url_3, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
                                 print(f"Successfully retrieved the {hours[3]}z RAP.")     
                             except Exception as e:
-                                print(f"{hours[3]} RAP is unavailable. Trying to retrieve the 0{hours[4]} RAP.")
+                                print(f"{hours[3]} RAP is unavailable. Trying to retrieve the {hours[4]} RAP.")
                                 try:
-                                    ds = xr.open_dataset(url_9, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                    ds = xr.open_dataset(url_4, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
                                     print(f"Successfully retrieved the {hours[4]}z RAP.") 
                                 except Exception as e:
                                     print(f"Latest available RAP data is over 4 hours old. Aborting...")
-
-            if utc_time.hour >= 4 and hour < 10:
-                try:
-                    print(f"Trying to retrieve the 0{hours[0]}z RAP.")
-                    ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
-                    print(f"Successfully retrieved the 0{hours[0]}z RAP.")
-                except Exception as e:
-                    print(f"0{hours[0]} RAP is unavailable. Trying to retrieve the 0{hours[1]} RAP.")
-                    try:
-                        ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
-                        print(f"Successfully retrieved the 0{hours[1]}z RAP.")                    
-                    except Exception as e:
-                        print(f"0{hours[1]} RAP is unavailable. Trying to retrieve the 0{hours[2]} RAP.")
-                        try:
-                            ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
-                            print(f"Successfully retrieved the 0{hours[2]}z RAP.")   
-                        except Exception as e:
-                            print(f"0{hours[2]} RAP is unavailable. Trying to retrieve the 0{hours[3]} RAP.")
-                            try:
-                                ds = xr.open_dataset(url_3, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
-                                print(f"Successfully retrieved the 0{hours[3]}z RAP.")     
-                            except Exception as e:
-                                print(f"0{hours[3]} RAP is unavailable. Trying to retrieve the 0{hours[4]} RAP.")
-                                try:
-                                    ds = xr.open_dataset(url_4, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
-                                    print(f"Successfully retrieved the 0{hours[4]}z RAP.") 
-                                except Exception as e:
-                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")
-
+    
             if utc_time.hour == 3:
                 try:
                     print(f"Trying to retrieve the {hours[0]}z RAP.")
@@ -742,8 +730,8 @@ class model_data:
                                     print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 23z RAP.") 
                                 except Exception as e:
                                     print(f"Latest available RAP data is over 4 hours old. Aborting...")      
-
-
+    
+    
             if utc_time.hour == 2:
                 try:
                     print(f"Trying to retrieve the {hours[0]}z RAP.")
@@ -771,7 +759,7 @@ class model_data:
                                     print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 22z RAP.") 
                                 except Exception as e:
                                     print(f"Latest available RAP data is over 4 hours old. Aborting...")   
-
+    
             if utc_time.hour == 1:
                 try:
                     print(f"Trying to retrieve the {hours[0]}z RAP.")
@@ -799,7 +787,7 @@ class model_data:
                                     print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 21z RAP.") 
                                 except Exception as e:
                                     print(f"Latest available RAP data is over 4 hours old. Aborting...")   
-
+    
             if utc_time.hour == 0:
                 try:
                     print(f"Trying to retrieve the {hours[0]}z RAP.")
@@ -827,25 +815,229 @@ class model_data:
                                     print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 20z RAP.") 
                                 except Exception as e:
                                     print(f"Latest available RAP data is over 4 hours old. Aborting...")   
-
-
+    
+        if model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
+    
+            if longitude < 0:
+                longitude = longitude * -1
+            else:
+                longitude = longitude
+            latitude = latitude
+            longitude = 360 - longitude
+    
+            url_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[0]}z"
+            url_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[1]}z"
+            url_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[2]}z"
+            url_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[3]}z"
+            url_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[4]}z"
+    
+            url_5 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[0]}z"
+            url_6 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[1]}z"
+            url_7 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[2]}z"
+            url_8 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[3]}z"
+            url_9 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[4]}z"
+    
+            y_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_19z"
+            y_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_20z"
+            y_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_21z"
+            y_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_22z"
+            y_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_23z"
+    
+    
+            if utc_time.hour >= 10 and hour < 24:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    ds = xr.open_dataset(url_5, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                    print(f"Successfully retrieved the {hours[0]}z RAP.")
+                except Exception as e:
+                    print(f"{hours[0]} RAP is unavailable. Trying to retrieve the {hours[1]} RAP.")
+                    try:
+                        ds = xr.open_dataset(url_6, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                        print(f"Successfully retrieved the {hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"{hours[1]} RAP is unavailable. Trying to retrieve the {hours[2]} RAP.")
+                        try:
+                            ds = xr.open_dataset(url_7, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                            print(f"Successfully retrieved the {hours[2]}z RAP.")   
+                        except Exception as e:
+                            print(f"{hours[2]} RAP is unavailable. Trying to retrieve the {hours[3]} RAP.")
+                            try:
+                                ds = xr.open_dataset(url_8, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                print(f"Successfully retrieved the {hours[3]}z RAP.")     
+                            except Exception as e:
+                                print(f"{hours[3]} RAP is unavailable. Trying to retrieve the 0{hours[4]} RAP.")
+                                try:
+                                    ds = xr.open_dataset(url_9, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                    print(f"Successfully retrieved the {hours[4]}z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")
+    
+            if utc_time.hour >= 4 and hour < 10:
+                try:
+                    print(f"Trying to retrieve the 0{hours[0]}z RAP.")
+                    ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                    print(f"Successfully retrieved the 0{hours[0]}z RAP.")
+                except Exception as e:
+                    print(f"0{hours[0]} RAP is unavailable. Trying to retrieve the 0{hours[1]} RAP.")
+                    try:
+                        ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                        print(f"Successfully retrieved the 0{hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"0{hours[1]} RAP is unavailable. Trying to retrieve the 0{hours[2]} RAP.")
+                        try:
+                            ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                            print(f"Successfully retrieved the 0{hours[2]}z RAP.")   
+                        except Exception as e:
+                            print(f"0{hours[2]} RAP is unavailable. Trying to retrieve the 0{hours[3]} RAP.")
+                            try:
+                                ds = xr.open_dataset(url_3, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                print(f"Successfully retrieved the 0{hours[3]}z RAP.")     
+                            except Exception as e:
+                                print(f"0{hours[3]} RAP is unavailable. Trying to retrieve the 0{hours[4]} RAP.")
+                                try:
+                                    ds = xr.open_dataset(url_4, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                    print(f"Successfully retrieved the 0{hours[4]}z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")
+    
+            if utc_time.hour == 3:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                    print(f"Successfully retrieved the {hours[0]}z RAP.")
+                except Exception as e:
+                    print(f"{hours[0]}z RAP is unavailable. Trying to retrieve the {hours[1]}z RAP.")
+                    try:
+                        ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                        print(f"Successfully retrieved the {hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"{hours[1]}z RAP is unavailable. Trying to retrieve the {hours[2]}z RAP.")
+                        try:
+                            ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                            print(f"Successfully retrieved the {hours[2]} RAP.")   
+                        except Exception as e:
+                            print(f"{hours[2]}z RAP is unavailable. Trying to retrieve the {hours[3]}z RAP.")
+                            try:
+                                ds = xr.open_dataset(url_3, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                print(f"Successfully retrieved the {hours[3]} RAP.")     
+                            except Exception as e:
+                                print(f"{hours[3]}z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 23z RAP.")
+                                try:
+                                    ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                    print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 23z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")      
+    
+    
+            if utc_time.hour == 2:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                    print(f"Successfully retrieved the {hours[0]}z RAP.")
+                except Exception as e:
+                    print(f"{hours[0]}z RAP is unavailable. Trying to retrieve the {hours[1]} RAP.")
+                    try:
+                        ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                        print(f"Successfully retrieved the {hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"{hours[1]}z RAP is unavailable. Trying to retrieve the {hours[2]} RAP.")
+                        try:
+                            ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                            print(f"Successfully retrieved the {hours[2]}z RAP.")   
+                        except Exception as e:
+                            print(f"{hours[2]}z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 23z RAP.")
+                            try:
+                                ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 23z RAP.")     
+                            except Exception as e:
+                                print(f"{yesterday.strftime('%Y%m%d')} 23z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 22z RAP.")
+                                try:
+                                    ds = xr.open_dataset(y_3, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                    print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 22z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")   
+    
+            if utc_time.hour == 1:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                    print(f"Successfully retrieved the {hours[0]} RAP.")
+                except Exception as e:
+                    print(f"{hours[0]}z RAP is unavailable. Trying to retrieve the {hours[1]}z RAP.")
+                    try:
+                        ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                        print(f"Successfully retrieved the {hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"{hours[1]}z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 23z RAP.")
+                        try:
+                            ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                            print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 23z RAP.")   
+                        except Exception as e:
+                            print(f"{yesterday.strftime('%Y%m%d')} 23z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 22z RAP.")
+                            try:
+                                ds = xr.open_dataset(y_3, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 22z RAP.")     
+                            except Exception as e:
+                                print(f"{yesterday.strftime('%Y%m%d')} 22z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 22z RAP.")
+                                try:
+                                    ds = xr.open_dataset(y_2, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                    print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 21z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")   
+    
+            if utc_time.hour == 0:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                    print(f"Successfully retrieved the {hours[0]} RAP.")
+                except Exception as e:
+                    print(f"{hours[0]}z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} RAP.")
+                    try:
+                        ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                        print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 23z RAP.")                    
+                    except Exception as e:
+                        print(f"{yesterday.strftime('%Y%m%d')} 23z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 22z RAP.")
+                        try:
+                            ds = xr.open_dataset(y_3, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                            print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 22z RAP.")   
+                        except Exception as e:
+                            print(f"{yesterday.strftime('%Y%m%d')} 22z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 21z RAP.")
+                            try:
+                                ds = xr.open_dataset(y_2, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 21z RAP.")     
+                            except Exception as e:
+                                print(f"{yesterday.strftime('%Y%m%d')} 21z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 20z RAP.")
+                                try:
+                                    ds = xr.open_dataset(y_1, engine='netcdf4',).sel(lon=longitude, lat=latitude, method='nearest')
+                                    print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 20z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")   
+    
+    
         ds = ds.metpy.parse_cf()
         
         return ds
 
-    def get_nomads_opendap_data_point_forecast(model, longitude, latitude):
+    def get_nomads_opendap_data_point_forecast(model, station_id, longitude, latitude):
 
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
 
-        if longitude < 0:
-            longitude = longitude * -1
-        else:
+        if station_id == 'Custom' or station_id == 'custom':
             longitude = longitude
-
-        latitude = latitude
+            latitude = latitude
+    
+        else:
+            longitude, latitude = station_coords(station_id)
 
         if model == 'GFS0p25':
+
+            if longitude < 0:
+                longitude = longitude * -1
+            else:
+                longitude = longitude
+    
+            latitude = latitude
         
             url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p25_00z'
             url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p25_06z'
@@ -858,6 +1050,13 @@ class model_data:
             yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_0p25_18z'
 
         if model == 'GFS0p25_1h':
+
+            if longitude < 0:
+                longitude = longitude * -1
+            else:
+                longitude = longitude
+    
+            latitude = latitude
 
             url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25_1hr/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p25_1hr_00z'
             url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p25_1hr/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p25_1hr_06z'
@@ -872,6 +1071,13 @@ class model_data:
 
         if model == 'GFS0p50':
 
+            if longitude < 0:
+                longitude = longitude * -1
+            else:
+                longitude = longitude
+    
+            latitude = latitude
+
             url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p50/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p50_00z'
             url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p50/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p50_06z'
             url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_0p50/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_0p50_12z'
@@ -884,6 +1090,13 @@ class model_data:
 
         if model == 'GFS1p00':
 
+            if longitude < 0:
+                longitude = longitude * -1
+            else:
+                longitude = longitude
+    
+            latitude = latitude
+
             url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_1p00/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_1p00_00z'
             url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_1p00/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_1p00_06z'
             url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/gfs_1p00/gfs'+utc_time.strftime('%Y%m%d')+'/gfs_1p00_12z'
@@ -895,6 +1108,13 @@ class model_data:
             yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/gfs_1p00/gfs'+yesterday.strftime('%Y%m%d')+'/gfs_1p00_18z' 
 
         if model == 'GEFS0p50':
+
+            if longitude < 0:
+                longitude = longitude * -1
+            else:
+                longitude = longitude
+    
+            latitude = latitude
             
             url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+utc_time.strftime('%Y%m%d')+'/gec00_00z_pgrb2a'
             url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+utc_time.strftime('%Y%m%d')+'/gec00_06z_pgrb2a'
@@ -907,6 +1127,13 @@ class model_data:
             yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+yesterday.strftime('%Y%m%d')+'/gec00_18z_pgrb2a'
 
         if model == 'GEFS0p50_all':
+
+            if longitude < 0:
+                longitude = longitude * -1
+            else:
+                longitude = longitude
+    
+            latitude = latitude
             
             url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+utc_time.strftime('%Y%m%d')+'/gefs_pgrb2ap5_all_00z'
             url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+utc_time.strftime('%Y%m%d')+'/gefs_pgrb2ap5_all_06z'
@@ -919,6 +1146,13 @@ class model_data:
             yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/gefs/gefs'+yesterday.strftime('%Y%m%d')+'/gefs_pgrb2ap5_all_18z'
 
         if model == 'CMCENS':
+
+            if longitude < 0:
+                longitude = longitude * -1
+            else:
+                longitude = longitude
+    
+            latitude = latitude
 
             url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+utc_time.strftime('%Y%m%d')+'/cmcensavg_00z'
             url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+utc_time.strftime('%Y%m%d')+'/cmcensavg_12z'
@@ -938,6 +1172,13 @@ class model_data:
             yday_18z = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+yesterday.strftime('%Y%m%d')+'/nam_18z' 
 
         if model == 'NA NAM':
+
+            if longitude < 0:
+                longitude = longitude * -1
+            else:
+                longitude = longitude
+    
+            latitude = latitude
         
             url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_na_00z'
             url_06z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_na_06z'
@@ -963,7 +1204,6 @@ class model_data:
 
         if model == 'NAM 1hr' or model == 'NAM':
             
-            longitude = longitude * -1
             if utc_time.hour >= 0 and utc_time.hour < 6:
                 
                 try:
@@ -5941,7 +6181,30 @@ def get_rtma_relative_humidity_24_hour_difference_data(current_time):
     if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
         print("Unable to connect to either the main or backup servers. Aborting!")
 
+def station_coords(station_id):
 
+    r'''
+    This function returns the latitude and lonigitude coordinates for any airport. 
+
+    '''
+
+    station_id = station_id.upper()
+    
+    # Pings server for airport data
+    df = pd.read_csv(get_test_data('airport-codes.csv'))
+    
+    # Queries our airport types (airport sizes)
+    df = df[(df['type'] == 'large_airport') | (df['type'] == 'medium_airport') | (df['type'] == 'small_airport')]
+
+    df = df[df['ident'] == station_id]
+
+    longitude = df['longitude_deg']
+    latitude = df['latitude_deg']
+
+    longitude = longitude.iloc[0]
+    latitude = latitude.iloc[0]
+    
+    return longitude, latitude
 
 
 def previous_day_weather_summary(station_id):
