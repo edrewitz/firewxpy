@@ -1018,6 +1018,466 @@ class model_data:
         
         return ds
 
+
+    def get_hourly_rap_data_area_forecast(model, region, western_bound, eastern_bound, southern_bound, northern_bound):
+    
+        local_time, utc_time = standard.plot_creation_time()
+        yesterday = utc_time - timedelta(hours=24)
+    
+        western_bound, eastern_bound, southern_bound, northern_bound = coords_for_forecast_model_data(region, western_bound, eastern_bound, southern_bound, northern_bound)
+        
+        hours = []
+        for i in range(0, 5, 1):
+            hour = utc_time.hour - i
+            hours.append(hour)
+    
+        if model == 'RAP' or model == 'rap' or model == 'RAP 32' or model == 'rap 32':
+    
+            if model == 'RAP' or model == 'rap':
+
+                western_bound = western_bound * -1
+                eastern_bound = eastern_bound * -1
+    
+                url_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap_{hours[0]}z"
+                url_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap_{hours[1]}z"
+                url_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap_{hours[2]}z"
+                url_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap_{hours[3]}z"
+                url_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap_{hours[4]}z"
+        
+                y_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap_19z"
+                y_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap_20z"
+                y_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap_21z"
+                y_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap_22z"
+                y_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap_23z"
+    
+            if model == 'RAP 32' or model == 'rap 32':
+
+    
+                url_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap32_{hours[0]}z"
+                url_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap32_{hours[1]}z"
+                url_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap32_{hours[2]}z"
+                url_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap32_{hours[3]}z"
+                url_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap32_{hours[4]}z"
+        
+                y_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap32_19z"
+                y_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap32_20z"
+                y_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap32_21z"
+                y_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap32_22z"
+                y_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap32_23z"
+    
+    
+            if utc_time.hour >= 4:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    if model == 'RAP 32' or model == 'rap 32':
+                        ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    if model == 'RAP' or model == 'rap':
+                        ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    print(f"Successfully retrieved the {hours[0]}z RAP.")
+                except Exception as e:
+                    print(f"{hours[0]} RAP is unavailable. Trying to retrieve the {hours[1]} RAP.")
+                    try:
+                        if model == 'RAP 32' or model == 'rap 32':
+                            ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        if model == 'RAP' or model == 'rap':
+                            ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        print(f"Successfully retrieved the {hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"{hours[1]} RAP is unavailable. Trying to retrieve the {hours[2]} RAP.")
+                        try:
+                            if model == 'RAP 32' or model == 'rap 32':
+                                ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            if model == 'RAP' or model == 'rap':
+                                ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            print(f"Successfully retrieved the {hours[2]}z RAP.")   
+                        except Exception as e:
+                            print(f"{hours[2]} RAP is unavailable. Trying to retrieve the {hours[3]} RAP.")
+                            try:
+                                if model == 'RAP 32' or model == 'rap 32':
+                                    ds = xr.open_dataset(url_3, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                if model == 'RAP' or model == 'rap':
+                                    ds = xr.open_dataset(url_3, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                print(f"Successfully retrieved the {hours[3]}z RAP.")     
+                            except Exception as e:
+                                print(f"{hours[3]} RAP is unavailable. Trying to retrieve the {hours[4]} RAP.")
+                                try:
+                                    if model == 'RAP 32' or model == 'rap 32':
+                                        ds = xr.open_dataset(url_4, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    if model == 'RAP' or model == 'rap':
+                                        ds = xr.open_dataset(url_4, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    print(f"Successfully retrieved the {hours[4]}z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")
+    
+            if utc_time.hour == 3:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    if model == 'RAP 32' or model == 'rap 32':
+                        ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    if model == 'RAP' or model == 'rap':
+                        ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    print(f"Successfully retrieved the {hours[0]}z RAP.")
+                except Exception as e:
+                    print(f"{hours[0]}z RAP is unavailable. Trying to retrieve the {hours[1]}z RAP.")
+                    try:
+                        if model == 'RAP 32' or model == 'rap 32':
+                            ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        if model == 'RAP' or model == 'rap':
+                            ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        print(f"Successfully retrieved the {hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"{hours[1]}z RAP is unavailable. Trying to retrieve the {hours[2]}z RAP.")
+                        try:
+                            if model == 'RAP 32' or model == 'rap 32':
+                                ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            if model == 'RAP' or model == 'rap':
+                                ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            print(f"Successfully retrieved the {hours[2]} RAP.")   
+                        except Exception as e:
+                            print(f"{hours[2]}z RAP is unavailable. Trying to retrieve the {hours[3]}z RAP.")
+                            try:
+                                if model == 'RAP 32' or model == 'rap 32':
+                                    ds = xr.open_dataset(url_3, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                if model == 'RAP' or model == 'rap':
+                                    ds = xr.open_dataset(url_3, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                print(f"Successfully retrieved the {hours[3]} RAP.")     
+                            except Exception as e:
+                                print(f"{hours[3]}z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 23z RAP.")
+                                try:
+                                    if model == 'RAP 32' or model == 'rap 32':
+                                        ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    if model == 'RAP' or model == 'rap':
+                                        ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 23z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")      
+    
+    
+            if utc_time.hour == 2:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    if model == 'RAP 32' or model == 'rap 32':
+                        ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    if model == 'RAP' or model == 'rap':
+                        ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    print(f"Successfully retrieved the {hours[0]}z RAP.")
+                except Exception as e:
+                    print(f"{hours[0]}z RAP is unavailable. Trying to retrieve the {hours[1]} RAP.")
+                    try:
+                        if model == 'RAP 32' or model == 'rap 32':
+                            ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        if model == 'RAP' or model == 'rap':
+                            ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        print(f"Successfully retrieved the {hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"{hours[1]}z RAP is unavailable. Trying to retrieve the {hours[2]} RAP.")
+                        try:
+                            if model == 'RAP 32' or model == 'rap 32':
+                                ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            if model == 'RAP' or model == 'rap':
+                                ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            print(f"Successfully retrieved the {hours[2]}z RAP.")   
+                        except Exception as e:
+                            print(f"{hours[2]}z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 23z RAP.")
+                            try:
+                                if model == 'RAP 32' or model == 'rap 32':
+                                    ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                if model == 'RAP' or model == 'rap':
+                                    ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 23z RAP.")     
+                            except Exception as e:
+                                print(f"{yesterday.strftime('%Y%m%d')} 23z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 22z RAP.")
+                                try:
+                                    if model == 'RAP 32' or model == 'rap 32':
+                                        ds = xr.open_dataset(y_3, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    if model == 'RAP' or model == 'rap':
+                                        ds = xr.open_dataset(y_3, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 22z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")   
+    
+            if utc_time.hour == 1:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    if model == 'RAP 32' or model == 'rap 32':
+                        ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    if model == 'RAP' or model == 'rap':
+                        ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    print(f"Successfully retrieved the {hours[0]} RAP.")
+                except Exception as e:
+                    print(f"{hours[0]}z RAP is unavailable. Trying to retrieve the {hours[1]}z RAP.")
+                    try:
+                        if model == 'RAP 32' or model == 'rap 32':
+                            ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        if model == 'RAP' or model == 'rap':
+                            ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        print(f"Successfully retrieved the {hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"{hours[1]}z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 23z RAP.")
+                        try:
+                            if model == 'RAP 32' or model == 'rap 32':
+                                ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            if model == 'RAP' or model == 'rap':
+                                ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 23z RAP.")   
+                        except Exception as e:
+                            print(f"{yesterday.strftime('%Y%m%d')} 23z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 22z RAP.")
+                            try:
+                                if model == 'RAP 32' or model == 'rap 32':
+                                    ds = xr.open_dataset(y_3, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                if model == 'RAP' or model == 'rap':
+                                    ds = xr.open_dataset(y_3, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 22z RAP.")     
+                            except Exception as e:
+                                print(f"{yesterday.strftime('%Y%m%d')} 22z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 22z RAP.")
+                                try:
+                                    if model == 'RAP 32' or model == 'rap 32':
+                                        ds = xr.open_dataset(y_2, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    if model == 'RAP' or model == 'rap':
+                                        ds = xr.open_dataset(y_2, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 21z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")   
+    
+            if utc_time.hour == 0:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    if model == 'RAP 32' or model == 'rap 32':
+                        ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    if model == 'RAP' or model == 'rap':
+                        ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    print(f"Successfully retrieved the {hours[0]} RAP.")
+                except Exception as e:
+                    print(f"{hours[0]}z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} RAP.")
+                    try:
+                        if model == 'RAP 32' or model == 'rap 32':
+                            ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        if model == 'RAP' or model == 'rap':
+                            ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 23z RAP.")                    
+                    except Exception as e:
+                        print(f"{yesterday.strftime('%Y%m%d')} 23z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 22z RAP.")
+                        try:
+                            if model == 'RAP 32' or model == 'rap 32':
+                                ds = xr.open_dataset(y_3, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            if model == 'RAP' or model == 'rap':
+                                ds = xr.open_dataset(y_3, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 22z RAP.")   
+                        except Exception as e:
+                            print(f"{yesterday.strftime('%Y%m%d')} 22z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 21z RAP.")
+                            try:
+                                if model == 'RAP 32' or model == 'rap 32':
+                                    ds = xr.open_dataset(y_2, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                if model == 'RAP' or model == 'rap':
+                                    ds = xr.open_dataset(y_2, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 21z RAP.")     
+                            except Exception as e:
+                                print(f"{yesterday.strftime('%Y%m%d')} 21z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 20z RAP.")
+                                try:
+                                    if model == 'RAP 32' or model == 'rap 32':
+                                        ds = xr.open_dataset(y_1, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    if model == 'RAP' or model == 'rap':
+                                        ds = xr.open_dataset(y_1, engine='netcdf4',).sel(lon=slice(western_bound, eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 20z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")   
+    
+        if model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
+    
+    
+            url_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[0]}z"
+            url_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[1]}z"
+            url_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[2]}z"
+            url_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[3]}z"
+            url_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[4]}z"
+    
+            url_5 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[0]}z"
+            url_6 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[1]}z"
+            url_7 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[2]}z"
+            url_8 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[3]}z"
+            url_9 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_{hours[4]}z"
+    
+            y_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_19z"
+            y_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_20z"
+            y_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_21z"
+            y_3 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_22z"
+            y_4 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{yesterday.strftime('%Y%m%d')}/rap243_23z"
+    
+    
+            if utc_time.hour >= 10 and hour < 24:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    ds = xr.open_dataset(url_5, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    print(f"Successfully retrieved the {hours[0]}z RAP.")
+                except Exception as e:
+                    print(f"{hours[0]} RAP is unavailable. Trying to retrieve the {hours[1]} RAP.")
+                    try:
+                        ds = xr.open_dataset(url_6, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        print(f"Successfully retrieved the {hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"{hours[1]} RAP is unavailable. Trying to retrieve the {hours[2]} RAP.")
+                        try:
+                            ds = xr.open_dataset(url_7, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            print(f"Successfully retrieved the {hours[2]}z RAP.")   
+                        except Exception as e:
+                            print(f"{hours[2]} RAP is unavailable. Trying to retrieve the {hours[3]} RAP.")
+                            try:
+                                ds = xr.open_dataset(url_8, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                print(f"Successfully retrieved the {hours[3]}z RAP.")     
+                            except Exception as e:
+                                print(f"{hours[3]} RAP is unavailable. Trying to retrieve the 0{hours[4]} RAP.")
+                                try:
+                                    ds = xr.open_dataset(url_9, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    print(f"Successfully retrieved the {hours[4]}z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")
+    
+            if utc_time.hour >= 4 and hour < 10:
+                try:
+                    print(f"Trying to retrieve the 0{hours[0]}z RAP.")
+                    ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    print(f"Successfully retrieved the 0{hours[0]}z RAP.")
+                except Exception as e:
+                    print(f"0{hours[0]} RAP is unavailable. Trying to retrieve the 0{hours[1]} RAP.")
+                    try:
+                        ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        print(f"Successfully retrieved the 0{hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"0{hours[1]} RAP is unavailable. Trying to retrieve the 0{hours[2]} RAP.")
+                        try:
+                            ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            print(f"Successfully retrieved the 0{hours[2]}z RAP.")   
+                        except Exception as e:
+                            print(f"0{hours[2]} RAP is unavailable. Trying to retrieve the 0{hours[3]} RAP.")
+                            try:
+                                ds = xr.open_dataset(url_3, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                print(f"Successfully retrieved the 0{hours[3]}z RAP.")     
+                            except Exception as e:
+                                print(f"0{hours[3]} RAP is unavailable. Trying to retrieve the 0{hours[4]} RAP.")
+                                try:
+                                    ds = xr.open_dataset(url_4, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    print(f"Successfully retrieved the 0{hours[4]}z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")
+    
+            if utc_time.hour == 3:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    print(f"Successfully retrieved the {hours[0]}z RAP.")
+                except Exception as e:
+                    print(f"{hours[0]}z RAP is unavailable. Trying to retrieve the {hours[1]}z RAP.")
+                    try:
+                        ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        print(f"Successfully retrieved the {hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"{hours[1]}z RAP is unavailable. Trying to retrieve the {hours[2]}z RAP.")
+                        try:
+                            ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            print(f"Successfully retrieved the {hours[2]} RAP.")   
+                        except Exception as e:
+                            print(f"{hours[2]}z RAP is unavailable. Trying to retrieve the {hours[3]}z RAP.")
+                            try:
+                                ds = xr.open_dataset(url_3, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                print(f"Successfully retrieved the {hours[3]} RAP.")     
+                            except Exception as e:
+                                print(f"{hours[3]}z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 23z RAP.")
+                                try:
+                                    ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 23z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")      
+    
+    
+            if utc_time.hour == 2:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    print(f"Successfully retrieved the {hours[0]}z RAP.")
+                except Exception as e:
+                    print(f"{hours[0]}z RAP is unavailable. Trying to retrieve the {hours[1]} RAP.")
+                    try:
+                        ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        print(f"Successfully retrieved the {hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"{hours[1]}z RAP is unavailable. Trying to retrieve the {hours[2]} RAP.")
+                        try:
+                            ds = xr.open_dataset(url_2, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            print(f"Successfully retrieved the {hours[2]}z RAP.")   
+                        except Exception as e:
+                            print(f"{hours[2]}z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 23z RAP.")
+                            try:
+                                ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 23z RAP.")     
+                            except Exception as e:
+                                print(f"{yesterday.strftime('%Y%m%d')} 23z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 22z RAP.")
+                                try:
+                                    ds = xr.open_dataset(y_3, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 22z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")   
+    
+            if utc_time.hour == 1:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    print(f"Successfully retrieved the {hours[0]} RAP.")
+                except Exception as e:
+                    print(f"{hours[0]}z RAP is unavailable. Trying to retrieve the {hours[1]}z RAP.")
+                    try:
+                        ds = xr.open_dataset(url_1, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        print(f"Successfully retrieved the {hours[1]}z RAP.")                    
+                    except Exception as e:
+                        print(f"{hours[1]}z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 23z RAP.")
+                        try:
+                            ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 23z RAP.")   
+                        except Exception as e:
+                            print(f"{yesterday.strftime('%Y%m%d')} 23z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 22z RAP.")
+                            try:
+                                ds = xr.open_dataset(y_3, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 22z RAP.")     
+                            except Exception as e:
+                                print(f"{yesterday.strftime('%Y%m%d')} 22z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 22z RAP.")
+                                try:
+                                    ds = xr.open_dataset(y_2, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 21z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")   
+    
+            if utc_time.hour == 0:
+                try:
+                    print(f"Trying to retrieve the {hours[0]}z RAP.")
+                    ds = xr.open_dataset(url_0, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                    print(f"Successfully retrieved the {hours[0]} RAP.")
+                except Exception as e:
+                    print(f"{hours[0]}z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} RAP.")
+                    try:
+                        ds = xr.open_dataset(y_4, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                        print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 23z RAP.")                    
+                    except Exception as e:
+                        print(f"{yesterday.strftime('%Y%m%d')} 23z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 22z RAP.")
+                        try:
+                            ds = xr.open_dataset(y_3, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                            print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 22z RAP.")   
+                        except Exception as e:
+                            print(f"{yesterday.strftime('%Y%m%d')} 22z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 21z RAP.")
+                            try:
+                                ds = xr.open_dataset(y_2, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 21z RAP.")     
+                            except Exception as e:
+                                print(f"{yesterday.strftime('%Y%m%d')} 21z RAP is unavailable. Trying to retrieve the {yesterday.strftime('%Y%m%d')} 20z RAP.")
+                                try:
+                                    ds = xr.open_dataset(y_1, engine='netcdf4',).sel(lon=slice(360-western_bound, 360-eastern_bound, 1), lat=slice(southern_bound, northern_bound, 1))
+                                    print(f"Successfully retrieved the {yesterday.strftime('%Y%m%d')} 20z RAP.") 
+                                except Exception as e:
+                                    print(f"Latest available RAP data is over 4 hours old. Aborting...")   
+    
+    
+        ds = ds.metpy.parse_cf()
+        
+        return ds
+
     def get_nomads_opendap_data_point_forecast(model, station_id, longitude, latitude):
 
         local_time, utc_time = standard.plot_creation_time()
@@ -1158,7 +1618,8 @@ class model_data:
             url_12z_run = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+utc_time.strftime('%Y%m%d')+'/cmcensavg_12z'
             
             yday_00z = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+yesterday.strftime('%Y%m%d')+'/cmcensavg_00z'
-            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+yesterday.strftime('%Y%m%d')+'/cmcensavg_12z'      
+            yday_12z = 'http://nomads.ncep.noaa.gov:80/dods/cmcens/cmcens'+yesterday.strftime('%Y%m%d')+'/cmcensavg_12z' 
+            
         if model == 'NAM':
         
             url_00z_run = 'http://nomads.ncep.noaa.gov:80/dods/nam/nam'+utc_time.strftime('%Y%m%d')+'/nam_00z'
