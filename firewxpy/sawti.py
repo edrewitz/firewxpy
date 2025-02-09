@@ -817,7 +817,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     props = dict(boxstyle='round', facecolor='wheat', alpha=1)
     box = dict(boxstyle='round', facecolor='lavender', alpha=1)
 
-    fig.text(0.1, 0.05, "Plot Created With FireWxPy (C) Eric J. Drewitz 2025\nData Source: sdge.sdsc.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=12, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)    
+    fig.text(0.1, 0.05, "Plot Created With FireWxPy (C) Eric J. Drewitz "+utc_time.strftime('%Y')+"\nData Source: sdge.sdsc.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=12, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)    
 
     fig.text(0.42, 0.94, "(Rolinski et al. 2016)", fontsize=14, fontweight='roman', verticalalignment='top', zorder=10) 
 
@@ -850,3 +850,4 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
         print("Successfully built directory and current branch.")
         plt.savefig(f"Weather Data/SAWTI/{fname}", bbox_inches='tight')
         print(f"Image Saved to f:Weather Data/SAWTI/{fname}")           
+
