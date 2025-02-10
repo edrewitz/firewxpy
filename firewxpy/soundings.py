@@ -1865,5 +1865,4 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
     fname = station_id+" VERTICAL PROFILES"
     
     file_functions.save_daily_sounding_graphic(fig, station_id, date)  
-         
         
