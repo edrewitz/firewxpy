@@ -1284,7 +1284,6 @@ class model_data:
     
         if model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
     
-    
             url_0 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[0]}z"
             url_1 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[1]}z"
             url_2 = f"http://nomads.ncep.noaa.gov:80/dods/rap/rap{utc_time.strftime('%Y%m%d')}/rap243_0{hours[2]}z"
