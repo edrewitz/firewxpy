@@ -74,7 +74,7 @@ def clean_height_data(height_data):
     return height_data
 
 
-def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
+def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, data=False, ds=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
 
 
     if reference_system == 'Custom' or reference_system == 'custom':
@@ -174,7 +174,7 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
 
 
     if data == False:
-        if model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap' or model == 'RAP 32' or model == 'rap 32':
+        if model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
             ds_point = model_data.get_hourly_rap_data_point_forecast(model, station_id, longitude, latitude)
             
             longitude = ds_point['tmpprs']['lon'].values
@@ -187,7 +187,10 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
             ds_area = model_data.get_hourly_rap_data_area_forecast(model, 'custom', western_bound, eastern_bound, southern_bound, northern_bound)
     
         else:
-            ds_point = model_data.get_nomads_opendap_data_point_forecast(model, station_id, longitude, latitude)
+            if model == 'RAP 32' or model == 'rap 32':
+                ds_point = model_data.get_hourly_rap_data_point_forecast(model, station_id, longitude, latitude)
+            else:
+                ds_point = model_data.get_nomads_opendap_data_point_forecast(model, station_id, longitude, latitude)
             
             longitude = ds_point['tmpprs']['lon'].values
             latitude = ds_point['tmpprs']['lat'].values
@@ -203,7 +206,16 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
                 if eastern_bound >180:
                     eastern_bound_data = (360 - eastern_bound)
 
-                ds_area = model_data.get_nomads_opendap_data(model, 'custom', western_bound_data, eastern_bound_data, southern_bound, northern_bound)
+                if model == 'RAP 32' or model == 'rap 32':
+
+                    if western_bound < 0:
+                        western_bound_data = western_bound * -1 
+                    if eastern_bound < 0:
+                        eastern_bound_data = eastern_bound * -1 
+                    ds_area = model_data.get_hourly_rap_data_area_forecast(model, 'custom', western_bound_data, eastern_bound_data, southern_bound, northern_bound)
+
+                else:
+                    ds_area = model_data.get_nomads_opendap_data(model, 'custom', western_bound_data, eastern_bound_data, southern_bound, northern_bound)
 
             else:
             
@@ -216,10 +228,10 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
         if station_id == 'Custom' or station_id == 'custom':
             longitude = longitude 
             latitude = latitude
-            western_bound = western_bound
-            eastern_bound = eastern_bound
-            northern_bound = northern_bound
-            southern_bound = southern_bound
+            western_bound = longitude - 6
+            eastern_bound = longitude + 6
+            northern_bound = latitude + 3
+            southern_bound = latitude - 3
         else:
             longitude, latitude = station_coords(station_id)
             western_bound = longitude - 6
@@ -318,12 +330,15 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
         m_hgt_mask = (height_agl >= 0) & (levels <= sfc_pressure)
         heights = []
         for j in range(0, (len(temperature[m_hgt_mask]) - 1)):
-            if temperature[j+1] >= temperature[m_hgt_mask][j]:
+            if int(round(float(temperature[j+1]),0)) >= int(round(float(temperature[m_hgt_mask][j]),0)):
                 m_height = height_agl[m_hgt_mask][j]
                 heights.append(m_height)
 
-        mixing_height_idx = heights[0]
-        mixing_height = mixing_height_idx.values
+        try:
+            mixing_height_idx = heights[0]
+            mixing_height = mixing_height_idx.values
+        except Exception as e:
+            mixing_height = 99999
 
         f_heights = []
         for j in range(0, (len(temperature[m_hgt_mask]) - 1)):
@@ -357,7 +372,6 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
                 title = f"6HR PRECIPITATION [IN]"
             if step == 1:
                 title = f"3HR PRECIPITATION [IN]"
-
 
         i = i
         k = i -1
