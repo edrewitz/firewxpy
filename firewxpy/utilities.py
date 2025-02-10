@@ -8,7 +8,7 @@ from datetime import datetime
 
 class file_functions:
 
-    def point_forecast_sounding_graphics_paths(model, latitude, longitude):
+    def point_forecast_sounding_graphics_paths(model, latitude, longitude, reference_system):
 
         if latitude >= 0:
             lat_symbol = 'N'
@@ -27,36 +27,50 @@ class file_functions:
             print(f"Weather Data Directory does not exist. Building Directory...")
             os.mkdir(f"Weather Data")
 
-        if os.path.exists(f"Weather Data/{model}"):
-            print(f"Already Satisfied: f:Weather Data/{model} exists.")
+        if os.path.exists(f"Weather Data/Forecast Model Data"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data exists.")
 
         else:
-            os.mkdir(f"Weather Data/{model}")
-            print(f"Built f:Weather Data/{model} Branch")
+            os.mkdir(f"Weather Data/Forecast Model Data")
+            print(f"Built f:Weather Data/Forecast Model Data Branch")
 
-        if os.path.exists(f"Weather Data/{model}/Soundings"):
-            print(f"Already Satisfied: f:Weather Data/{model}/Soundings exists.")
-
-        else:
-            os.mkdir(f"Weather Data/{model}/Soundings")
-            print(f"Built f:Weather Data/{model}/Soundings Branch")
-
-        if os.path.exists(f"Weather Data/{model}/Soundings/{str(latitude)}{lat_symbol}"):
-            print(f"Already Satisfied: f:Weather Data/{model}/Soundings/{str(latitude)}{lat_symbol} exists.")
+        if os.path.exists(f"Weather Data/Forecast Model Data/{model}"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model} exists.")
 
         else:
-            os.mkdir(f"Weather Data/{model}/Soundings/{str(latitude)}{lat_symbol}")
-            print(f"Built f:Weather Data/{model}/Soundings/{str(latitude)}{lat_symbol} Branch")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}")
+            print(f"Built f:Weather Data/Forecast Model Data/{model} Branch")
+
+        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Soundings"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Soundings exists.")
+
+        else:
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Soundings")
+            print(f"Built f:Weather Data/Forecast Model Data/{model}/Soundings Branch")
+
+        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol} exists.")
+
+        else:
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}")
+            print(f"Built f:Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol} Branch")
     
-        if os.path.exists(f"Weather Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}"):
-            print(f"Already Satisfied: f:Weather Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{longitude}{lon_symbol} exists.")
+        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{longitude}{lon_symbol} exists.")
 
         else:
-            os.mkdir(f"Weather Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}")
-            print(f"Built f:Weather Data/{model}/Soundings/{latitude}{lat_symbol}/{str(longitude)}{lon_symbol} Branch")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}")
+            print(f"Built f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{str(longitude)}{lon_symbol} Branch")
 
-        path = f"Weather Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}"
-        path_print = f"f:Weather Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}"
+        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}/{reference_system}"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{longitude}{lon_symbol}/{reference_system} exists.")
+
+        else:
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}/{reference_system}")
+            print(f"Built f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{str(longitude)}{lon_symbol}/{reference_system} Branch")
+
+        path = f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}/{reference_system}"
+        path_print = f"f:Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}/{reference_system}"
 
         return path, path_print, lat_symbol, lon_symbol
         
