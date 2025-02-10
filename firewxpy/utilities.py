@@ -1,3 +1,4 @@
+
 import os
 import imageio
 import matplotlib.pyplot as plt
@@ -48,29 +49,29 @@ class file_functions:
             os.mkdir(f"Weather Data/Forecast Model Data/{model}/Soundings")
             print(f"Built f:Weather Data/Forecast Model Data/{model}/Soundings Branch")
 
-        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}"):
-            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol} exists.")
+        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol}"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol} exists.")
 
         else:
-            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}")
-            print(f"Built f:Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol} Branch")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol}")
+            print(f"Built f:Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol} Branch")
     
-        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}"):
-            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{longitude}{lon_symbol} exists.")
+        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol}/{str(round(float(longitude), 1))}{lon_symbol}"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol}/{str(round(float(longitude), 1))}{lon_symbol} exists.")
 
         else:
-            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}")
-            print(f"Built f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{str(longitude)}{lon_symbol} Branch")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol}/{str(round(float(longitude), 1))}{lon_symbol}")
+            print(f"Built f:Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol}/{str(round(float(longitude), 1))}{lon_symbol} Branch")
 
-        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}/{reference_system}"):
-            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{longitude}{lon_symbol}/{reference_system} exists.")
+        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol}/{str(round(float(longitude), 1))}{lon_symbol}/{reference_system}"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol}/{str(round(float(longitude), 1))}{lon_symbol}/{reference_system} exists.")
 
         else:
-            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}/{reference_system}")
-            print(f"Built f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{str(longitude)}{lon_symbol}/{reference_system} Branch")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol}/{str(round(float(longitude), 1))}{lon_symbol}/{reference_system}")
+            print(f"Built f:Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol}/{str(round(float(longitude), 1))}{lon_symbol}/{reference_system} Branch")
 
-        path = f"Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}/{reference_system}"
-        path_print = f"f:Weather Data/Forecast Model Data/{model}/Soundings/{str(latitude)}{lat_symbol}/{str(longitude)}{lon_symbol}/{reference_system}"
+        path = f"Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol}/{str(round(float(longitude), 1))}{lon_symbol}/{reference_system}"
+        path_print = f"f:Weather Data/Forecast Model Data/{model}/Soundings/{str(round(float(latitude), 1))}{lat_symbol}/{str(round(float(longitude), 1))}{lon_symbol}/{reference_system}"
 
         return path, path_print, lat_symbol, lon_symbol
         
