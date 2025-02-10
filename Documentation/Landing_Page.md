@@ -34,3 +34,4 @@ To visit the firewxpy tutorials page where you can see examples in jupyter lab -
 28) [model_relative_humidity](https://github.com/edrewitz/firewxpy/blob/main/Documentation/forecast_models.md#relative-humidity-class)
 29) [model_critical_firewx_conditions](https://github.com/edrewitz/firewxpy/blob/main/Documentation/forecast_models.md#critical-firewx-conditions-class)
 30) [model_precipitation](https://github.com/edrewitz/firewxpy/blob/main/Documentation/forecast_models.md#precipitation-class)
+31) [plot_forecast_soundings(model, station_id)](https://github.com/edrewitz/firewxpy/blob/main/Documentation/soundings.md#plot_forecast_soundingsmodel-station_id)
