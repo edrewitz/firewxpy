@@ -196,6 +196,8 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
     
     '''
 
+    mpl.rcParams['xtick.labelsize'] = 5
+    mpl.rcParams['ytick.labelsize'] = 5
 
     if reference_system == 'Custom' or reference_system == 'custom':
         show_state_borders = show_state_borders
@@ -679,9 +681,9 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
 
         cmap_p = colormaps.precipitation_colormap()
 
-        levels_p = [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.25, 1.5, 1.75, 2, 2.5, 3]
+        levels_p = [round(0.01, 2), round(0.05, 2), round(0.1, 1), round(0.2, 1), round(0.3, 1), round(0.4, 1), round(0.5, 1), round(0.6, 1), round(0.7, 1), round(0.8, 1), round(0.9, 1), int(round(1, 0)), round(1.25, 2), round(1.5, 1), round(1.75, 2), int(round(2, 0)), round(2.5, 1), int(round(3,0))]
         ticks_p = levels_p
-        levels_pr = [0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.5, 2, 2.5, 3]
+        levels_pr = [round(0.01, 2), round(0.05, 2), round(0.1, 1), round(0.15, 2), round(0.2, 1), round(0.3, 1), round(0.4, 1), round(0.5, 1), round(0.6, 1), round(0.7, 1), round(0.8, 1), round(0.9, 1), int(round(1, 0)), round(1.5, 1), int(round(2, 0)), round(2.5, 1), int(round(3, 0))]
         ticks_pr = levels_pr
 
         ax6 = fig.add_subplot(gs[5:9, 14:19], projection=mapcrs)
