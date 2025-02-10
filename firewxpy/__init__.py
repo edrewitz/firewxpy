@@ -27,7 +27,7 @@ from firewxpy.forecast_models import precipitation as model_precipitation
 
 from firewxpy.observations import graphical_daily_summary
 
-from firewxpy.soundings import plot_observed_sounding, plot_observed_sounding_custom_date_time
+from firewxpy.soundings import plot_observed_sounding, plot_observed_sounding_custom_date_time, plot_forecast_soundings
 
 from firewxpy.dims import get_metar_mask
 
