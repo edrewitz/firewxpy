@@ -190,7 +190,7 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
             To change to a dashed line, users should set psa_border_linestyle='--'. 
 
         27) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
-            To change to a dashed line, users should set psa_border_linestyle='--'.       
+            To change to a dashed line, users should set psa_border_linestyle='--'.   
 
         Returns: A set of forecast vertical profile graphics saved to f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{longitude}{lon_symbol}/{reference_system}
     
@@ -452,7 +452,7 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
         m_hgt_mask = (height_agl >= 0) & (levels <= sfc_pressure)
         heights = []
         for j in range(0, (len(temperature[m_hgt_mask]) - 1)):
-            if int(round(float(temperature[j+1]),0)) >= int(round(float(temperature[m_hgt_mask][j]),0)):
+            if int(round(float(temperature[m_hgt_mask][j+1]),0)) >= int(round(float(temperature[m_hgt_mask][j]),0)):
                 m_height = height_agl[m_hgt_mask][j]
                 heights.append(m_height)
 
@@ -464,7 +464,7 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
 
         f_heights = []
         for j in range(0, (len(temperature[m_hgt_mask]) - 1)):
-            if temperature[j+1] <= 0 and temperature[j] > 0:
+            if temperature[m_hgt_mask][j+1] <= 0 and temperature[m_hgt_mask][j] > 0:
                 f_height = height_agl[m_hgt_mask][j+1]
                 heights.append(f_height)
 
