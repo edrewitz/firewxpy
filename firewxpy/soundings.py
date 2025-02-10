@@ -191,6 +191,8 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
 
         27) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
             To change to a dashed line, users should set psa_border_linestyle='--'.       
+
+        Returns: A set of forecast vertical profile graphics saved to f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{longitude}{lon_symbol}/{reference_system}
     
     '''
 
