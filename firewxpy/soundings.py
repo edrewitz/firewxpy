@@ -760,7 +760,7 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
             cbar1 = fig.colorbar(cs1, shrink=1, pad=0.01, location='bottom', ticks=ticks_pr, ax=ax6)      
     
 
-        fig.text(0.5, 0.085, f"ENTIRE ATMOSPHERE PWAT: {round(pwat, 2)} [IN]\nMIXING HEIGHT: {int(round(float(mixing_height), 0))} [FT AGL]\nFREEZING LEVEL: {int(round(float(freezing_level), 0))} [FT AGL]\n2-METER TEMPERATURE: {int(round(float(t2m),0))} [°F] | 2-METER RH: {int(round(float(rh2m),0))} [%]", fontweight='bold', fontsize=10, bbox=props)
+        fig.text(0.5, 0.085, f"ENTIRE ATMOSPHERE PWAT: {round(float(pwat), 2)} [IN]\nMIXING HEIGHT: {int(round(float(mixing_height), 0))} [FT AGL]\nFREEZING LEVEL: {int(round(float(freezing_level), 0))} [FT AGL]\n2-METER TEMPERATURE: {int(round(float(t2m),0))} [°F] | 2-METER RH: {int(round(float(rh2m),0))} [%]", fontweight='bold', fontsize=10, bbox=props)
 
         fig.text(0.76, 0.085, "Plot Created With FireWxPy\n(C) Eric J. Drewitz "+utc_time.strftime('%Y')+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
         
