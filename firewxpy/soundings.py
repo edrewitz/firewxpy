@@ -199,7 +199,7 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
             northern_bound = latitude + 3
             southern_bound = latitude - 3
 
-            if model == 'GFS0p25' or model == 'GFS0p50' or model == 'GEFS0p50' or model == 'NA NAM' or model == 'GEFS0p50_all' or model == 'RAP 32' or model == 'rap 32':
+            if model == 'GFS0p25' or model == 'GFS0p50' or model == 'NA NAM' or model == 'RAP 32' or model == 'rap 32':
 
                 if western_bound > 180:
                     western_bound_data = (360 - western_bound)
@@ -239,7 +239,7 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
             northern_bound = latitude + 3
             southern_bound = latitude - 3
 
-        if model == 'GFS0p25' or model == 'GFS0p50' or model == 'GEFS0p50' or model == 'NA NAM' or model == 'GEFS0p50_all' or model == 'RAP 32' or model == 'rap 32':
+        if model == 'GFS0p25' or model == 'GFS0p50' or model == 'NA NAM' or model == 'RAP 32' or model == 'rap 32':
             
             if longitude < 0:
                 longitude = 360 + longitude
@@ -305,8 +305,10 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
         temperature.dropna(dim='lev')
         levels = temperature['lev'].to_numpy().flatten()
 
+
         dwpt = mpcalc.dewpoint_from_relative_humidity(temperature * units('degC'), rh * units('percent'))
         temperature = temperature.to_numpy().flatten()
+
         wetbulb = mpcalc.wet_bulb_temperature(levels * units('hPa'), temperature * units('degC'), dwpt)
         height_ft = (ds_point['hgtprs'][i, :]) * 3.28084
         height_sfc = (ds_point['hgtsfc'][i])  * 3.28084
@@ -375,20 +377,16 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
 
         i = i
         k = i -1
+        
         try:
             for j in range(0, k):
-                try:
-                    ds_area['psum'][0, j, :, :] = sum(ds_area['apcpsfc'][0, j, :, :])
-                    ds_area['apcpsfc'][0, i, :, :] = ds_area['apcpsfc'][0, i, :, :] - ds_area['psum'][0, j, :, :]
-                except Exception as e:
-                    ds_area['psum'][j, :, :] = sum(ds_area['apcpsfc'][j, :, :])
-                    ds_area['apcpsfc'][i, :, :] = ds_area['apcpsfc'][i, :, :] - ds_area['psum'][j, :, :]  
+
+                ds_area['psum'][j, :, :] = sum(ds_area['apcpsfc'][j, :, :])
+                ds_area['apcpsfc'][i, :, :] = ds_area['apcpsfc'][i, :, :] - ds_area['psum'][j, :, :]  
 
         except Exception as e:
-            try:
-                ds_area['apcpsfc'][0, i, :, :] = ds_area['apcpsfc'][0, i, :, :]
-            except Exception as e:
-                ds_area['apcpsfc'][i, :, :] = ds_area['apcpsfc'][i, :, :]
+
+            ds_area['apcpsfc'][i, :, :] = ds_area['apcpsfc'][i, :, :]
 
 
         fig = plt.figure(figsize=(17, 7))
@@ -420,6 +418,7 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
 
         skew.plot(levels[skew_mask], temperature[skew_mask], 'red', alpha=0.5, linewidth=2)
         skew.plot(levels[skew_mask], dwpt[skew_mask], 'green', alpha=0.5, linewidth=2)
+
         skew.plot(levels[skew_mask], wetbulb[skew_mask], 'cyan', alpha=0.5, linewidth=1)
         skew.plot_barbs(levels[barb_mask], u[barb_mask], v[barb_mask], color='blue', length=6)
 
@@ -617,48 +616,26 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
 
         stn1 = mpplots.StationPlot(ax6, lon_2d[::decimate, ::decimate].flatten(), lat_2d[::decimate, ::decimate].flatten(),
                          transform=ccrs.PlateCarree(), zorder=3, fontsize=6, clip_on=True)
-
-        if model == 'GEFS0P50':
-
-            if prate == False:
-                qpf = ds_area['apcpsfc'][0, i, :, :] * 0.039370
-    
-                qpf = qpf[::decimate, ::decimate].to_numpy().flatten()
-        
-                stn1.plot_parameter('C', qpf, color='white', formatter='0.2f', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                cs1 = ax6.contourf(ds_area['lon'], ds_area['lat'], (ds_area['apcpsfc'][0, i, :, :] * 0.039370), cmap=cmap_p, transform=datacrs, levels=levels_p, alpha=0.35, extend='max')
-                cbar1 = fig.colorbar(cs1, shrink=1, pad=0.01, location='bottom', ticks=ticks_p, ax=ax6)
-            else:
-                qpf = ds_area['pratesfc'][0, i, :, :] * 141.73236
-    
-                qpf = qpf[::decimate, ::decimate].to_numpy().flatten()
-        
-                stn1.plot_parameter('C', qpf, color='white', formatter='0.2f', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                cs1 = ax6.contourf(ds_area['lon'], ds_area['lat'], (ds_area['pratesfc'][0, i, :, :] * 141.73236), cmap=cmap_p, transform=datacrs, levels=levels_pr, alpha=0.35, extend='max')
-                cbar1 = fig.colorbar(cs1, shrink=1, pad=0.01, location='bottom', ticks=ticks_pr, ax=ax6)                
-
-        else:
+             
             
-            if prate == False:
-                qpf = ds_area['apcpsfc'][i, :, :] * 0.039370
+        if prate == False:
+            qpf = ds_area['apcpsfc'][i, :, :] * 0.039370
+
+            qpf = qpf[::decimate, ::decimate].to_numpy().flatten()
     
-                qpf = qpf[::decimate, ::decimate].to_numpy().flatten()
-        
-                stn1.plot_parameter('C', qpf, color='white', formatter='0.2f', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+            stn1.plot_parameter('C', qpf, color='white', formatter='0.2f', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+
+            cs1 = ax6.contourf(ds_area['lon'], ds_area['lat'], (ds_area['apcpsfc'][i, :, :] * 0.039370), cmap=cmap_p, transform=datacrs, levels=levels_p, alpha=0.35, extend='max')
+            cbar1 = fig.colorbar(cs1, shrink=1, pad=0.01, location='bottom', ticks=ticks_p, ax=ax6)
+        else:
+            qpf = ds_area['pratesfc'][i, :, :] * 141.73236
+
+            qpf = qpf[::decimate, ::decimate].to_numpy().flatten()
     
-                cs1 = ax6.contourf(ds_area['lon'], ds_area['lat'], (ds_area['apcpsfc'][i, :, :] * 0.039370), cmap=cmap_p, transform=datacrs, levels=levels_p, alpha=0.35, extend='max')
-                cbar1 = fig.colorbar(cs1, shrink=1, pad=0.01, location='bottom', ticks=ticks_p, ax=ax6)
-            else:
-                qpf = ds_area['pratesfc'][i, :, :] * 141.73236
-    
-                qpf = qpf[::decimate, ::decimate].to_numpy().flatten()
-        
-                stn1.plot_parameter('C', qpf, color='white', formatter='0.2f', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
-    
-                cs1 = ax6.contourf(ds_area['lon'], ds_area['lat'], (ds_area['pratesfc'][i, :, :] * 141.73236), cmap=cmap_p, transform=datacrs, levels=levels_pr, alpha=0.35, extend='max')
-                cbar1 = fig.colorbar(cs1, shrink=1, pad=0.01, location='bottom', ticks=ticks_pr, ax=ax6)      
+            stn1.plot_parameter('C', qpf, color='white', formatter='0.2f', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=7)
+
+            cs1 = ax6.contourf(ds_area['lon'], ds_area['lat'], (ds_area['pratesfc'][i, :, :] * 141.73236), cmap=cmap_p, transform=datacrs, levels=levels_pr, alpha=0.35, extend='max')
+            cbar1 = fig.colorbar(cs1, shrink=1, pad=0.01, location='bottom', ticks=ticks_pr, ax=ax6)      
     
 
         fig.text(0.5, 0.085, f"ENTIRE ATMOSPHERE PWAT: {round(pwat, 2)} [IN]\nMIXING HEIGHT: {int(round(float(mixing_height), 0))} [FT AGL]\nFREEZING LEVEL: {int(round(float(freezing_level), 0))} [FT AGL]\n2-METER TEMPERATURE: {int(round(float(t2m),0))} [°F] | 2-METER RH: {int(round(float(rh2m),0))} [%]", fontweight='bold', fontsize=10, bbox=props)
