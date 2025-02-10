@@ -509,7 +509,7 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
             ds_area['apcpsfc'][i, :, :] = ds_area['apcpsfc'][i, :, :]
 
 
-        fig = plt.figure(figsize=(17, 7))
+        fig = plt.figure(figsize=(18, 7))
         gs = gridspec.GridSpec(10, 19)
         skew = SkewT(fig, rotation=45, subplot=gs[0:10, 0:9])
         if station_id == 'Custom' or station_id == 'custom':
