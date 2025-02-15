@@ -1,4 +1,5 @@
 
+
 import os
 import imageio
 import matplotlib.pyplot as plt
@@ -8,6 +9,55 @@ from PIL import Image
 from datetime import datetime
 
 class file_functions:
+
+    def forecast_cross_sections_graphics_paths(model, style, reference_system):
+
+        if os.path.exists(f"Weather Data"):
+            print(f"Already Satisfied: f:Weather Data Parent Directory exists.")
+        else:
+            print(f"Weather Data Directory does not exist. Building Directory...")
+            os.mkdir(f"Weather Data")
+
+        if os.path.exists(f"Weather Data/Forecast Model Data"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data exists.")
+
+        else:
+            os.mkdir(f"Weather Data/Forecast Model Data")
+            print(f"Built f:Weather Data/Forecast Model Data Branch")
+
+        if os.path.exists(f"Weather Data/Forecast Model Data/{model}"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model} exists.")
+
+        else:
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}")
+            print(f"Built f:Weather Data/Forecast Model Data/{model} Branch")
+
+        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Cross Sections"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Cross Sections exists.")
+
+        else:
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Cross Sections")
+            print(f"Built f:Weather Data/Forecast Model Data/{model}/Cross Sections Branch")
+
+        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style} exists.")
+
+        else:
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}")
+            print(f"Built f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style} Branch") 
+
+        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system} exists.")
+
+        else:
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}")
+            print(f"Built f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system} Branch") 
+
+        path = f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}"
+        path_print = f"f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}"
+
+        return path, path_print
+
 
     def point_forecast_sounding_graphics_paths(model, latitude, longitude, reference_system):
 
