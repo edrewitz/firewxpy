@@ -3925,88 +3925,137 @@ class NDFD_Alaska:
     '''    
 
     def get_short_and_extended_grids(parameter):
-        
-        '''
-                 This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
-                 This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
-        
-                 Inputs:
 
-                    1) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                                            Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                                            https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-        
-                Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
-                         This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
-                 
+        r'''
+
+        This function retrieves the latest NWS Forecast (NDFD) files from the NWS FTP Server. 
+
+        Scripts that download files from the CONUS directory are recommended to be run between the 48th and 15th 
+        minute to avoid the script idiling. The reason is because the files in the CONUS directory update between the 15th
+        and 48th minute of the hour (and downloading them during that time makes them extremely hard to work with!!). Due
+        to this, if there is an issue with the data, the program will automatically idle until the 48th minute and resume and try again to download the latest data. 
+
+        Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
+
+        Required Arguments: 1) The name of the directory (see FireWxPy documentation for directory paths)
+
+                            2) The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
+
+        Returns: 1) The files holding the forecast data in a GRIB2 format. 
+
+                 2) An xarray data-array of the same forecast data. 
+
+                 3) The count of the number of files in the short-term forecast period. 
+
+                 4) The count of the number of files in the extended forecast period. 
+
         '''
     
-        ###################################################
-        # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
-        ###################################################
-
-        parameter = parameter
-
         directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        parameter = parameter
+    
         try:
-            ds_short = NDFD_Alaska.get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
-            print("Retrieved the short-term Alaska grids.")
-            ds_extended = NDFD_Alaska.get_NWS_NDFD_extended_grid_data(directory_name, parameter)
-            print("Retrieved the extended Alaska grids.")
-        except Exception as e:
-            print("Unable to connect to server via FTP.\nTrying the backup method to download the file...")
-            try:
-                ds_short, ds_extended, short_term_fname, extended_fname = NDFD_Alaska.get_NWS_NDFD_7_Day_grid_data_backup(parameter)
-                with open(parameter, 'wb') as myfile, open(short_term_fname, 'rb') as file1, open(extended_fname, 'rb') as file2:
-                    myfile.write(file1.read())
-                    myfile.write(file2.read())
-            except Exception as e:
-                print("Unable to connect to server. Please try again later.")
-
-        return ds_short, ds_extended
-
-
-
-    def get_NWS_NDFD_7_Day_grid_data_backup(parameter):
-
-        if parameter == 'ds.maxrh.bin':
-            short_term_fname = 'ds.maxrh_short.bin'
-            extended_fname = 'ds.maxrh_extended.bin'
     
-        if parameter == 'ds.minrh.bin':
-            short_term_fname = 'ds.minrh_short.bin'
-            extended_fname = 'ds.minrh_extended.bin'
-    
-        if parameter == 'ds.maxt.bin':
-            short_term_fname = 'ds.maxt_short.bin'
-            extended_fname = 'ds.maxt_extended.bin'
-    
-        if parameter == 'ds.mint.bin':
-            short_term_fname = 'ds.mint_short.bin'
-            extended_fname = 'ds.mint_extended.bin'
-
-        if os.path.exists(short_term_fname):
-            os.remove(short_term_fname)
-            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/VP.001-003/{parameter}", f"{parameter}")
-            os.rename(parameter, short_term_fname)
-        else:
-            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/VP.001-003/{parameter}", f"{parameter}")
-            os.rename(parameter, short_term_fname)
+            if parameter == 'ds.maxrh.bin':
+                short_term_fname = 'ds.maxrh_short.bin'
+                extended_fname = 'ds.maxrh_extended.bin'
         
-        if os.path.exists(extended_fname):
-            os.remove(extended_fname)
-            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/VP.004-007/{parameter}", f"{parameter}")
-            os.rename(parameter, extended_fname)
-        else:
-            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/VP.004-007/{parameter}", f"{parameter}")
-            os.rename(parameter, extended_fname)
+            if parameter == 'ds.minrh.bin':
+                short_term_fname = 'ds.minrh_short.bin'
+                extended_fname = 'ds.minrh_extended.bin'
+        
+            if parameter == 'ds.maxt.bin':
+                short_term_fname = 'ds.maxt_short.bin'
+                extended_fname = 'ds.maxt_extended.bin'
+        
+            if parameter == 'ds.mint.bin':
+                short_term_fname = 'ds.mint_short.bin'
+                extended_fname = 'ds.mint_extended.bin'
+    
+            if os.path.exists(short_term_fname):
+                os.remove(short_term_fname)
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
+                os.rename(parameter, short_term_fname)
+            else:
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
+                os.rename(parameter, short_term_fname)
+            
+            if os.path.exists(extended_fname):
+                os.remove(extended_fname)
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+                os.rename(parameter, extended_fname)
+            else:
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+                os.rename(parameter, extended_fname)
+    
+            with open(parameter, 'wb') as myfile, open(short_term_fname, 'rb') as file1, open(extended_fname, 'rb') as file2:
+                myfile.write(file1.read())
+                myfile.write(file2.read())
 
-        ds_short = xr.open_dataset(short_term_fname, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
-        print("Retrieved the short-term Alaska grids.")
-        ds_extended = xr.open_dataset(extended_fname, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
-        print("Retrieved the extended Alaska grids.")
+            ds_short = xr.open_dataset(short_term_fname, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
+            print("Retrieved the short-term Alaska grids.")
+            ds_extended = xr.open_dataset(extended_fname, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
+            print("Retrieved the extended Alaska grids.")
+    
+            ds_short = ds_short.metpy.parse_cf()          
+            ds_extended = ds_extended.metpy.parse_cf()
+            
+            print("Retrieved all Alaska NDFD grids.")
+            
+        except Exception as a:
+    
+            standard.idle()
+    
+            print("Trying again to download data...")
+    
+            if parameter == 'ds.maxrh.bin':
+                short_term_fname = 'ds.maxrh_short.bin'
+                extended_fname = 'ds.maxrh_extended.bin'
+        
+            if parameter == 'ds.minrh.bin':
+                short_term_fname = 'ds.minrh_short.bin'
+                extended_fname = 'ds.minrh_extended.bin'
+        
+            if parameter == 'ds.maxt.bin':
+                short_term_fname = 'ds.maxt_short.bin'
+                extended_fname = 'ds.maxt_extended.bin'
+        
+            if parameter == 'ds.mint.bin':
+                short_term_fname = 'ds.mint_short.bin'
+                extended_fname = 'ds.mint_extended.bin'
+    
+            if os.path.exists(short_term_fname):
+                os.remove(short_term_fname)
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
+                os.rename(parameter, short_term_fname)
+            else:
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
+                os.rename(parameter, short_term_fname)
+            
+            if os.path.exists(extended_fname):
+                os.remove(extended_fname)
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+                os.rename(parameter, extended_fname)
+            else:
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+                os.rename(parameter, extended_fname)
+    
+            with open(parameter, 'wb') as myfile, open(short_term_fname, 'rb') as file1, open(extended_fname, 'rb') as file2:
+                myfile.write(file1.read())
+                myfile.write(file2.read())
 
-        return ds_short, ds_extended, short_term_fname, extended_fname
+            ds_short = xr.open_dataset(short_term_fname, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
+            print("Retrieved the short-term Alaska grids.")
+            ds_extended = xr.open_dataset(extended_fname, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
+            print("Retrieved the extended Alaska grids.")
+
+            ds_short = ds_short.metpy.parse_cf()          
+            ds_extended = ds_extended.metpy.parse_cf() 
+            
+            print("Retrieved all Alaska NDFD grids.")
+
+    
+        return ds_short, ds_extended
 
 
     def get_NWS_NDFD_7_Day_grid_data(parameter):
