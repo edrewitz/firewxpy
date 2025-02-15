@@ -28,7 +28,17 @@ from firewxpy.data_access import RTMA_Alaska
 
 mpl.rcParams['font.weight'] = 'bold'
 
-mpl.rcParams['font.weight'] = 'bold'
+warnings.filterwarnings('ignore')
+
+PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
+
+GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
+
+CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
+
+FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
+
+PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
 
 def plot_relative_humidity(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, aspect=30, tick=9):
 
@@ -37,32 +47,78 @@ def plot_relative_humidity(color_table_shrink=1, title_fontsize=12, subplot_titl
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -79,98 +135,115 @@ def plot_relative_humidity(color_table_shrink=1, title_fontsize=12, subplot_titl
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            43) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            36) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            44) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            45) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            46) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            47) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            48) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -295,16 +368,6 @@ def plot_relative_humidity(color_table_shrink=1, title_fontsize=12, subplot_titl
 
     
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.relative_humidity_colormap()
 
@@ -487,36 +550,82 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=25, high_rh_threshold=8
     
         Required Arguments: None
 
-        Optional Arguments: 1) low_rh_threshold (Integer) - Default = 25%. The top bound of what is considered low relative humidity. 
+        Optional Arguments: 1) low_rh_threshold (Integer) - Default = 15%. The top bound of what is considered low relative humidity. 
 
                             2) high_rh_threshold (Integer) - Default = 80%. The bottom bound of what is considered high relative humidity.         
+        
+                            3) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
 
-                            3) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+                            4) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            5) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            6) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            7) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            8) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            9) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            10) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            11) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            4) title_fontsize (Integer) - Fontsize of the plot title. 
+                            12) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            5) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            13) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            6) signature_fontsize (Integer) - The fontsize of the signature. 
+                            14) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            7) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            15) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            8) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            16) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            9) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            17) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -533,98 +642,127 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=25, high_rh_threshold=8
                                                    13) 'GACC & Counties'
                                                    
     
-                            10) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            18) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            11) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            19) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            12) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            20) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            13) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            21) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            14) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            22) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            15) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            23) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            16) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            24) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            17) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            25) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            18) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            26) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            19) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            27) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            20) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            28) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            21) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            29) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            22) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            30) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            23) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            31) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            24) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            32) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            33) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            34) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            27) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            35) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            28) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            36) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            29) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            37) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            30) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            38) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            31) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            39) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            32) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            40) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            33) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            41) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            34) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            42) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            35) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            43) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            36) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            44) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            37) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            45) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            38) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            46) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            47) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            48) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            39) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            49) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            40) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+                            50) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
 
-                            41) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            51) x1 (Float) - The x-position of the low relative humidity colorbar. Defaults are in the settings module. Only edit this if making a custom plot. 
+
+                            52) x2 (Float) - The x-position of the high relative humidity colorbar. Defaults are in the settings module. Only edit this if making a custom plot. 
+
+                            53) y (Float) - The y-position of both colorbars. Defaults are in the settings module. Only edit this if making a custom plot. 
+
+                            54) x_size (Float) - The horizontal size of the colorbars. Defaults are in the settings module. Only edit this if making a custom plot. 
+
+                            55) labels_low_increment (Integer) - Default = None. The increment of the low relative humidity colorbar. 
+
+                            56) labels_high_increment (Integer) - Default = None. The increment of the high relative humidity colorbar. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -778,16 +916,6 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=25, high_rh_threshold=8
 
     
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap_low = colormaps.low_relative_humidity_colormap()
     cmap_high = colormaps.excellent_recovery_colormap()
@@ -991,32 +1119,78 @@ def plot_24_hour_relative_humidity_comparison(color_table_shrink=1, title_fontsi
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -1033,105 +1207,123 @@ def plot_24_hour_relative_humidity_comparison(color_table_shrink=1, title_fontsi
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array (for latest available time) if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) data_24 (Array) - Default = None. A data array (for 24hrs prior to the latest available time) if the user downloads the data array outside of the function using the data_access module. 
+                            43) data_24 (Array) - Default = None. A data array (for 24hrs prior to the latest available time) if the user downloads the data array outside of the function using the data_access module. 
                                 If data_24=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data_24=None to data_24=data for example.  
 
-                            36) time (Array) - Default = None. A time array (for the dataset of the current time) if the user downloads the data array outside of the function using the data_access module. 
+                            44) time (Array) - Default = None. A time array (for the dataset of the current time) if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            37) time_24 (Array) - Default = None. A time array (for the dataset that is 24-hours prior to current time) if the user downloads the data array outside of the function using the data_access module. 
+                            45) time_24 (Array) - Default = None. A time array (for the dataset that is 24-hours prior to current time) if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
+                                it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            38) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            46) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            47) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            48) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            39) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            49) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            40) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            41) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            50) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -1261,16 +1453,6 @@ def plot_24_hour_relative_humidity_comparison(color_table_shrink=1, title_fontsi
 
     
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.relative_humidity_change_colormap()
 
@@ -1488,32 +1670,78 @@ def plot_temperature(color_table_shrink=1, title_fontsize=12, subplot_title_font
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -1530,98 +1758,115 @@ def plot_temperature(color_table_shrink=1, title_fontsize=12, subplot_title_font
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            43) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            36) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            44) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            45) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            46) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            47) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            40) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            48) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -1755,17 +2000,6 @@ def plot_temperature(color_table_shrink=1, title_fontsize=12, subplot_title_font
         title_fontsize, subplot_title_fontsize = 9, 8
     if cwa == 'ALU' or cwa == 'alu':
         title_fontsize, subplot_title_fontsize = 9, 8
-
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.temperature_colormap()
 
@@ -1935,32 +2169,78 @@ def plot_temperature_advection(color_table_shrink=1, title_fontsize=12, subplot_
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -1977,98 +2257,115 @@ def plot_temperature_advection(color_table_shrink=1, title_fontsize=12, subplot_
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            43) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            36) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            44) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            45) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            46) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            47) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            48) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -2196,17 +2493,6 @@ def plot_temperature_advection(color_table_shrink=1, title_fontsize=12, subplot_
         title_fontsize, subplot_title_fontsize = 9, 8
     if cwa == 'ALU' or cwa == 'alu':
         title_fontsize, subplot_title_fontsize = 9, 8
-
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.temperature_change_colormap()
 
@@ -2387,32 +2673,78 @@ def plot_dew_point_advection(color_table_shrink=1, title_fontsize=12, subplot_ti
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -2429,100 +2761,117 @@ def plot_dew_point_advection(color_table_shrink=1, title_fontsize=12, subplot_ti
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            43) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            36) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            44) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            45) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            46) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            47) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            48) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
-        Return: Saves individual images to the RTMA subfolder.
+        Return: Saves individual images to the RTMA subfolder. 
     
     '''
     mapcrs = ccrs.PlateCarree()
@@ -2648,17 +2997,6 @@ def plot_dew_point_advection(color_table_shrink=1, title_fontsize=12, subplot_ti
         title_fontsize, subplot_title_fontsize = 9, 8
     if cwa == 'ALU' or cwa == 'alu':
         title_fontsize, subplot_title_fontsize = 9, 8
-
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.dew_point_change_colormap()
 
@@ -2837,32 +3175,78 @@ def plot_relative_humidity_advection(color_table_shrink=1, title_fontsize=12, su
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -2879,98 +3263,115 @@ def plot_relative_humidity_advection(color_table_shrink=1, title_fontsize=12, su
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            43) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            36) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            44) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            45) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            46) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            47) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            48) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -3098,16 +3499,6 @@ def plot_relative_humidity_advection(color_table_shrink=1, title_fontsize=12, su
         title_fontsize, subplot_title_fontsize = 9, 8
     if cwa == 'ALU' or cwa == 'alu':
         title_fontsize, subplot_title_fontsize = 9, 8
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.relative_humidity_change_colormap()
 
@@ -3294,32 +3685,78 @@ def plot_frost_freeze(color_table_shrink=1, title_fontsize=12, subplot_title_fon
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -3336,98 +3773,115 @@ def plot_frost_freeze(color_table_shrink=1, title_fontsize=12, subplot_title_fon
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            43) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            36) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            44) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            45) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            46) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            47) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            48) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -3554,16 +4008,6 @@ def plot_frost_freeze(color_table_shrink=1, title_fontsize=12, subplot_title_fon
         title_fontsize, subplot_title_fontsize = 9, 8
     if cwa == 'ALU' or cwa == 'alu':
         title_fontsize, subplot_title_fontsize = 9, 8
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.cool_temperatures_colormap()
 
@@ -3731,35 +4175,81 @@ def plot_extreme_heat(temperature_threshold=70, color_table_shrink=1, title_font
     
         Required Arguments: None
 
-        Optional Arguments: 1) temperature_threshold (Integer) - Default = 70F. The threshold at which the user defines extreme heat. 
+        Optional Arguments: 1) temperature_threshold (Integer) - Default = 100F. The threshold at which the user defines extreme heat. 
                                Extreme Heat = RTMA Temperature >= temperature_threshold.
         
-                            2) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+                            2) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            4) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            5) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            6) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            7) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            8) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            9) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            10) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            3) title_fontsize (Integer) - Fontsize of the plot title. 
+                            11) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            4) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            12) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            5) signature_fontsize (Integer) - The fontsize of the signature. 
+                            13) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            14) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            7) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            15) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            8) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            16) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -3776,100 +4266,117 @@ def plot_extreme_heat(temperature_threshold=70, color_table_shrink=1, title_font
                                                    13) 'GACC & Counties'
                                                    
     
-                            9) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            17) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            10) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            18) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            11) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            19) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            12) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            20) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            13) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            21) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            14) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            22) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            15) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            23) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            16) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            24) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            17) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            25) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            18) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            26) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            19) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            27) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            20) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            28) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            21) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            29) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            22) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            30) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            23) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            31) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            32) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            33) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            34) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            27) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            35) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            28) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            36) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            29) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            37) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            30) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            38) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            31) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            39) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            32) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            40) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            33) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            41) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            34) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            42) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            35) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            43) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            36) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            44) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            37) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            45) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            46) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            47) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            38) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            48) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            39) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            40) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            49) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
-        Return: Saves individual images to the RTMA subfolder.
+        Return: Saves individual images to the RTMA subfolder. 
     
     '''
     mapcrs = ccrs.PlateCarree()
@@ -3995,16 +4502,6 @@ def plot_extreme_heat(temperature_threshold=70, color_table_shrink=1, title_font
         title_fontsize, subplot_title_fontsize = 9, 8
     if cwa == 'ALU' or cwa == 'alu':
         title_fontsize, subplot_title_fontsize = 9, 8
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.cool_temperatures_colormap()
 
@@ -4172,32 +4669,78 @@ def plot_24_hour_temperature_comparison(color_table_shrink=1, title_fontsize=12,
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -4214,105 +4757,123 @@ def plot_24_hour_temperature_comparison(color_table_shrink=1, title_fontsize=12,
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array (for latest available time) if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) data_24 (Array) - Default = None. A data array (for 24hrs prior to the latest available time) if the user downloads the data array outside of the function using the data_access module. 
+                            43) data_24 (Array) - Default = None. A data array (for 24hrs prior to the latest available time) if the user downloads the data array outside of the function using the data_access module. 
                                 If data_24=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data_24=None to data_24=data for example.  
 
-                            36) time (Array) - Default = None. A time array (for the dataset of the current time) if the user downloads the data array outside of the function using the data_access module. 
+                            44) time (Array) - Default = None. A time array (for the dataset of the current time) if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            37) time_24 (Array) - Default = None. A time array (for the dataset that is 24-hours prior to current time) if the user downloads the data array outside of the function using the data_access module. 
+                            45) time_24 (Array) - Default = None. A time array (for the dataset that is 24-hours prior to current time) if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
+                                it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            38) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            46) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            47) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            48) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            39) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            49) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            40) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            41) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            50) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -4441,16 +5002,6 @@ def plot_24_hour_temperature_comparison(color_table_shrink=1, title_fontsize=12,
         title_fontsize, subplot_title_fontsize = 9, 8
 
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.temperature_change_colormap()
 
@@ -4646,32 +5197,78 @@ def plot_dew_point(color_table_shrink=1, title_fontsize=12, subplot_title_fontsi
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -4688,98 +5285,115 @@ def plot_dew_point(color_table_shrink=1, title_fontsize=12, subplot_title_fontsi
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            43) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            36) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            44) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            45) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            46) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            47) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            48) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -4912,17 +5526,6 @@ def plot_dew_point(color_table_shrink=1, title_fontsize=12, subplot_title_fontsi
         title_fontsize, subplot_title_fontsize = 9, 8
     if cwa == 'ALU' or cwa == 'alu':
         title_fontsize, subplot_title_fontsize = 9, 8
-
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.dew_point_colormap()
 
@@ -5090,32 +5693,78 @@ def plot_24_hour_dew_point_comparison(color_table_shrink=1, title_fontsize=12, s
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -5132,105 +5781,123 @@ def plot_24_hour_dew_point_comparison(color_table_shrink=1, title_fontsize=12, s
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array (for latest available time) if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) data_24 (Array) - Default = None. A data array (for 24hrs prior to the latest available time) if the user downloads the data array outside of the function using the data_access module. 
+                            43) data_24 (Array) - Default = None. A data array (for 24hrs prior to the latest available time) if the user downloads the data array outside of the function using the data_access module. 
                                 If data_24=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data_24=None to data_24=data for example.  
 
-                            36) time (Array) - Default = None. A time array (for the dataset of the current time) if the user downloads the data array outside of the function using the data_access module. 
+                            44) time (Array) - Default = None. A time array (for the dataset of the current time) if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            37) time_24 (Array) - Default = None. A time array (for the dataset that is 24-hours prior to current time) if the user downloads the data array outside of the function using the data_access module. 
+                            45) time_24 (Array) - Default = None. A time array (for the dataset that is 24-hours prior to current time) if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
+                                it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            38) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            46) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            47) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            48) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            39) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            49) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            40) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            41) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            50) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -5360,16 +6027,6 @@ def plot_24_hour_dew_point_comparison(color_table_shrink=1, title_fontsize=12, s
         title_fontsize, subplot_title_fontsize = 9, 8
 
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.dew_point_change_colormap()
 
@@ -5565,32 +6222,78 @@ def plot_total_cloud_cover(color_table_shrink=1, title_fontsize=12, subplot_titl
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -5607,98 +6310,115 @@ def plot_total_cloud_cover(color_table_shrink=1, title_fontsize=12, subplot_titl
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            43) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            36) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            44) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            45) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            46) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            47) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            48) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -5827,15 +6547,6 @@ def plot_total_cloud_cover(color_table_shrink=1, title_fontsize=12, subplot_titl
     if cwa == 'ALU' or cwa == 'alu':
         title_fontsize, subplot_title_fontsize = 9, 8
 
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.cloud_cover_colormap()
 
@@ -6000,32 +6711,78 @@ def plot_24_hour_total_cloud_cover_comparison(color_table_shrink=1, title_fontsi
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -6042,107 +6799,125 @@ def plot_24_hour_total_cloud_cover_comparison(color_table_shrink=1, title_fontsi
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array (for latest available time) if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) data_24 (Array) - Default = None. A data array (for 24hrs prior to the latest available time) if the user downloads the data array outside of the function using the data_access module. 
+                            43) data_24 (Array) - Default = None. A data array (for 24hrs prior to the latest available time) if the user downloads the data array outside of the function using the data_access module. 
                                 If data_24=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data_24=None to data_24=data for example.  
 
-                            36) time (Array) - Default = None. A time array (for the dataset of the current time) if the user downloads the data array outside of the function using the data_access module. 
+                            44) time (Array) - Default = None. A time array (for the dataset of the current time) if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            37) time_24 (Array) - Default = None. A time array (for the dataset that is 24-hours prior to current time) if the user downloads the data array outside of the function using the data_access module. 
+                            45) time_24 (Array) - Default = None. A time array (for the dataset that is 24-hours prior to current time) if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
+                                it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            38) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            46) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            47) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            48) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            39) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            49) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            40) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            41) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            50) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
-        Return: Saves individual images to the RTMA subfolder.
+        Return: Saves individual images to the RTMA subfolder. 
     
     '''
     mapcrs = ccrs.PlateCarree()
@@ -6271,16 +7046,6 @@ def plot_24_hour_total_cloud_cover_comparison(color_table_shrink=1, title_fontsi
 
 
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.cloud_cover_change_colormap()
 
@@ -6471,32 +7236,78 @@ def plot_wind_speed(color_table_shrink=1, title_fontsize=12, subplot_title_fonts
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -6513,100 +7324,117 @@ def plot_wind_speed(color_table_shrink=1, title_fontsize=12, subplot_title_fonts
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            43) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            36) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            44) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            45) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            46) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            37) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            47) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            38) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            39) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            48) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
-        Return: Saves individual images to the RTMA subfolder.
+        Return: Saves individual images to the RTMA subfolder. 
     
     '''
     mapcrs = ccrs.PlateCarree()
@@ -6733,16 +7561,6 @@ def plot_wind_speed(color_table_shrink=1, title_fontsize=12, subplot_title_fonts
     if cwa == 'ALU' or cwa == 'alu':
         title_fontsize, subplot_title_fontsize = 9, 8
 
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.wind_speed_colormap()
 
@@ -7086,18 +7904,35 @@ def plot_24_hour_wind_speed_comparison(color_table_shrink=1, title_fontsize=12, 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            46) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            46) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            47) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            48) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            47) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            49) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            48) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            49) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            50) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -7228,16 +8063,6 @@ def plot_24_hour_wind_speed_comparison(color_table_shrink=1, title_fontsize=12, 
 
     
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.wind_speed_change_colormap()
 
@@ -7432,32 +8257,78 @@ def plot_wind_speed_and_direction(color_table_shrink=1, title_fontsize=12, subpl
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -7474,109 +8345,126 @@ def plot_wind_speed_and_direction(color_table_shrink=1, title_fontsize=12, subpl
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array (for latest available time) if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            44) time (Array) - Default = None. A time array (for the dataset of the current time) if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            36) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            45) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            46) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            47) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            37) barbs_or_quivers (String) - Default = 'barbs'. Sets the plot to either be wind barbs or vectors. Proper syntax for wind barbs: 'barbs', 'b', 'Barbs',
+                            48) barbs_or_quivers (String) - Default = 'barbs'. Sets the plot to either be wind barbs or vectors. Proper syntax for wind barbs: 'barbs', 'b', 'Barbs',
                                 'BARBS', 'B'. Proper syntax for quivers (vectors): 'quivers', 'q', 'Quivers', 'QUIVERS', 'Q'
 
-                            38) barb_quiver_alpha (Float) - Default = 1. Number between 0 and 1 for the transparency of the barb or quiver. 0 is completely transparent while 1 is completely opaque. 
+                            49) barb_quiver_alpha (Float) - Default = 1. Number between 0 and 1 for the transparency of the barb or quiver. 0 is completely transparent while 1 is completely opaque. 
 
-                            39) barb_quiver_fontsize (Integer) - Default = 6. Fontsize of the barb or quiver. 
+                            50) barb_quiver_fontsize (Integer) - Default = 6. Fontsize of the barb or quiver. 
 
-                            40) barb_linewidth (Float) - Default = 0.5. The width or thickness of the wind barb. 
+                            51) barb_linewidth (Float) - Default = 0.5. The width or thickness of the wind barb. 
 
-                            41) quiver_linewidth (Float) - Default = 0.5. The width or thickness of the quiver. 
+                            52) quiver_linewidth (Float) - Default = 0.5. The width or thickness of the quiver. 
 
-                            42) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            53) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            43) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            44) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            54) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -7706,17 +8594,6 @@ def plot_wind_speed_and_direction(color_table_shrink=1, title_fontsize=12, subpl
         title_fontsize, subplot_title_fontsize = 9, 8
     if cwa == 'ALU' or cwa == 'alu':
         title_fontsize, subplot_title_fontsize = 9, 8
-
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.wind_speed_colormap()
 
@@ -7905,32 +8782,78 @@ def plot_24_hour_wind_speed_and_direction_comparison(color_table_shrink=1, title
     
         Required Arguments: None
 
-        Optional Arguments: 1) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        Optional Arguments: 1) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            2) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            3) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            4) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            5) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            6) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            7) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            8) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            9) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            2) title_fontsize (Integer) - Fontsize of the plot title. 
+                            10) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            3) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            11) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            4) signature_fontsize (Integer) - The fontsize of the signature. 
+                            12) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            5) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            13) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            6) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            14) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            7) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            15) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -7947,116 +8870,134 @@ def plot_24_hour_wind_speed_and_direction_comparison(color_table_shrink=1, title
                                                    13) 'GACC & Counties'
                                                    
     
-                            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            16) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            17) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            18) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            19) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            20) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            21) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            22) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            15) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            23) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            16) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            24) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            17) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            25) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            18) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            26) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            19) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            27) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            20) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            28) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            21) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            29) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            22) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            30) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            23) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            31) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            24) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            32) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            33) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            26) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            34) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            27) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            35) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            28) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            36) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            29) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            37) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            30) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            38) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            31) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            39) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            32) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            40) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            33) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            41) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            34) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            42) data (Array) - Default = None. A data array (for latest available time) if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            35) data_24 (Array) - Default = None. A data array (for 24hrs prior to the latest available time) if the user downloads the data array outside of the function using the data_access module. 
+                            43) data_24 (Array) - Default = None. A data array (for 24hrs prior to the latest available time) if the user downloads the data array outside of the function using the data_access module. 
                                 If data_24=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data_24=None to data_24=data for example.  
 
-                            36) time (Array) - Default = None. A time array (for the dataset of the current time) if the user downloads the data array outside of the function using the data_access module. 
+                            44) time (Array) - Default = None. A time array (for the dataset of the current time) if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            37) time_24 (Array) - Default = None. A time array (for the dataset that is 24-hours prior to current time) if the user downloads the data array outside of the function using the data_access module. 
+                            45) time_24 (Array) - Default = None. A time array (for the dataset that is 24-hours prior to current time) if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
+                                it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            38) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            46) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            47) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            48) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            39) barbs_or_quivers (String) - Default = 'barbs'. Sets the plot to either be wind barbs or vectors. Proper syntax for wind barbs: 'barbs', 'b', 'Barbs',
+                            49) barbs_or_quivers (String) - Default = 'barbs'. Sets the plot to either be wind barbs or vectors. Proper syntax for wind barbs: 'barbs', 'b', 'Barbs',
                                 'BARBS', 'B'. Proper syntax for quivers (vectors): 'quivers', 'q', 'Quivers', 'QUIVERS', 'Q'
 
-                            40) barb_quiver_alpha (Float) - Default = 1. Number between 0 and 1 for the transparency of the barb or quiver. 0 is completely transparent while 1 is completely opaque. 
+                            50) barb_quiver_alpha (Float) - Default = 1. Number between 0 and 1 for the transparency of the barb or quiver. 0 is completely transparent while 1 is completely opaque. 
 
-                            41) barb_quiver_fontsize (Integer) - Default = 6. Fontsize of the barb or quiver. 
+                            51) barb_quiver_fontsize (Integer) - Default = 6. Fontsize of the barb or quiver. 
 
-                            42) barb_linewidth (Float) - Default = 0.5. The width or thickness of the wind barb. 
+                            52) barb_linewidth (Float) - Default = 0.5. The width or thickness of the wind barb. 
 
-                            43) quiver_linewidth (Float) - Default = 0.5. The width or thickness of the quiver. 
+                            53) quiver_linewidth (Float) - Default = 0.5. The width or thickness of the quiver. 
 
-                            44) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            54) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
 
-                            45) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
-
-                            46) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            55) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
     
         Return: Saves individual images to the RTMA subfolder.
     
@@ -8192,16 +9133,6 @@ def plot_24_hour_wind_speed_and_direction_comparison(color_table_shrink=1, title
 
     
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.wind_speed_change_colormap()
 
@@ -8444,48 +9375,86 @@ def plot_24_hour_wind_speed_and_direction_comparison(color_table_shrink=1, title
 def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=65, post_greenup_temperature_threshold=75, low_rh_threshold=25, high_wind_threshold=15, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, sample_point_type='barbs', barb_quiver_linewidth=1, barb_fontsize=10, tick=9, aspect=30):
 
     r'''
-        This function plots the latest available RTMA Hot, Dry and Windy Areas with their components.
-
-        Areas where the relative humidity <= low_minimum_rh_threshold AND wind gust >= wind_speed_threshold AND temperature >= pre_greenup_temperature_threshold/post_greenup_temperature_threshold are shaded in red. 
+        This function plots the latest available Real Time Mesoscale Analysis (RTMA) Dry and Windy Areas along with the components. 
     
         Required Arguments: None
 
-        Optional Arguments: 1) pre_greenup_temperature_threshold (Integer) - Default = 65F. Threshold for "hot" temperature based on the NWS Alaska Region RFW
-                               criteria for pre-greenup. Any values greater than or equal to this threshold are considered "hot". 
-        
-                            2) post_greenup_temperature_threshold (Integer) - Default = 75F. Threshold for "hot" temperature based on the NWS Alaska Region RFW
-                               criteria for post-greenup. Any values greater than or equal to this threshold are considered "hot".   
-        
-                            3) low_rh_threshold (Integer) - Default = 25%. The top bound of what is considered low relative humidity. 
+        Optional Arguments: 1) low_rh_threshold (Integer) - Default = 15%. Threshold for low relative humidity. Any value less than this threshold is considered "dry."
 
-                            4) high_wind_threshold (Integer) - Default = 15 MPH. The bottom bound of what is considered high sustained winds.         
+                            2) high_wind_threshold (Integer) - Default = 25 MPH. Threshold for high winds. Any value greater than this threshold is considered "windy."         
+        
+                            3) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
 
-                            5) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+                            4) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            5) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            6) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            7) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            8) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            9) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            10) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            11) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            6) title_fontsize (Integer) - Fontsize of the plot title. 
+                            12) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            7) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            13) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            8) signature_fontsize (Integer) - The fontsize of the signature. 
+                            14) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            9) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            15) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            10) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            16) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            11) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            17) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -8502,105 +9471,158 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=65, post_gree
                                                    13) 'GACC & Counties'
                                                    
     
-                            12) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            18) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            13) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            19) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            14) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            20) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            15) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            21) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            16) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            22) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            17) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            23) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            18) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            24) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            19) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            25) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            20) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            26) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            21) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            27) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            22) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            28) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            23) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            29) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            24) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            30) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            25) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            31) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            26) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            32) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            27) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            33) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            28) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            34) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            29) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            35) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            30) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            36) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            31) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            37) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            32) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            38) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            33) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            39) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            34) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            40) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            35) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            41) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            36) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            42) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            37) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            43) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            38) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            44) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            39) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            45) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            40) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            46) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            47) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            48) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            41) sample_point_type (String) - Default='barbs'. The type of sample point. The options are either wind barbs or the raw numbers for the wind speeds. Wind barbs
+                            49) sample_point_type (String) - Default='barbs'. The type of sample point. The options are either wind barbs or the raw numbers for the wind speeds. Wind barbs
                                 are the default since barbs incorporates wind direction.
 
-                            42) barb_quiver_linewidth (Float) - Default = 0.5. The width or thickness of the wind barb or quiver. 
+                            50) barb_quiver_linewidth (Float) - Default = 0.5. The width or thickness of the wind barb or quiver. 
 
-                            43) barb_fontsize (Integer) - Default = 6. Fontsize of the barb. 
+                            51) barb_fontsize (Integer) - Default = 6. Fontsize of the barb. 
 
-                            44) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            52) row1 (Integer) - Default=None. The starting row for the first subplot (the main subplot). The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot. 
 
-                            45) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+                            53) row2 (Integer) - Default=None. The ending row for the first subplot (the main subplot). The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot. 
 
-                            46) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            54) row3 (Integer) - Default=None. The starting row for the second subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.    
+
+                            55) row4 (Integer) - Default=None. The ending row for the second subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot. 
+
+                            56) row5 (Integer) - Default=None. The starting row for the third subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot. 
+
+                            57) row6 (Integer) - Default=None. The ending row for the third subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot. 
+
+                            58) col1 (Integer) - Default=None. The starting column for the first subplot (the main subplot). The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.
+
+                            59) col2 (Integer) - Default=None. The ending column for the first subplot (the main subplot). The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.
+
+                            60) col3 (Integer) - Default=None. The starting column for the second subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.
+
+                            61) col4 (Integer) - Default=None. The ending column for the second subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.
+
+                            62) col5 (Integer) - Default=None. The starting column for the third subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.
+
+                            63) col6 (Integer) - Default=None. The starting column for the third subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.
+                            
+                            64) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+                            
+                            65) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
     
         Return: Saves individual images to the RTMA subfolder.
     '''
@@ -8830,16 +9852,6 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=65, post_gree
         title_fontsize, subplot_title_fontsize = 9, 8
 
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap_pre = colormaps.red_flag_warning_criteria_colormap()
     cmap_post = colormaps.red_flag_warning_criteria_colormap_alt()
@@ -9360,51 +10372,89 @@ def plot_hot_dry_and_windy_areas(pre_greenup_temperature_threshold=65, post_gree
     file_functions.update_images(fig, path, gif_path, fname)
 
 
-def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_greenup_temperature_threshold=75, low_rh_threshold=25, high_wind_threshold=15, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, tick=9, aspect=30):
+def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_greenup_temperature_threshold=75, low_rh_threshold=25, high_wind_threshold=15, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, cwa=None, colorbar_pad=0.02, row1=None, row2=None, row3=None, row4=None, row5=None, row6=None, col1=None, col2=None, col3=None, col4=None, col5=None, col6=None, tick=9, aspect=30):
 
     r'''
-        This function plots the latest available RTMA Hot, Dry and Gusty Areas with their components.
-
-        Areas where the relative humidity <= low_minimum_rh_threshold AND wind gust >= wind_speed_threshold AND temperature >= pre_greenup_temperature_threshold/post_greenup_temperature_threshold are shaded in red. 
+        This function plots the latest available Real Time Mesoscale Analysis (RTMA) Dry and Windy Areas along with the components. 
     
         Required Arguments: None
 
-        Optional Arguments: 1) pre_greenup_temperature_threshold (Integer) - Default = 65F. Threshold for "hot" temperature based on the NWS Alaska Region RFW
-                               criteria for pre-greenup. Any values greater than or equal to this threshold are considered "hot". 
-        
-                            2) post_greenup_temperature_threshold (Integer) - Default = 75F. Threshold for "hot" temperature based on the NWS Alaska Region RFW
-                               criteria for post-greenup. Any values greater than or equal to this threshold are considered "hot".   
-        
-                            3) low_rh_threshold (Integer) - Default = 25%. The top bound of what is considered low relative humidity. 
+        Optional Arguments: 1) low_rh_threshold (Integer) - Default = 15%. Threshold for low relative humidity. Any value less than this threshold is considered "dry."
 
-                            4) high_wind_threshold (Integer) - Default = 15 MPH. The bottom bound of what is considered high wind gusts.         
+                            2) high_wind_threshold (Integer) - Default = 25 MPH. Threshold for high winds. Any value greater than this threshold is considered "windy."         
+        
+                            3) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
 
-                            5) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+                            4) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Negative values denote the western hemisphere and positive 
+                               values denote the eastern hemisphere. 
+
+                            5) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere. 
+
+                            6) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+                               The default setting is None. If set to None, the user must select a state or gacc_region. 
+                               This setting should be changed from None to an integer or float value if the user wishes to
+                               have a custom area selected. Positive values denote the northern hemisphere and negative 
+                               values denote the southern hemisphere.
+
+                            7) fig_x_length (Integer) - Default = None. The horizontal (x-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+
+                            8) fig_y_length (Integer) - Default = None. The vertical (y-direction) length of the entire figure. 
+                               The default setting is None since preset values are called from the settings module 
+                               for each state and/or gacc_region. This parameter is to be changed if the user selects
+                               a custom area with custom latitude and longitude coordinates. 
+    
+                            9) signature_x_position (Integer or Float) - Default = None. The x-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region. 
+                            
+                            10) signature_y_position (Integer or Float) - Default = None. The y-position of the signature 
+                               The signature is where the credit is given to the developer of FireWxPy and
+                               to the source at which the data is accessed from. The default setting is None. 
+                               This setting is only to be changed if the user makes a graphic with custom coordinates
+                               since preset values are called from the settings module for each state and/or gacc_region.
+                            
+                            11) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
                                "Fraction by which to multiply the size of the colorbar." 
                                This should only be changed if the user wishes to change the size of the colorbar. 
                                Preset values are called from the settings module for each state and/or gacc_region.
                                 
-                            6) title_fontsize (Integer) - Fontsize of the plot title. 
+                            12) title_fontsize (Integer) - Fontsize of the plot title. 
                                 Default setting is 12 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region. 
     
-                            7) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
+                            13) subplot_title_fontsize (Integer) - Fontsize of the subplot title. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.  
     
-                            8) signature_fontsize (Integer) - The fontsize of the signature. 
+                            14) signature_fontsize (Integer) - The fontsize of the signature. 
                                 Default setting is 10 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            9) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
+                            15) colorbar_fontsize (Integer) - The fontsize of the colorbar label. 
                                 Default setting is 8 point font for a custom plot. Default fontsizes
                                 are called from the settings module for each state and/or gacc_region.
     
-                            10) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
+                            16) show_rivers (Boolean) - If set to True, rivers will display. If set to False, county borders will not display. 
                                 Default setting is True. Users should change this value to False if they wish to hide rivers.
 
-                            11) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
+                            17) reference_system (String) - Default = 'States & Counties'. The georgraphical reference system with respect to the borders on the map. If the user
                                 wishes to use a reference system not on this list, please see items 17-23. 
                                 Reference Systems: 1) 'States & Counties'
                                                    2) 'States Only'
@@ -9421,105 +10471,158 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
                                                    13) 'GACC & Counties'
                                                    
     
-                            12) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                            18) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
 
-                            13) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                            19) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
 
-                            14) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                            20) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
 
-                            15) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                            21) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
 
-                            16) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                            22) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
 
-                            17) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                            23) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
 
-                            18) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                            24) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
 
-                            19) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
+                            25) state_border_linewidth (Integer) - Linewidth (thickness) of the state borders. Default setting is 2. 
 
-                            20) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
+                            26) county_border_linewidth (Integer) - Linewidth (thickness) of the county borders. Default setting is 1. 
 
-                            21) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
+                            27) gacc_border_linewidth (Integer) - Linewidth (thickness) of the GACC borders. Default setting is 2. 
 
-                            22) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
+                            28) psa_border_linewidth (Integer) - Linewidth (thickness) of the PSA borders. Default setting is 1. 
 
-                            23) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                            29) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                                 To change to a dashed line, users should set state_border_linestyle='--'. 
 
-                            24) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                            30) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                                 To change to a dashed line, users should set county_border_linestyle='--'. 
 
-                            25) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                            31) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
 
-                            26) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                            32) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            27) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                            33) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            28) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                            34) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            29) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                            35) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                                 To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-                            30) psa_color (String) - Default = 'black'. Color of the PSA borders.
+                            36) psa_color (String) - Default = 'black'. Color of the PSA borders.
 
-                            31) gacc_color (String) - Default = 'black'. Color of the GACC borders.
+                            37) gacc_color (String) - Default = 'black'. Color of the GACC borders.
 
-                            32) cwa_color (String) - Default = 'black'. Color of the CWA borders.
+                            38) cwa_color (String) - Default = 'black'. Color of the CWA borders.
 
-                            33) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
+                            39) fwz_color (String) - Default = 'black'. Color of the FWZ borders.
 
-                            34) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
+                            40) pz_color (String) - Default = 'black'. Color of the Public Zone borders.
 
-                            35) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
+                            41) show_sample_points (Boolean) - When this setting is set to True, the numeric values of
                                 sample points are displayed on the graphic. Default setting is True. If the user wants 
                                 to hide the sample point values and only have the contour shading, this value will need 
                                 to be changed to False. 
 
-                            36) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
+                            42) sample_point_fontsize (Integer) - The fontsize of the sample point numbers. 
                                 Default setting is a 10 point fontsize. 
 
-                            37) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
+                            43) alpha (Float) - A value between 0 and 1 that determines the transparency of the contour shading. 
                                 A value of 0 is completely transparent while a value of 1 is completely opaque. 
                                 Default setting is 0.5. 
 
-                            38) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
+                            44) data (Array) - Default = None. A data array if the user downloads the data array outside of the function using the data_access module. 
                                 If data=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change data=None to data=data for example. 
 
-                            39) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
+                            45) time (Array) - Default = None. A time array if the user downloads the data array outside of the function using the data_access module. 
                                 If time=None, the function will download the data inside of the function. If the user is generating several RTMA images in an automated script,
                                 it is recommended to download the data outside of the function and change time=None to time=time for example. 
 
-                            40) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
+                            46) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+                                If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
+                                or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
+                                acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
+                                changed to None. 
+
+                            47) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+                                If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
+                                None and the gacc_region variable must be set to one of the acceptable abbreviations. 
+
+                                Here is a list of acceptable gacc_region abbreviations:
+
+                                South Ops: 'OSCC' or 'oscc' or 'SOPS' or 'sops'
+                                North Ops: 'ONCC' or 'oncc' or 'NOPS' or 'nops'
+                                Great Basin: 'GBCC' or 'gbcc' or 'GB' or 'gb'
+                                Northern Rockies: 'NRCC' or 'nrcc' or 'NR' or 'nr'
+                                Rocky Mountain: 'RMCC' or 'rmcc' or 'RM' or 'rm'
+                                Southwest: 'SWCC' or 'swcc' or 'SW' or 'sw'
+                                Southern: 'SACC' or 'sacc' or 'SE' or 'se'
+                                Eastern: 'EACC' or 'eacc' or 'E' or 'e'
+                                Pacific Northwest: 'PNW' or 'pnw' or 'NWCC' or 'nwcc' or 'NW' or 'nw'
+                                Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
+
+                            48) colorbar_pad (Float) - Default = 0.02. How close or far on the figure the colorbar is to the edge of the map. The lower the number, the closer and
                                 the higher the number the farther away. See matplotlib documentation for more information. 
 
-                            41) sample_point_type (String) - Default='barbs'. The type of sample point. The options are either wind barbs or the raw numbers for the wind speeds. Wind barbs
+                            49) sample_point_type (String) - Default='barbs'. The type of sample point. The options are either wind barbs or the raw numbers for the wind speeds. Wind barbs
                                 are the default since barbs incorporates wind direction.
 
-                            42) barb_quiver_linewidth (Float) - Default = 0.5. The width or thickness of the wind barb or quiver. 
+                            50) barb_quiver_linewidth (Float) - Default = 0.5. The width or thickness of the wind barb or quiver. 
 
-                            43) barb_fontsize (Integer) - Default = 6. Fontsize of the barb. 
+                            51) barb_fontsize (Integer) - Default = 6. Fontsize of the barb. 
 
-                            44) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
+                            52) row1 (Integer) - Default=None. The starting row for the first subplot (the main subplot). The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot. 
 
-                            45) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+                            53) row2 (Integer) - Default=None. The ending row for the first subplot (the main subplot). The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot. 
 
-                            46) cwa (String) - Default = None. This is the 3 letter identifier for the NWS Alaska Region CWA. 
-                                               AER or aer: WFO Anchorage Eastern Domain
-                                               ALU or alu: WFO Anchorage Western Domain
-                                               AJK or ajk: WFO Juneau
-                                               AFG or afg: WFO Fairbanks
+                            54) row3 (Integer) - Default=None. The starting row for the second subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.    
+
+                            55) row4 (Integer) - Default=None. The ending row for the second subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot. 
+
+                            56) row5 (Integer) - Default=None. The starting row for the third subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot. 
+
+                            57) row6 (Integer) - Default=None. The ending row for the third subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot. 
+
+                            58) col1 (Integer) - Default=None. The starting column for the first subplot (the main subplot). The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.
+
+                            59) col2 (Integer) - Default=None. The ending column for the first subplot (the main subplot). The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.
+
+                            60) col3 (Integer) - Default=None. The starting column for the second subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.
+
+                            61) col4 (Integer) - Default=None. The ending column for the second subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.
+
+                            62) col5 (Integer) - Default=None. The starting column for the third subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.
+
+                            63) col6 (Integer) - Default=None. The starting column for the third subplot. The range is from 0 to 10. If set to default, the proper settings are imported from the
+                                settings module. Only edit this when making a custom plot.
+                            
+                            64) tick (Integer) - Default = 9. Fontsize of colorbar ticks. 
+                            
+                            65) aspect (Integer) - Default = 30. Ratio of the long dimension to the short dimension of the colorbar. See matplotlib docs for more information. 
     
         Return: Saves individual images to the RTMA subfolder.
     '''
@@ -9751,16 +10854,6 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
         title_fontsize, subplot_title_fontsize = 9, 8
 
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap_pre = colormaps.red_flag_warning_criteria_colormap()
     cmap_post = colormaps.red_flag_warning_criteria_colormap_alt()
