@@ -27,7 +27,16 @@ from firewxpy.data_access import RTMA_Hawaii
 
 mpl.rcParams['font.weight'] = 'bold'
 
-mpl.rcParams['font.weight'] = 'bold'
+PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
+
+GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
+
+CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
+
+FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
+
+PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
+
 
 def plot_relative_humidity(color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, colorbar_pad=0.02, aspect=30, tick=9):
 
@@ -278,16 +287,6 @@ def plot_relative_humidity(color_table_shrink=1, title_fontsize=12, subplot_titl
     title_fontsize, subplot_title_fontsize = 9, 8
     
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.relative_humidity_colormap()
 
@@ -721,16 +720,6 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=45, high_rh_threshold=8
     title_fontsize, subplot_title_fontsize = 9, 8
     
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap_low = colormaps.low_relative_humidity_colormap()
     cmap_high = colormaps.excellent_recovery_colormap()
@@ -1170,16 +1159,6 @@ def plot_24_hour_relative_humidity_comparison(color_table_shrink=1, title_fontsi
     title_fontsize, subplot_title_fontsize = 9, 8
 
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.relative_humidity_change_colormap()
 
@@ -1631,16 +1610,6 @@ def plot_temperature(colorbar_fontsize=8, show_rivers=True, reference_system='St
 
     title_fontsize, subplot_title_fontsize = 9, 8
 
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
-
     cmap = colormaps.temperature_colormap()
 
     try:
@@ -2035,16 +2004,6 @@ def plot_temperature_advection(color_table_shrink=1, title_fontsize=12, subplot_
     mpl.rcParams['ytick.labelsize'] = tick
 
     title_fontsize, subplot_title_fontsize = 9, 8
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.temperature_change_colormap()
 
@@ -2449,17 +2408,6 @@ def plot_dew_point_advection(color_table_shrink=1, title_fontsize=12, subplot_ti
     mpl.rcParams['xtick.labelsize'] = tick
     mpl.rcParams['ytick.labelsize'] = tick
 
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
-
     cmap = colormaps.dew_point_change_colormap()
 
     try:
@@ -2859,17 +2807,6 @@ def plot_relative_humidity_advection(color_table_shrink=1, title_fontsize=12, su
 
     mpl.rcParams['xtick.labelsize'] = tick
     mpl.rcParams['ytick.labelsize'] = tick
-
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.relative_humidity_change_colormap()
 
@@ -3279,18 +3216,6 @@ def plot_frost_freeze(color_table_shrink=1, title_fontsize=12, subplot_title_fon
     mpl.rcParams['xtick.labelsize'] = tick
     mpl.rcParams['ytick.labelsize'] = tick
 
-
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
-
     cmap = colormaps.cool_temperatures_colormap()
 
     try:
@@ -3685,16 +3610,6 @@ def plot_extreme_heat(temperature_threshold=85, color_table_shrink=1, title_font
     mpl.rcParams['ytick.labelsize'] = tick
 
     title_fontsize, subplot_title_fontsize = 9, 8
-    
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.cool_temperatures_colormap()
 
@@ -4097,16 +4012,6 @@ def plot_24_hour_temperature_comparison(color_table_shrink=1, title_fontsize=12,
     title_fontsize, subplot_title_fontsize = 9, 8
 
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.temperature_change_colormap()
 
@@ -4531,17 +4436,6 @@ def plot_dew_point(color_table_shrink=1, title_fontsize=12, subplot_title_fontsi
     mpl.rcParams['xtick.labelsize'] = tick
     mpl.rcParams['ytick.labelsize'] = tick
 
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
-
     cmap = colormaps.dew_point_colormap()
 
     try:
@@ -4940,16 +4834,6 @@ def plot_24_hour_dew_point_comparison(color_table_shrink=1, title_fontsize=12, s
 
     
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.dew_point_change_colormap()
 
@@ -5375,17 +5259,6 @@ def plot_total_cloud_cover(color_table_shrink=1, title_fontsize=12, subplot_titl
     mpl.rcParams['xtick.labelsize'] = tick
     mpl.rcParams['ytick.labelsize'] = tick
 
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
-
     cmap = colormaps.cloud_cover_colormap()
 
     try:
@@ -5782,16 +5655,6 @@ def plot_24_hour_total_cloud_cover_comparison(color_table_shrink=1, title_fontsi
 
     
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.cloud_cover_change_colormap()
 
@@ -6205,17 +6068,6 @@ def plot_wind_speed(color_table_shrink=1, title_fontsize=12, subplot_title_fonts
     mpl.rcParams['xtick.labelsize'] = tick
     mpl.rcParams['ytick.labelsize'] = tick
 
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
-
     cmap = colormaps.wind_speed_colormap()
 
     try:
@@ -6615,16 +6467,6 @@ def plot_24_hour_wind_speed_comparison(color_table_shrink=1, title_fontsize=12, 
 
     
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.wind_speed_change_colormap()
 
@@ -7063,17 +6905,6 @@ def plot_wind_speed_and_direction(color_table_shrink=1, title_fontsize=12, subpl
     mpl.rcParams['xtick.labelsize'] = tick
     mpl.rcParams['ytick.labelsize'] = tick
 
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
-
     cmap = colormaps.wind_speed_colormap()
 
     try:
@@ -7508,16 +7339,6 @@ def plot_24_hour_wind_speed_and_direction_comparison(color_table_shrink=1, title
 
     
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.wind_speed_change_colormap()
 
@@ -8010,16 +7831,6 @@ def plot_dry_and_windy_areas(low_rh_threshold=45, high_wind_threshold=20, color_
 
 
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.red_flag_warning_criteria_colormap()
 
@@ -8626,16 +8437,6 @@ def plot_dry_and_gusty_areas(low_rh_threshold=45, high_wind_threshold=20, color_
 
     
     local_time, utc_time = standard.plot_creation_time()
-
-    PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-    
-    GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-    CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-    FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-    PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
     cmap = colormaps.red_flag_warning_criteria_colormap()
 
