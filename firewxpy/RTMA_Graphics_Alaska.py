@@ -28,8 +28,6 @@ from firewxpy.data_access import RTMA_Alaska
 
 mpl.rcParams['font.weight'] = 'bold'
 
-warnings.filterwarnings('ignore')
-
 PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
 
 GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
