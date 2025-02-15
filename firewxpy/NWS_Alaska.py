@@ -47,6 +47,16 @@ from metpy.units import units
 
 mpl.rcParams['font.weight'] = 'bold'
 
+PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
+
+GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
+
+CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
+
+FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
+
+PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
+
 class relative_humidity:
 
     '''
@@ -371,16 +381,6 @@ class relative_humidity:
                     decimate = 1600
             else:
                 decimate = decimate
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
             
         if file_path == None:
 
@@ -504,7 +504,7 @@ class relative_humidity:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -575,7 +575,7 @@ class relative_humidity:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -647,7 +647,7 @@ class relative_humidity:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -719,7 +719,7 @@ class relative_humidity:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -791,7 +791,7 @@ class relative_humidity:
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -863,7 +863,7 @@ class relative_humidity:
 
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -937,7 +937,7 @@ class relative_humidity:
 
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -1326,16 +1326,6 @@ class relative_humidity:
                     decimate = 1600
             else:
                 decimate = decimate
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
             
         if file_path == None:
 
@@ -1459,7 +1449,7 @@ class relative_humidity:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -1531,7 +1521,7 @@ class relative_humidity:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -1603,7 +1593,7 @@ class relative_humidity:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -1675,7 +1665,7 @@ class relative_humidity:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -1747,7 +1737,7 @@ class relative_humidity:
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -1819,7 +1809,7 @@ class relative_humidity:
 
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -1893,7 +1883,7 @@ class relative_humidity:
 
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -2273,16 +2263,6 @@ class relative_humidity:
                     decimate = 1600
             else:
                 decimate = decimate
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
             
         if file_path == None:
 
@@ -2406,7 +2386,7 @@ class relative_humidity:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -2479,7 +2459,7 @@ class relative_humidity:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -2551,7 +2531,7 @@ class relative_humidity:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -2623,7 +2603,7 @@ class relative_humidity:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -2694,7 +2674,7 @@ class relative_humidity:
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -2765,7 +2745,7 @@ class relative_humidity:
 
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -2838,7 +2818,7 @@ class relative_humidity:
 
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -3217,16 +3197,6 @@ class relative_humidity:
                     decimate = 1600
             else:
                 decimate = decimate
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
             
         if file_path == None:
 
@@ -3355,7 +3325,7 @@ class relative_humidity:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -3426,7 +3396,7 @@ class relative_humidity:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -3498,7 +3468,7 @@ class relative_humidity:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -3570,7 +3540,7 @@ class relative_humidity:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -3642,7 +3612,7 @@ class relative_humidity:
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -3716,7 +3686,7 @@ class relative_humidity:
 
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -4100,16 +4070,6 @@ class relative_humidity:
                     decimate = 1800
             else:
                 decimate = decimate
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
             
         if file_path == None:
 
@@ -4233,7 +4193,7 @@ class relative_humidity:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -4301,7 +4261,7 @@ class relative_humidity:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -4369,7 +4329,7 @@ class relative_humidity:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -4438,7 +4398,7 @@ class relative_humidity:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -4506,7 +4466,7 @@ class relative_humidity:
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -4575,7 +4535,7 @@ class relative_humidity:
 
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -4646,7 +4606,7 @@ class relative_humidity:
 
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -5023,16 +4983,6 @@ class relative_humidity:
                     decimate = 1600
             else:
                 decimate = decimate
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
             
         if file_path == None:
 
@@ -5156,7 +5106,7 @@ class relative_humidity:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -5227,7 +5177,7 @@ class relative_humidity:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -5298,7 +5248,7 @@ class relative_humidity:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -5369,7 +5319,7 @@ class relative_humidity:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -5440,7 +5390,7 @@ class relative_humidity:
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -5511,7 +5461,7 @@ class relative_humidity:
 
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -5585,7 +5535,7 @@ class relative_humidity:
 
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -5966,17 +5916,6 @@ class relative_humidity:
                     decimate = 1600
             else:
                 decimate = decimate
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
-
             
         if file_path == None:
 
@@ -6106,7 +6045,7 @@ class relative_humidity:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -6177,7 +6116,7 @@ class relative_humidity:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -6248,7 +6187,7 @@ class relative_humidity:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -6319,7 +6258,7 @@ class relative_humidity:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -6391,7 +6330,7 @@ class relative_humidity:
 
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -6464,7 +6403,7 @@ class relative_humidity:
 
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -6893,17 +6832,6 @@ class temperature:
         else:
             decimate = decimate
 
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
-
         directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if file_path == None:
@@ -7044,7 +6972,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -7124,7 +7052,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -7204,7 +7132,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -7283,7 +7211,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -7361,7 +7289,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -7439,7 +7367,7 @@ class temperature:
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -7519,7 +7447,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -7936,16 +7864,6 @@ class temperature:
             decimate = scaling.get_NDFD_decimation_by_state(state)
         else:
             decimate = decimate
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
 
@@ -8084,7 +8002,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -8164,7 +8082,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -8243,7 +8161,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax3= fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -8323,7 +8241,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -8402,7 +8320,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -8481,7 +8399,7 @@ class temperature:
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -8562,7 +8480,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -8965,17 +8883,6 @@ class temperature:
         else:
             decimate = decimate
 
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
-
         directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if file_path == None:
@@ -9111,7 +9018,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -9182,7 +9089,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -9253,7 +9160,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -9324,7 +9231,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -9395,7 +9302,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -9466,7 +9373,7 @@ class temperature:
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -9539,7 +9446,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -9961,16 +9868,6 @@ class temperature:
                 decimate = 1600
         else:
             decimate = decimate
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
 
@@ -10114,7 +10011,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -10181,7 +10078,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -10248,7 +10145,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -10315,7 +10212,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -10382,7 +10279,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -10449,7 +10346,7 @@ class temperature:
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -10518,7 +10415,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -10935,16 +10832,6 @@ class temperature:
                 decimate = 1600
         else:
             decimate = decimate
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
 
@@ -11088,7 +10975,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -11155,7 +11042,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -11222,7 +11109,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -11289,7 +11176,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -11356,7 +11243,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -11423,7 +11310,7 @@ class temperature:
     
         fig6 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig6.set_facecolor('aliceblue')
-        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig6.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax6 = fig6.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -11492,7 +11379,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -11870,17 +11757,6 @@ class temperature:
         else:
             decimate = decimate
 
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
-
         directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if file_path == None:
@@ -12032,7 +11908,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -12091,7 +11967,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -12150,7 +12026,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -12209,7 +12085,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -12268,7 +12144,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -12329,7 +12205,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -12697,17 +12573,6 @@ class temperature:
         else:
             decimate = decimate
 
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
-
         directory_name = settings.check_NDFD_directory_name(directory_name)
     
         if file_path == None:
@@ -12859,7 +12724,7 @@ class temperature:
     
         fig1 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig1.set_facecolor('aliceblue')
-        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig1.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax1 = fig1.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -12918,7 +12783,7 @@ class temperature:
         
         fig2 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig2.set_facecolor('aliceblue')
-        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig2.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax2 = fig2.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -12977,7 +12842,7 @@ class temperature:
         
         fig3 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig3.set_facecolor('aliceblue')
-        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig3.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
         ax3 = fig3.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -13036,7 +12901,7 @@ class temperature:
         
         fig4 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig4.set_facecolor('aliceblue')
-        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig4.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
     
         ax4 = fig4.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -13095,7 +12960,7 @@ class temperature:
     
         fig5 = plt.figure(figsize=(fig_x_length, fig_y_length))
         fig5.set_facecolor('aliceblue')
-        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+        fig5.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
         
         ax5 = fig5.add_subplot(1, 1, 1, projection=mapcrs)
         if cwa == None:
@@ -13156,7 +13021,7 @@ class temperature:
     
             fig7 = plt.figure(figsize=(fig_x_length, fig_y_length))
             fig7.set_facecolor('aliceblue')
-            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz '+utc_time.strftime('%Y')+'\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
+            fig7.text(signature_x_position, signature_y_position, 'Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: '+reference_system+'\nData Source: NOAA/NWS/NDFD\nImage Created: ' + utc_time.strftime('%a %m/%d/%Y %H:%MZ'), fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=10)
 
             ax7 = fig7.add_subplot(1, 1, 1, projection=mapcrs)
             if cwa == None:
@@ -13248,9 +13113,9 @@ class hot_dry_and_windy:
                             2) post_greenup_temperature_threshold (Integer) - Default = 75F. Threshold for "hot" temperature based on the NWS Alaska Region RFW
                                criteria for post-greenup. Any values greater than or equal to this threshold are considered "hot".         
         
-                            3) low_minimum_rh_threshold (Integer) - Default = 15%. Threshold for low relative humidity. Any values less or equal to this threshold are considered "dry."
+                            3) low_rh_threshold (Integer) - Default = 15%. Threshold for low relative humidity. Any values less or equal to this threshold are considered "dry."
 
-                            4) wind_speed_threshold (Integer) - Default = 25 MPH. Threshold for high winds (sustained winds). Any values greater than or equal to this threshold are considered "windy."  
+                            4) high_wind_threshold (Integer) - Default = 25 MPH. Threshold for high winds (sustained winds). Any values greater than or equal to this threshold are considered "windy."  
                             
                             5) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
@@ -13537,16 +13402,6 @@ class hot_dry_and_windy:
 
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
     
@@ -14031,7 +13886,7 @@ class hot_dry_and_windy:
                 signature_x_position = 0.13
                 signature_y_position = 0.4
         
-            fig.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz "+utc_time.strftime('%Y')+"\nReference System: "+reference_system+"\nData Source: NOAA/NWS/NDFD\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+            fig.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NWS/NDFD\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
             fig.suptitle(f"National Weather Service Forecast: Hot & Dry & Windy Areas\nValid Time: {times_short_local[i]} ({short_times[i]})", fontsize=16, fontweight='bold', y=0.7)
         
@@ -14147,9 +14002,9 @@ class hot_dry_and_windy:
                             2) post_greenup_temperature_threshold (Integer) - Default = 75F. Threshold for "hot" temperature based on the NWS Alaska Region RFW
                                criteria for post-greenup. Any values greater than or equal to this threshold are considered "hot".         
         
-                            3) low_minimum_rh_threshold (Integer) - Default = 15%. Threshold for low relative humidity. Any values less or equal to this threshold are considered "dry."
+                            3) low_rh_threshold (Integer) - Default = 15%. Threshold for low relative humidity. Any values less or equal to this threshold are considered "dry."
 
-                            4) wind_speed_threshold (Integer) - Default = 25 MPH. Threshold for high winds (wind gust). Any values greater than or equal to this threshold are considered "gusty."  
+                            4) high_wind_threshold (Integer) - Default = 25 MPH. Threshold for high winds (wind gust). Any values greater than or equal to this threshold are considered "gusty."  
                             
                             5) color_table_shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
                                This is a feature of matplotlib, as per their definition, the shrink is:
@@ -14436,16 +14291,6 @@ class hot_dry_and_windy:
 
         mpl.rcParams['xtick.labelsize'] = tick
         mpl.rcParams['ytick.labelsize'] = tick
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
     
@@ -14930,7 +14775,7 @@ class hot_dry_and_windy:
                 signature_x_position = 0.13
                 signature_y_position = 0.4
         
-            fig.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz "+utc_time.strftime('%Y')+"\nReference System: "+reference_system+"\nData Source: NOAA/NWS/NDFD\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
+            fig.text(signature_x_position, signature_y_position, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nReference System: "+reference_system+"\nData Source: NOAA/NWS/NDFD\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=signature_fontsize, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)
 
             fig.suptitle(f"National Weather Service Forecast: Hot & Dry & Gusty Areas\nValid Time: {times_short_local[i]} ({short_times[i]})", fontsize=16, fontweight='bold', y=0.7)
         
