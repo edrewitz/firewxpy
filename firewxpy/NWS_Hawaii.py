@@ -48,6 +48,16 @@ from metpy.units import units
 
 mpl.rcParams['font.weight'] = 'bold'
 
+PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
+
+GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
+
+CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
+
+FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
+
+PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
+
 class relative_humidity:
 
     '''
@@ -370,16 +380,6 @@ class relative_humidity:
         mpl.rcParams['ytick.labelsize'] = tick
 
         western_bound, eastern_bound, southern_bound, northern_bound, decimate = dims.hawaiian_islands_coords(island)
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
@@ -929,7 +929,7 @@ class relative_humidity:
             figs.append(fig5)
             figs.append(fig6)
     
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Poor Overnight Recovery', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Poor Overnight Recovery', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Poor Overnight Recovery')
     
     
@@ -1228,16 +1228,6 @@ class relative_humidity:
 
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
@@ -1765,7 +1755,7 @@ class relative_humidity:
             figs.append(fig5)
             figs.append(fig6)
     
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Excellent Overnight Recovery', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Excellent Overnight Recovery', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Excellent Overnight Recovery')
     
     
@@ -2053,16 +2043,6 @@ class relative_humidity:
         
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
@@ -2591,7 +2571,7 @@ class relative_humidity:
             figs.append(fig5)
             figs.append(fig6)
     
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Maximum RH', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Maximum RH', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Maximum RH')
     
     
@@ -2881,17 +2861,7 @@ class relative_humidity:
     
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
         
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
-
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
     
@@ -3365,7 +3335,7 @@ class relative_humidity:
             figs.append(fig4)
             figs.append(fig5)
 
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Maximum RH Trend', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Maximum RH Trend', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Maximum RH Trend')
     
         
@@ -3673,16 +3643,6 @@ class relative_humidity:
     
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
@@ -4663,7 +4623,7 @@ class relative_humidity:
                 figs.append(fig5)
                 figs.append(fig6)
     
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Low Minimum RH', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Low Minimum RH', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Low Minimum RH')
     
     
@@ -4943,17 +4903,6 @@ class relative_humidity:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
 
         western_bound, eastern_bound, southern_bound, northern_bound, decimate = dims.hawaiian_islands_coords(island)
-    
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
@@ -5936,7 +5885,7 @@ class relative_humidity:
                 figs.append(fig5)
                 figs.append(fig6)
     
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Minimum RH', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Minimum RH', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Minimum RH')
     
     
@@ -6227,16 +6176,6 @@ class relative_humidity:
     
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
@@ -6740,7 +6679,7 @@ class relative_humidity:
             figs.append(fig4)
             figs.append(fig5)
     
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Minimum RH Trend', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Minimum RH Trend', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Minimum RH Trend')
 
 class temperature: 
@@ -7089,17 +7028,6 @@ class temperature:
         directory_name, western_bound, eastern_bound, southern_bound, northern_bound, fig_x_length, fig_y_length, signature_x_position, signature_y_position, title_fontsize, subplot_title_fontsize, signature_fontsize, sample_point_fontsize, colorbar_fontsize, color_table_shrink, legend_fontsize, mapcrs, datacrs, title_x_position, aspect, tick = settings.get_state_data_and_coords(state, 'nws', False)
 
         western_bound, eastern_bound, southern_bound, northern_bound, decimate = dims.hawaiian_islands_coords(island)
-    
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
@@ -7697,7 +7625,7 @@ class temperature:
             figs.append(fig5)
             figs.append(fig6)
     
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Extreme Heat', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Extreme Heat', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Extreme Heat')
 
     def plot_extremely_warm_low_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=80, temp_scale_warm_stop=100, temp_scale_cool_start=80, temp_scale_cool_stop=100, temp_scale_step=1, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array=None, count_short=None, count_extended=None, island=None, aspect=30, tick=9): 
@@ -8029,17 +7957,6 @@ class temperature:
         mpl.rcParams['ytick.labelsize'] = tick
 
         western_bound, eastern_bound, southern_bound, northern_bound, decimate = dims.hawaiian_islands_coords(island)
-    
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
@@ -8636,7 +8553,7 @@ class temperature:
             figs.append(fig5)
             figs.append(fig6)
     
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Warm Min T', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Warm Min T', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Warm Min T')
     
     def plot_frost_freeze_forecast(temperature_bottom_bound=-10, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array=None, count_short=None, count_extended=None, island=None, aspect=30, tick=9): 
@@ -8943,17 +8860,6 @@ class temperature:
         mpl.rcParams['ytick.labelsize'] = tick
 
         western_bound, eastern_bound, southern_bound, northern_bound, decimate = dims.hawaiian_islands_coords(island)
-    
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
@@ -9491,7 +9397,7 @@ class temperature:
             figs.append(fig5)
             figs.append(fig6)
     
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Frost Freeze', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Frost Freeze', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Frost Freeze')
     
     
@@ -9824,17 +9730,6 @@ class temperature:
         mpl.rcParams['ytick.labelsize'] = tick
 
         western_bound, eastern_bound, southern_bound, northern_bound, decimate = dims.hawaiian_islands_coords(island)
-    
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
@@ -10348,7 +10243,7 @@ class temperature:
             figs.append(fig5)
             figs.append(fig6)
     
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Max T', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Max T', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Max T')
     
     def plot_minimum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=40, temp_scale_warm_stop=70, temp_scale_cool_start=40, temp_scale_cool_stop=70, temp_scale_step=1, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, data_array=None, count_short=None, count_extended=None, island=None, aspect=30, tick=9): 
@@ -10681,17 +10576,6 @@ class temperature:
         mpl.rcParams['ytick.labelsize'] = tick
 
         western_bound, eastern_bound, southern_bound, northern_bound, decimate = dims.hawaiian_islands_coords(island)
-    
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
@@ -11205,7 +11089,7 @@ class temperature:
             figs.append(fig5)
             figs.append(fig6)
     
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Min T', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Min T', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Min T')
     
     
@@ -11502,17 +11386,6 @@ class temperature:
         mpl.rcParams['ytick.labelsize'] = tick
 
         western_bound, eastern_bound, southern_bound, northern_bound, decimate = dims.hawaiian_islands_coords(island)
-    
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
@@ -11924,7 +11797,7 @@ class temperature:
             figs.append(fig4)
             figs.append(fig5)
     
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Min T Trend', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Min T Trend', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Min T Trend')
     
     
@@ -12220,17 +12093,6 @@ class temperature:
         mpl.rcParams['ytick.labelsize'] = tick
 
         western_bound, eastern_bound, southern_bound, northern_bound, decimate = dims.hawaiian_islands_coords(island)
-    
-    
-        PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", psa_color, 'psa')
-        
-        GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", gacc_color, 'gacc')
-
-        CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", cwa_color, 'cwa')
-
-        FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", fwz_color, 'fwz')
-
-        PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", pz_color, 'pz')
 
         directory_name = settings.check_NDFD_directory_name(directory_name)
         ds = data_array
@@ -12639,9 +12501,7 @@ class temperature:
             figs.append(fig4)
             figs.append(fig5)
     
-        path, gif_path = file_functions.check_file_paths_hawaii(state, island, 'NWS Max T Trend', reference_system)
+        path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Max T Trend', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Max T Trend')    
-
-
 
             
