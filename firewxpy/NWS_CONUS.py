@@ -48,9 +48,6 @@ from metpy.units import units
 
 mpl.rcParams['font.weight'] = 'bold'
 
-mpl.rcParams['font.weight'] = 'bold'
-
-
 PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
 
 GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
