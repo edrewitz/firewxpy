@@ -3700,18 +3700,119 @@ class NDFD_CONUS_Hawaii:
     
         try:
     
-            grbs, ds, count_short, count_extended = get_NWS_NDFD_7_Day_grid_data(directory_name, parameter)
+            if parameter == 'ds.maxrh.bin':
+                short_term_fname = 'ds.maxrh_short.bin'
+                extended_fname = 'ds.maxrh_extended.bin'
+        
+            if parameter == 'ds.minrh.bin':
+                short_term_fname = 'ds.minrh_short.bin'
+                extended_fname = 'ds.minrh_extended.bin'
+        
+            if parameter == 'ds.maxt.bin':
+                short_term_fname = 'ds.maxt_short.bin'
+                extended_fname = 'ds.maxt_extended.bin'
+        
+            if parameter == 'ds.mint.bin':
+                short_term_fname = 'ds.mint_short.bin'
+                extended_fname = 'ds.mint_extended.bin'
     
-            print("Downloaded data successfully!")
+            if os.path.exists(short_term_fname):
+                os.remove(short_term_fname)
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
+                os.rename(parameter, short_term_fname)
+            else:
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
+                os.rename(parameter, short_term_fname)
+            
+            if os.path.exists(extended_fname):
+                os.remove(extended_fname)
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+                os.rename(parameter, extended_fname)
+            else:
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+                os.rename(parameter, extended_fname)
+    
+            with open(parameter, 'wb') as myfile, open(short_term_fname, 'rb') as file1, open(extended_fname, 'rb') as file2:
+                myfile.write(file1.read())
+                myfile.write(file2.read())
+    
+            grbs_short = pygrib.open(short_term_fname)
+            grbs_short.seek(0)
+            count_short = 0
+            for grb in grbs_short:
+                count_short = count_short + 1
+    
+            grbs = pygrib.open(parameter)
+            grbs.seek(0)
+            count = 0
+            for grb in grbs:
+                count = count + 1
+            count_extended = count - count_short
+            ds = xr.load_dataset(parameter, engine='cfgrib')
+            ds = ds.metpy.parse_cf()            
+            
+            print("Retrieved NDFD grids.")
+            
         except Exception as a:
     
             standard.idle()
     
             print("Trying again to download data...")
     
-            grbs, ds, count_short, count_extended = get_NWS_NDFD_7_Day_grid_data(directory_name, parameter)
+            if parameter == 'ds.maxrh.bin':
+                short_term_fname = 'ds.maxrh_short.bin'
+                extended_fname = 'ds.maxrh_extended.bin'
+        
+            if parameter == 'ds.minrh.bin':
+                short_term_fname = 'ds.minrh_short.bin'
+                extended_fname = 'ds.minrh_extended.bin'
+        
+            if parameter == 'ds.maxt.bin':
+                short_term_fname = 'ds.maxt_short.bin'
+                extended_fname = 'ds.maxt_extended.bin'
+        
+            if parameter == 'ds.mint.bin':
+                short_term_fname = 'ds.mint_short.bin'
+                extended_fname = 'ds.mint_extended.bin'
     
-            print("Downloaded data successfully!")
+            if os.path.exists(short_term_fname):
+                os.remove(short_term_fname)
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
+                os.rename(parameter, short_term_fname)
+            else:
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
+                os.rename(parameter, short_term_fname)
+            
+            if os.path.exists(extended_fname):
+                os.remove(extended_fname)
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+                os.rename(parameter, extended_fname)
+            else:
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+                os.rename(parameter, extended_fname)
+    
+            with open(parameter, 'wb') as myfile, open(short_term_fname, 'rb') as file1, open(extended_fname, 'rb') as file2:
+                myfile.write(file1.read())
+                myfile.write(file2.read())
+
+
+            grbs_short = pygrib.open(short_term_fname)
+            grbs_short.seek(0)
+            count_short = 0
+            for grb in grbs_short:
+                count_short = count_short + 1
+
+            grbs = pygrib.open(parameter)
+            grbs.seek(0)
+            count = 0
+            for grb in grbs:
+                count = count + 1
+            count_extended = count - count_short
+            ds = xr.load_dataset(parameter, engine='cfgrib')
+            ds = ds.metpy.parse_cf()            
+            
+            print("Retrieved NDFD grids.")
+
     
         return grbs, ds, count_short, count_extended
 
