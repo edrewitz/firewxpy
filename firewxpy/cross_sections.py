@@ -6,14 +6,14 @@ import cartopy.feature as cfeature
 import metpy.plots as mpplots
 import metpy.calc as mpcalc
 import numpy as np
-import parsers as parsers
-import geometry as geometry
-import colormaps as colormaps
+import firewxpy.parsers as parsers
+import firewxpy.geometry as geometry
+import firewxpy.colormaps as colormaps
 import pandas as pd
 import matplotlib.gridspec as gridspec
-import settings as settings
-import standard as standard
-import dims as dims
+import firewxpy.settings as settings
+import firewxpy.standard as standard
+import firewxpy.dims as dims
 import os
 import time as tim
 import matplotlib.dates as md
@@ -22,10 +22,10 @@ from matplotlib.patheffects import withStroke
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
 from dateutil import tz
-from calc import scaling, Thermodynamics, unit_conversion
-from utilities import file_functions
+from firewxpy.calc import scaling, Thermodynamics, unit_conversion
+from firewxpy.utilities import file_functions
 from metpy.units import units
-from data_access import model_data, station_coords
+from firewxpy.data_access import model_data, station_coords
 
 mpl.rcParams['font.weight'] = 'bold'
 local_time, utc_time = standard.plot_creation_time()
