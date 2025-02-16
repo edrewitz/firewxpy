@@ -2,6 +2,11 @@ import matplotlib.colors
 import warnings
 warnings.filterwarnings('ignore')
 
+def cross_section_wind_speed():
+    cross_section_wind_speed = matplotlib.colors.LinearSegmentedColormap.from_list("cs wind speed", ["darkblue", "blue", "cyan", "lawngreen", "yellowgreen", "orange", "red", "darkred", "violet", "dimgrey"])
+
+    return cross_section_wind_speed    
+
 def precipitation_colormap():
     precipitation_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("precipitation", ["magenta", "blue", "cyan", "lime", "darkgreen", "gold", "orange", "red", "darkred", "maroon", "dimgrey"])
 
@@ -36,6 +41,11 @@ def temperature_change_colormap():
     temperature_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("temperature change", ["darkblue", "blue", "deepskyblue", "white", "white", "orangered", "red", "darkred"])
 
     return temperature_change_colormap
+
+def vertical_velocity_colormap():
+    vertical_velocity_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("vv", ["darkblue", "blue", "deepskyblue", "white", "orangered", "red", "darkred"])
+
+    return vertical_velocity_colormap
 
 def dew_point_colormap():
     dew_point_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("dew point", ["darkorange", "orange", "darkkhaki", "forestgreen", "lime", "aqua"])
