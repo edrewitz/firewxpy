@@ -25,6 +25,8 @@ from firewxpy.forecast_models import relative_humidity as model_relative_humidit
 from firewxpy.forecast_models import critical_firewx_conditions as model_critical_firewx_conditions
 from firewxpy.forecast_models import precipitation as model_precipitation
 
+from firewxpy.cross_sections import time_cross_sections
+
 from firewxpy.observations import graphical_daily_summary
 
 from firewxpy.soundings import plot_observed_sounding, plot_observed_sounding_custom_date_time, plot_forecast_soundings
