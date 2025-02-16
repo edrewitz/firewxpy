@@ -458,7 +458,7 @@ class time_cross_sections:
 
 
     def plot_lower_atmosphere_vertical_velocity(model, station_id, save_name, longitude=None, latitude=None, data=False, ds=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
-        
+    
         r'''
             This function plots the vertical profile forecasts for a given point and shows the transport wind and precipitation forecast in the vicinity of the point. 
     
@@ -788,11 +788,11 @@ class time_cross_sections:
         ax1.xaxis.set_major_formatter(md.DateFormatter('%d/%HZ'))
         ax1.set_xticks(time)
                             
-        ax1.contourf(time_grid, pressure_grid, vv[0:29, :], levels=np.arange(-0.5, 0.51, 0.01), cmap=cmap, alpha=0.25, extend='both')
-        c10 = ax1.contour(time_grid, pressure_grid, vv[0:29, :], levels=np.arange(-0.5, 0.6, 0.1), colors='black', zorder=2, linewidths=1)
-        ax1.clabel(c10, levels=np.arange(-0.5, 0.6, 0.1), inline=True, fontsize=8, rightside_up=True)
-        c5 = ax1.contour(time_grid, pressure_grid, vv[0:29, :], levels=np.arange(-0.45, 0.55, 0.1), colors='black', zorder=2, linewidths=1, linestyles='--')
-        ax1.clabel(c5, levels=np.arange(-0.45, 0.55, 0.1), inline=True, fontsize=8, rightside_up=True)
+        ax1.contourf(time_grid, pressure_grid, vv[0:29, :], levels=np.arange(-0.75, 0.76, 0.01), cmap=cmap, alpha=0.25, extend='both')
+        c10 = ax1.contour(time_grid, pressure_grid, vv[0:29, :], levels=np.arange(-0.8, 0.9, 0.1), colors='black', zorder=2, linewidths=1)
+        ax1.clabel(c10, levels=np.arange(-0.8, 0.9, 0.1), inline=True, fontsize=8, rightside_up=True)
+        c5 = ax1.contour(time_grid, pressure_grid, vv[0:29, :], levels=np.arange(-0.75, 0.85, 0.1), colors='black', zorder=2, linewidths=1, linestyles='--')
+        ax1.clabel(c5, levels=np.arange(-0.75, 0.85, 0.1), inline=True, fontsize=8, rightside_up=True)
         if station_id != 'Custom' or station_id != 'custom':
             plt.title(f"{model.upper()} TIME VS. PRESSURE CROSS-SECTION: VERTICAL VELOCITY [Pa/s]\nSTATION: {station_id.upper()} - LAT: {str(lat)}{lat_symbol} | LON: {str(lon)}{lon_symbol}", fontsize=10, fontweight='bold', loc='left')
         else:
