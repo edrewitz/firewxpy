@@ -27,6 +27,8 @@ from firewxpy.utilities import file_functions
 from metpy.units import units
 from firewxpy.data_access import model_data, station_coords
 
+mpl.rcParams['xtick.labelsize'] = 6
+mpl.rcParams['ytick.labelsize'] = 6
 mpl.rcParams['font.weight'] = 'bold'
 local_time, utc_time = standard.plot_creation_time()
 
@@ -177,9 +179,6 @@ class time_cross_sections:
         
         '''
     
-        mpl.rcParams['xtick.labelsize'] = 6
-        mpl.rcParams['ytick.labelsize'] = 6
-        mpl.rcParams['font.weight'] = 'bold'
     
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -579,10 +578,6 @@ class time_cross_sections:
         
         '''
     
-        mpl.rcParams['xtick.labelsize'] = 6
-        mpl.rcParams['ytick.labelsize'] = 6
-        mpl.rcParams['font.weight'] = 'bold'
-    
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
             show_county_borders = show_county_borders
@@ -788,11 +783,11 @@ class time_cross_sections:
         ax1.xaxis.set_major_formatter(md.DateFormatter('%d/%HZ'))
         ax1.set_xticks(time)
                             
-        ax1.contourf(time_grid, pressure_grid, vv[0:29, :], levels=np.arange(-0.75, 0.76, 0.01), cmap=cmap, alpha=0.25, extend='both')
-        c10 = ax1.contour(time_grid, pressure_grid, vv[0:29, :], levels=np.arange(-0.8, 0.9, 0.1), colors='black', zorder=2, linewidths=1)
-        ax1.clabel(c10, levels=np.arange(-0.8, 0.9, 0.1), inline=True, fontsize=8, rightside_up=True)
-        c5 = ax1.contour(time_grid, pressure_grid, vv[0:29, :], levels=np.arange(-0.75, 0.85, 0.1), colors='black', zorder=2, linewidths=1, linestyles='--')
-        ax1.clabel(c5, levels=np.arange(-0.75, 0.85, 0.1), inline=True, fontsize=8, rightside_up=True)
+        ax1.contourf(time_grid, pressure_grid, vv[0:29, :], levels=np.arange(round(float(np.nanmin(vv[0:29, :])),2), round(float(np.nanmax(vv[0:29, :])),2) + 0.01, 0.01), cmap=cmap, alpha=0.25, extend='both')
+        c10 = ax1.contour(time_grid, pressure_grid, vv[0:29, :], levels=np.arange(((round(float(np.nanmin(vv[0:29, :])),1)/0.1) * 0.1), ((round(float(np.nanmax(vv[0:29, :])),1)/0.1) * 0.1) + 0.1, 0.1), colors='black', zorder=2, linewidths=1)
+        ax1.clabel(c10, levels=np.arange(((round(float(np.nanmin(vv[0:29, :])),1)/0.1) * 0.1), ((round(float(np.nanmax(vv[0:29, :])),1)/0.1) * 0.1) + 0.1, 0.1), inline=True, fontsize=8, rightside_up=True)
+        c5 = ax1.contour(time_grid, pressure_grid, vv[0:29, :], levels=np.arange(((round(float(np.nanmin(vv[0:29, :])),1)/0.05) * 0.05), ((round(float(np.nanmax(vv[0:29, :])),1)/0.05) * 0.05) + 0.05, 0.05), colors='black', zorder=2, linewidths=1, linestyles='--')
+        ax1.clabel(c5, levels=np.arange(((round(float(np.nanmin(vv[0:29, :])),1)/0.05) * 0.05), ((round(float(np.nanmax(vv[0:29, :])),1)/0.05) * 0.05) + 0.05, 0.05), inline=True, fontsize=8, rightside_up=True)
         if station_id != 'Custom' or station_id != 'custom':
             plt.title(f"{model.upper()} TIME VS. PRESSURE CROSS-SECTION: VERTICAL VELOCITY [Pa/s]\nSTATION: {station_id.upper()} - LAT: {str(lat)}{lat_symbol} | LON: {str(lon)}{lon_symbol}", fontsize=10, fontweight='bold', loc='left')
         else:
