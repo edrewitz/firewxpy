@@ -10,7 +10,7 @@ from datetime import datetime
 
 class file_functions:
 
-    def forecast_cross_sections_graphics_paths(model, style, reference_system):
+    def forecast_cross_sections_graphics_paths(model, style, parameter, reference_system):
 
         if os.path.exists(f"Weather Data"):
             print(f"Already Satisfied: f:Weather Data Parent Directory exists.")
@@ -53,8 +53,15 @@ class file_functions:
             os.mkdir(f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}")
             print(f"Built f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system} Branch") 
 
-        path = f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}"
-        path_print = f"f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}"
+        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}"):
+            print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter} exists.")
+
+        else:
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}")
+            print(f"Built f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter} Branch") 
+
+        path = f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}"
+        path_print = f"f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}"
 
         return path, path_print
 
