@@ -43,7 +43,7 @@ def temperature_change_colormap():
     return temperature_change_colormap
 
 def vertical_velocity_colormap():
-    vertical_velocity_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("vv", ["darkblue", "blue", "deepskyblue", "white", "orangered", "red", "darkred"])
+    vertical_velocity_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("vv", ["darkblue", "blue", "deepskyblue", "orangered", "red", "darkred"])
 
     return vertical_velocity_colormap
 
@@ -61,6 +61,11 @@ def wind_speed_colormap():
     wind_speed_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("wind speed", ["magenta", "purple", "blue", "cyan", "goldenrod", "darkgoldenrod", "orange", "darkorange"])
 
     return wind_speed_colormap
+
+def theta_e_colormap():
+    theta_e_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("theta e", ["darkblue", "dodgerblue", "turquoise", "lawngreen", "gold", "darkorange", "darkred"])
+
+    return theta_e_colormap
 
 def wind_speed_change_colormap():
     wind_speed_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("wind speed change", ["magenta", "blue", "white", "white", "darkgoldenrod", "darkorange"])
