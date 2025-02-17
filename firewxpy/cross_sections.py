@@ -1259,7 +1259,9 @@ class time_cross_sections:
         c = ax1.contour(time_grid, pressure_grid, temperature, levels = np.arange(start_c, (stop_c + step_c), step_c), colors='black', zorder=2, linewidths=1, linestyles='-')
         ax1.clabel(c, levels = np.arange(start_c, (stop_c + step_c), step_c), inline=True, fontsize=8, rightside_up=True)
         c1 = ax1.contour(time_grid, pressure_grid, rh, levels = np.arange(0, 110, 10), colors='green', zorder=2, linewidths=1, linestyles='--')
-        ax1.clabel(c1, levels = np.arange(0, 110, 10), inline=True, fontsize=8, rightside_up=True)    
+        ax1.clabel(c1, levels = np.arange(0, 110, 10), inline=True, fontsize=8, rightside_up=True)  
+        c2 = ax1.contour(time_grid, pressure_grid, temperature, levels=[-18,-12], colors='black', zorder=2, linewidths=1, linestyles='dotted')
+        ax1.clabel(c2, levels=[-18,-12], inline=True, fontsize=8, rightside_up=True)
         ax1.barbs(time_grid, pressure_grid, u[:, :], v[:, :], clip_on=True, zorder=10, color='black', length=5, alpha=0.5)
         if station_id != 'Custom' or station_id != 'custom':
             plt.title(f"{model.upper()} TIME VS. PRESSURE CROSS-SECTION: VERTICAL VELOCITY (SHADED) [Pa/s] & T [°C] (SOLID CONTOURS) & RH [%] (DASHED CONTOURS) & WIND BARBS [MPH]\nSTATION: {station_id.upper()} - LAT: {str(round(lat,1))}{lat_symbol} | LON: {str(round(lon,1))}{lon_symbol}", fontsize=9, fontweight='bold', loc='left')
