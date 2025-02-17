@@ -9,7 +9,25 @@ import numpy as np
 import firewxpy.parsers as parsers
 import firewxpy.geometry as geometry
 import firewxpy.colormaps as colormaps
-import pandas as pdmpl.rcParams['xtick.labelsize'] = 6
+import pandas as pd
+import matplotlib.gridspec as gridspec
+import firewxpy.settings as settings
+import firewxpy.standard as standard
+import firewxpy.dims as dims
+import os
+import time as tim
+import matplotlib.dates as md
+
+from matplotlib.patheffects import withStroke
+from metpy.plots import USCOUNTIES
+from datetime import datetime, timedelta
+from dateutil import tz
+from firewxpy.calc import scaling, Thermodynamics, unit_conversion
+from firewxpy.utilities import file_functions
+from metpy.units import units
+from firewxpy.data_access import model_data, station_coords
+
+mpl.rcParams['xtick.labelsize'] = 6
 mpl.rcParams['ytick.labelsize'] = 6
 mpl.rcParams['font.weight'] = 'bold'
 local_time, utc_time = standard.plot_creation_time()
