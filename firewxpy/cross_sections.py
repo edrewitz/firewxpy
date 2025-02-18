@@ -37,16 +37,6 @@ datacrs = ccrs.PlateCarree()
 provinces = cfeature.NaturalEarthFeature(category='cultural', 
     name='admin_1_states_provinces_lines', scale='50m', facecolor='none', edgecolor='k')
 
-PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
-
-GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
-
-CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
-
-FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
-
-PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
-
 props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
 class time_cross_sections:
@@ -177,7 +167,15 @@ class time_cross_sections:
             Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         
         '''
-    
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -273,8 +271,7 @@ class time_cross_sections:
                 show_county_borders = True
                 gacc_border_linewidth=1
                 county_border_linewidth=0.25 
-    
-    
+
         if data == False:
             if model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
                 ds = model_data.get_hourly_rap_data_point_forecast(model, station_id, longitude, latitude)
@@ -584,6 +581,15 @@ class time_cross_sections:
     
             Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -679,8 +685,7 @@ class time_cross_sections:
                 show_county_borders = True
                 gacc_border_linewidth=1
                 county_border_linewidth=0.25 
-    
-    
+
         if data == False:
             if model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
                 ds = model_data.get_hourly_rap_data_point_forecast(model, station_id, longitude, latitude)
@@ -1009,6 +1014,15 @@ class time_cross_sections:
             Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -1104,8 +1118,7 @@ class time_cross_sections:
                 show_county_borders = True
                 gacc_border_linewidth=1
                 county_border_linewidth=0.25 
-    
-    
+
         if data == False:
             if model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
                 ds = model_data.get_hourly_rap_data_point_forecast(model, station_id, longitude, latitude)
@@ -1443,6 +1456,15 @@ class time_cross_sections:
     
             Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -1538,8 +1560,7 @@ class time_cross_sections:
                 show_county_borders = True
                 gacc_border_linewidth=1
                 county_border_linewidth=0.25 
-    
-    
+
         if data == False:
             if model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
                 ds = model_data.get_hourly_rap_data_point_forecast(model, station_id, longitude, latitude)
@@ -1863,6 +1884,15 @@ class time_cross_sections:
             Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -1958,8 +1988,7 @@ class time_cross_sections:
                 show_county_borders = True
                 gacc_border_linewidth=1
                 county_border_linewidth=0.25 
-    
-    
+
         if data == False:
             if model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
                 ds = model_data.get_hourly_rap_data_point_forecast(model, station_id, longitude, latitude)
@@ -2262,6 +2291,15 @@ class time_cross_sections:
             Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -2357,8 +2395,7 @@ class time_cross_sections:
                 show_county_borders = True
                 gacc_border_linewidth=1
                 county_border_linewidth=0.25 
-    
-    
+
         if data == False:
             if model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
                 ds = model_data.get_hourly_rap_data_point_forecast(model, station_id, longitude, latitude)
@@ -2673,6 +2710,15 @@ class time_cross_sections:
     
             Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -2768,8 +2814,7 @@ class time_cross_sections:
                 show_county_borders = True
                 gacc_border_linewidth=1
                 county_border_linewidth=0.25 
-    
-    
+
         if data == False:
             if model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
                 ds = model_data.get_hourly_rap_data_point_forecast(model, station_id, longitude, latitude)
@@ -2927,7 +2972,9 @@ class time_cross_sections:
         c = ax1.contour(time_grid, pressure_grid, theta_e, levels = np.arange(low_bound, (up_bound + step_c), step_c), colors='black', zorder=2, linewidths=1, linestyles='-')
         ax1.clabel(c, levels = np.arange(low_bound, (up_bound + step_c), step_c), inline=True, fontsize=8, rightside_up=True)
         c1 = ax1.contour(time_grid, pressure_grid, rh, levels = np.arange(0, 110, 10), colors='green', zorder=2, linewidths=1, linestyles='--')
-        ax1.clabel(c1, levels = np.arange(0, 110, 10), inline=True, fontsize=8, rightside_up=True)    
+        ax1.clabel(c1, levels = np.arange(0, 110, 10), inline=True, fontsize=8, rightside_up=True)   
+        c2 = ax1.contour(time_grid, pressure_grid, (ds['tmpprs'] - 273.15), levels=[-18,-12], colors='black', zorder=2, linewidths=1, linestyles='dotted')
+        ax1.clabel(c2, levels=[-18,-12], inline=True, fontsize=8, rightside_up=True)
         ax1.barbs(time_grid, pressure_grid, u[:, :], v[:, :], clip_on=True, zorder=10, color='black', length=5, alpha=0.5)
         if station_id != 'Custom' or station_id != 'custom':
             plt.title(f"{model.upper()} TIME VS. PRESSURE CROSS-SECTION: VERTICAL VELOCITY (SHADED) [Pa/s] & THETA-E [K] (SOLID CONTOURS) & RH [%] (DASHED CONTOURS) & WIND BARBS [MPH]\nSTATION: {station_id.upper()} - LAT: {str(round(lat,1))}{lat_symbol} | LON: {str(round(lon,1))}{lon_symbol}", fontsize=9, fontweight='bold', loc='left')
@@ -3120,6 +3167,15 @@ class time_cross_sections:
     
             Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
@@ -3215,8 +3271,7 @@ class time_cross_sections:
                 show_county_borders = True
                 gacc_border_linewidth=1
                 county_border_linewidth=0.25 
-    
-    
+
         if data == False:
             if model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
                 ds = model_data.get_hourly_rap_data_point_forecast(model, station_id, longitude, latitude)
