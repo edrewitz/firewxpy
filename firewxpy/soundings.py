@@ -35,8 +35,6 @@ mpl.rcParams['ytick.labelsize'] = 5
 
 pd.options.mode.copy_on_write = True
 
-pd.options.mode.copy_on_write = True
-
 local_time, utc_time = standard.plot_creation_time()
 
 datacrs = ccrs.PlateCarree()
@@ -44,16 +42,6 @@ mapcrs = ccrs.PlateCarree()
 
 provinces = cfeature.NaturalEarthFeature(category='cultural', 
     name='admin_1_states_provinces_lines', scale='50m', facecolor='none', edgecolor='k')
-
-PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
-
-GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
-
-CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
-
-FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
-
-PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
 
 props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
@@ -199,6 +187,16 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
     mpl.rcParams['xtick.labelsize'] = 5
     mpl.rcParams['ytick.labelsize'] = 5
 
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
+
     if reference_system == 'Custom' or reference_system == 'custom':
         show_state_borders = show_state_borders
         show_county_borders = show_county_borders
@@ -293,7 +291,6 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
             show_county_borders = True
             gacc_border_linewidth=1
             county_border_linewidth=0.25 
-
 
     if data == False:
         if model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
@@ -1865,4 +1862,3 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
     fname = station_id+" VERTICAL PROFILES"
     
     file_functions.save_daily_sounding_graphic(fig, station_id, date)  
-        
