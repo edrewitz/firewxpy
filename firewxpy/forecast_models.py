@@ -33,16 +33,6 @@ datacrs = ccrs.PlateCarree()
 provinces = cfeature.NaturalEarthFeature(category='cultural', 
     name='admin_1_states_provinces_lines', scale='50m', facecolor='none', edgecolor='k')
 
-PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
-
-GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
-
-CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
-
-FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
-
-PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
-
 props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
 class dynamics:
@@ -249,6 +239,15 @@ class dynamics:
         cwa_border_linestyle=cwa_border_linestyle
         nws_firewx_zones_linestyle=nws_firewx_zones_linestyle 
         nws_public_zones_linestyle=nws_public_zones_linestyle
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
 
         if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
             mapcrs = ccrs.LambertConformal()
@@ -791,6 +790,15 @@ class dynamics:
         cwa_border_linestyle=cwa_border_linestyle
         nws_firewx_zones_linestyle=nws_firewx_zones_linestyle 
         nws_public_zones_linestyle=nws_public_zones_linestyle
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
 
         if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
             mapcrs = ccrs.LambertConformal()
@@ -1310,6 +1318,15 @@ class dynamics:
         cwa_border_linestyle=cwa_border_linestyle
         nws_firewx_zones_linestyle=nws_firewx_zones_linestyle 
         nws_public_zones_linestyle=nws_public_zones_linestyle
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
 
         if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
             mapcrs = ccrs.LambertConformal()
@@ -1830,6 +1847,15 @@ class dynamics:
         x3=x3
         y3=y3 
         shrink=shrink
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
 
         if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
             mapcrs = ccrs.LambertConformal()
@@ -2384,6 +2410,15 @@ class dynamics:
         x3=x3
         y3=y3 
         shrink=shrink
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
             mapcrs = ccrs.LambertConformal()
@@ -2643,6 +2678,7 @@ class temperature:
 
     '''
 
+
     def plot_2m_temperatures(model, region, start_of_warm_season_month=4, end_of_warm_season_month=10, start_of_cool_season_month=11, end_of_cool_season_month=3, temp_scale_warm_start=10, temp_scale_warm_stop=110, temp_scale_cool_start=-20, temp_scale_cool_stop=80, temp_scale_step=1, temperature_contour_value=32, data=False, ds=None, ds_list=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
 
         r'''
@@ -2867,6 +2903,15 @@ class temperature:
         x3=x3
         y3=y3 
         shrink=shrink
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         temp_scale_cool_stop_corrected = temp_scale_cool_stop + temp_scale_step
         temp_scale_warm_stop_corrected = temp_scale_warm_stop + temp_scale_step
@@ -3378,7 +3423,7 @@ class temperature:
     def plot_freezing_level(model, region, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
 
         r'''
-        This function plots the Freezing Level Forecast. 
+        This function plots the 2-Meter Temperature Forecast. 
 
         Required Arguments: 1) model (String) - This is the model the user must select. 
                                
@@ -3575,6 +3620,15 @@ class temperature:
         x3=x3
         y3=y3 
         shrink=shrink
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         levels = np.arange(3000, 10500, 500)
         ticks = levels[::2]
@@ -3929,7 +3983,7 @@ class temperature:
     def plot_heights_temperature_wind(model, region, level=850, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States Only', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8):
 
         r'''
-        This function plots the Geopotential Height/Temperature/Wind Forecast for a specific level. 
+        This function plots the Geopotential Height/Vorticity/Wind Forecast for a specific level. 
 
         Required Arguments: 1) model (String) - This is the model the user must select. 
                                
@@ -4115,6 +4169,15 @@ class temperature:
         cwa_border_linestyle=cwa_border_linestyle
         nws_firewx_zones_linestyle=nws_firewx_zones_linestyle 
         nws_public_zones_linestyle=nws_public_zones_linestyle
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
 
         if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
             mapcrs = ccrs.LambertConformal()
@@ -4712,8 +4775,17 @@ class relative_humidity:
         sample_point_fontsize=sample_point_fontsize
         x=x 
         y=y
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
-        levels = np.arange(0, 102, 1)
+        levels = np.arange(0, 101, 1)
         ticks = levels[::5]
     
         if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
@@ -5189,7 +5261,7 @@ class relative_humidity:
     def plot_heights_relative_humidity_wind(model, region, level=700, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States Only', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8):
 
         r'''
-        This function plots the Geopotential Height/RH/Wind Forecast for a specific level. 
+        This function plots the Geopotential Height/Vorticity/Wind Forecast for a specific level. 
 
         Required Arguments: 1) model (String) - This is the model the user must select. 
                                
@@ -5375,6 +5447,15 @@ class relative_humidity:
         cwa_border_linestyle=cwa_border_linestyle
         nws_firewx_zones_linestyle=nws_firewx_zones_linestyle 
         nws_public_zones_linestyle=nws_public_zones_linestyle
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
 
         if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
             mapcrs = ccrs.LambertConformal()
@@ -5991,6 +6072,15 @@ class critical_firewx_conditions:
         sample_point_fontsize=sample_point_fontsize
         x=x 
         y=y
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         levels = np.arange(0, 101, 1)
         ticks = levels[::5]
@@ -7006,7 +7096,7 @@ class precipitation:
     def plot_precipitation_rate(model, region, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
 
         r'''
-        This function plots the Precipitation Rate Forecast. 
+        This function plots the 2-Meter Relative Humidity Forecast. 
 
         Required Arguments: 1) model (String) - This is the model the user must select. 
                                
@@ -7168,7 +7258,7 @@ class precipitation:
                             43) y (Float) - Default = 0.97. The y-position of the textbox with respect to the axis of the image showing the value of the contour line. This is only to be changed when making a custom plot. 
 
 
-        Returns: Images for the various different forecast times saved to the path: f: Weather Data/Forecast Model Data/model/region/reference system/parameter(s)/SURFACE
+        Returns: Images for the various different forecast times saved to the path: f: Weather Data/Forecast Model Data/model/region/reference system/parameter(s)/level
 
 
         '''
@@ -7205,6 +7295,15 @@ class precipitation:
         sample_point_fontsize=sample_point_fontsize
         x=x 
         y=y
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         levels = [0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.5, 2, 2.5, 3]
         ticks = levels
@@ -7566,4 +7665,3 @@ class precipitation:
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
-
