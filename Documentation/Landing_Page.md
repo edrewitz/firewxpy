@@ -3,6 +3,7 @@
 This is the landing page for all of the firewxpy documentation. The links below will direct you to the documentation for each firewxpy module. 
 
 To visit the firewxpy tutorials page where you can see examples in jupyter lab - [click here](https://github.com/edrewitz/firewxpy/blob/main/tutorials/Examples_Guide.md)
+
 For video tutorials/demostrations checkout the FireWxPy Tutorial Series on the South Ops YouTube Channel - [click here](https://www.youtube.com/playlist?list=PLLKWSry9WlbPfeTWEQjuKIdNhYuxd8r96)
 
 1) [rtma_conus](https://github.com/edrewitz/firewxpy/blob/main/Documentation/RTMA_Graphics_CONUS.md)
