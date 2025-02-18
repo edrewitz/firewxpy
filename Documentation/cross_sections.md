@@ -1,10 +1,10 @@
 # **Forecast Cross-Sections**
 
 ### **Classes**
-1) [Time vs Pressure Cross-Sections](#time-vs-pressure-cross-sections)
+1) [Time Cross-Sections](#time-cross-sections)
 
 
-#### Time vs. Pressure Cross-Sections
+#### Time Cross-Sections
 *This section of FireWxPy is inspired by Dr. Brian Tang's [WxChallenge Model Guidance](https://www.atmos.albany.edu/facstaff/tang/forecast/) Time Cross-section graphics.*  
 
 **Here are the different functions in the Time vs. Pressure Cross-Sections Class**
