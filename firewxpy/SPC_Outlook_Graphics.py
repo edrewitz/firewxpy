@@ -37,16 +37,6 @@ from firewxpy.data_access import NDFD_CONUS_Hawaii
 
 mpl.rcParams['font.weight'] = 'bold'
 
-PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
-
-GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
-
-CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
-
-FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
-
-PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
-
 def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', alpha=0.5, directory_name='CONUS', file_path=None, data_array=None, count_short=None, count_extended=None, state='us', gacc_region=None, cwa=None, aspect=30, colorbar_pad=0.02):
 
     r'''
@@ -235,7 +225,15 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
     '''
-
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
 
     local_time, utc_time = standard.plot_creation_time()
     grid_time_interval = 24
@@ -937,7 +935,16 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
     '''
-
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
+    
     if gacc_region != None:
         state = None
     else:
