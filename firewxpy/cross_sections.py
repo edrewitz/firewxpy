@@ -60,7 +60,7 @@ class time_cross_sections:
     def plot_lower_atmosphere_wind(model, station_id, save_name, longitude=None, latitude=None, data=False, ds=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
     
         r'''
-            This function plots the vertical profile forecasts for a given point and shows the transport wind and precipitation forecast in the vicinity of the point. 
+            This function plots a time vs. pressure cross-section forecast for a given point. Paramter: Lower Atmosphere Wind. 
     
             Required Arguments:
     
@@ -68,16 +68,15 @@ class time_cross_sections:
                                    
                    Here are the choices: 
                    1) GFS0p25 - GFS 0.25x0.25 degree
-                   2) GFS0p25_1h - GFS 0.25x0.25 degree with 1 hour intervals
-                   3) GFS0p50 - GFS 0.5x0.5 degree
-                   4) GFS1p00 - GFS 1.0x1.0 degree
-                   5) NAM - North American Model
-                   6) NAM 1hr - North American Model with 1 hour intervals 
-                   7) RAP - RAP for the CONUS
-                   8) RAP 32 - 32km North American RAP
+                   2) NAM - North American Model
+                   3) RAP - RAP for the CONUS
+                   4) RAP 32 - 32km North American RAP
     
             2) station_id (String) - The 4-letter airport station identifier. 
                                      If the user wants to choose a custom point that is not an airport - enter: 'Custom' or 'custom'. 
+
+            3) save_name (String) - The name at which you want to name your graphics file. For example if I was creating a time cross-section for 
+                                    Ontario International Airport in Ontario, California I would name the file "KONT.png" as KONT is the station ID. 
     
             Optional Arguments:
     
@@ -175,7 +174,7 @@ class time_cross_sections:
             27) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'.   
     
-            Returns: A set of forecast vertical profile graphics saved to f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{longitude}{lon_symbol}/{reference_system}
+            Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         
         '''
     
@@ -469,7 +468,7 @@ class time_cross_sections:
     def plot_lower_atmosphere_vertical_velocity(model, station_id, save_name, longitude=None, latitude=None, data=False, ds=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
     
         r'''
-            This function plots the vertical profile forecasts for a given point and shows the transport wind and precipitation forecast in the vicinity of the point. 
+            This function plots a time vs. pressure cross-section forecast for a given point. Paramter: Vertical Velocity. 
     
             Required Arguments:
     
@@ -477,16 +476,15 @@ class time_cross_sections:
                                    
                    Here are the choices: 
                    1) GFS0p25 - GFS 0.25x0.25 degree
-                   2) GFS0p25_1h - GFS 0.25x0.25 degree with 1 hour intervals
-                   3) GFS0p50 - GFS 0.5x0.5 degree
-                   4) GFS1p00 - GFS 1.0x1.0 degree
-                   5) NAM - North American Model
-                   6) NAM 1hr - North American Model with 1 hour intervals 
-                   7) RAP - RAP for the CONUS
-                   8) RAP 32 - 32km North American RAP
+                   2) NAM - North American Model
+                   3) RAP - RAP for the CONUS
+                   4) RAP 32 - 32km North American RAP
     
             2) station_id (String) - The 4-letter airport station identifier. 
                                      If the user wants to choose a custom point that is not an airport - enter: 'Custom' or 'custom'. 
+
+            3) save_name (String) - The name at which you want to name your graphics file. For example if I was creating a time cross-section for 
+                                    Ontario International Airport in Ontario, California I would name the file "KONT.png" as KONT is the station ID. 
     
             Optional Arguments:
     
@@ -584,8 +582,7 @@ class time_cross_sections:
             27) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'.   
     
-            Returns: A set of forecast vertical profile graphics saved to f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{longitude}{lon_symbol}/{reference_system}
-        
+            Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         '''
     
         if reference_system == 'Custom' or reference_system == 'custom':
@@ -895,7 +892,7 @@ class time_cross_sections:
     def plot_lower_atmosphere_temperature_rh_vertical_velocity_wind(model, station_id, save_name, longitude=None, latitude=None, data=False, ds=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
     
         r'''
-            This function plots the vertical profile forecasts for a given point and shows the transport wind and precipitation forecast in the vicinity of the point. 
+            This function plots a time vs. pressure cross-section forecast for a given point. Paramters: Lower Atmosphere Temperature/RH/Vertical Velocity/Wind. 
     
             Required Arguments:
     
@@ -903,16 +900,15 @@ class time_cross_sections:
                                    
                    Here are the choices: 
                    1) GFS0p25 - GFS 0.25x0.25 degree
-                   2) GFS0p25_1h - GFS 0.25x0.25 degree with 1 hour intervals
-                   3) GFS0p50 - GFS 0.5x0.5 degree
-                   4) GFS1p00 - GFS 1.0x1.0 degree
-                   5) NAM - North American Model
-                   6) NAM 1hr - North American Model with 1 hour intervals 
-                   7) RAP - RAP for the CONUS
-                   8) RAP 32 - 32km North American RAP
+                   2) NAM - North American Model
+                   3) RAP - RAP for the CONUS
+                   4) RAP 32 - 32km North American RAP
     
             2) station_id (String) - The 4-letter airport station identifier. 
                                      If the user wants to choose a custom point that is not an airport - enter: 'Custom' or 'custom'. 
+
+            3) save_name (String) - The name at which you want to name your graphics file. For example if I was creating a time cross-section for 
+                                    Ontario International Airport in Ontario, California I would name the file "KONT.png" as KONT is the station ID. 
     
             Optional Arguments:
     
@@ -1010,7 +1006,7 @@ class time_cross_sections:
             27) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'.   
     
-            Returns: A set of forecast vertical profile graphics saved to f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{longitude}{lon_symbol}/{reference_system}
+            Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         
         '''
     
@@ -1331,7 +1327,7 @@ class time_cross_sections:
     def plot_lower_atmosphere_temperature_and_wind(model, station_id, save_name, longitude=None, latitude=None, data=False, ds=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
     
         r'''
-            This function plots the vertical profile forecasts for a given point and shows the transport wind and precipitation forecast in the vicinity of the point. 
+            This function plots a time vs. pressure cross-section forecast for a given point. Paramters: Lower Atmosphere Temperature/Wind. 
     
             Required Arguments:
     
@@ -1339,16 +1335,15 @@ class time_cross_sections:
                                    
                    Here are the choices: 
                    1) GFS0p25 - GFS 0.25x0.25 degree
-                   2) GFS0p25_1h - GFS 0.25x0.25 degree with 1 hour intervals
-                   3) GFS0p50 - GFS 0.5x0.5 degree
-                   4) GFS1p00 - GFS 1.0x1.0 degree
-                   5) NAM - North American Model
-                   6) NAM 1hr - North American Model with 1 hour intervals 
-                   7) RAP - RAP for the CONUS
-                   8) RAP 32 - 32km North American RAP
+                   2) NAM - North American Model
+                   3) RAP - RAP for the CONUS
+                   4) RAP 32 - 32km North American RAP
     
             2) station_id (String) - The 4-letter airport station identifier. 
                                      If the user wants to choose a custom point that is not an airport - enter: 'Custom' or 'custom'. 
+
+            3) save_name (String) - The name at which you want to name your graphics file. For example if I was creating a time cross-section for 
+                                    Ontario International Airport in Ontario, California I would name the file "KONT.png" as KONT is the station ID. 
     
             Optional Arguments:
     
@@ -1446,8 +1441,7 @@ class time_cross_sections:
             27) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'.   
     
-            Returns: A set of forecast vertical profile graphics saved to f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{longitude}{lon_symbol}/{reference_system}
-        
+            Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         '''
     
         if reference_system == 'Custom' or reference_system == 'custom':
@@ -1752,7 +1746,7 @@ class time_cross_sections:
     def plot_lower_atmosphere_relative_humidity_and_wind(model, station_id, save_name, longitude=None, latitude=None, data=False, ds=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
     
         r'''
-            This function plots the vertical profile forecasts for a given point and shows the transport wind and precipitation forecast in the vicinity of the point. 
+            This function plots a time vs. pressure cross-section forecast for a given point. Paramters: Lower Atmosphere RH/Wind. 
     
             Required Arguments:
     
@@ -1760,16 +1754,15 @@ class time_cross_sections:
                                    
                    Here are the choices: 
                    1) GFS0p25 - GFS 0.25x0.25 degree
-                   2) GFS0p25_1h - GFS 0.25x0.25 degree with 1 hour intervals
-                   3) GFS0p50 - GFS 0.5x0.5 degree
-                   4) GFS1p00 - GFS 1.0x1.0 degree
-                   5) NAM - North American Model
-                   6) NAM 1hr - North American Model with 1 hour intervals 
-                   7) RAP - RAP for the CONUS
-                   8) RAP 32 - 32km North American RAP
+                   2) NAM - North American Model
+                   3) RAP - RAP for the CONUS
+                   4) RAP 32 - 32km North American RAP
     
             2) station_id (String) - The 4-letter airport station identifier. 
                                      If the user wants to choose a custom point that is not an airport - enter: 'Custom' or 'custom'. 
+
+            3) save_name (String) - The name at which you want to name your graphics file. For example if I was creating a time cross-section for 
+                                    Ontario International Airport in Ontario, California I would name the file "KONT.png" as KONT is the station ID. 
     
             Optional Arguments:
     
@@ -1867,7 +1860,7 @@ class time_cross_sections:
             27) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'.   
     
-            Returns: A set of forecast vertical profile graphics saved to f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{longitude}{lon_symbol}/{reference_system}
+            Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         
         '''
     
@@ -2152,7 +2145,7 @@ class time_cross_sections:
     def plot_lower_atmosphere_theta_e_and_wind(model, station_id, save_name, longitude=None, latitude=None, data=False, ds=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
     
         r'''
-            This function plots the vertical profile forecasts for a given point and shows the transport wind and precipitation forecast in the vicinity of the point. 
+            This function plots a time vs. pressure cross-section forecast for a given point. Paramters: Lower Atmosphere Theta-E/Wind. 
     
             Required Arguments:
     
@@ -2160,16 +2153,15 @@ class time_cross_sections:
                                    
                    Here are the choices: 
                    1) GFS0p25 - GFS 0.25x0.25 degree
-                   2) GFS0p25_1h - GFS 0.25x0.25 degree with 1 hour intervals
-                   3) GFS0p50 - GFS 0.5x0.5 degree
-                   4) GFS1p00 - GFS 1.0x1.0 degree
-                   5) NAM - North American Model
-                   6) NAM 1hr - North American Model with 1 hour intervals 
-                   7) RAP - RAP for the CONUS
-                   8) RAP 32 - 32km North American RAP
+                   2) NAM - North American Model
+                   3) RAP - RAP for the CONUS
+                   4) RAP 32 - 32km North American RAP
     
             2) station_id (String) - The 4-letter airport station identifier. 
                                      If the user wants to choose a custom point that is not an airport - enter: 'Custom' or 'custom'. 
+
+            3) save_name (String) - The name at which you want to name your graphics file. For example if I was creating a time cross-section for 
+                                    Ontario International Airport in Ontario, California I would name the file "KONT.png" as KONT is the station ID. 
     
             Optional Arguments:
     
@@ -2267,7 +2259,7 @@ class time_cross_sections:
             27) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'.   
     
-            Returns: A set of forecast vertical profile graphics saved to f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{longitude}{lon_symbol}/{reference_system}
+            Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         
         '''
     
@@ -2565,7 +2557,7 @@ class time_cross_sections:
     def plot_lower_atmosphere_theta_e_rh_vertical_velocity_wind(model, station_id, save_name, longitude=None, latitude=None, data=False, ds=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
     
         r'''
-            This function plots the vertical profile forecasts for a given point and shows the transport wind and precipitation forecast in the vicinity of the point. 
+             This function plots a time vs. pressure cross-section forecast for a given point. Paramters: Lower Atmosphere Theta-E/RH/Vertical Velocity/Wind. 
     
             Required Arguments:
     
@@ -2573,16 +2565,15 @@ class time_cross_sections:
                                    
                    Here are the choices: 
                    1) GFS0p25 - GFS 0.25x0.25 degree
-                   2) GFS0p25_1h - GFS 0.25x0.25 degree with 1 hour intervals
-                   3) GFS0p50 - GFS 0.5x0.5 degree
-                   4) GFS1p00 - GFS 1.0x1.0 degree
-                   5) NAM - North American Model
-                   6) NAM 1hr - North American Model with 1 hour intervals 
-                   7) RAP - RAP for the CONUS
-                   8) RAP 32 - 32km North American RAP
+                   2) NAM - North American Model
+                   3) RAP - RAP for the CONUS
+                   4) RAP 32 - 32km North American RAP
     
             2) station_id (String) - The 4-letter airport station identifier. 
                                      If the user wants to choose a custom point that is not an airport - enter: 'Custom' or 'custom'. 
+
+            3) save_name (String) - The name at which you want to name your graphics file. For example if I was creating a time cross-section for 
+                                    Ontario International Airport in Ontario, California I would name the file "KONT.png" as KONT is the station ID. 
     
             Optional Arguments:
     
@@ -2680,8 +2671,7 @@ class time_cross_sections:
             27) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'.   
     
-            Returns: A set of forecast vertical profile graphics saved to f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{longitude}{lon_symbol}/{reference_system}
-        
+            Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         '''
     
         if reference_system == 'Custom' or reference_system == 'custom':
@@ -3006,7 +2996,7 @@ class time_cross_sections:
     def plot_favorable_firewx_forecast(model, station_id, save_name, low_rh_threshold=15, high_wind_threshold=25, high_temperature_threshold=None, longitude=None, latitude=None, data=False, ds=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
     
         r'''
-            This function plots the vertical profile forecasts for a given point and shows the transport wind and precipitation forecast in the vicinity of the point. 
+            This function plots a time vs. pressure cross-section forecast for a given point. Paramters: Lower Atmosphere Favorable Fire Weather Forecast. 
     
             Required Arguments:
     
@@ -3014,24 +3004,31 @@ class time_cross_sections:
                                    
                    Here are the choices: 
                    1) GFS0p25 - GFS 0.25x0.25 degree
-                   2) GFS0p25_1h - GFS 0.25x0.25 degree with 1 hour intervals
-                   3) GFS0p50 - GFS 0.5x0.5 degree
-                   4) GFS1p00 - GFS 1.0x1.0 degree
-                   5) NAM - North American Model
-                   6) NAM 1hr - North American Model with 1 hour intervals 
-                   7) RAP - RAP for the CONUS
-                   8) RAP 32 - 32km North American RAP
+                   2) NAM - North American Model
+                   3) RAP - RAP for the CONUS
+                   4) RAP 32 - 32km North American RAP
     
             2) station_id (String) - The 4-letter airport station identifier. 
                                      If the user wants to choose a custom point that is not an airport - enter: 'Custom' or 'custom'. 
+
+            3) save_name (String) - The name at which you want to name your graphics file. For example if I was creating a time cross-section for 
+                                    Ontario International Airport in Ontario, California I would name the file "KONT.png" as KONT is the station ID. 
     
             Optional Arguments:
-    
-            1) longitude (Float or Integer) - Default = None. The longitude of the point in decimal degrees. 
+
+            1) low_rh_threshold (Integer) - Default = 15. The threshold for the contour line that defines what extremely low relative humidity is.
+
+            2) high_wind_threshold (Integer) - Default = 25. The threshold for the contour line that defines what high winds are.
+
+            3) temperature_threshold (Integer) - Default = None. This is to be used if the user wishes to add temperature as a factor to what 
+               defines favorable fire weather conditions. When set to None, only RH & Wind Speed/Gust are taken 
+               into account. When set to an integer value, the temperature will also be taken into account. 
+
+            4) longitude (Float or Integer) - Default = None. The longitude of the point in decimal degrees. 
             
-            2) latitude (Float or Integer) - Default = None. The latitude of the point in decimal degrees. 
+            5) latitude (Float or Integer) - Default = None. The latitude of the point in decimal degrees. 
             
-            3) data (Boolean) - Default = False. This tells the function if the user is downloading the data outside of the function
+            6) data (Boolean) - Default = False. This tells the function if the user is downloading the data outside of the function
                 and passing the data in or if the function needs to download the data. A value of False means the data
                 is downloaded inside of the function while a value of True means the user is downloading the data outside
                 of the function and passing it in. For users who intend to make a lot of graphics for a lot of different 
@@ -3039,11 +3036,11 @@ class time_cross_sections:
                 it in so that the amount of data requests on the host servers can be minimized. 
     
     
-            4) ds (Array) - Default = None. This is the dataset the user passes in if the user downloads the data outside of the function and passes
+            7) ds (Array) - Default = None. This is the dataset the user passes in if the user downloads the data outside of the function and passes
                 in the dataset. If the user wishes to download the data inside of the function, this value is None. When downloading data
                 outside of the function and passing in the data, this is for any model that is NOT the 'GEFS0p25 ENS MEAN'. 
     
-            5) reference_system (String) - Default = 'States Only'. The georgraphical reference system with respect to the borders on the map. If the user
+            8) reference_system (String) - Default = 'States Only'. The georgraphical reference system with respect to the borders on the map. If the user
                                                                      wishes to use a reference system not on this list, please see items 17-23. 
                 
                 Reference Systems: 
@@ -3063,66 +3060,65 @@ class time_cross_sections:
                 13) 'GACC & Counties'
     
     
-            6) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+            9) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
     
-            7) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+            10) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
     
-            8) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+            11) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
     
-            9) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+            12) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
     
-            10) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+            13) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
     
-            11) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+            14) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
     
-            12) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+            15) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
     
-            13) state_border_linewidth (Integer or Float) - Linewidth (thickness) of the state borders. Default setting is 1. 
+            16) state_border_linewidth (Integer or Float) - Linewidth (thickness) of the state borders. Default setting is 1. 
     
-            14) province_border_linewidth (Integer or Float) - Linewidth (thickness) of the Canadian province borders. Default setting is 1. 
+            17) province_border_linewidth (Integer or Float) - Linewidth (thickness) of the Canadian province borders. Default setting is 1. 
     
-            15) county_border_linewidth (Integer or Float) - Linewidth (thickness) of the county borders. Default setting is 0.25. 
+            18) county_border_linewidth (Integer or Float) - Linewidth (thickness) of the county borders. Default setting is 0.25. 
     
-            16) gacc_border_linewidth (Integer or Float) - Linewidth (thickness) of the GACC borders. Default setting is 1. 
+            19) gacc_border_linewidth (Integer or Float) - Linewidth (thickness) of the GACC borders. Default setting is 1. 
     
-            17) psa_border_linewidth (Integer or Float) - Linewidth (thickness) of the PSA borders. Default setting is 0.25. 
+            20) psa_border_linewidth (Integer or Float) - Linewidth (thickness) of the PSA borders. Default setting is 0.25. 
     
-            18) cwa_border_linewidth (Integer or Float) - Linewidth (thickness) of the NWS CWA borders. Default setting is 1. 
+            21) cwa_border_linewidth (Integer or Float) - Linewidth (thickness) of the NWS CWA borders. Default setting is 1. 
     
-            19) nws_firewx_zones_linewidth (Integer or Float) - Linewidth (thickness) of the NWS FWZ borders. Default setting is 0.25. 
+            22) nws_firewx_zones_linewidth (Integer or Float) - Linewidth (thickness) of the NWS FWZ borders. Default setting is 0.25. 
     
-            20) nws_public_zones_linewidth (Integer or Float) - Linewidth (thickness) of the NWS Public Zone borders. Default setting is 0.25. 
+            23) nws_public_zones_linewidth (Integer or Float) - Linewidth (thickness) of the NWS Public Zone borders. Default setting is 0.25. 
     
-            21) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+            24) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                 To change to a dashed line, users should set state_border_linestyle='--'. 
     
-            22) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+            25) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                 To change to a dashed line, users should set county_border_linestyle='--'. 
     
-            23) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+            26) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
     
-            24) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+            27) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'. 
     
-            25) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+            28) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'. 
     
-            26) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+            29) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'. 
     
-            27) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+            30) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'.   
     
-            Returns: A set of forecast vertical profile graphics saved to f:Weather Data/Forecast Model Data/{model}/Soundings/{latitude}{lat_symbol}/{longitude}{lon_symbol}/{reference_system}
-        
+            Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
         '''
     
         if reference_system == 'Custom' or reference_system == 'custom':
