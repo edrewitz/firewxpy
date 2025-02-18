@@ -14,7 +14,7 @@ import cartopy.crs as ccrs
 
 from cartopy.io.shapereader import Reader
 from cartopy.feature import ShapelyFeature
-from utilities import file_functions
+from firewxpy.utilities import file_functions
 
 def get_shapes(file_path):
 
